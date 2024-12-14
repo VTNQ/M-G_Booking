@@ -39,7 +39,10 @@ public class SercurityConfiguration {
                             ,"/SuperAdmin/Country/update","/SuperAdmin/Country/delete/{id}","/SuperAdmin/AccountAdmin/add"
                             ,"/SuperAdmin/Airline/add","/SuperAdmin/Airline","/SuperAdmin/Airline/edit/{id}",
                                     "/SuperAdmin/Airline/UpdateAirline").hasAnyRole("SUPERADMIN")
-                            .requestMatchers("/Doctor/index","/Doctor/UpdateAccount","/Doctor/Appointment","/Doctor/FindDateAppointDoctor").hasAnyRole("DOCTOR")
+                            .requestMatchers("/Admin/Home","/Admin/City/add","/Admin/City","/Admin/City/edit/{id}",
+                                    "Admin/City/UpdateCity","/Admin/City/delete/{id}","Admin/District/{id}",
+                                    "Admin/District/add","/Admin/District/edit/{id}","/Admin/District/update","/Admin/District/delete/{id}",
+                                    "Admin/AirPort/add","Admin/AirPort","/Admin/AirPort/edit/{id}","/Admin/Flight/add").hasAnyRole("ADMIN")
                             .requestMatchers("/Patient/index","/Patient/Faculty","/Patient/ShowDoctor/**","/Patient/HistoryAppointment").hasAnyRole("PATIENT")
                             .anyRequest().authenticated();
                 })
@@ -55,7 +58,7 @@ public class SercurityConfiguration {
                             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
                                 List<GrantedAuthority> authorities = (List<GrantedAuthority>) authentication.getAuthorities();
                                 Map<String, String> urls = new HashMap<>();
-                                urls.put("ROLE_ADMIN", "/Admin/index");
+                                urls.put("ROLE_ADMIN", "/Admin/Home");
                                 urls.put("ROLE_SUPERADMIN", "/SuperAdmin/Home");
                                 urls.put("ROLE_USER", "/Doctor/index");
                                 urls.put("ROLE_OWNER", "/Patient/index");
