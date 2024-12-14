@@ -34,7 +34,7 @@ public class SercurityConfiguration {
                 .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/LoginAdmin","/css/**","/js/**","/user/**","/SuperAdmin/assets/**").permitAll()
+                    auth.requestMatchers("/LoginAdmin","/registerUser","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**").permitAll()
                             .requestMatchers("SuperAdmin/Home","/SuperAdmin/Country/add","/SuperAdmin/Country"
                             ,"/SuperAdmin/Country/update","/SuperAdmin/Country/delete/{id}","/SuperAdmin/AccountAdmin/add"
                             ,"/SuperAdmin/Airline/add","/SuperAdmin/Airline","/SuperAdmin/Airline/edit/{id}",
@@ -42,13 +42,15 @@ public class SercurityConfiguration {
                             .requestMatchers("/Admin/Home","/Admin/City/add","/Admin/City","/Admin/City/edit/{id}",
                                     "Admin/City/UpdateCity","/Admin/City/delete/{id}","Admin/District/{id}",
                                     "Admin/District/add","/Admin/District/edit/{id}","/Admin/District/update","/Admin/District/delete/{id}",
-                                    "Admin/AirPort/add","Admin/AirPort","/Admin/AirPort/edit/{id}","/Admin/Flight/add").hasAnyRole("ADMIN")
-                            .requestMatchers("/Patient/index","/Patient/Faculty","/Patient/ShowDoctor/**","/Patient/HistoryAppointment").hasAnyRole("PATIENT")
+                                    "Admin/AirPort/add","Admin/AirPort","/Admin/AirPort/edit/{id}","/Admin/Flight/add","/Admin/Flight/edit/{id}",
+                                    "Admin/Flight/AddDetailFlight","/Admin/Flight/UpdateFlight").hasAnyRole("ADMIN")
+                            .requestMatchers("/Owner").hasAnyRole("OWNER")
                             .anyRequest().authenticated();
                 })
 
                 .formLogin(form -> form
                         .loginPage("/LoginAdmin")
+                        .loginPage("/Login")
                         .loginProcessingUrl("/account/process-login")
                         .usernameParameter("email")
                         .passwordParameter("password")
@@ -61,7 +63,7 @@ public class SercurityConfiguration {
                                 urls.put("ROLE_ADMIN", "/Admin/Home");
                                 urls.put("ROLE_SUPERADMIN", "/SuperAdmin/Home");
                                 urls.put("ROLE_USER", "/Doctor/index");
-                                urls.put("ROLE_OWNER", "/Patient/index");
+                                urls.put("ROLE_OWNER", "/Owner");
 
                                 String redirectUrl = "/Error";
                                 String email = authentication.getName();

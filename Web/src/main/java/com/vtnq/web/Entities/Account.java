@@ -25,7 +25,7 @@ public class Account {
     @Column(name = "phone", nullable = false, length = 20)
     private String phone;
 
-    @Column(name = "address", nullable = false, length = 200)
+    @Column(name = "address", nullable = true, length = 200)
     private String address;
 
     @Column(name = "city_id",nullable = true)

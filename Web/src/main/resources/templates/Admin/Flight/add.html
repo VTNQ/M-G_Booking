@@ -29,14 +29,14 @@
                             <div class="mt-2 mb-4">
                                 <label  class="form-label">Departure airport</label>
                                 <select class="form-control " th:field="${flight.departure_airport}" >
-                                    <option th:each="AirPorts : ${AirPort}" th:value="${AirPorts.id}"
+                                    <option th:each="AirPorts : ${DepartureAirPort}" th:value="${AirPorts.id}"
                                             th:text="${AirPorts.name}"></option>
                                 </select>
                             </div>
                             <div class="mt-2 mb-4">
                                 <label  class="form-label">Arrival airport</label>
                                 <select class="form-control " th:field="${flight.arrival_airport}" >
-                                    <option th:each="AirPorts : ${AirPort}" th:value="${AirPorts.id}"
+                                    <option th:each="AirPorts : ${ArrivalAirPort}" th:value="${AirPorts.id}"
                                             th:text="${AirPorts.name}"></option>
                                 </select>
                             </div>

@@ -1,4 +1,4 @@
-package com.vtnq.web.DTOs;
+package com.vtnq.web.DTOs.Hotel;
 
 import java.io.Serializable;
 

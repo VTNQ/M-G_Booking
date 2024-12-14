@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/User/layout/layout :: mainContent('Hotel',~{this::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<main id="content" class="relative block">
+<div class="container-fluid pt-5 ">
+    <div class="row mb-5 mb-lg-8 mt-xl-1">
+        <div class="col-lg-4 col-xl-3 order-lg-1 width-md-50">
+            <div class="navbar-expand-lg navbar-expand-lg-collapse-block">
+                <button class="btn d-lg-none mb-5 p-0 collapsed" type="button"></button>
+                <div id="sidebar" class="collapse navbar-collapse">
+                    <div class="mb-6 w-100">
+                        <div class="pb-4 mb-2">
+                            <div class="sidebar border border-color-1 rounded-xs">
+                                <div class="p-4 mb-1">
+                                    <span class="d-block text-gray-1 mb-0 text-left" style="font-weight: 400 !important">Destination or Hotel Name</span>
+                                    <div class="mt-3 mb-4">
+                                        <div class="input-group border-bottom border-width-2 border-color-1 " style="border: none">
+                                            <i class="fa-solid fa-location-dot d-flex align-items-center mr-2 "   style="color: #297cbb !important;font-size: 1.375rem"></i>
+                                            <input type="text" class="form-control shadow-none hero-form border-0 p-0" placeholder="Where are you going?" style="font-weight: 500 !important;font-size: 1rem;color: #3b444f">
+                                        </div>
+                                    </div>
+                                    <span class="d-block text-gray-1 mb-0 text-left" style="font-weight: 500 !important">Check In - Out</span>
+                                    <div class="text-left d-block mb-4"
+                                         style="border-width: 2px;border-color: #eaeaea !important;border-bottom: 1px solid #e7eaf3 !important;border: none">
+                                        <div id="datepickerWrapperFromOne"
+                                             class="u-datepicker input-group relative">
+                                            <div class="input-group-prepend">
+                                                <span class="d-flex align-items-center mr-2">
+                                                    <i class="fa-solid fa-calendar"
+                                                       style="color: #297cbb !important;font-weight: 500;font-style: normal"></i>
+                                                </span>
+                                            </div>
+                                            <input id="datePickerInput"
+                                                   class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
+                                                   style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 217.5px;height: 54px"
+                                                   data-rp-default-date="[&quot;Jul 7 / 2020&quot;, &quot;Aug 25 / 2020&quot;]"/>
+                                        </div>
+                                    </div>
+                                    <span class="d-block text-gray-1 mb-0 text-left" style="font-weight: 500 !important">Rooms and Guests</span>
+                                    <a id="basicDropdownClickInvoker"
+                                       class="dropdown-nav-link dropdown-toggle text-decoration-none d-flex pt-4 pb-2 mb-4">
+                                        <i class="fa-solid fa-user-plus d-flex align-items-center mr-md-3 "
+                                           style="font-size: 1.125rem;color: #297cbb !important"></i>
+                                        <span class="text-black "
+                                              style="font-size: 1rem;font-weight: 500;color: black">2 Rooms - 3 Guests</span>
+                                    </a>
+                                    <div id="basicDropdownClick"
+                                         class="dropdown-menu  dropdown-unfold col-11 m-0 u-unfold--css-animation slideInUp "
+                                         style="max-width: 81%;top: 34vh;left: 4vh">
+                                        <div class="w-100 py-2 px-3 mb-3">
+                                            <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                                 style="grid-template-columns: 1fr 1fr">
+                                                        <span class="block"
+                                                              style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Rooms</span>
+                                                <div class="d-flex">
+                                                    <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                        <i class="fa-solid fa-minus" style="color: black;position: relative;left: -3px"></i>
+                                                    </a>
+                                                    <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                           value="1" style="color: #3b444f">
+                                                    <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                        <i class="fa-solid fa-plus" style="color: black;position: relative;left: -3px;top: -3px"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="w-100 py-2 px-3 mb-3">
+                                            <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                                 style="grid-template-columns: 1fr 1fr">
+                                                        <span class="block"
+                                                              style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Adults</span>
+                                                <div class="d-flex">
+                                                    <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                        <i class="fa-solid fa-minus" style="color: black;position: relative;left: -3px"></i>
+                                                    </a>
+                                                    <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                           value="1" style="color: #3b444f">
+                                                    <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                        <i class="fa-solid fa-plus" style="color: black;position: relative;left: -3px;top: -3px"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="w-100 py-2 px-3 mb-3">
+                                            <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                                 style="grid-template-columns: 1fr 1fr">
+                                                        <span class="block"
+                                                              style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Child</span>
+                                                <div class="d-flex">
+                                                    <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                        <i class="fa-solid fa-minus" style="color: black;position: relative;left: -3px"></i>
+                                                    </a>
+                                                    <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                           value="1" style="color: #3b444f">
+                                                    <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                        <i class="fa-solid fa-plus" style="color: black;position: relative;left: -3px;top: -3px"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn height-60 w-100 mb-xl-0 transition-3d-hover" style="background-color: #297cbb;border-color: #297cbb;font-weight: 500!important;color: white">
+                                            <i class="fa-solid fa-magnifying-glass mr-2" style="font-size: 1.063rem;color: white"></i>
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb-4 mb-2">
+                            <a class="d-block border rounded">
+                                <img width="100%" src="https://transvelo.github.io/mytravel-html/assets/img/map-markers/map.jpg">
+                            </a>
+                        </div>
+                        <div class="sidenav border border-color-8 rounded-xs">
+                            <div id="RatingAccordion" class="accordion rounded shadow-none border-bottom">
+                                <div class="card-collapse" id="shopRatingHeadingOne">
+                                    <h3 class="mb-0" style="font-size: 1.75rem">
+                                    <button type="button" class="btn btn-link btn-block card-btn" style="line-height: 3">
+                                        <span class="row align-items-center">
+                                            <span class="col-5">
+                                                <span class="" style="font-weight: 500!important;font-size: 1.063rem;color: #3b444f !important">Star Rating</span>
+                                            </span>
+                                            <span class="col-7 text-right">
+                                                <span class="card-btn-arrow">
+                                                    <i class="fas fa-chevron-down small"></i>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </button>
+                                    </h3>
+                                </div>
+                                <div id="shopRatingOne" class="collapse show">
+                                    <div class="card-body pt-0 mt-1 px-5">
+                                        <div class="form-group text-secondary mb-3" style="font-size: 0.875rem;line-height: 1.8">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input">
+                                                <label class="custom-control-label text-lh-inherit text-color-1" style="color: #67747c;line-height: 1.5"></label>
+                                                <div class="d-inline-flex align-items-center " style="font-size: 0.813rem;line-height: 1;color: #297cbb !important">
+                                                    <div class="green-lighter ml-1 letter-spacing-2">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-secondary mb-3" style="font-size: 0.875rem;line-height: 1.8">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input">
+                                                <label class="custom-control-label text-lh-inherit text-color-1" style="color: #67747c;line-height: 1.5"></label>
+                                                <div class="d-inline-flex align-items-center " style="font-size: 0.813rem;line-height: 1;color: #297cbb !important">
+                                                    <div class="green-lighter ml-1 letter-spacing-2">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-secondary mb-3" style="font-size: 0.875rem;line-height: 1.8">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input">
+                                                <label class="custom-control-label text-lh-inherit text-color-1" style="color: #67747c;line-height: 1.5"></label>
+                                                <div class="d-inline-flex align-items-center " style="font-size: 0.813rem;line-height: 1;color: #297cbb !important">
+                                                    <div class="green-lighter ml-1 letter-spacing-2">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-secondary mb-3" style="font-size: 0.875rem;line-height: 1.8">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input">
+                                                <label class="custom-control-label text-lh-inherit text-color-1" style="color: #67747c;line-height: 1.5"></label>
+                                                <div class="d-inline-flex align-items-center " style="font-size: 0.813rem;line-height: 1;color: #297cbb !important">
+                                                    <div class="green-lighter ml-1 letter-spacing-2">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-secondary mb-3" style="font-size: 0.875rem;line-height: 1.8">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input">
+                                                <label class="custom-control-label text-lh-inherit text-color-1" style="color: #67747c;line-height: 1.5"></label>
+                                                <div class="d-inline-flex align-items-center " style="font-size: 0.813rem;line-height: 1;color: #297cbb !important">
+                                                    <div class="green-lighter ml-1 letter-spacing-2">
+                                                        <i class="fas fa-star"></i>
+                                            
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="shopCartAccordion" class="accordion rounded shadow-none">
+                                <div class="border-0">
+                                    <div class="card-collapse" id="shopCardHeadingOne">
+                                        <h3 class="mb-0">
+                                            <button type="button" class="btn btn-link btn-block card-btn " style="line-height: 3">
+                                                <span class="row align-items-center">
+                                                    <span class="col-5">
+                                                        <span class="d-block" style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Price Range ($)</span>
+                                                    </span>
+                                                    <span class="col-7 text-right">
+                                                        <span class="card-btn-arrow">
+                                                            <i class="fas fa-chevron-down small"></i>
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </button>
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Range Slider -->
+                                        <div class="price-range-slider">
+                                            <div class="price-range-display">
+                                                <span id="price-range-text">£200 - £3456</span>
+                                            </div>
+                                            <div class="slider-container">
+                                                <input type="range" id="range-min" min="200" max="3456" step="10" value="200" class="slider">
+                                                <input type="range" id="range-max" min="200" max="3456" step="10" value="3456" class="slider">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            <div id="shopCategoryAccordion" class="accordion rounded-0 shadow-none border-top">
+                                <div class="border-0">
+                                    <div class="card-collapse" id="shopCategoryHeadingOne">
+                                        <h3 class="mb-0" style="font-size: 1.75rem">
+                                            <button type="button" class="btn btn-link btn-block card-btn" style="line-height: 3">
+                                        <span class="row align-items-center">
+                                            <span class="col-5">
+                                                <span class="" style="font-weight: 500!important;font-size: 1.063rem;color: #3b444f !important">Meals</span>
+                                            </span>
+                                            <span class="col-7 text-right">
+                                                <span class="card-btn-arrow">
+                                                    <i class="fas fa-chevron-down small"></i>
+                                                </span>
+                                            </span>
+                                        </span>
+                                            </button>
+                                        </h3>
+                                    </div>
+                                    <div id="shopCategoryOne" class="collapse show">
+                                        <div class="card-body pt-0 mt-1 px-5 pb-4">
+                                            <div class="form-group flex-center-between text-secondary mb-3 " style="font-size: 0.875rem;line-height: 1.8">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input">
+                                                    <label class="custom-control-label">
+                                                        Breakfast Included
+                                                    </label>
+                                                </div>
+                                                <span>749</span>
+                                            </div>
+                                            <div class="form-group flex-center-between text-secondary mb-3 " style="font-size: 0.875rem;line-height: 1.8">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input">
+                                                    <label class="custom-control-label">
+                                                        Breakfast Included
+                                                    </label>
+                                                </div>
+                                                <span>749</span>
+                                            </div>
+                                            <div class="form-group flex-center-between text-secondary mb-3 " style="font-size: 0.875rem;line-height: 1.8">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input">
+                                                    <label class="custom-control-label">
+                                                        Breakfast Included
+                                                    </label>
+                                                </div>
+                                                <span>749</span>
+                                            </div>
+                                            <div class="form-group flex-center-between text-secondary mb-3 " style="font-size: 0.875rem;line-height: 1.8">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input">
+                                                    <label class="custom-control-label">
+                                                        Breakfast Included
+                                                    </label>
+                                                </div>
+                                                <span>749</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <div class="col-lg-8 col-xl-9 order-md-1 order-lg-2 pb-5 pb-lg-0">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0" style="font-size: 1.313rem;font-weight: bold!important;line-height: 1;color: #3b444f">London: 3292 hotels found</h3>
+                <ul class="nav tab-nav-shop flex-nowrap" id="pills-tab">
+                    <li class="nav-item" style="margin-right: 1rem">
+                        <a class="nav-link p-0" style="font-size: 1.375rem">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <i class="fa fa-list"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item" style="margin-right: .25rem">
+                        <a class="nav-link p-0 active" style="font-size: 1.375rem">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <i class="fa fa-th"></i>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="u-slick__tab">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane active" id="pills-three-example1">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-4 mb-3 mb-md-4 pb-1">
+                                <div class="card transition-3d-hover shadow-hover-2 tab-card h-100">
+                                    <div class="position-relative">
+                                        <a class="d-block gradient-overlay-half-bg-gradient-v5">
+                                            <img class="min-height-230 bg-img-hero card-img-top" src="https://transvelo.github.io/mytravel-html/assets/img/300x230/img9.jpg">
+                                        </a>
+                                        <div class="position-absolute top-0 right-0 pt-3 pr-3">
+                                            <button class="btn btn-sm btn-icon text-white rounded-circle">
+                                                <i class="fa-regular fa-heart" style="font-style: normal;font-size: 26px"></i>
+                                            </button>
+                                        </div>
+                                        <div class="position-absolute bottom-0 left-0 right-0">
+                                            <div class="px-4 pb-3">
+                                                <a class="d-block" style="color: #297cbb;text-decoration: none">
+                                                    <div class="d-flex align-items-center text-white" style="font-size: 0.875rem">
+                                                        <i class="fa-solid fa-location-dot icon mr-2" style="font-size: 1.25rem"></i>
+                                                        Greater London, United Kingdom
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body pl-3 pr-4 pt-2 pb-3">
+                                        <div class="ml-1 mb-2">
+                                            <div class="d-inline-flex align-items-center font-size-13 text-lh-1 letter-spacing-3" style="color: #297cbb !important;font-size: 0.813rem;line-height: 1;letter-spacing: 0.188rem">
+                                                <div class="green-lighter">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a class="card-title" style="font-size: 1.063rem;color: #3b444f !important;text-decoration: none;background-color: transparent;font-weight: 500 !important;">Empire Prestige Causeway Bay</a>
+                                        <div class="mt-2 mb-3">
+                                            <span class="badge badge-pill badge-primary py-1 px-2 font-size-14 border-radius-3 font-weight-normal" style="font-size: 0.875rem;border-radius: 3px !important;font-weight: 400!important;background-color: #297cbb">4.6/5</span>
+                                            <span class="text-gray-1 ml-2" style="font-size: 0.875rem">(166 reviews)</span>
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="mr-1 text-gray-1" style="font-size: 0.875rem">From</span>
+                                            <span style="font-weight: 500 !important">£350.00</span>
+                                            <span class="text-gray-1" style="font-size: 0.875rem"> / night</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3 mb-md-4 pb-1">
+                                <div class="card transition-3d-hover shadow-hover-2 tab-card h-100">
+                                    <div class="position-relative">
+                                        <a class="d-block gradient-overlay-half-bg-gradient-v5">
+                                            <img class="min-height-230 bg-img-hero card-img-top" src="https://transvelo.github.io/mytravel-html/assets/img/300x230/img9.jpg">
+                                        </a>
+
+                                    </div>
+                                    <div class="card-body pl-3 pr-4 pt-2 pb-3">
+                                        <div class="ml-1 mb-2">
+                                            <div class="d-inline-flex align-items-center font-size-13 text-lh-1 letter-spacing-3" style="color: #297cbb !important;font-size: 0.813rem;line-height: 1">
+                                                <div class="green-lighter">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3 mb-md-4 pb-1">
+                                <div class="card transition-3d-hover shadow-hover-2 tab-card h-100">
+                                    <div class="position-relative">
+                                        <a class="d-block gradient-overlay-half-bg-gradient-v5">
+                                            <img class="min-height-230 bg-img-hero card-img-top" src="https://transvelo.github.io/mytravel-html/assets/img/300x230/img9.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pl-3 pr-4 pt-2 pb-3">
+                                        <div class="ml-1 mb-2">
+                                            <div class="d-inline-flex align-items-center font-size-13 text-lh-1 letter-spacing-3" style="color: #297cbb !important;font-size: 0.813rem;line-height: 1">
+                                                <div class="green-lighter">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3 mb-md-4 pb-1">
+                                <div class="card transition-3d-hover shadow-hover-2 tab-card h-100">
+                                    <div class="position-relative">
+                                        <a class="d-block gradient-overlay-half-bg-gradient-v5">
+                                            <img class="min-height-230 bg-img-hero card-img-top" src="https://transvelo.github.io/mytravel-html/assets/img/300x230/img9.jpg">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pl-3 pr-4 pt-2 pb-3">
+                                        <div class="ml-1 mb-2">
+                                            <div class="d-inline-flex align-items-center font-size-13 text-lh-1 letter-spacing-3" style="color: #297cbb !important;font-size: 0.813rem;line-height: 1">
+                                                <div class="green-lighter">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center text-md-end mb-3" style="font-size: 0.875rem;line-height: 1">Showing 1–15</div>
+                        <nav style="display: block">
+                            <ul class="list-pagination-1 pagination border border-color-4 rounded-sm mb-5 mb-lg-0 overflow-auto overflow-xl-visible justify-content-md-center align-items-center py-2">
+                                <li class="page-item">
+                                    <a class="page-link border-right rounded-0 " style="color: #18181b !important">
+                                        <i class="fa-solid fa-arrow-left" style="font-size: 0.625rem"></i>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link border-right rounded-0 " style="color: #18181b !important">
+                                       1
+                                    </a>
+                                </li> <li class="page-item">
+                                <a class="page-link border-right rounded-0" style="color: #18181b !important">
+                                    <i class="fa-solid fa-arrow-right" style="font-size: 0.625rem"></i>
+                                    <span class="sr-only">Previous</span>
+
+                                </a>
+                            </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main>
+
+<script th:fragment="customScripts">
+    //Dropdown select
+
+
+    // Close dropdown if clicked outside
+
+    function initFlatpickr() {
+        flatpickr("#datePickerInput", {
+            mode: "range",  // Enable date range selection
+            dateFormat: "M j / Y",  // Format for displayed dates
+            defaultDate: ["Jul 7 / 2020", "Aug 25 / 2020"],  // Set default dates
+            onReady: function (selectedDates, dateStr, instance) {
+                instance.element.value = dateStr;
+            }
+        });
+    }
+    const rangeMin = document.getElementById('range-min');
+    const rangeMax = document.getElementById('range-max');
+    const priceRangeText = document.getElementById('price-range-text');
+    const sliderContainer = document.querySelector('.slider-container');
+
+    function updateSliderBackground() {
+        const min = parseInt(rangeMin.value);
+        const max = parseInt(rangeMax.value);
+        const rangeMinPosition = ((min - 200) / (3456 - 200)) * 100;
+        const rangeMaxPosition = ((max - 200) / (3456 - 200)) * 100;
+
+        // Update the background of the sliders
+        sliderContainer.style.setProperty('--start-percent', `${rangeMinPosition}%`);
+        sliderContainer.style.setProperty('--end-percent', `${rangeMaxPosition}%`);
+        priceRangeText.textContent = `£${min} - £${max}`;
+    }
+
+    rangeMin.addEventListener('input', () => {
+        if (parseInt(rangeMin.value) > parseInt(rangeMax.value) - 10) {
+            rangeMin.value = rangeMax.value - 10;
+        }
+        updateSliderBackground();
+    });
+
+    rangeMax.addEventListener('input', () => {
+        if (parseInt(rangeMax.value) < parseInt(rangeMin.value) + 10) {
+            rangeMax.value = parseInt(rangeMin.value) + 10;
+        }
+        updateSliderBackground();
+    });
+
+    // Initialize background
+    updateSliderBackground();
+
+    document.getElementById("datePickerInput").addEventListener("focus", function () {
+        // Initialize flatpickr only if not already initialized
+        if (!this.classList.contains("flatpickr-input-active")) {
+            initFlatpickr();
+            this.classList.add("flatpickr-input-active");
+        }
+    });
+    document.getElementById('basicDropdownClickInvoker').addEventListener('click', function () {
+        const dropdownMenu = document.querySelector('#basicDropdownClick');
+        console.log(dropdownMenu)
+        dropdownMenu.classList.toggle('show');
+    });
+    document.addEventListener('click',function (event){
+        const isClickInside = document.getElementById('basicDropdownClickInvoker').contains(event.target) ||
+            document.querySelector('#basicDropdownClick').contains(event.target);
+
+        if (!isClickInside) {
+            document.querySelector('#basicDropdownClick').classList.remove('show');
+        }
+    })
+</script>
+</body>
+</html>

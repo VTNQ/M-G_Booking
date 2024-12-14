@@ -59,4 +59,14 @@ public class AirportServiceImplement implements AirportService {
             return null;
         }
     }
+
+    @Override
+    public List<Airport> findAll() {
+        try {
+            return airportRepository.findAll();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

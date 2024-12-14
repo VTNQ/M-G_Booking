@@ -1,6 +1,8 @@
 package com.vtnq.web.Configurations;
 
+import com.vtnq.web.DTOs.Account.RegisterUser;
 import com.vtnq.web.DTOs.Airport.AirportDto;
+import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Entities.Airport;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
