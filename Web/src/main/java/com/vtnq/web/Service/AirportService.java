@@ -10,4 +10,5 @@ public interface AirportService {
     public List<Airport>findAll(int id);
     public boolean existByName(String name);
     public AirportDto findById(int id);
+    List<Airport>findAll();
 }

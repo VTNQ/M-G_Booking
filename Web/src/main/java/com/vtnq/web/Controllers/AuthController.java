@@ -19,4 +19,10 @@ public class AuthController {
         return "SuperAdmin/Login/Login";
 
     }
+    @GetMapping("Login")
+    public String Login(ModelMap model) {
+    model.put("login", new LoginDTO());
+    return "User/login/login";
+    }
+
 }

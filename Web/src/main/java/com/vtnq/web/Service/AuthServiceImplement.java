@@ -2,6 +2,7 @@ package com.vtnq.web.Service;
 
 import com.vtnq.web.DTOs.Account.AccountDto;
 import com.vtnq.web.DTOs.Account.AdminAccountList;
+import com.vtnq.web.DTOs.Account.RegisterUser;
 import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Entities.Level;
 import com.vtnq.web.Repositories.AccountRepository;
@@ -91,6 +92,24 @@ public class AuthServiceImplement implements AuthService {
          e.printStackTrace();
          return false;
      }
+    }
+
+    @Override
+    public boolean RegisterAccount(RegisterUser accountDto) {
+        try {
+            Account account = modelMapper.map(accountDto, Account.class);
+            account.setId(null);
+            account.setPassword(BCrypt.hashpw(account.getPassword(), BCrypt.gensalt()));
+            account.setUsername(GeneateUsername(accountDto.getEmail()));
+            Level level = levelRepository.findById(1).orElseThrow(() -> new RuntimeException("Level not found"));
+            SendConfirmationEmail(accountDto.getEmail(), String.format("Username: %s \n Password: %s", account.getUsername(),accountDto.getPassword()));
+            account.setLevel(level);
+            accountRepository.save(account);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

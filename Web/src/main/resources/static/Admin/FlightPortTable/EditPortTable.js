@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var departureTimeInput = document.getElementById("datetimepicker");
+      var departureTimeInput = document.getElementById("datetimepicker");
 
 
     var dateValue = departureTimeInput.value.replace('Z', '');
@@ -37,11 +37,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const saveBtnFlight=document.querySelector("#saveButton");
 
     editButtons.forEach(button => {
+
         button.addEventListener('click', function () {
             const id = this.getAttribute('data-id');
 
             const EditBtn=document.getElementById(`editBtn${id}`);
             const saveBtn=document.getElementById(`saveBtn${id}`)
+
             // Get input and label elements
             const typeInput = document.getElementById(`type-${id}`);
             const priceInput = document.getElementById(`price-${id}`);
@@ -66,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     SaveButtons.forEach(buttons =>{
+
         buttons.addEventListener('click',function (){
             const id = this.getAttribute('data-id');
             const EditBtn=document.getElementById(`editBtn${id}`);
@@ -137,7 +140,7 @@ $(document).ready(function (){
         const url = document.getElementById('url') ? document.getElementById('url').textContent : null;
         const token = document.getElementById('token') ? document.getElementById('token').textContent : null;
         $.ajax({
-            url: `${url}DetailFlight/UpdateDetail`,
+            url: `http://localhost:8686/api/DetailFlight/UpdateDetail`,
             type:'PUT',
             contentType: 'application/json',
             headers: {
@@ -162,4 +165,8 @@ $(document).ready(function (){
             }
         })
     })
+})
+document.getElementById("addDetailFlight").addEventListener('click',function (){
+    const modal=document.getElementById("addDetailFlightModal");
+    modal.style.display='block';
 })

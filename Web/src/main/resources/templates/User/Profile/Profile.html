@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/User/layout/layout :: mainContent('ChangeOwner',~{this::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<main id="content" class="bg-gray space-2" style="padding-top: 4rem">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-xl-12">
+                <div class="mb-5 shadow-soft bg-white rounded-sm">
+                <div class="pt-4 pb-5 px-5">
+                    <h5 id="scroll-description" class="text-dark mb-4" style="font-size: 1.313rem;font-weight: 500!important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                        Let us know who you are
+                    </h5>
+                    <form th:action="@{/UpdateProfile}" method="post" class="js-validate">
+                        <div class="row">
+                            <div class="col-sm-6 mb-4">
+                                <div class="js-form-message">
+                                    <label class="form-label" style="display: inline-block;margin-bottom: 0.5rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1rem;font-weight: 400;line-height: 1.5;color: #3b444f;text-align: left">
+                                        FullName
+                                    </label>
+                                    <input type="text" class="form-control" th:field="${account.fullName}">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 mb-4">
+                                <div class="js-form-message">
+                                    <label class="form-label" style="display: inline-block;margin-bottom: 0.5rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1rem;font-weight: 400;line-height: 1.5;color: #3b444f;text-align: left">
+                                       UserName
+                                    </label>
+                                    <input type="text" class="form-control" th:field="${account.username}">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 mb-4">
+                                <div class="js-form-message">
+                                    <label class="form-label" style="display: inline-block;margin-bottom: 0.5rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1rem;font-weight: 400;line-height: 1.5;color: #3b444f;text-align: left">
+                                       Email
+                                    </label>
+                                    <input type="email" class="form-control" th:field="${account.email}">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 mb-4">
+                                <div class="js-form-message">
+                                    <label class="form-label" style="display: inline-block;margin-bottom: 0.5rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1rem;font-weight: 400;line-height: 1.5;color: #3b444f;text-align: left">
+                                       Phone
+                                    </label>
+                                    <input type="tel" class="form-control" th:field="${account.phone}">
+                                </div>
+                            </div><div class="col-sm-12 mb-4">
+                                <div class="js-form-message">
+                                    <label class="form-label" style="display: inline-block;margin-bottom: 0.5rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1rem;font-weight: 400;line-height: 1.5;color: #3b444f;text-align: left">
+                                       Address
+                                    </label>
+                                   <textarea rows="4" class="form-control" th:field="${account.address}" style="box-shadow: 0 0 25px rgba(222, 68, 55, 0.1);height: auto !important;padding: 0.9rem 1rem !important;"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 align-self-end">
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary btn-wide rounded-sm transition-3d-hover py-3" style="background-color: #297cbb;border-color: #297cbb;font-size: 1rem;font-weight: 500!important;">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" th:field="${account.password}">
+                        <input type="hidden" th:field="${account.accountType}">
+                        <input type="hidden" th:field="${account.id}">
+
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

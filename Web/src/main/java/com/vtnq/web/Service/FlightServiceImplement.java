@@ -12,6 +12,7 @@ import com.vtnq.web.Repositories.AirportRepository;
 import com.vtnq.web.Repositories.DetailFlightRepository;
 import com.vtnq.web.Repositories.FlightRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,4 +71,39 @@ public class FlightServiceImplement implements FlightService{
     public List<FlightListDTO> findAllByCountry(int id) {
         return flightRepository.findFlightListDTO(id);
     }
+
+    @Override
+    public FlightDto findById(int id) {
+        try {
+            return modelMapper.map(flightRepository.findById(id), new TypeToken<FlightDto>() {}.getType());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean UpdateFlightDto(FlightDto flightDto) {
+        try {
+        Airline airline=airlineRepository.findById(flightDto.getAirline_id())
+                .orElseThrow(() -> new Exception("Airline not found"));
+        Airport departure_airport=airportRepository.findById(flightDto.getDeparture_airport())
+                .orElseThrow(() -> new Exception("Departure Airport not found"));
+        Airport arrival_airport=airportRepository.findById(flightDto.getDeparture_airport())
+                .orElseThrow(() -> new Exception("Arrival Airport not found"));
+        Flight flight=modelMapper.map(flightDto, Flight.class);
+        flight.setArrivalTime(flightDto.getArrivalInstant());
+        flight.setDepartureTime(flightDto.getDepartureInstant());
+        flight.setAirline(airline);
+        flight.setDepartureAirport(departure_airport);
+        flight.setArrivalAirport(arrival_airport);
+        Flight updateFlight=flightRepository.save(flight);
+        return updateFlight!=null && updateFlight.getId()>0;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
