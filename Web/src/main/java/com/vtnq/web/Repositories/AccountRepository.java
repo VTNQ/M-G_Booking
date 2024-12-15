@@ -20,4 +20,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     boolean existsByFullname(@Param("fullname") String fullname);
     @Query("select new com.vtnq.web.DTOs.Account.AdminAccountList(a.fullName,a.id,b.name,a.phone) from Account a join Country b on b.id=a.countryId where a.accountType='ROLE_ADMIN'")
     List<AdminAccountList> getAdmin();
+    @Query("select a from Account a where a.email = :email and a.otp = :otp")
+    Account checkOTP(@Param("email") String email, @Param("otp") String otp);
 }

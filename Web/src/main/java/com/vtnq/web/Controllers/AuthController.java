@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AuthController {
     @Autowired
     private AuthService authService;
+    @GetMapping("ForgotPassword")
+    public String ForgotPassword(ModelMap model) {
+        return "User/Forgot/ForgotPassword";
+    }
     @GetMapping("LoginAdmin")
     public String LoginAdmin(ModelMap model) {
         model.put("login", new LoginDTO());

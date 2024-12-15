@@ -16,4 +16,7 @@ public interface AuthService extends UserDetailsService {
     public boolean existPhone(String phone);
     public boolean existFullName(String fullName);
     public List<AdminAccountList>getAdmin();
+    public boolean ForgetAccount(String email);
+    public boolean CheckOTP(String email, String otp);
+    public boolean ChangePassword(String email, String password);
 }

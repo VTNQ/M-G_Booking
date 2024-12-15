@@ -34,7 +34,8 @@ public class SercurityConfiguration {
                 .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/LoginAdmin","/registerUser","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**").permitAll()
+                    auth.requestMatchers("/LoginAdmin","/registerUser","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**",
+                                    "/ForgotPassword").permitAll()
                             .requestMatchers("SuperAdmin/Home","/SuperAdmin/Country/add","/SuperAdmin/Country"
                             ,"/SuperAdmin/Country/update","/SuperAdmin/Country/delete/{id}","/SuperAdmin/AccountAdmin/add"
                             ,"/SuperAdmin/Airline/add","/SuperAdmin/Airline","/SuperAdmin/Airline/edit/{id}",
@@ -44,7 +45,7 @@ public class SercurityConfiguration {
                                     "Admin/District/add","/Admin/District/edit/{id}","/Admin/District/update","/Admin/District/delete/{id}",
                                     "Admin/AirPort/add","Admin/AirPort","/Admin/AirPort/edit/{id}","/Admin/Flight/add","/Admin/Flight/edit/{id}",
                                     "Admin/Flight/AddDetailFlight","/Admin/Flight/UpdateFlight").hasAnyRole("ADMIN")
-                            .requestMatchers("/Owner").hasAnyRole("OWNER")
+                            .requestMatchers("/Owner","/Owner/Hotel/add").hasAnyRole("OWNER")
                             .anyRequest().authenticated();
                 })
 

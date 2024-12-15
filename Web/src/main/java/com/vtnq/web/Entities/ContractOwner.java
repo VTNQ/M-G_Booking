@@ -1,6 +1,8 @@
 package com.vtnq.web.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "contract_owner")
@@ -10,21 +12,28 @@ public class ContractOwner {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @NotNull
     @Column(name = "owner_id", nullable = false)
     private Integer ownerId;
 
+    @NotNull
     @Column(name = "hotel_id", nullable = false)
     private Integer hotelId;
 
+    @NotNull
     @Column(name = "commission_rate", nullable = false)
     private Double commissionRate;
 
-    @Column(name = "payment_terms", nullable = false, length = 30)
+    @Size(max = 30)
+    @NotNull
+    @Column(name = "payment_terms", nullable = true, length = 30)
     private String paymentTerms;
 
-    @Column(name = "terms_and_conditions", nullable = false, length = 100)
+    @Size(max = 100)
+    @Column(name = "terms_and_conditions", length = 100)
     private String termsAndConditions;
 
+    @NotNull
     @Column(name = "status", nullable = false)
     private Boolean status = false;
 

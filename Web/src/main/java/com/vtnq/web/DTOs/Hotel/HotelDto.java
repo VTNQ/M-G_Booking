@@ -1,15 +1,23 @@
 package com.vtnq.web.DTOs.Hotel;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 import java.io.Serializable;
 
 /**
  * DTO for {@link com.vtnq.web.Entities.Hotel}
  */
 public class HotelDto implements Serializable {
+    @NotBlank(message = "Name is required")
     private String name;
+    @NotBlank(message = "Address is required")
     private String address;
+    @Min(value = 1,message = "city is required")
     private Integer cityId;
+    @NotBlank(message = "Description is required")
     private String decription;
+    @Min(value = 1,message = "Owner Is required")
     private Integer ownerId;
     private Integer ratingId;
 
