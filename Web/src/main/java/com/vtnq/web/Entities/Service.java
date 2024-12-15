@@ -1,6 +1,8 @@
 package com.vtnq.web.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
@@ -12,16 +14,21 @@ public class Service {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
+    @NotNull
     @Lob
-    @Column(name = "decription", nullable = false)
-    private String decription;
+    @Column(name = "description", nullable = false)
+    private String description;
 
+    @NotNull
     @Column(name = "price", nullable = false, precision = 10)
     private BigDecimal price;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
@@ -42,12 +49,12 @@ public class Service {
         this.name = name;
     }
 
-    public String getDecription() {
-        return decription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDecription(String decription) {
-        this.decription = decription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public BigDecimal getPrice() {

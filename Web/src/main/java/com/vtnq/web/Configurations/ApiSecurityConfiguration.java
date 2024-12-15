@@ -20,7 +20,8 @@ public class ApiSecurityConfiguration {
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> auth.
-                        requestMatchers("/api/ForgetPassword","/api/CheckOTP","/api/ChangePassword").permitAll()
+                        requestMatchers("/api/ForgetPassword","/api/CheckOTP","/api/ChangePassword","/api/District/{id}",
+                                "/api/hotel/DeletePictureImage/{id}","/api/hotel/UpdateMultipleImage/{id}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()) // This is still supported for versions below 6.1

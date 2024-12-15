@@ -174,20 +174,10 @@
                 </div>
                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                   <div class="mb-4">
-                    <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">City</label>
-                    <select  id="city-select"  class="form-control js-select2" th:field="${hotel.cityId}">
-                      <option th:each="cities : ${City}" th:value="${cities.id}" th:text="${cities.name}"></option>
+                    <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">District</label>
+                    <select  id="city-select"  class="form-control js-select2" th:field="${hotel.district_id}">
+                      <option th:each="cities : ${District}" th:value="${cities.id}" th:text="${cities.name}"></option>
                     </select>
-                  </div>
-                </div>
-
-                <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
-                  <div class="mb-4">
-                    <label for="district-search" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">District</label>
-                    <input type="text" id="district-search" class="form-control" placeholder="Search District..."/>
-                    <input th:field="${hotel.district_id}" type="hidden" id="districtid">
-                    <input th:field="${hotel.id}" type="hidden">
-                    <input th:field="${hotel.ownerId}" type="hidden">
                   </div>
                 </div>
 
@@ -202,8 +192,8 @@
                       <input type="file" id="fileInput" name="imageForm" />
                     </div>
                     <div  class="image-preview-container" id="imagePreviewContainer">
-                      <div th:style="'background-image: url(' + 'http://localhost:8686/images/hotel/' + ${hotel.imageUrl} + ')'" class="image-preview">
-                        <img th:src="'http://localhost:8686/images/hotel/'+${hotel.imageUrl}"/>
+                      <div th:style="'background-image: url(' + 'http://localhost:8686/images/hotels/' + ${hotel.imageUrl} + ')'" class="image-preview">
+                        <img th:src="'http://localhost:8686/images/hotels/'+${hotel.imageUrl}"/>
                       </div>
                     </div>
                   </div>
@@ -212,6 +202,10 @@
               <hr class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
               <button type="submit" class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">Save</button>
               <a th:href="@{/Owner/Hotel}" class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85"   style="border: 1px solid #e6e7e9;background: white;color: black !important;">Back</a>
+              <input th:field="${hotel.district_id}" type="hidden" id="districtid">
+              <input th:field="${hotel.id}" type="hidden">
+              <input th:field="${hotel.ownerId}" type="hidden">
+              <input type="hidden" th:field="${hotel.cityId}">
 
 
 
@@ -236,7 +230,7 @@
               <div class="d-flex flex-grow gap-3 flex-wrap" id="image-container">
                 <th:block th:each="image : ${ImageList}">
                   <div class="image-item">
-                    <img th:src="@{'http://localhost:8686/images/hotel/'+${image.image}}" alt="Product Image" class="product-image">
+                    <img th:src="@{'http://localhost:8686/images/hotels/'+${image.image}}" alt="Product Image" class="product-image">
                     <button type="button" class="delete-btn" th:data-id="${image.id}" th:data-hotel-id="${image.hotelId}">
                       <i class="fa fa-trash-alt" style="color: black"></i>
                     </button>
@@ -248,7 +242,11 @@
                         <i class="fa fa-plus add-icon"></i>
                       </div>
                   </div>
+                  </div>
                 </th:block>
+
+              </div>
+
                 <!-- Loop through ImageList to display images -->
 
                 <div th:if="${ImageList.size() == 0}" class="add-image-container">
@@ -261,13 +259,13 @@
                   </div>
                 </div>
               </div>
-
+              <button th:dataHotel-id="${hotel.id}" id="saveMultiple" type="button" class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">
+                save
+              </button>
 
               </div>
             </div>
-            <button th:dataHotel-id="${hotel.id}" id="saveMultiple" type="button" class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">
-              save
-            </button>
+
 
           </div>
         </div>

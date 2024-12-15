@@ -10,8 +10,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Map the URL '/images/**' to the file system location of uploaded images
-        registry.addResourceHandler("/images/hotel/**")  // Path you want to access the images via URL
-                .addResourceLocations("file:Web/src/main/resources/static/images/hotel/"); // Physical path on the server
+        registry.addResourceHandler("/images/hotels/**")  // Path you want to access the images via URL
+                .addResourceLocations("file:src/main/resources/static/images/hotels/"); // Physical path on the server
 
         // You can add more directories if necessary, for example, for other image types
         registry.addResourceHandler("/images/flight/**")

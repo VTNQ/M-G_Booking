@@ -7,18 +7,16 @@ document.addEventListener('DOMContentLoaded',()=>{
         placeholder: "Select a city",
         onChange: function (cityId) {
             // Load the districts when city changes
-            const token = document.getElementById('token') ? document.getElementById('token').textContent : null;
-            if (!token) {
-                console.error('No access token found.');
-                return;
-            }
-            const url=`http://localhost:8686/District/GetDistrict/${cityId}`;
+            // const token = document.getElementById('token') ? document.getElementById('token').textContent : null;
+            // if (!token) {
+            //     console.error('No access token found.');
+            //     return;
+            // }
+            const url=`http://localhost:8686/api/District/${cityId}`;
             $.ajax({
                 url:url,
                 method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
+
                 success: function (response) {
                     const districtSelect = document.getElementById("DistrictSelect");
                     districtSelect.innerHTML = "";

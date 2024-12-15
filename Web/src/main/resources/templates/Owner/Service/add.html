@@ -163,7 +163,7 @@
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
                                         <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Description</label>
-                                        <textarea name="editor" th:field="${service.decription}" placeholder="Description" id="editor"></textarea>
+                                        <textarea name="editor" th:field="${service.description}" placeholder="Description" id="editor"></textarea>
                                     </div>
                                 </div>
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
@@ -180,7 +180,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="token" style="display: none" th:text="${token}"></div>
+
                 <div class="w-full max-w-full px-3 mt-6 shrink-0 md:w-4/12 md:flex-0 md:mt-0">
                     <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
 
@@ -195,7 +195,7 @@
                             <div class="w-100 d-flex align-items-center h-100 gap-2" >
                                 <button type="submit" class="btn btn-primary flex-column-gap-1 text-wrap p-2 flex-grow-1" style="background-color: #0b5ed7">Save</button>
                                 <a th:href="@{/SuperAdmin/Airline}" class="btn p-2 text-wrap w-50" style="border: 1px solid #e6e7e9">Back</a>
-                                <input type="hidden" th:field="${service.hotel_id}">
+                                <input type="hidden" th:field="${service.hotelId}">
                             </div>
                         </div>
                     </div>
