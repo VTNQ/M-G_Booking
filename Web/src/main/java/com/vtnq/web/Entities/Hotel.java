@@ -1,6 +1,8 @@
 package com.vtnq.web.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "hotels")
@@ -10,25 +12,29 @@ public class Hotel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
+    @Size(max = 200)
+    @NotNull
     @Column(name = "address", nullable = false, length = 200)
     private String address;
 
+    @NotNull
     @Column(name = "city_id", nullable = false)
     private Integer cityId;
 
+    @NotNull
     @Lob
     @Column(name = "decription", nullable = false)
     private String decription;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "district_id", nullable = false)
     private District district;
-
-    @Column(name = "owner_id", nullable = false)
-    private Integer ownerId;
 
     @Column(name = "rating_id")
     private Integer ratingId;
@@ -79,14 +85,6 @@ public class Hotel {
 
     public void setDistrict(District district) {
         this.district = district;
-    }
-
-    public Integer getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
     }
 
     public Integer getRatingId() {

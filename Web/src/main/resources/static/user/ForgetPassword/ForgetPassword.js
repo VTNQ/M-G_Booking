@@ -21,7 +21,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: "http://localhost:8686/CheckOTP",
+            url: "http://localhost:8686/api/CheckOTP",
             type:"POST",
             contentType: 'application/json', // Specify JSON format
             data: JSON.stringify(otpbox),
@@ -76,7 +76,7 @@ $(document).ready(function () {
         submitButton.prop('disabled', true);
         // Make the AJAX request
         $.ajax({
-            url: 'http://localhost:8686/ForgetPassword', // API endpoint
+            url: 'http://localhost:8686/api/ForgetPassword', // API endpoint
             type: 'POST',           // HTTP method
             contentType: 'application/json', // Specify JSON format
             data: JSON.stringify(forgetDTO), // Convert DTO to JSON string
@@ -143,7 +143,7 @@ $(document).ready(function () {
             return; // Dừng xử lý
         }
         $.ajax({
-            url: "http://localhost:8686/ChangePassword",
+            url: "http://localhost:8686/api/ChangePassword",
             type:"POST",
             contentType: 'application/json',
             data:JSON.stringify({

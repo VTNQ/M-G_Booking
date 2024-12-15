@@ -19,7 +19,8 @@ public class ApiSecurityConfiguration {
     @Bean
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/api/**")
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth.
+                        requestMatchers("/api/ForgetPassword","/api/CheckOTP","/api/ChangePassword").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()) // This is still supported for versions below 6.1
