@@ -175,7 +175,7 @@
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
                                         <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">City</label>
-                                        <select  id="city-select"  class="form-control js-select2" th:field="${hotel.city_id}">
+                                        <select  id="city-select"  class="form-control js-select2" th:field="${hotel.cityId}">
                                             <option th:each="cities : ${City}" th:value="${cities.id}" th:text="${cities.name}"></option>
                                         </select>
                                     </div>
@@ -183,7 +183,7 @@
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
                                         <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">District</label>
-                                        <select  id="DistrictSelect"   class="form-control js-select2" th:field="${hotel.district_id}">
+                                        <select  id="DistrictSelect"   class="form-control js-select2" th:field="${hotel.districtId}">
 
                                         </select>
                                     </div>
@@ -222,7 +222,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="token" style="display: none" th:text="${token}"></div>
+
                 <div class="w-full max-w-full px-3 mt-6 shrink-0 md:w-4/12 md:flex-0 md:mt-0">
                     <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
 

@@ -25,8 +25,7 @@ public class ContractOwner {
     private Double commissionRate;
 
     @Size(max = 30)
-    @NotNull
-    @Column(name = "payment_terms", nullable = true, length = 30)
+    @Column(name = "payment_terms", length = 30)
     private String paymentTerms;
 
     @Size(max = 100)

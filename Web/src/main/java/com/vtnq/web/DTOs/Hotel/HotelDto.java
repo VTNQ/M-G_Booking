@@ -2,8 +2,10 @@ package com.vtnq.web.DTOs.Hotel;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * DTO for {@link com.vtnq.web.Entities.Hotel}
@@ -18,8 +20,36 @@ public class HotelDto implements Serializable {
     @NotBlank(message = "Description is required")
     private String decription;
     @Min(value = 1,message = "Owner Is required")
-    private Integer ownerId;
+    private int ownerId;
     private Integer ratingId;
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
+
+    private Integer districtId;
+    private MultipartFile image;
+    private List<MultipartFile>images;
+
+    public List<MultipartFile> getImages() {
+        return images;
+    }
+
+    public void setImages(List<MultipartFile> images) {
+        this.images = images;
+    }
+
+    public Integer getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Integer districtId) {
+        this.districtId = districtId;
+    }
 
     public HotelDto() {
     }
@@ -56,7 +86,12 @@ public class HotelDto implements Serializable {
     public void setCityId(Integer cityId) {
         this.cityId = cityId;
     }
-
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+    public int getOwnerId() {
+        return ownerId;
+    }
     public String getDecription() {
         return decription;
     }
@@ -65,13 +100,6 @@ public class HotelDto implements Serializable {
         this.decription = decription;
     }
 
-    public Integer getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Integer ownerId) {
-        this.ownerId = ownerId;
-    }
 
     public Integer getRatingId() {
         return ratingId;
