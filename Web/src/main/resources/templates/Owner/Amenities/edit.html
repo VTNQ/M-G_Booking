@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{/Owner/layout/layout :: mainContent('add Hotel',~{this::#main})}">
+<html lang="en" th:replace="~{/Owner/layout/layout :: mainContent('edit Amenities',~{this::#main})}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -139,64 +139,53 @@
 
 
     </div>
-    <form th:action="@{/Owner/service/update}"  method="post" >
+    <form th:action="@{/Owner/Amenities/update}" method="post">
         <div class="w-full p-6 mx-auto">
             <div class="flex flex-wrap -mx-3">
+                <!-- Service Name Section -->
                 <div class="w-full max-w-full px-3 shrink-0 md:w-8/12 md:flex-0">
                     <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
                         <div class="border-black/12.5 rounded-t-2xl border-b-0 border-solid p-6 pb-0">
                             <div class="flex items-center">
-                                <p class="mb-0 dark:text-white/80">Service</p>
-
-
+                                <p class="mb-0 dark:text-white/80">Amenities</p>
                             </div>
                         </div>
                         <div class="flex-auto p-6">
-
                             <div class="flex flex-wrap -mx-3">
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
                                         <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Name</label>
-                                        <input  type="text" name="Name" placeholder="Name"  th:field="${service.name}" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                        <input  type="text" name="username" placeholder="name" th:field="${amenity.name}" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
                                         <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Description</label>
-                                        <textarea name="editor" th:field="${service.description}" placeholder="Description" id="editor"></textarea>
-                                    </div>
-                                </div>
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
-                                    <div class="mb-4">
-                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Price</label>
-                                        <input  type="number" name="Name" placeholder="Price"  th:field="${service.price}" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                        <textarea name="editor" th:field="${amenity.decription}" placeholder="Description" id="editor"></textarea>
                                     </div>
                                 </div>
                             </div>
                             <hr class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
-
-
-
                         </div>
                     </div>
                 </div>
 
+                <!-- Room Input Section -->
                 <div class="w-full max-w-full px-3 mt-6 shrink-0 md:w-4/12 md:flex-0 md:mt-0">
                     <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-
-
-                        <div class="border-black/12.5 rounded-t-2xl p-6 text-center pt-0 pb-6 lg:pt-2 lg:pb-4"  style="border-bottom: 1px solid #e6e7e9;padding: 16px">
+                        <div class="border-black/12.5 rounded-t-2xl p-6 text-center pt-0 pb-6 lg:pt-2 lg:pb-4" style="border-bottom: 1px solid #e6e7e9;padding: 16px">
                             <div class="flex justify-center">
-                                Post
+                                Rooms Information
                             </div>
                         </div>
+                        <div class="flex-auto p-6 pt-0 mt-5">
+                            <!-- Number of Rooms -->
 
-                        <div class="flex-auto p-6 pt-0 mt-5" >
-                            <div class="w-100 d-flex align-items-center h-100 gap-2" >
+                            <!-- Submit Button -->
+                            <div class="w-100 d-flex align-items-center h-100 gap-2">
                                 <button type="submit" class="btn btn-primary flex-column-gap-1 text-wrap p-2 flex-grow-1" style="background-color: #0b5ed7">Save</button>
-                                <a th:href="@{'/Owner/service/'+${service.hotelId}}" class="btn p-2 text-wrap w-50" style="border: 1px solid #e6e7e9">Back</a>
-                                <input type="hidden" th:field="${service.hotelId}">
-                                <input type="hidden" th:field="${service.id}">
+                                <a th:href="@{'/Owner/Amenities/'+${idHotel}}" class="btn p-2 text-wrap w-50" style="border: 1px solid #e6e7e9">Back</a>
+                                <input type="hidden" th:field="${amenity.id}"/>
                             </div>
                         </div>
                     </div>
@@ -222,23 +211,42 @@
                                 <li class="nav-item">
                                     <a href="https://www.creative-tim.com" class="block px-4 pt-0 pb-1 font-normal transition-colors ease-in-out text-sm text-slate-500" target="_blank">Creative Tim</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/presentation" class="block px-4 pt-0 pb-1 font-normal transition-colors ease-in-out text-sm text-slate-500" target="_blank">About Us</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://creative-tim.com/blog" class="block px-4 pt-0 pb-1 font-normal transition-colors ease-in-out text-sm text-slate-500" target="_blank">Blog</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/license" class="block px-4 pt-0 pb-1 pr-0 font-normal transition-colors ease-in-out text-sm text-slate-500" target="_blank">License</a>
-                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </footer>
         </div>
-
     </form>
+
+
+    <script>
+        // Function to generate room fields dynamically
+        document.getElementById('numRooms').addEventListener('input', function() {
+            const numRooms = parseInt(this.value);
+            const container = document.getElementById('rooms-container');
+            container.innerHTML = '';  // Clear previous fields
+
+            if (numRooms > 0) {
+                for (let i = 1; i <= numRooms; i++) {
+                    const roomDiv = document.createElement('div');
+                    roomDiv.classList.add('room-group');
+                    roomDiv.innerHTML = `
+                    <h4>Room ${i}</h4>
+                    <label for="roomType${i}" class="font-bold text-xs text-slate-700 dark:text-white/80">Room Type</label>
+                    <input type="text" id="roomType${i}" name="roomTypes[]" class="w-full px-3 py-2 text-sm leading-5.6 ease block appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding font-normal text-gray-700 focus:border-blue-500 focus:outline-none" placeholder="Enter Room Type">
+
+                    <label for="roomPrice${i}" class="font-bold text-xs text-slate-700 dark:text-white/80">Price</label>
+                    <input type="number" id="roomPrice${i}" name="roomPrices[]" class="w-full px-3 py-2 text-sm leading-5.6 ease block appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding font-normal text-gray-700 focus:border-blue-500 focus:outline-none" placeholder="Enter Room Price">
+                      <label for="roomoccupancy${i}" class="font-bold text-xs text-slate-700 dark:text-white/80">occupancy</label>
+                    <input type="number" id="roomoccupancy${i}" name="roomCapacities[]" class="w-full px-3 py-2 text-sm leading-5.6 ease block appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding font-normal text-gray-700 focus:border-blue-500 focus:outline-none" placeholder="Enter Room Price">
+                `;
+                    container.appendChild(roomDiv);
+                }
+            }
+        });
+    </script>
+
 
 </div>
 </body>

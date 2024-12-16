@@ -1,6 +1,7 @@
 package com.vtnq.web.Service;
 
 import com.vtnq.web.DTOs.Airport.AirportDto;
+import com.vtnq.web.DTOs.Airport.CountryAiportDTO;
 import com.vtnq.web.Entities.Airport;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface AirportService {
     public boolean existByName(String name);
     public AirportDto findById(int id);
     List<Airport>findAll();
+    public List<CountryAiportDTO>SearchAirport(String SearchName);
 }

@@ -1,5 +1,6 @@
 package com.vtnq.web.Repositories;
 
+import com.vtnq.web.DTOs.Airport.SearchAiportDTO;
 import com.vtnq.web.Entities.Airport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,5 +13,6 @@ public interface AirportRepository extends JpaRepository<Airport, Integer> {
     List<Airport> findByCountry(@Param("id") int id);
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END FROM Airport a WHERE a.name = :name")
     boolean existsByName(@Param("name") String name);
-
+    @Query("SELECT new com.vtnq.web.DTOs.Airport.SearchAiportDTO(t.id,t.name,t.city,t.city.country.name) from  Airport t where t.name like %:SearchName% or  t.city.name like %:SearchName%")
+    List<SearchAiportDTO>SearchAirPort(@Param("SearchName") String SearchName);
 }

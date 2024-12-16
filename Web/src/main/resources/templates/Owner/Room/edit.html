@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{/Owner/layout/layout :: mainContent('add Hotel',~{this::#main})}">
+<html lang="en" th:replace="~{/Owner/layout/layout :: mainContent('Edit Room',~{this::#main})}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -139,14 +139,14 @@
 
 
     </div>
-    <form th:action="@{/Owner/service/update}"  method="post" >
+    <form th:action="@{/Owner/Room/update}"  method="post" >
         <div class="w-full p-6 mx-auto">
             <div class="flex flex-wrap -mx-3">
                 <div class="w-full max-w-full px-3 shrink-0 md:w-8/12 md:flex-0">
                     <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
                         <div class="border-black/12.5 rounded-t-2xl border-b-0 border-solid p-6 pb-0">
                             <div class="flex items-center">
-                                <p class="mb-0 dark:text-white/80">Service</p>
+                                <p class="mb-0 dark:text-white/80">Room</p>
 
 
                             </div>
@@ -156,22 +156,23 @@
                             <div class="flex flex-wrap -mx-3">
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
-                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Name</label>
-                                        <input  type="text" name="Name" placeholder="Name"  th:field="${service.name}" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Type Room</label>
+                                        <input  type="text" name="Name" placeholder="Name"  th:field="${room.type}" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
-                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Description</label>
-                                        <textarea name="editor" th:field="${service.description}" placeholder="Description" id="editor"></textarea>
+                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Type Room</label>
+                                        <input  type="number" name="Name" placeholder="Name"  th:field="${room.price}" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
-                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Price</label>
-                                        <input  type="number" name="Name" placeholder="Price"  th:field="${service.price}" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
+                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Occupancy</label>
+                                        <input  type="number" name="Name" placeholder="Occupancy"  th:field="${room.occupancy}" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                     </div>
                                 </div>
+
                             </div>
                             <hr class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
 
@@ -194,9 +195,9 @@
                         <div class="flex-auto p-6 pt-0 mt-5" >
                             <div class="w-100 d-flex align-items-center h-100 gap-2" >
                                 <button type="submit" class="btn btn-primary flex-column-gap-1 text-wrap p-2 flex-grow-1" style="background-color: #0b5ed7">Save</button>
-                                <a th:href="@{'/Owner/service/'+${service.hotelId}}" class="btn p-2 text-wrap w-50" style="border: 1px solid #e6e7e9">Back</a>
-                                <input type="hidden" th:field="${service.hotelId}">
-                                <input type="hidden" th:field="${service.id}">
+                                <a th:href="@{'/Owner/Room/'+${room.idHotel}}" class="btn p-2 text-wrap w-50" style="border: 1px solid #e6e7e9">Back</a>
+                                <input type="hidden" th:field="${room.idHotel}">
+                                <input type="hidden" th:field="${room.id}">
                             </div>
                         </div>
                     </div>

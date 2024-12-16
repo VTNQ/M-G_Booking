@@ -424,7 +424,7 @@ document.getElementById('from-airport').addEventListener('input',async (event)=>
         return;
     }
     try {
-    const response=await fetch(`http://localhost:8686/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
+    const response=await fetch(`http://localhost:8686/api/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
     if(response.ok){
         const airports=await response.json();
         airportList.innerHTML = "";
@@ -478,7 +478,7 @@ document.getElementById('To-Airport').addEventListener('input',async (event)=>{
         return;
     }
     try {
-        const response=await fetch(`http://localhost:8686/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
+        const response=await fetch(`http://localhost:8686/api/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
         if(response.ok){
             const airports=await response.json();
             airportList.innerHTML = "";

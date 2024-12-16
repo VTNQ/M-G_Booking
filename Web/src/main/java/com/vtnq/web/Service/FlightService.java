@@ -2,7 +2,10 @@ package com.vtnq.web.Service;
 
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
+import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface FlightService  {
@@ -10,4 +13,7 @@ public interface FlightService  {
     public List<FlightListDTO>findAllByCountry(int id);
     public FlightDto findById(int id);
     public boolean UpdateFlightDto(FlightDto flightDto);
-}
+    public BigDecimal FindPrice(LocalDate departureTime  );
+    public List<ResultFlightDTO>SearchFlight(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight);
+    public List<ResultFlightDTO>SearchFlightAllDto(int departureAirport, int arrivalAirport, LocalDate departureTime,LocalDate ArrivalTime,String TypeFlight);
+ }

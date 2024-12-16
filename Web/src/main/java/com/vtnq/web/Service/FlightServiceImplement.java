@@ -3,6 +3,7 @@ package com.vtnq.web.Service;
 import com.vtnq.web.DTOs.Flight.DetailFlightDTO;
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
+import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
 import com.vtnq.web.Entities.Airline;
 import com.vtnq.web.Entities.Airport;
 import com.vtnq.web.Entities.DetailFlight;
@@ -16,6 +17,8 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -102,6 +105,39 @@ public class FlightServiceImplement implements FlightService{
         }catch (Exception ex){
             ex.printStackTrace();
             return false;
+        }
+    }
+
+    @Override
+    public BigDecimal FindPrice(LocalDate departureTime) {
+        try {
+            return modelMapper.map(flightRepository.FindPrice(departureTime), new TypeToken<BigDecimal>(){}.getType());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return BigDecimal.ZERO;
+        }
+    }
+
+    @Override
+    public List<ResultFlightDTO> SearchFlight(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight) {
+        try {
+            return flightRepository.findFlightsByAirportsAndDepartureTime(departureAirport,arrivalAirport,departureTime,TypeFlight);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @Override
+    public List<ResultFlightDTO> SearchFlightAllDto(int departureAirport, int arrivalAirport, LocalDate departureTime, LocalDate ArrivalTime, String TypeFlight) {
+        try {
+            List<ResultFlightDTO> flight=flightRepository.SearchFindFlightAll(departureAirport,arrivalAirport,departureTime,ArrivalTime,TypeFlight);
+
+            return modelMapper.map(flight,new TypeToken<List<ResultFlightDTO>>(){}.getType());
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
         }
     }
 

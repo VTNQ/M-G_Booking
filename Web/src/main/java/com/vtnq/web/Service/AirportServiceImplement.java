@@ -1,6 +1,8 @@
 package com.vtnq.web.Service;
 
 import com.vtnq.web.DTOs.Airport.AirportDto;
+import com.vtnq.web.DTOs.Airport.CountryAiportDTO;
+import com.vtnq.web.DTOs.Airport.SearchAiportDTO;
 import com.vtnq.web.Entities.Airport;
 import com.vtnq.web.Entities.City;
 import com.vtnq.web.Repositories.AirportRepository;
@@ -11,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AirportServiceImplement implements AirportService {
@@ -68,5 +72,14 @@ public class AirportServiceImplement implements AirportService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public List<CountryAiportDTO> SearchAirport(String SearchName) {
+        List<SearchAiportDTO>aiportDTOList=airportRepository.SearchAirPort(SearchName);
+        Map<String, List<SearchAiportDTO>> groupedByCountry = aiportDTOList.stream()
+                .collect(Collectors.groupingBy(SearchAiportDTO::getCountry));
+        return groupedByCountry.entrySet().stream().map(entry->new
+                CountryAiportDTO(entry.getKey(),entry.getValue())).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{/Owner/layout/layout :: mainContent('Hotel',~{this::#main})}">
+<html lang="en" th:replace="~{/Owner/layout/layout :: mainContent('Room',~{this::#main})}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -143,17 +143,24 @@
                 <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
                     <div class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent mb-3" style="display: flex;justify-content: space-between;border-bottom: 1px solid #e6e7e9;padding-bottom: 17px !important;">
                         <h6 class="dark:text-white">Authors table</h6>
-                        <a class="btn btn-primary  text-wrap  ">
 
-                            Add Hotel</a>
+                        <a th:href="@{/Owner/Room/add}" class="btn btn-primary  text-wrap  ">
+                            <i class="fa-solid fa-plus"></i>
+                            Add Service</a>
                     </div>
                     <div class="flex-auto px-0 pt-0 pb-2">
                         <div class="p-0 overflow-x-auto">
-                            <div class="card-body">
-                                <form th:action="@{/Owner/Hotel}" class="d-flex">
+                            <div  class="card-body">
+                                <a th:href="@{/Owner/Hotel}"  class="btn btn-primary">
+                                    Back
+                                </a>
+                                <form th:action="@{'/Owner/Room/'+${id}}" class="d-flex mt-4">
                                     <div class="input-group">
-                                        <input type="text" name="name" id="searchCountry" class="form-control"
-                                               placeholder="Search for Airline" aria-label="Search" style="border-radius: 25px 0 0 25px;"/>
+                                        <select type="text" name="name"  id="searchCountry" class="form-control"
+                                               aria-label="Search" style="border-radius: 25px 0 0 25px;">
+                                            <option value="" disabled selected>Select Type Room</option>
+                                            <option value="2 nguoi"  >2 Nguoi</option>
+                                        </select>
                                         <button class="btn btn-primary" type="submit" style="border-radius: 0 25px 25px 0;background-color: #0b5ed7">Search</button>
                                     </div>
                                 </form>
@@ -162,51 +169,45 @@
                                 <thead class="align-bottom">
                                 <tr>
                                     <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">#</th>
-                                    <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Hotel</th>
-                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">District</th>
-                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Picture</th>
+                                    <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Type</th>
+                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Price</th>
+                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">occupancy</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Action</th>
-                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Information Hotel</th>
+                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Amenities</th>
                                     <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-collapse border-solid shadow-none dark:border-white/40 dark:text-white tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                             <th:block th:each="hotels,start : ${hotel}">
-                                 <tr>
-                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent" style="padding: 23px !important;" >
-                                         <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" th:text="${start.index+1}"></p>
-                                     </td>
-                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  >
-                                         <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" th:text="${hotels.name}"></p>
-                                     </td>
-                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  style="text-align: center">
-                                         <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" th:text="${hotels.nameDistrict}"></p>
-                                     </td>
-                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  style="text-align: center">
-                                         <div>
-                                             <img th:src="@{'http://localhost:8686/images/hotels/'+${hotels.imageUrl}}" style="width: 10%;height: 10%;object-fit: cover" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl" alt="user1" />
-                                         </div>
-                                     </td>
-                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  style="text-align: center">
-                                         <a th:href="@{'/Owner/Hotel/edit/'+${hotels.id}}" style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i style="color: white" class="fa-solid fa-pen-to-square"></i></a>
-                                         <a th:href="@{'/Owner/Hotel/Detail/'+${hotels.id}}" style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i style="color: white" class="fa-solid fa-circle-info"></i></a>
+                                <th:block th:each="Rooms,start : ${room}">
+                                    <tr>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent" style="padding: 23px !important;" >
+                                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" th:text="${start.index+1}"></p>
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"       >
+                                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" th:text="${Rooms.type}"></p>
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent" style="padding: 23px !important;" >
+                                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" style="text-align: center" th:text="${Rooms.price}"></p>
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent" style="padding: 23px !important;" >
+                                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" style="text-align: center" th:text="${Rooms.occupancy}"></p>
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  style="text-align: center">
+
+                                            <a th:href="@{'/Owner/Room/edit/'+${Rooms.id}}"   style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i style="color: white" class="fa-regular fa-pen-to-square"></i></a>
+                                            <a th:href="@{'/Owner/Room/delete/'+${Rooms.id}}"  class="btn btn-danger">
+                                                <i style="color: white" class="fa-solid fa-trash"></i>
+                                            </a>
+
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  style="text-align: center">
+
+                                            <a th:href="@{'/Owner/Amenities/'+${Rooms.id}}"   style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i  class="fa-solid fa-hotel" style="color: white !important;"></i></a>
 
 
-                                     </td>
-                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  style="text-align: center">
-                                         <select class="form-select" onchange="window.location.href=this.value">
-                                             <option value="" disabled selected>Chọn dịch vụ</option>
-                                             <!-- Lặp qua các dịch vụ và tạo các option -->
-                                           <option  th:value="@{'/Owner/service/'+${hotels.id}}">
-                                               Service
-                                           </option>
-                                             <option th:value="@{'/Owner/Room/'+${hotels.id}}">
-                                                 Room
-                                             </option>
-                                         </select>
-                                     </td>
-                                 </tr>
-                             </th:block>
+                                        </td>
+                                    </tr>
+                                </th:block>
 
                                 </tbody>
                             </table>
@@ -214,17 +215,17 @@
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination">
                                         <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                                            <a class="page-link" th:href="@{'/SuperAdmin/Airline'(page=${currentPage - 1})}" aria-label="Previous">
+                                            <a class="page-link" th:href="@{'/Owner/Room/'+ ${id} + '?page='+(${currentPage - 1})}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
                                         <th:block th:each="page : ${#numbers.sequence(1, totalPages)}">
                                             <li class="page-item" th:classappend="${currentPage == page} ? 'active'">
-                                                <a class="page-link" th:href="@{'/SuperAdmin/Airline'(page=${page})}" th:text="${page}"></a>
+                                                <a class="page-link" th:href="@{'/Owner/Room/'+ ${id} + '?page='+${page}}" th:text="${page}"></a>
                                             </li>
                                         </th:block>
                                         <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                                            <a class="page-link" th:href="@{'/SuperAdmin/Airline'(page=${currentPage + 1})}" aria-label="Next">
+                                            <a class="page-link" th:href="@{'/Owner/Room/'+ ${id} +'?page=' +(${currentPage + 1})}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
