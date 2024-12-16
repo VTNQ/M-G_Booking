@@ -8,7 +8,7 @@ document.getElementById("from-input").addEventListener('input',async (event)=>{
         return;
     }
     try {
-        const response=await fetch(`http://localhost:8686/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
+        const response=await fetch(`http://localhost:8686/api/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
         console.log(response)
         if (response.ok) {
             const airports = await response.json();
@@ -75,7 +75,7 @@ document.getElementById("to-input").addEventListener('input', async (event) => {
     }
 
     try {
-        const response = await fetch(`http://localhost:8686/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
+        const response = await fetch(`http://localhost:8686/api/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
         if (response.ok) {
             const airports = await response.json();
             airportList.innerHTML = "";

@@ -501,7 +501,7 @@
                                              th:data-timeArrival="${item.timeArrival}" th:data-duration="${item.durationString}">
                                             <div class="flight-card card">
                                                 <div class="flight-header card-header d-flex align-items-center">
-                                                    <img class="airline-logo" th:src="${url+item.imageUrl}" style="width: 7%;height: auto;object-fit: cover" alt="VietJet Air">
+                                                    <img class="airline-logo" th:src="${'http://localhost:8686/images/flight/'+item.imageUrl}" style="width: 7%;height: auto;object-fit: cover" alt="VietJet Air">
                                                     <div class="airline-info ms-3">
                                                         <div class="airline-name fw-bold" th:text="${item.nameAirline}"></div>
                                                         <div class="flight-tag badge bg-danger">Rẻ nhất</div>

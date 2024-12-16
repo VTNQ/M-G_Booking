@@ -5,6 +5,7 @@ import com.vtnq.web.Entities.Hotel;
 import com.vtnq.web.Repositories.HotelRepository;
 import com.vtnq.web.Repositories.ServiceRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,22 @@ public class ServiceServiceImplement implements ServiceService {
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public ServiceDTO findById(int id) {
+        return modelMapper.map(serviceRepository.findById(id), new TypeToken<ServiceDTO>(){}.getType());
+    }
+
+    @Override
+    public boolean deleteService(int id) {
+        try {
+            serviceRepository.deleteById(id);
+            return true;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
         }
     }
 }

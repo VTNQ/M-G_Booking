@@ -21,7 +21,8 @@ public class ApiSecurityConfiguration {
         http.securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> auth.
                         requestMatchers("/api/ForgetPassword","/api/CheckOTP","/api/ChangePassword","/api/District/{id}",
-                                "/api/hotel/DeletePictureImage/{id}","/api/hotel/UpdateMultipleImage/{id}").permitAll()
+                                "/api/hotel/DeletePictureImage/{id}","/api/hotel/UpdateMultipleImage/{id}",
+                                "/api/AirPort/SearchAirPort").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()) // This is still supported for versions below 6.1

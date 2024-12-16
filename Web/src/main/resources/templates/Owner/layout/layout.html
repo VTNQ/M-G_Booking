@@ -53,6 +53,8 @@
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <!-- Main Styling -->
     <link th:href="@{/user/assets/css/argon-dashboard-tailwind.css?v=1.0.1}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3.7.0/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3.7.0/notyf.min.js"></script>
 </head>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -295,22 +297,41 @@
             </div>
         </div>
     </div>
+    <div th:if="${message}" th:attr="data-message=${message}, data-type=${messageType}"></div>
 </div>
 </body>
 <!-- plugin for charts  -->
-<script src="../assets/js/plugins/chartjs.min.js" async></script>
-<!-- plugin for scrollbar  -->
-<script src="../assets/js/plugins/perfect-scrollbar.min.js" async></script>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <div th:if="${title=='add Hotel'}" th:insert="~{'/Owner/Hotel/add':: customScripts}"></div>
 <div th:if="${title=='edit Hotel'}" th:insert="~{'/Owner/Hotel/edit':: customScripts}"></div>
-<!-- main script file  -->
-<script src="../assets/js/argon-dashboard-tailwind.js?v=1.0.1" async></script>
+
 <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
 <!-- SweetAlert2 CDN -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    var messageElement = document.querySelector('div[data-message]');
+    if (messageElement) {
+        var message = messageElement.getAttribute('data-message');
+        var messageType = messageElement.getAttribute('data-type');
+
+        // Initialize Notyf
+        const notyf = new Notyf({
+            duration: 3000,
+            position: {
+                x: 'right',
+                y: 'top'
+            }
+        });
+        if (message) {
+            if (messageType === 'success') {
+                notyf.success(message); // Show success notification
+            } else if (messageType === 'error') {
+                notyf.error(message); // Show error notification
+            }
+        }
+
+    }
     ClassicEditor
         .create(document.querySelector('#editor'), {
             toolbar: ['bold', 'italic', 'link', 'undo', 'redo']

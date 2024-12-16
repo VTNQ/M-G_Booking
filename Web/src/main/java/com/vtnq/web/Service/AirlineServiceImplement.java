@@ -20,6 +20,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -153,5 +154,10 @@ public class AirlineServiceImplement implements AirlineService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public List<Airline> searchAirline(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight) {
+        return modelMapper.map(airlineRepository.SearchAirline(departureAirport,arrivalAirport,departureTime,TypeFlight),new TypeToken<List<Airline>>(){}.getType());
     }
 }
