@@ -9,6 +9,21 @@ a{
     margin-left: .5rem;
 }
 
+
+.hotel-checkbox {
+    margin-right: 10px; /* Tạo khoảng cách giữa checkbox và văn bản */
+    width: 16px;
+    height: 16px;
+    cursor: pointer; /* Con trỏ chuột dạng pointer khi hover */
+}
+
+.hotel-label {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333; /* Màu chữ xám đậm */
+    cursor: pointer;
+}
+
 /* Container chính */
 .search-container {
     display: flex;
@@ -189,8 +204,8 @@ a{
 /* Dropdown hiển thị gợi ý */
 .search-dropdown {
     position: absolute;
-    top: 100%;
-    left: 0;
+    top: 41%;
+    left: 31px;
     width: 100%;
     background-color: #fff;
     border: 1px solid #ddd;

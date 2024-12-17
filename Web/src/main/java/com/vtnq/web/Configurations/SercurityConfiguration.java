@@ -35,11 +35,11 @@ public class SercurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/LoginAdmin","/registerUser","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**",
-                                    "/ForgotPassword","/images/flight/**","/images/hotels/**","/Home","/SearchFlight").permitAll()
+                                    "/ForgotPassword","/images/flight/**","/images/hotels/**","/Home","/SearchFlight","/SuperAdmin/SignatureContract/{id}").permitAll()
                             .requestMatchers("SuperAdmin/Home","/SuperAdmin/Country/add","/SuperAdmin/Country"
                             ,"/SuperAdmin/Country/update","/SuperAdmin/Country/delete/{id}","/SuperAdmin/AccountAdmin/add"
                             ,"/SuperAdmin/Airline/add","/SuperAdmin/Airline","/SuperAdmin/Airline/edit/{id}",
-                                    "/SuperAdmin/Airline/UpdateAirline").hasAnyRole("SUPERADMIN")
+                                    "/SuperAdmin/Airline/UpdateAirline","/SuperAdmin/Contract").hasAnyRole("SUPERADMIN")
                             .requestMatchers("/Admin/Home","/Admin/City/add","/Admin/City","/Admin/City/edit/{id}",
                                     "Admin/City/UpdateCity","/Admin/City/delete/{id}","Admin/District/{id}",
                                     "Admin/District/add","/Admin/District/edit/{id}","/Admin/District/update","/Admin/District/delete/{id}",
