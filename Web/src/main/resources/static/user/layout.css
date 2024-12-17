@@ -10,9 +10,73 @@
         padding-top: 3.5rem !important;
     }
 }
+
 .custombox-open.custombox-overlay {
     animation: 400ms ease 0s 1 normal none running OpenFade;
     opacity: 0.48;
+}
+/* Container bao quanh checkbox và label */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Khoảng cách giữa checkbox và label */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333; /* Màu chữ */
+    cursor: pointer;
+}
+
+/* Ẩn checkbox gốc */
+.hotel-checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px; /* Bo tròn nhẹ */
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Hiệu ứng khi hover vào checkbox */
+.hotel-checkbox:hover {
+    border-color: #4CAF50;
+}
+
+/* Checkbox khi được chọn */
+.hotel-checkbox:checked {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+/* Dấu tích khi checkbox được chọn */
+.hotel-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.hotel-checkbox {
+    appearance: none; /* Ẩn checkbox mặc định */
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgb(190, 194, 201); /* Viền như yêu cầu */
+    border-radius: 4px; /* Bo góc nhẹ */
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Hover vào checkbox */
+.hotel-checkbox:hover {
+    border-color: #4CAF50; /* Viền đổi sang màu xanh lá */
 }
 /* General Popup Styles */
 .popup {
