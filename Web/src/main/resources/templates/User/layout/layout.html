@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
     <link th:href="@{/user/layout.css}" rel="stylesheet">
+
     <link rel="stylesheet" th:if="${title=='SearchFlight'}"  href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css"/>
     <script th:if="${title=='SearchFlight'}"  src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
     <link rel="stylesheet" th:if="${cssPath != null}" th:href="${cssPath}">
@@ -392,9 +393,42 @@
 
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const slidesItem = document.querySelector('.slides');
+    const prevBtn = document.querySelector('#prev');
+    const nextBtn = document.querySelector('#next');
 
+    const totalSlidesItem = document.querySelectorAll('.slide').length;
+
+    let currentIndex = 0;
+
+    // Function to go to a specific slide
+    function goToSlideItem(index) {
+        currentIndex = index;
+        const offset = -100 * currentIndex; // Each slide takes 100% width
+        slidesItem.style.transform = `translateX(${offset}%)`;
+    }
+
+    // Event Listeners
+    prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + totalSlidesItem) % totalSlidesItem;
+        goToSlideItem(currentIndex);
+    });
+
+    nextBtn.addEventListener('click', () => {
+        console.log(currentIndex)
+        currentIndex = (currentIndex + 1) % totalSlidesItem;
+        goToSlideItem(currentIndex);
+    });
+    setInterval(() => {
+        nextBtn.click();
+    }, 3000);
+
+</script>
 <div th:insert="~{'/User/Register/RegisterUser' :: customScripts}"></div>
 <div th:if="${title=='Hotel'}" th:insert="~{'/User/Hotel/Hotel':: customScripts}"></div>
+<div th:if="${title=='Detail Hotel'}" th:insert="~{'/User/DetailHotel/DetailHotel':: customScripts}"></div>
 <div  th:if="${title=='SearchFlight'}" th:insert="~{'/User/Flight/Flight' :: customScripts}"></div>
 <div  th:if="${title=='Forget Password'}" th:insert="~{'/User/Forgot/ForgotPassword' :: customScripts}"></div>
 </body>
