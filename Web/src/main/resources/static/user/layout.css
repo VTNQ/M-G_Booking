@@ -19,9 +19,22 @@
 .text-white {
     color: #fff !important;
 }
+.border-violet-1 {
+    border-color: #a864a8 !important;
+}
+.custom-social-share a:hover {
+    border-color: #297cbb !important;
+    background-color: #297cbb !important;
+}
+.custom-social-share a {
+    transition: all 0.2s ease-in-out;
+}
+.custom-social-share a:hover i {
+    color: #fff !important;
+}
 .my-carousel-container {
     position: relative;
-    max-width: 88%;
+    max-width: 91%;
     width: 127%;
     height: 667px;
     overflow: hidden;
@@ -134,7 +147,9 @@
     opacity: 0;
     transform: translateY(-20px);
 }
-
+.ml-n1, .mx-n1 {
+    margin-left: -0.25rem !important;
+}
 #collapseLinkExample.show {
     animation: slideDown 0.5s ease forwards;
 }
