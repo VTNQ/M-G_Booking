@@ -5,9 +5,27 @@ public class SearchFlightDTO {
     private int arrivalAirport;
     private String departureTime;
     private String TypeFlight;
+    private boolean selectedHotel;
+    private int idCity;
+
+    public int getIdCity() {
+        return idCity;
+    }
+
+    public void setIdCity(int idCity) {
+        this.idCity = idCity;
+    }
 
     public String getArrivalTime() {
         return arrivalTime;
+    }
+
+    public boolean isSelectedHotel() {
+        return selectedHotel;
+    }
+
+    public void setSelectedHotel(boolean selectedHotel) {
+        this.selectedHotel = selectedHotel;
     }
 
     public void setArrivalTime(String arrivalTime) {

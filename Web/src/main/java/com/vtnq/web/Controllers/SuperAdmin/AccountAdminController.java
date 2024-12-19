@@ -67,6 +67,7 @@ public class AccountAdminController {
                 redirectAttributes.addFlashAttribute("message", errorMessages.toString());
 
                 redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/SuperAdmin/AccountAdmin/add";
             }
             if(authService.emailExists(admin.getEmail())) {
                 redirectAttributes.addFlashAttribute("message", "Email is Already Exists");

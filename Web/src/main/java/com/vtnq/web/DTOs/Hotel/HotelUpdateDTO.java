@@ -1,8 +1,13 @@
 package com.vtnq.web.DTOs.Hotel;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 public class HotelUpdateDTO {
     private int id;
+    @NotBlank(message = "Name is required")
     private String name;
+    @NotBlank(message = "Address is required")
     private String address;
 
     public String getImageUrl() {
@@ -12,8 +17,9 @@ public class HotelUpdateDTO {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-
+    @Min(value = 1,message = "City is required")
     private Integer cityId;
+    @NotBlank(message = "Description is required")
     private String decription;
     private String imageUrl;
     public HotelUpdateDTO(int id, String name, String address, Integer cityId, String decription, Integer ownerId, int district_id, String imageUrl) {

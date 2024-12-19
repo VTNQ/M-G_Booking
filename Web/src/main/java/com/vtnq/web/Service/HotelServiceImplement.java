@@ -1,9 +1,6 @@
 package com.vtnq.web.Service;
 
-import com.vtnq.web.DTOs.Hotel.HotelDto;
-import com.vtnq.web.DTOs.Hotel.HotelListDto;
-import com.vtnq.web.DTOs.Hotel.HotelUpdateDTO;
-import com.vtnq.web.DTOs.Hotel.ImageHotelListDTO;
+import com.vtnq.web.DTOs.Hotel.*;
 import com.vtnq.web.Entities.*;
 import com.vtnq.web.Helper.FileHelper;
 import com.vtnq.web.Repositories.*;
@@ -237,5 +234,15 @@ public class HotelServiceImplement implements HotelService{
            ex.printStackTrace();
            return false;
        }
+    }
+
+    @Override
+    public List<HotelSearchDTO> SearchHotels(int id) {
+        try {
+            return hotelRepository.SearchHotel(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
     }
 }

@@ -9,7 +9,82 @@ a{
     margin-left: .5rem;
 }
 
+#At-dropdown ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#At-dropdown li{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+.date-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Khoảng cách giữa hai date picker */
+}
 
+.date-picker {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da; /* Viền xung quanh date picker */
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.date-picker i {
+    color: #297cbb;
+    margin-right: 10px; /* Khoảng cách giữa icon và input */
+}
+
+.date-picker input[type="date"] {
+    border: none;
+    font-size: 1rem;
+    font-weight: 500;
+    appearance: none; /* Loại bỏ kiểu dáng mặc định của input date */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 150px; /* Điều chỉnh chiều rộng input */
+}
+.date-picker-container::before {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 50px;
+    background-color: #ced4da;
+    margin-left: 10px;
+    margin-right: 10px;
+    position: absolute;
+    left: 77vh;
+    top: 19vh;
+}
+/* Thêm kiểu dáng cho nút swap */
+.swap-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #297cbb;
+}
+#At-dropdown li:last-child{
+    border-bottom: none;
+}
+#At-dropdown li i{
+    margin-right: 10px;
+    font-size: 18px;
+    color: #ffc107;
+}
+#At-dropdown li .popular{
+    background-color: #d9534f;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-left: auto;
+}
 .hotel-checkbox {
     margin-right: 10px; /* Tạo khoảng cách giữa checkbox và văn bản */
     width: 16px;

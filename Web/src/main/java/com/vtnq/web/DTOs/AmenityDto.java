@@ -1,5 +1,8 @@
 package com.vtnq.web.DTOs;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 import java.io.Serializable;
 
 /**
@@ -15,7 +18,7 @@ public class AmenityDto implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    @NotBlank(message = "Name is required")
     private String name;
 
     public int getRoom_id() {
@@ -25,8 +28,9 @@ public class AmenityDto implements Serializable {
     public void setRoom_id(int room_id) {
         this.room_id = room_id;
     }
-
+    @NotBlank(message = "Description is required")
     private String decription;
+    @Min(value = 1,message = "Room is required")
     private int room_id;
     public AmenityDto() {
     }

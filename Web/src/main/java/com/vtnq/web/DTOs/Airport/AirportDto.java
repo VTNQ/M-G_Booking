@@ -9,6 +9,13 @@ import java.io.Serializable;
  * DTO for {@link com.vtnq.web.Entities.Airport}
  */
 public class AirportDto {
+    private String name;
+    public void setName(String name){
+        this.name = name;
+    }
+    public String getName(){
+        return name;
+    }
     private Integer id;
 
     public Integer getId() {
@@ -28,21 +35,11 @@ public class AirportDto {
     }
     @Min(value = 1,message = "City is required")
     private int idCity;
-    @NotBlank(message = "Name is required")
-    private String name;
+
 
     public AirportDto() {
     }
 
-    public AirportDto(String name) {
-        this.name = name;
-    }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 }

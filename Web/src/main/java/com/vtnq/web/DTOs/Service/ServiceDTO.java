@@ -1,12 +1,19 @@
 package com.vtnq.web.DTOs.Service;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 import java.math.BigDecimal;
 
 public class ServiceDTO {
     private Integer id;
+    @NotBlank(message = "Name is required")
     private String name;
+    @NotBlank(message = "Description is required")
     private String description;
+    @Min(value = 1,message = "Hotel is required")
     private int hotelId;
+    @Min(value = 1,message = "Price is required")
     private BigDecimal price;
 
     public Integer getId() {

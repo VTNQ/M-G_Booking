@@ -10,7 +10,7 @@ public class DetailHotelController {
     @GetMapping("DetailHotel")
     public String DetailController() {
         try {
-            return "User/DetailHotel/DetailHotel";
+            return "User/Hotel/Hotel";
         }catch (Exception e) {
             e.printStackTrace();
             return null;

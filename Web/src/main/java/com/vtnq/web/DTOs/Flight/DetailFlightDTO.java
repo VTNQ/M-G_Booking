@@ -1,6 +1,8 @@
 package com.vtnq.web.DTOs.Flight;
 
 
+import jakarta.validation.constraints.Min;
+
 import java.math.BigDecimal;
 
 public class DetailFlightDTO {
@@ -39,7 +41,9 @@ public class DetailFlightDTO {
 
     private Integer id;
     private String type;
+    @Min(value = 1,message = "Price is required")
     private BigDecimal price;
+    @Min(value = 1,message = "Quantity is required")
     private Integer quantity;
     private int idFlight;
 

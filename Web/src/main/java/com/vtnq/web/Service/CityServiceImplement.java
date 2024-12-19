@@ -70,4 +70,14 @@ public class CityServiceImplement implements CityService{
             return false;
         }
     }
+
+    @Override
+    public List<City> SearchCityOrCountry(String name) {
+        try {
+            return cityRepository.SearchCityOrCountry(name);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

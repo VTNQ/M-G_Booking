@@ -18,7 +18,24 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
     @Query("SELECT MIN(G.price) FROM Flight f Join DetailFlight G on f.id=G.idFlight.id where  DATE(f.departureTime) = :departureTime")
     public BigDecimal FindPrice(@Param("departureTime") LocalDate departureTime);
     @Query("SELECT new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id,d.imageUrl,f.arrivalAirport.city.name,f.arrivalTime,f.departureTime," +
-            "G.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id) FROM Flight f " +
+            "G.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id,f.arrivalAirport.name) FROM Flight f " +
+            "JOIN Airport a on a.id=f.departureAirport.id " +
+            "JOIN Airport b on b.id=f.arrivalAirport.id " +
+            "JOIN Airline c on c.id=f.airline.id "+
+            "JOIN Picture d on c.id=d.airlineId "+
+            "Join DetailFlight G on f.id=G.idFlight.id "+
+            "join City e on e.id=b.city.id "+
+            "WHERE f.departureAirport.id= :departureAirport " +
+            "AND f.arrivalAirport.id = :arrivalAirport " +
+            "AND DATE(f.departureTime) = :departureTime "+
+            "And G.type = :TypeFlight " +
+            "order by G.price ASC")
+    ResultFlightDTO findResulFlightAndHotel(@Param("departureAirport") int departureAirport,
+                                            @Param("arrivalAirport") int arrivalAirport,
+                                            @Param("departureTime") LocalDate departureTime,
+                                            @Param("TypeFlight") String TypeFlight);
+    @Query("SELECT new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id,d.imageUrl,f.arrivalAirport.city.name,f.arrivalTime,f.departureTime," +
+            "G.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id,f.arrivalAirport.name) FROM Flight f " +
             "JOIN Airport a on a.id=f.departureAirport.id " +
             "JOIN Airport b on b.id=f.arrivalAirport.id " +
             "JOIN Airline c on c.id=f.airline.id "+
@@ -35,7 +52,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             @Param("departureTime") LocalDate departureTime,
             @Param("TypeFlight") String TypeFlight );
     @Query("SELECT new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id,d.imageUrl,f.arrivalAirport.city.name,f.arrivalTime,f.departureTime," +
-            "G.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id) FROM Flight f " +
+            "G.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id,f.arrivalAirport.name) FROM Flight f " +
             "JOIN Airport a on a.id=f.departureAirport.id " +
             "JOIN Airport b on b.id=f.arrivalAirport.id " +
             "JOIN Airline c on c.id=f.airline.id "+
