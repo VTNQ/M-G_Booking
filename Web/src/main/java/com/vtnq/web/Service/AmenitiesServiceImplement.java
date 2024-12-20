@@ -87,4 +87,14 @@ public class AmenitiesServiceImplement implements AmenitiesService{
             return false;
         }
     }
+
+    @Override
+    public List<Amenity> FindAmenitiesByHotel(int hotel_id) {
+        try {
+            return amenityRepository.findAmenitiesByHotelId(hotel_id);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

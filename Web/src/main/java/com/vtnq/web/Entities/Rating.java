@@ -1,8 +1,10 @@
 package com.vtnq.web.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Entity
 @Table(name = "rating")
@@ -12,22 +14,27 @@ public class Rating {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private Account user;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
+    @Size(max = 200)
     @Column(name = "content", length = 200)
     private String content;
 
+    @NotNull
     @Column(name = "rating", nullable = false)
     private Double rating;
 
+    @NotNull
     @Column(name = "created_at", nullable = false)
-    private LocalDate createdAt;
+    private Instant createdAt;
 
     public Integer getId() {
         return id;
@@ -69,11 +76,11 @@ public class Rating {
         this.rating = rating;
     }
 
-    public LocalDate getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 

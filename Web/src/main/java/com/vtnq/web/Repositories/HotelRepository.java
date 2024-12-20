@@ -3,6 +3,7 @@ package com.vtnq.web.Repositories;
 import com.vtnq.web.DTOs.Hotel.HotelListDto;
 import com.vtnq.web.DTOs.Hotel.HotelSearchDTO;
 import com.vtnq.web.DTOs.Hotel.HotelUpdateDTO;
+import com.vtnq.web.DTOs.Hotel.ShowDetailHotel;
 import com.vtnq.web.Entities.Hotel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,6 @@ HotelUpdateDTO findHotelById(int id);
 @Query("select new com.vtnq.web.DTOs.Hotel.HotelSearchDTO" +
         "(a.id,a.name,c.name,c.country.name,b.imageUrl) from Hotel a join Picture b on a.id=b.hotelId join  City c on a.cityId=c.id where a.cityId = :id")
     List<HotelSearchDTO>SearchHotel(@Param("id") int id);
+@Query("select new com.vtnq.web.DTOs.Hotel.ShowDetailHotel(a.id,a.name,a.address,b.name,a.decription,b.country.name,c.price) from Hotel a join City b on a.cityId=b.id join Room c on a.id=c.hotel.id  where a.id = :id order by c.price desc")
+ShowDetailHotel showDetailHotel(@Param("id") int id);
 }

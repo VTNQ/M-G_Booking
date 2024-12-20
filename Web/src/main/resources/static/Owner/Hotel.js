@@ -1,3 +1,73 @@
+
+var map = L.map('map').setView([51.505, -0.09], 13); // Vị trí mặc định: London
+
+// Thêm lớp bản đồ OpenStreetMap
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+// Mảng lưu trữ các marker
+var markers = [];
+
+// Hàm xóa tất cả các marker cũ
+function clearMarkers() {
+    markers.forEach(marker => {
+        map.removeLayer(marker);  // Xóa marker khỏi bản đồ
+    });
+    markers = [];  // Làm rỗng mảng marker
+}
+
+// Hàm tìm kiếm địa chỉ và hiển thị kết quả trên bản đồ
+function searchAddress(query) {
+    var url = `https://nominatim.openstreetmap.org/search?format=json&q=${query}`;
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.length > 0) {
+                // Xóa tất cả các marker cũ trước khi thêm marker mới
+                clearMarkers();
+
+                var lat = parseFloat(data[0].lat);
+                var lon = parseFloat(data[0].lon);
+                map.setView([lat, lon], 13);  // Cập nhật vị trí bản đồ
+
+                // Thêm marker mới
+                var newMarker = L.marker([lat, lon]).addTo(map)
+                    .bindPopup(data[0].display_name)
+                    .openPopup();
+
+                // Thêm marker vào mảng để có thể quản lý sau này
+                markers.push(newMarker);
+                var address = data[0].display_name;
+
+
+
+            } else {
+                alert('Không tìm thấy địa chỉ!');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Xử lý sự kiện khi người dùng nhấn nút tìm kiếm
+document.getElementById('search-button').addEventListener('click', function() {
+    var query = document.getElementById('address-input').value;
+    if (query) {
+        searchAddress(query);
+    } else {
+        alert('Vui lòng nhập địa chỉ cần tìm!');
+    }
+});
+
+// Cũng có thể tìm kiếm khi nhấn Enter trong ô input
+document.getElementById('address-input').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        var query = event.target.value;
+        if (query) {
+            searchAddress(query);
+        }
+    }
+});
+
+
 let selectedFiles = [];
 document.addEventListener('DOMContentLoaded',()=>{
 

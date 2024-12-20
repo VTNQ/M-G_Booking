@@ -45,11 +45,12 @@ public class HotelController {
     public String add(ModelMap model, HttpServletRequest request) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
-            List<City> cities = cityService.findCityAll(currentAccount.getCountryId());
+            List<District> districts = districtService.findDistrict(currentAccount.getCityId());
             HotelDto hotelDto = new HotelDto();
             hotelDto.setOwnerId(currentAccount.getId());
+            hotelDto.setCityId(currentAccount.getCityId());
             model.put("hotel", hotelDto);
-            model.put("City", cities);
+            model.put("District", districts);
             return "Owner/Hotel/add";
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,6 +10,23 @@
         padding-top: 3.5rem !important;
     }
 }
+.rating-container .fa-star {
+    color: gray;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.fas.fa-star {
+    color: gray; /* Default star color */
+}
+
+.fas.fa-star.active {
+    color: gold; /* Highlighted star color */
+}
+.rating-container .fa-star.hovered,
+.rating-container .fa-star.selected {
+    color: gold;
+}
+
 .breadcrumb-item + .breadcrumb-item::before {
     display: inline-block;
     padding-right: 0.5rem;

@@ -12,4 +12,5 @@ public interface AmenitiesService {
     public AmenityDto findById(int id);
     public boolean update(AmenityDto amenity);
     public boolean delete(int id);
+    public List<Amenity>FindAmenitiesByHotel(int hotel_id);
 }

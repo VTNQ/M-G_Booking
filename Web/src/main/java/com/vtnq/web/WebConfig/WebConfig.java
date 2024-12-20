@@ -16,6 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
         // You can add more directories if necessary, for example, for other image types
         registry.addResourceHandler("/images/flight/**")
                 .addResourceLocations("file:src/main/resources/static/images/flight/");
+        registry.addResourceHandler("/images/rooms/**")  // Path you want to access the images via URL
+                .addResourceLocations("file:src/main/resources/static/images/rooms/");
     }
 }
 
