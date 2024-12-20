@@ -163,32 +163,31 @@
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
                                         <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Address</label>
-                                        <textarea name="editor" th:field="${hotel.address}" placeholder="Address" id="editor"></textarea>
+                                        <textarea name="editor" th:field="${hotel.address}"  readonly placeholder="Address" id="editor"></textarea>
                                     </div>
+
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <input id="address-input" class="form-control" type="text" placeholder="Search for an address" />
+                                            <button type="button" id="search-button" class="btn btn-primary">Tìm</button>
+                                        </div>
+                                    </div>
+                                    <div id="map" style="height: 400px; width: 100%;"></div>
                                 </div>
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
                                         <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Description</label>
-                                        <textarea name="editor" th:field="${hotel.decription}" placeholder="Description" id="description"></textarea>
+                                        <textarea name="editor" readonly="readonly" th:field="${hotel.decription}" placeholder="Description" id="description"></textarea>
                                     </div>
                                 </div>
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
                                         <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">City</label>
-                                        <select  id="city-select"  class="form-control js-select2" th:field="${hotel.cityId}">
-                                            <option th:each="cities : ${City}" th:value="${cities.id}" th:text="${cities.name}"></option>
+                                        <select  id="city-select"  class="form-control js-select2" th:field="${hotel.districtId}">
+                                            <option th:each="districts : ${District}" th:value="${districts.id}" th:text="${districts.name}"></option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
-                                    <div class="mb-4">
-                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">District</label>
-                                        <select  id="DistrictSelect"   class="form-control js-select2" th:field="${hotel.districtId}">
-
-                                        </select>
-                                    </div>
-                                </div>
-
 
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
 
@@ -278,6 +277,7 @@
             </footer>
         </div>
         <input type="hidden" th:field="${hotel.ownerId}">
+        <input type="hidden" th:field="${hotel.cityId}">
     </form>
 
 </div>

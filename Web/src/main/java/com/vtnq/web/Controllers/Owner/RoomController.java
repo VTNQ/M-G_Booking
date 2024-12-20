@@ -11,9 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,18 +50,31 @@ public class RoomController {
         }
     }
     @PostMapping("Room/add")
-    public String add(@RequestParam List<String>roomTypes, @RequestParam List<BigDecimal>roomPrices,@RequestParam List<Integer>roomCapacities,@RequestParam int IdHotel,
-                      RedirectAttributes redirectAttributes) {
+    public String add(@RequestParam List<String>roomTypes, @RequestParam List<BigDecimal>roomPrices, @RequestParam List<Integer>roomCapacities, @RequestParam int IdHotel,
+                      @RequestParam(value = "roomImages", required = false) List<MultipartFile> roomImages , RedirectAttributes redirectAttributes) {
         try {
-        if(roomService.addRoom(roomTypes,roomPrices,roomCapacities,IdHotel)){
-        redirectAttributes.addFlashAttribute("message", "Room added successfully");
-        redirectAttributes.addFlashAttribute("messageType", "success");
-        return "redirect:/Owner/Room/add";
-        }else{
-            redirectAttributes.addFlashAttribute("message", "Room added failed");
-            redirectAttributes.addFlashAttribute("messageType", "error");
-            return "redirect:/Owner/Room/add";
-        }
+            if (roomImages != null && !roomImages.isEmpty()) {
+                // You can further process images if needed
+                List<List<MultipartFile>> imagePaths = new ArrayList<>();
+                for (MultipartFile file : roomImages) {
+                    imagePaths.add(Collections.singletonList(file)); // Wrap each image in a list for further processing
+                }
+
+                // Call service to add room
+                if (roomService.addRoom(roomTypes, roomPrices, roomCapacities, IdHotel, imagePaths)) {
+                    redirectAttributes.addFlashAttribute("message", "Room added successfully");
+                    redirectAttributes.addFlashAttribute("messageType", "success");
+                    return "redirect:/Owner/Room/add";
+                } else {
+                    redirectAttributes.addFlashAttribute("message", "Room add failed");
+                    redirectAttributes.addFlashAttribute("messageType", "error");
+                    return "redirect:/Owner/Room/add";
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("message", "No images uploaded");
+                redirectAttributes.addFlashAttribute("messageType", "warning");
+                return "redirect:/Owner/Room/add";
+            }
         }catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -111,6 +128,7 @@ public class RoomController {
     public String edit(@PathVariable int id, ModelMap model, HttpSession session) {
         try {
             model.put("room",roomService.findById(id));
+            model.put("picture",roomService.FindPictureByRoomId(id));
             return "Owner/Room/edit";
         }catch (Exception e) {
             e.printStackTrace();

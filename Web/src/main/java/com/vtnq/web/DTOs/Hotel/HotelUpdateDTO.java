@@ -2,6 +2,7 @@ package com.vtnq.web.DTOs.Hotel;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import org.jsoup.Jsoup;
 
 public class HotelUpdateDTO {
     private int id;
@@ -9,6 +10,15 @@ public class HotelUpdateDTO {
     private String name;
     @NotBlank(message = "Address is required")
     private String address;
+    private String addressText;
+
+    public String getAddressText() {
+        return addressText;
+    }
+
+    public void setAddressText(String addressText) {
+        this.addressText = addressText;
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -22,6 +32,12 @@ public class HotelUpdateDTO {
     @NotBlank(message = "Description is required")
     private String decription;
     private String imageUrl;
+    public String cleanHtml(String input){
+        if(input!=null){
+            return Jsoup.parse(input).text();
+        }
+        return "";
+    }
     public HotelUpdateDTO(int id, String name, String address, Integer cityId, String decription, Integer ownerId, int district_id, String imageUrl) {
         this.id = id;
         this.name = name;
@@ -31,6 +47,7 @@ public class HotelUpdateDTO {
         this.ownerId = ownerId;
         this.district_id = district_id;
         this.imageUrl = imageUrl;
+        this.addressText=cleanHtml(address);
     }
 
     private Integer ownerId;

@@ -245,4 +245,24 @@ public class HotelServiceImplement implements HotelService{
             return null;
         }
     }
+
+    @Override
+    public ShowDetailHotel FindDetailHotel(int id) {
+        try {
+            return hotelRepository.showDetailHotel(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Picture> FindImageInDetailHotel(int id) {
+        try {
+            return pictureRepository.FindImageInDetailHotel(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }

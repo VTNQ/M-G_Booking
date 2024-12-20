@@ -164,7 +164,15 @@
                   <div class="mb-4">
                     <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Address</label>
                     <textarea name="editor" th:field="${hotel.address}" placeholder="Address" id="editor"></textarea>
+                    <input type="hidden" id="editorAddress" th:field="${hotel.addressText}">
                   </div>
+                  <div class="col-md-8">
+                    <div class="input-group">
+                      <input id="address-input" th:value="${hotel.addressText}" class="form-control" type="text" placeholder="Search for an address" />
+                      <button type="button" id="search-button" class="btn btn-primary">Tìm</button>
+                    </div>
+                  </div>
+                  <div id="map" style="height: 400px; width: 100%;"></div>
                 </div>
                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                   <div class="mb-4">

@@ -192,17 +192,52 @@
                             </div>
                         </div>
 
-                        <div class="flex-auto p-6 pt-0 mt-5" >
-                            <div class="w-100 d-flex align-items-center h-100 gap-2" >
-                                <button type="submit" class="btn btn-primary flex-column-gap-1 text-wrap p-2 flex-grow-1" style="background-color: #0b5ed7">Save</button>
-                                <a th:href="@{'/Owner/Room/'+${room.idHotel}}" class="btn p-2 text-wrap w-50" style="border: 1px solid #e6e7e9">Back</a>
-                                <input type="hidden" th:field="${room.idHotel}">
-                                <input type="hidden" th:field="${room.id}">
+                        <div class="flex-auto p-6 pt-0 mt-5">
+                            <div class="w-100 d-flex align-items-center h-100">
+                                <!-- Flexbox container to align images in a single row -->
+
+                                <div class="d-flex flex-grow gap-3 flex-wrap" id="image-container">
+                                    <th:block th:each="image : ${picture}">
+                                        <div class="image-item">
+                                            <img th:src="@{'http://localhost:8686/images/hotels/'+${image.imageUrl}}" alt="Product Image" class="product-image">
+                                            <button type="button" class="delete-btn" th:data-id="${image.id}" th:data-hotel-id="${image.roomId}">
+                                                <i class="fa fa-trash-alt" style="color: black"></i>
+                                            </button>
+                                        </div>
+                                        <div th:if="${imageStat.last}" class="add-image-container">
+                                            <div class="add-image-container">
+                                                <div class="add-image" onclick="addNewImage()">
+                                                    <i class="fa fa-image image-icon"></i>
+                                                    <i class="fa fa-plus add-icon"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th:block>
+
+                                </div>
+
+                                <!-- Loop through ImageList to display images -->
+
+                                <div th:if="${picture.size() == 0}" class="add-image-container">
+                                    <!-- Nút "Add Image" -->
+                                    <div class="add-image-container">
+                                        <div class="add-image" onclick="addNewImage()">
+                                            <i class="fa fa-image image-icon"></i>
+                                            <i class="fa fa-plus add-icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            <button th:dataHotel-id="${room.id}" id="saveMultiple" type="button" class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">
+                                save
+                            </button>
+
                         </div>
                     </div>
-                </div>
 
+
+                </div>
+            </div>
             </div>
             <footer class="pt-4">
                 <div class="w-full px-6 mx-auto">
@@ -237,11 +272,13 @@
                     </div>
                 </div>
             </footer>
+    </form>
         </div>
 
-    </form>
+
 
 </div>
+<script th:fragment="customScripts" th:src="@{/Owner/room/UpdateRoom.js}"></script>
 </body>
 
 </html>

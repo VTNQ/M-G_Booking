@@ -1,16 +1,28 @@
 package com.vtnq.web.Service;
 
+import com.vtnq.web.DTOs.Amenities.AmenitiesList;
 import com.vtnq.web.DTOs.Room.RoomDTO;
+import com.vtnq.web.DTOs.Room.RoomDetailHotel;
 import com.vtnq.web.Entities.Hotel;
+import com.vtnq.web.Entities.Picture;
 import com.vtnq.web.Entities.Room;
+import com.vtnq.web.Helper.FileHelper;
+import com.vtnq.web.Repositories.AmenityRepository;
 import com.vtnq.web.Repositories.HotelRepository;
+import com.vtnq.web.Repositories.PictureRepository;
 import com.vtnq.web.Repositories.RoomRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 @Service
 public class RoomServiceImplement implements RoomService{
@@ -19,9 +31,14 @@ public class RoomServiceImplement implements RoomService{
     @Autowired
     private HotelRepository hotelRepository;
     @Autowired
+    private AmenityRepository amenityRepository;
+    @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private PictureRepository pictureRepository;
     @Override
-    public boolean addRoom(List<String> roomTypes, List<BigDecimal> roomPrices, List<Integer> roomCapacities, int idHotel) {
+    public boolean addRoom(List<String> roomTypes, List<BigDecimal> roomPrices, List<Integer> roomCapacities, int idHotel,List<List<MultipartFile>>roomImages)
+    {
         try {
             Hotel hotel=hotelRepository.findById(idHotel)
                     .orElseThrow(() -> new Exception("Hotel Not Found"));
@@ -31,10 +48,61 @@ public class RoomServiceImplement implements RoomService{
                 room.setPrice(roomPrices.get(i));
                 room.setOccupancy(roomCapacities.get(i));
                 room.setHotel(hotel);
-                roomRepository.save(room);
+                Room saveRoom=roomRepository.save(room);
+
+                String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "static", "images", "rooms").toString();
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                List<MultipartFile>images=roomImages.get(i);
+                for (MultipartFile item : images) {
+                    String newFileName = FileHelper.generateImageName(item.getOriginalFilename());
+                    if(saveFileWithStream(item,uploadDir,newFileName)){
+                        Picture picture=new Picture();
+                        picture.setImageUrl(newFileName);
+                        picture.setRoomId(saveRoom.getId());
+                        picture.setIsMain(false);
+                        pictureRepository.save(picture);
+                    }
+
+
+                }
+
             }
             return true;
         }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean saveFileWithStream(MultipartFile file, String uploadDir, String fileName) {
+        try {
+            // Tạo thư mục nếu chưa tồn tại
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Đường dẫn tệp đích
+            Path filePath = uploadPath.resolve(fileName);
+
+            // Thực hiện trì hoãn 5 giây trước khi lưu file
+
+
+            // Lưu file vào đĩa
+            file.transferTo(filePath.toFile());
+
+            // Kiểm tra xem file đã được lưu thành công chưa
+            if (Files.exists(filePath)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (IOException e) {
+            // Nếu có lỗi, in thông báo lỗi
             e.printStackTrace();
             return false;
         }
@@ -82,6 +150,74 @@ public class RoomServiceImplement implements RoomService{
             return true;
         }catch (Exception e) {
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public List<RoomDetailHotel> ShowDetailHotel(int id) {
+        try {
+            List<RoomDetailHotel>roomDetailHotels=roomRepository.findRoomDetailHotel(id);
+            for (RoomDetailHotel roomDetailHotel:roomDetailHotels) {
+                List<AmenitiesList>amenitiesLists=amenityRepository.FindAmenitiesByRoomId(roomDetailHotel.getId());
+                roomDetailHotel.setAmenitiesLists(amenitiesLists);
+            }
+            return roomDetailHotels;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Picture> FindPictureByRoomId(int id) {
+        try {
+            return pictureRepository.findByRoomId(id);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean UpdateMultipleImages(int id, List<MultipartFile> files) {
+        try {
+            String uploadDir = Paths.get(System.getProperty("user.dir"),  "src", "main", "resources", "static", "images", "rooms").toString();
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            for (MultipartFile file : files) {
+                String filenameImages=FileHelper.generateImageName(file.getOriginalFilename());
+                Path filePathImages=uploadPath.resolve(filenameImages);
+                file.transferTo(filePathImages.toFile());
+                Picture pictureImage=new Picture();
+                pictureImage.setHotelId(id);
+                pictureImage.setImageUrl(filenameImages);
+                pictureImage.setIsMain(false);
+                pictureRepository.save(pictureImage);
+            }
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteMultipleImagesRoom(int id) {
+        try {
+            Picture picture=pictureRepository.findById(id).get();
+            String uploadDir = Paths.get(System.getProperty("user.dir"),  "src", "main", "resources", "static", "images", "rooms").toString();
+            String oldFilename=picture.getImageUrl();
+            File oldFile=new File(uploadDir,oldFilename);
+            if(oldFile.exists() && oldFile.isFile()){
+                oldFile.delete();
+            }
+            pictureRepository.deleteById(id);
+            return true;
+        }catch (Exception ex){
+            ex.printStackTrace();
             return false;
         }
     }

@@ -36,7 +36,7 @@ public class SercurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/LoginAdmin","/registerUser","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**",
                                     "/ForgotPassword","/images/flight/**","/images/hotels/**","/Home","/SearchFlight","/SuperAdmin/SignatureContract/{id}",
-                                    "/DetailHotel").permitAll()
+                                    "/DetailHotel/{id}","/rating").permitAll()
                             .requestMatchers("SuperAdmin/Home","/SuperAdmin/Country/add","/SuperAdmin/Country"
                             ,"/SuperAdmin/Country/update","/SuperAdmin/Country/delete/{id}","/SuperAdmin/AccountAdmin/add"
                             ,"/SuperAdmin/Airline/add","/SuperAdmin/Airline","/SuperAdmin/Airline/edit/{id}",
@@ -67,7 +67,7 @@ public class SercurityConfiguration {
                                 Map<String, String> urls = new HashMap<>();
                                 urls.put("ROLE_ADMIN", "/Admin/Home");
                                 urls.put("ROLE_SUPERADMIN", "/SuperAdmin/Home");
-                                urls.put("ROLE_USER", "/Doctor/index");
+                                urls.put("ROLE_USER", "/Home");
                                 urls.put("ROLE_OWNER", "/Owner");
 
                                 String redirectUrl = "/Error";

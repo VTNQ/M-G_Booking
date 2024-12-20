@@ -193,30 +193,34 @@
                         <div class="row">
                             <th:block th:each="hotel,index : ${Hotel}">
                                 <div class="col-md-6 col-lg-4 mb-3 mb-md-4 pb-1">
-                                    <div class="card transition-3d-hover shadow-hover-2 tab-card h-100">
+                                    <a th:href="'/DetailHotel/'+${hotel.id}" class="card transition-3d-hover shadow-hover-2 tab-card h-100 text-decoration-none">
                                         <div class="position-relative">
-                                            <a class="d-block gradient-overlay-half-bg-gradient-v5">
-                                                <img class="min-height-230 bg-img-hero card-img-top" th:src="'http://localhost:8686/images/hotels/'+${hotel.image_url}" style="object-fit: contain">
-                                            </a>
+                                            <div class="d-block gradient-overlay-half-bg-gradient-v5">
+                                                <img class="min-height-230 bg-img-hero card-img-top"
+                                                     th:src="'http://localhost:8686/images/hotels/'+${hotel.image_url}"
+                                                     style="object-fit: contain">
+                                            </div>
                                             <div class="position-absolute top-0 right-0 pt-3 pr-3">
                                                 <button class="btn btn-sm btn-icon text-white rounded-circle">
-                                                    <i class="fa-regular fa-heart" style="font-style: normal;font-size: 26px"></i>
+                                                    <i class="fa-regular fa-heart" style="font-style: normal; font-size: 26px"></i>
                                                 </button>
                                             </div>
                                             <div class="position-absolute bottom-0 left-0 right-0">
                                                 <div class="px-4 pb-3">
-                                                    <a class="d-block" style="color: #297cbb;text-decoration: none">
-                                                        <div class="d-flex align-items-center text-white" style="font-size: 16px;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 400!important;">
+                                                    <div class="d-block" style="color: #297cbb; text-decoration: none;">
+                                                        <div class="d-flex align-items-center text-white"
+                                                             style="font-size: 16px; font-family: 'Rubik', Helvetica, Arial, sans-serif; font-weight: 400 !important;">
                                                             <i class="fa-solid fa-location-dot icon mr-2" style="font-size: 1.25rem"></i>
-                                                          <span   th:text="${hotel.city} + ', ' + ${hotel.country}" ></span>
+                                                            <span th:text="${hotel.city} + ', ' + ${hotel.country}"></span>
                                                         </div>
-                                                    </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="card-body pl-3 pr-4 pt-2 pb-3">
                                             <div class="ml-1 mb-2">
-                                                <div class="d-inline-flex align-items-center font-size-13 text-lh-1 letter-spacing-3" style="color: #297cbb !important;font-size: 0.813rem;line-height: 1;letter-spacing: 0.188rem">
+                                                <div class="d-inline-flex align-items-center font-size-13 text-lh-1 letter-spacing-3"
+                                                     style="color: #297cbb !important; font-size: 0.813rem; line-height: 1; letter-spacing: 0.188rem;">
                                                     <div class="green-lighter">
                                                         <i class="fas fa-star"></i>
                                                         <i class="fas fa-star"></i>
@@ -226,20 +230,23 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <a class="card-title" style="font-size: 1.463rem;color: #3b444f !important;text-decoration: none;background-color: transparent;font-weight: 500 !important;" th:text="${hotel.name}"></a>
+                                            <span class="card-title" style="font-size: 1.463rem; color: #3b444f !important; text-decoration: none; font-weight: 500 !important;"
+                                                  th:text="${hotel.name}"></span>
                                             <div class="mt-2 mb-3">
-                                                <span class="badge badge-pill badge-primary py-1 px-2 font-size-14 border-radius-3 font-weight-normal" style="font-size: 0.875rem;border-radius: 3px !important;font-weight: 400!important;background-color: #297cbb">4.6/5</span>
-                                                <span class="text-gray-1 ml-2" style="font-size: 0.875rem">(166 reviews)</span>
+                    <span class="badge badge-pill badge-primary py-1 px-2 font-size-14 border-radius-3 font-weight-normal"
+                          style="font-size: 0.875rem; border-radius: 3px !important; font-weight: 400 !important; background-color: #297cbb;">4.6/5</span>
+                                                <span class="text-gray-1 ml-2" style="font-size: 0.875rem;">(166 reviews)</span>
                                             </div>
                                             <div class="mb-0">
-                                                <span class="mr-1 text-gray-1" style="font-size: 0.875rem">From</span>
-                                                <span style="font-weight: 500 !important">£350.00</span>
-                                                <span class="text-gray-1" style="font-size: 0.875rem"> / night</span>
+                                                <span class="mr-1 text-gray-1" style="font-size: 0.875rem;">From</span>
+                                                <span style="font-weight: 500 !important;">£350.00</span>
+                                                <span class="text-gray-1" style="font-size: 0.875rem;"> / night</span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </th:block>
+
 
 
                         </div>

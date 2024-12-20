@@ -1,3 +1,36 @@
+let htmlContent = document.getElementById('editorAddress').value;
+
+var map = L.map('map').setView([51.505, -0.09], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+var markers=[];
+function clearMarkers(){
+    markers.forEach(markers=>{
+        map.removeLayer(markers);
+    });
+    markers=[];
+}
+function searchAddress(query){
+    var url=`https://nominatim.openstreetmap.org/search?format=json&q=${query}`;
+    fetch(url)
+        .then(response=>response.json())
+        .then(data=>{
+            if(data.length>0){
+                clearMarkers();
+                var lat=parseFloat(data[0].lat);
+                var lon=parseFloat(data[0].lon);
+                map.setView([lat,lon],13);
+                var newMarker=L.marker([lat,lon]).addTo(map)
+                    .bindPopup(data[0].display_name)
+                    .openPopup();
+                markers.push(newMarker);
+            }
+        })
+}
+function compareAddressEditor(address){
+    searchAddress(address)
+}
+compareAddressEditor(htmlContent)
+
 let selectedFiles = [];
 document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('saveMultiple').addEventListener('click', function () {
