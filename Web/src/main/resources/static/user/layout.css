@@ -19,9 +19,179 @@
 .text-white {
     color: #fff !important;
 }
+.flight-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    width: 48vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.flight-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.flight-type {
+    font-size: 14px;
+    color: #777;
+}
+
+.btn-cheapest {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.flight-details {
+    display: flex;
+    flex-direction: column;
+}
+.flight-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Canh giữa các phần tử */
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.time-location {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.departure, .arrival {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.plane-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.time {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+.departure-time, .arrival-time {
+    margin: 0 10px;
+}
+
+.flight-company {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.airline-logo {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+.date { /* Thêm CSS cho phần hiển thị ngày đi */
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.airline-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.flight-duration {
+    font-size: 14px;
+    color: #555;
+}
+.time-location {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.departure,
+.arrival {
+    font-weight: bold;
+}
+
+.plane-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.time {
+    display: flex;
+    justify-content: space-around;
+    font-size: 14px;
+    color: #555;
+}
+
+.flight-company {
+    display: flex;
+    align-items: center;
+}
+
+.airline-logo {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.airline-name {
+    font-weight: bold;
+}
+
+.flight-duration {
+    font-size: 14px;
+    color: #555;
+}
+
+.btn-details {
+    background-color: #e60000;
+    /* Màu đỏ Vietjet */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    align-self: center;
+}
+
+.flight-card-footer {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+}
+.border-violet-1 {
+    border-color: #a864a8 !important;
+}
+.custom-social-share a:hover {
+    border-color: #297cbb !important;
+    background-color: #297cbb !important;
+}
+.custom-social-share a {
+    transition: all 0.2s ease-in-out;
+}
+.custom-social-share a:hover i {
+    color: #fff !important;
+}
 .my-carousel-container {
     position: relative;
-    max-width: 88%;
+    max-width: 91%;
     width: 127%;
     height: 667px;
     overflow: hidden;
@@ -134,7 +304,9 @@
     opacity: 0;
     transform: translateY(-20px);
 }
-
+.ml-n1, .mx-n1 {
+    margin-left: -0.25rem !important;
+}
 #collapseLinkExample.show {
     animation: slideDown 0.5s ease forwards;
 }
@@ -573,11 +745,7 @@
 .flight-details > div.hidden {
     max-height: 0; /* Ẩn div bằng cách đặt max-height là 0 */
 }
-.flight-details > div { /* Chọn tất cả div con trực tiếp của flight-details */
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
-}
+
 .flight-time {
     justify-content: space-between; /* Căn đều khoảng cách giữa các phần tử */
 }

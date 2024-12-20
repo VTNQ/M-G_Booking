@@ -11,4 +11,5 @@ public interface CityService {
     public CityDto findCityById(int id);
     public boolean existName(String name);
     public boolean deleteCity(int id);
+    public List<City>SearchCityOrCountry(String name);
 }

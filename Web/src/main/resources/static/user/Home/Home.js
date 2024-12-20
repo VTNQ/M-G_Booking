@@ -57,7 +57,56 @@ document.getElementById("from-input").addEventListener('input',async (event)=>{
     }catch (error){
         console.log(error)
     }
+});
+document.addEventListener('click', (event) => {
+    const dropdown = document.getElementById('At-dropdown');
+    const input = document.getElementById('At-input');
+    if (!dropdown.contains(event.target) && !input.contains(event.target)) {
+        dropdown.style.display = "none";
+    }
+});
+
+// Ngăn việc click bên trong dropdown bị đóng
+document.getElementById('At-dropdown').addEventListener('click', (event) => {
+    event.stopPropagation();
+});
+document.getElementById('At-input').addEventListener('input',async (event)=>{
+    const search = event.target.value;
+    const dropdown=document.getElementById('At-dropdown');
+    const AtList=document.getElementById('At-List');
+    if (search.trim() === "") {
+        dropdown.style.display = "none";
+        return;
+    }
+    try {
+        const response=await fetch(`http://localhost:8686/api/city/SearchHotelByCityOrHotel?name=${encodeURIComponent(search)}`);
+        if(response.ok){
+            const airports = await response.json();
+            AtList.innerHTML = "";
+            airports.forEach(airport=>{
+
+                const li = document.createElement("li");
+                li.style.display='flex';
+                li.innerHTML = `
+                    <i class="fa-solid fa-star"></i>
+                    ${airport.name}, ${airport.country.name}
+                  
+                   <span class="popular">Phổ biến</span>
+                `;
+                li.addEventListener("click",()=>{
+                    document.getElementById("At-input").value=`${airport.name}`;
+                    document.getElementById('idCity').value=airport.id;
+                    dropdown.style.display = "none";
+                })
+                AtList.appendChild(li);
+            })
+            dropdown.style.display = "block";
+        }
+    }catch (error){
+        console.log(error)
+    }
 })
+
 document.getElementById("to-input").addEventListener("focus", function () {
     this.select(); // Highlight all text when input is focused
 });

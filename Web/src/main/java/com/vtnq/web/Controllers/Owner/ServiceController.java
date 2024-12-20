@@ -4,9 +4,11 @@ import com.vtnq.web.DTOs.Service.ServiceDTO;
 import com.vtnq.web.Entities.Service;
 import com.vtnq.web.Service.ServiceService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -19,8 +21,17 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
     @PostMapping("service/add")
-    public String add(@ModelAttribute("service")ServiceDTO serviceDTO, RedirectAttributes redirectAttributes) {
+    public String add(@ModelAttribute("service") @Valid ServiceDTO serviceDTO, BindingResult result, RedirectAttributes redirectAttributes) {
         try {
+            if (result.hasErrors()) {
+                StringBuilder errorMessages = new StringBuilder("Validation errors: ");
+                result.getFieldErrors().forEach(error ->
+                        errorMessages.append(String.format("Field : %s. ", error.getDefaultMessage()))
+                );
+                redirectAttributes.addFlashAttribute("message", errorMessages.toString());
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Owner/service/add";
+            }
             if(serviceService.addService(serviceDTO)) {
                 redirectAttributes.addFlashAttribute("message", "Service Added");
                 redirectAttributes.addFlashAttribute("messageType", "success");
@@ -54,8 +65,17 @@ public class ServiceController {
         }
     }
     @PostMapping("service/update")
-    public String update(@ModelAttribute("service")ServiceDTO serviceDTO, RedirectAttributes redirectAttributes) {
+    public String update(@ModelAttribute("service") @Valid ServiceDTO serviceDTO,BindingResult result, RedirectAttributes redirectAttributes) {
         try {
+            if (result.hasErrors()) {
+                StringBuilder errorMessages = new StringBuilder("Validation errors: ");
+                result.getFieldErrors().forEach(error ->
+                        errorMessages.append(String.format("Field : %s. ", error.getDefaultMessage()))
+                );
+                redirectAttributes.addFlashAttribute("message", errorMessages.toString());
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Owner/service/edit/"+serviceDTO.getId();
+            }
             if(serviceService.addService(serviceDTO)) {
                 redirectAttributes.addFlashAttribute("message", "Service Updated Successfully");
                 redirectAttributes.addFlashAttribute("messageType", "success");

@@ -158,6 +158,51 @@
                                     <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
                                         <div class="col-sm-5 ">
                                             <span class="text-left d-block"
+                                                  style="color: #67747c !important;font-weight: 400;font-size: 1.2rem;text-align: left;margin-left: 1vh">At</span>
+                                            <div class="search-container">
+                                                <div class="search-item" id="search-At">
+                                                    <i class="fa-solid fa-plane-departure"></i>
+                                                    <input
+                                                            type="text"
+                                                            placeholder="Bay từ"
+                                                            id="At-input"
+                                                            autocomplete="off"
+                                                    />
+
+                                                    <div class="search-dropdown" style="width: 28%;top: 68%" id="At-dropdown">
+                                                        <ul id="At-List"></ul>
+                                                    </div>
+                                                    <input type="hidden" id="idCity" th:field="${Search.idCity}">
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-5">
+  <span class="d-block text-gray mb-2"
+        style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Destination or Hotel Name</span>
+                                            <div class="search-container">
+                                                <div class="date-picker-container">
+                                                    <div>
+                                                        <label for="datePickerInputFrom" class="label">Nhận phòng</label>
+                                                        <div class="date-picker">
+                                                            <i class="fa-solid fa-calendar"></i>
+                                                            <input type="date" id="datePickerInputFrom" th:field="${Search.departureTime}"/>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label for="datePickerInputTo" class="label">Trả phòng</label>
+                                                        <div class="date-picker">
+                                                            <i class="fa-solid fa-calendar"></i>
+                                                            <input type="date" id="datePickerInputTo" th:field="${Search.arrivalTime}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5 ">
+                                            <span class="text-left d-block"
                                                   style="color: #67747c !important;font-weight: 400;font-size: 1.2rem;text-align: left">Rooms and Guests</span>
                                             <div class="dropdown-container">
 
@@ -236,22 +281,23 @@
                                         </div>
                                         <div class="col-sm-5 d-flex align-items-center justify-content-center" style="position: relative;left: -20vh;top: -1vh;margin-top: 2vh">
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" style="font-size: 21px">
+                                                <input class="form-check-input" th:field="${Search.selectedHotel}" type="checkbox" id="flexSwitchCheckDefault" style="font-size: 21px">
                                                 <label class="form-check-label" for="flexSwitchCheckDefault" style="position: absolute;top: 3px">Default switch checkbox input</label>
                                             </div>
                                         </div>
 
 
                                     </div>
-                                </form>
-                                <button type="submit"
-                                        class="btn btn-primary w-50 mb-xl-0 mb-lg-1 transition-3d-hover"
-                                        style="border-radius: 3px;transition: all 0.2s ease-in-out;background-color: #297cbb;border-color: #297cbb;
+                                    <button type="submit"
+                                            class="btn btn-primary w-50 mb-xl-0 mb-lg-1 transition-3d-hover"
+                                            style="border-radius: 3px;transition: all 0.2s ease-in-out;background-color: #297cbb;border-color: #297cbb;
                                         position:absolute;left: 30vh">
-                                    <i class="fa-solid fa-magnifying-glass mr-2"
-                                       style="font-size: 1.25rem;"></i>
-                                    Search
-                                </button>
+                                        <i class="fa-solid fa-magnifying-glass mr-2"
+                                           style="font-size: 1.25rem;"></i>
+                                        Search
+                                    </button>
+                                </form>
+
                             </div>
 
                         </div>

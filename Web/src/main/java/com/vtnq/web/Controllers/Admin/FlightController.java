@@ -148,8 +148,8 @@ public class FlightController {
       }
     }
     @PostMapping("Flight/add")
-    public String addFlight(@ModelAttribute("flight") FlightDto flightDto, ModelMap model, RedirectAttributes redirectAttributes
-            , BindingResult bindingResult) {
+    public String addFlight(@ModelAttribute("flight") @Valid FlightDto flightDto,BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes
+            ) {
         try {
             if (bindingResult.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");

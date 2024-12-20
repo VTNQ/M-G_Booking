@@ -141,5 +141,15 @@ public class FlightServiceImplement implements FlightService{
         }
     }
 
+    @Override
+    public ResultFlightDTO FindResultFlightAndHotel(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight) {
+        try {
+            return flightRepository.findResulFlightAndHotel(departureAirport,arrivalAirport,departureTime,TypeFlight);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
 
 }

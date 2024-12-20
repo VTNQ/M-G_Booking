@@ -60,9 +60,18 @@ public class HotelController {
 
 
     @PostMapping("Hotel/update")
-    public String update(@ModelAttribute("hotel") HotelUpdateDTO hotelUpdateDTO, @RequestParam(value = "imageForm", required = false) MultipartFile imageForm,
-                         BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String update(@ModelAttribute("hotel") @Valid HotelUpdateDTO hotelUpdateDTO,BindingResult bindingResult, @RequestParam(value = "imageForm", required = false) MultipartFile imageForm,
+                          RedirectAttributes redirectAttributes) {
         try {
+            if (bindingResult.hasErrors()) {
+                StringBuilder errorMessages = new StringBuilder("Validation errors: ");
+                bindingResult.getFieldErrors().forEach(error ->
+                        errorMessages.append(String.format("Field : %s. ", error.getDefaultMessage()))
+                );
+                redirectAttributes.addFlashAttribute("message", errorMessages.toString());
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Owner/Hotel/edit/"+hotelUpdateDTO.getId();
+            }
             if (hotelService.UpdateHotel(hotelUpdateDTO, imageForm)) {
                 redirectAttributes.addFlashAttribute("message", "Hotel updated successfully");
                 redirectAttributes.addFlashAttribute("messageType", "success");

@@ -3,6 +3,7 @@ package com.vtnq.web.Controllers;
 import com.vtnq.web.DTOs.Flight.SearchFlightDTO;
 import com.vtnq.web.Service.AirlineService;
 import com.vtnq.web.Service.FlightService;
+import com.vtnq.web.Service.HotelService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,8 @@ public class HomeController {
     private FlightService flightService;
     @Autowired
     private AirlineService airlineService;
+    @Autowired
+    private HotelService hotelService;
     @GetMapping("Home")
     public String Home(HttpServletRequest request, ModelMap model) {
        try {
@@ -36,8 +39,23 @@ public class HomeController {
            return null;
        }
     }
-    @GetMapping("SearchFlight")
-    public String SearchFlight(HttpServletRequest request, ModelMap model,@ModelAttribute("Search")SearchFlightDTO searchFlightDTO) {
+    public String SearchHotel(ModelMap model,@ModelAttribute("Search")SearchFlightDTO search) {
+        try {
+            String sanitizedDepartureTime = search.getDepartureTime().replaceAll("[^\\d-]", "");
+
+            model.put("Hotel",hotelService.SearchHotels(search.getIdCity()));
+            DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate departureDate = LocalDate.parse(sanitizedDepartureTime, formatterDepartureDate);
+
+            model.put("Flight",flightService.FindResultFlightAndHotel(search.getDepartureAirport(), search.getArrivalAirport(),departureDate,search.getTypeFlight()));
+            return "User/Hotel/Hotel";
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public String SearchFlight(ModelMap model,@ModelAttribute("Search")SearchFlightDTO searchFlightDTO) {
+
         String selectedDateStr=searchFlightDTO.getDepartureTime();
         DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
@@ -66,11 +84,19 @@ public class HomeController {
         model.put("dateList", dateList);
         model.put("searchFlightDTO",searchFlightDTO);
         String departureTime = searchFlightDTO.getDepartureTime();
-        String ArrivatureTime=searchFlightDTO.getArrivalTime();// Assume this is "2024-12-16"
+
         DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate departureDate = LocalDate.parse(departureTime, formatterDepartureDate);
 
         model.put("Airline",airlineService.searchAirline(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight()));
         return "User/Flight/Flight";
+    }
+    @GetMapping("SearchFlight")
+    public String SearchFlight(HttpServletRequest request, ModelMap model,@ModelAttribute("Search")SearchFlightDTO searchFlightDTO) {
+      if(searchFlightDTO.isSelectedHotel()==false){
+          return SearchFlight(model,searchFlightDTO);
+      }else{
+          return SearchHotel(model,searchFlightDTO);
+      }
     }
 }

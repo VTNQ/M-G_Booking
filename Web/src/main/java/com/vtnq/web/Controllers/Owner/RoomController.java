@@ -5,9 +5,11 @@ import com.vtnq.web.DTOs.Room.RoomDTO;
 import com.vtnq.web.Entities.Room;
 import com.vtnq.web.Service.RoomService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -80,8 +82,17 @@ public class RoomController {
         }
     }
     @PostMapping("Room/update")
-    public String update(@ModelAttribute("room")RoomDTO roomDTO,RedirectAttributes redirectAttributes) {
+    public String update(@ModelAttribute("room")@Valid RoomDTO roomDTO, BindingResult result, RedirectAttributes redirectAttributes) {
         try {
+            if (result.hasErrors()) {
+                StringBuilder errorMessages = new StringBuilder("Validation errors: ");
+               result.getFieldErrors().forEach(error ->
+                        errorMessages.append(String.format("Field : %s. ", error.getDefaultMessage()))
+                );
+                redirectAttributes.addFlashAttribute("message", errorMessages.toString());
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Owner/Room/edit/"+roomDTO.getId();
+            }
             if(roomService.update(roomDTO)){
                 redirectAttributes.addFlashAttribute("message", "Room updated successfully");
                 redirectAttributes.addFlashAttribute("messageType", "success");

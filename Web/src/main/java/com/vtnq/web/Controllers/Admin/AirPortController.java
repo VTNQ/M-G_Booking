@@ -25,15 +25,11 @@ public class AirPortController {
     @Autowired
     private AirportService airportService;
     @PostMapping("AirPort/add")
-    public String add(@ModelAttribute("AirPort")@Valid AirportDto airportDto, RedirectAttributes redirectAttributes
+    public String add(@ModelAttribute("AirPort") AirportDto airportDto, RedirectAttributes redirectAttributes
     , BindingResult bindingResult) {
         try {
-            if(bindingResult.hasErrors()) {
-                StringBuilder errorMessages = new StringBuilder("Validation errors: ");
-                bindingResult.getFieldErrors().forEach(error ->
-                        errorMessages.append(String.format("Field : %s. ",  error.getDefaultMessage()))
-                );
-                redirectAttributes.addFlashAttribute("message", errorMessages.toString());
+            if(airportDto.getName()==null || airportDto.getName().isEmpty()){
+                redirectAttributes.addFlashAttribute("message", "Name is required");
                 redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/Admin/AirPort/add";
             }
@@ -60,12 +56,8 @@ public class AirPortController {
     public String update(HttpServletRequest request,ModelMap model,@ModelAttribute("AirPort")AirportDto airportDto,
                          RedirectAttributes redirectAttributes,BindingResult bindingResult) {
         try {
-            if(bindingResult.hasErrors()) {
-                StringBuilder errorMessages = new StringBuilder("Validation errors: ");
-                bindingResult.getFieldErrors().forEach(error ->
-                        errorMessages.append(String.format("Field : %s. ", error.getDefaultMessage()))
-                );
-                redirectAttributes.addFlashAttribute("message", errorMessages.toString());
+            if(airportDto.getName()==null || airportDto.getName().isEmpty()){
+                redirectAttributes.addFlashAttribute("message", "Name is required");
                 redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/Admin/AirPort/edit/"+airportDto.getId();
             }

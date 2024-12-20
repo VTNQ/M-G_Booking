@@ -11,9 +11,17 @@ public class ResultFlightDTO {
     private int id;
     private int idFlight;
     private String nameCity;
-
+    private String nameArrivalAirport;
     public int getIdFlight() {
         return idFlight;
+    }
+
+    public String getNameArrivalAirport() {
+        return nameArrivalAirport;
+    }
+
+    public void setNameArrivalAirport(String nameArrivalAirport) {
+        this.nameArrivalAirport = nameArrivalAirport;
     }
 
     public void setIdFlight(int idFlight) {
@@ -148,7 +156,7 @@ public class ResultFlightDTO {
 
     public ResultFlightDTO(int id, String imageUrl, String nameCity, Instant arrivalTime, Instant departureTime, BigDecimal price,
                            String nameAirline, Instant TimeDepart, Instant TimeArrival, Instant DateDepart, Instant DateArrival, String nameAiport,
-                           int idFlight) {
+                           int idFlight,String nameArrivalAirport) {
         this.imageUrl = imageUrl;
         this.nameCity = nameCity;
         this.arrivalTime = arrivalTime;
@@ -163,6 +171,7 @@ public class ResultFlightDTO {
         calculateAndStoreDuration();
         this.nameAiport=nameAiport;
         this.idFlight=idFlight;
+        this.nameArrivalAirport=nameArrivalAirport;
     }
 
     public String getNameCity() {

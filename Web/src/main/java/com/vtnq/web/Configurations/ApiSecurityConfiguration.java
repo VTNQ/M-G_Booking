@@ -22,7 +22,7 @@ public class ApiSecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth.
                         requestMatchers("/api/ForgetPassword","/api/CheckOTP","/api/ChangePassword","/api/District/{id}",
                                 "/api/hotel/DeletePictureImage/{id}","/api/hotel/UpdateMultipleImage/{id}",
-                                "/api/AirPort/SearchAirPort","/api/ContractOwner/AcceptContract").permitAll()
+                                "/api/AirPort/SearchAirPort","/api/ContractOwner/AcceptContract","/api/city/SearchHotelByCityOrHotel").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()) // This is still supported for versions below 6.1

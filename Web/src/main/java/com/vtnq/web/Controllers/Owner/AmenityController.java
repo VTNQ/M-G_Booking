@@ -6,9 +6,11 @@ import com.vtnq.web.DTOs.Hotel.HotelListDto;
 import com.vtnq.web.Entities.Amenity;
 import com.vtnq.web.Service.AmenitiesService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -60,8 +62,17 @@ public class AmenityController {
         }
     }
     @PostMapping("Amenities/update")
-    public String update(@ModelAttribute("amenity")AmenityDto amenityDto, RedirectAttributes redirectAttributes) {
+    public String update(@ModelAttribute("amenity") @Valid AmenityDto amenityDto,BindingResult result, RedirectAttributes redirectAttributes) {
         try {
+            if (result.hasErrors()) {
+                StringBuilder errorMessages = new StringBuilder("Validation errors: ");
+                result.getFieldErrors().forEach(error ->
+                        errorMessages.append(String.format("Field : %s. ", error.getDefaultMessage()))
+                );
+                redirectAttributes.addFlashAttribute("message", errorMessages.toString());
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Owner/Amenities/edit/" + amenityDto.getId();
+            }
             if(amenitiesService.update(amenityDto)) {
                 redirectAttributes.addFlashAttribute("message", "Amenity updated successfully");
                 redirectAttributes.addFlashAttribute("messageType", "success");
@@ -89,8 +100,17 @@ public class AmenityController {
         }
     }
     @PostMapping("Amenities/add")
-    public String add(@ModelAttribute("amenity")AmenityDto amenity, ModelMap model, RedirectAttributes redirectAttributes) {
+    public String add(@ModelAttribute("amenity")@Valid AmenityDto amenity, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
         try {
+            if (result.hasErrors()) {
+                StringBuilder errorMessages = new StringBuilder("Validation errors: ");
+                result.getFieldErrors().forEach(error ->
+                        errorMessages.append(String.format("Field : %s. ", error.getDefaultMessage()))
+                );
+                redirectAttributes.addFlashAttribute("message", errorMessages.toString());
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Owner/Amenities/add";
+            }
             if(amenitiesService.addAmenity(amenity)) {
                 redirectAttributes.addFlashAttribute("message", "Amenity added successfully");
                 redirectAttributes.addFlashAttribute("messageType", "success");

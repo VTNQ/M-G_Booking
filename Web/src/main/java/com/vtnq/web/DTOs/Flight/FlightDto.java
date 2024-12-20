@@ -2,6 +2,7 @@ package com.vtnq.web.DTOs.Flight;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
@@ -23,7 +24,7 @@ public class FlightDto  {
     private int departure_airport;
     @Min(value = 1,message = "Arrival Airport is required")
     private int arrival_airport;
-    @NotNull(message = "Departure Time is required")
+    @NotBlank(message = "Departure Time is required")
     private String departureTime;
 
     public Integer getId() {
@@ -93,7 +94,7 @@ public class FlightDto  {
         // Convert LocalDateTime to Instant (UTC)
         return localDateTime.toInstant(ZoneOffset.UTC);
     }
-    @NotNull(message = "Arrival Time is required")
+    @NotBlank(message = "Arrival Time is required")
     private String arrivalTime;
     private List<DetailFlightDTO>detailFlights;
 
