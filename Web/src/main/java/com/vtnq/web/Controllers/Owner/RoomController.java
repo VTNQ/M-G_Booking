@@ -1,9 +1,10 @@
 package com.vtnq.web.Controllers.Owner;
 
-import ch.qos.logback.core.model.Model;
 import com.vtnq.web.DTOs.Room.RoomDTO;
 import com.vtnq.web.Entities.Room;
+import com.vtnq.web.Entities.Type;
 import com.vtnq.web.Service.RoomService;
+import com.vtnq.web.Service.TypeService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 public class RoomController {
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private TypeService typeService;
     @GetMapping("Room/{id}")
     public String Room(@PathVariable int id, ModelMap model, HttpSession session,
                        @RequestParam(defaultValue = "1") int page,
@@ -34,7 +36,7 @@ public class RoomController {
             session.setAttribute("id", id);
             List<Room>rooms=roomService.findAll(id);
             List<Room>filteredRooms=rooms.stream().filter(room ->
-                    room.getType().toLowerCase().contains(name.toLowerCase())
+                    room.getType().getName().toLowerCase().contains(name.toLowerCase())
                     ).collect(Collectors.toList());
             int start = (page - 1) * size;
             int end = Math.min(start + size, filteredRooms.size());
@@ -50,7 +52,7 @@ public class RoomController {
         }
     }
     @PostMapping("Room/add")
-    public String add(@RequestParam List<String>roomTypes, @RequestParam List<BigDecimal>roomPrices, @RequestParam List<Integer>roomCapacities, @RequestParam int IdHotel,
+    public String add(@RequestParam List<Integer>roomTypes, @RequestParam List<BigDecimal>roomPrices, @RequestParam List<Integer>roomCapacities, @RequestParam int IdHotel,
                       @RequestParam(value = "roomImages", required = false) List<MultipartFile> roomImages , RedirectAttributes redirectAttributes) {
         try {
             if (roomImages != null && !roomImages.isEmpty()) {
@@ -127,9 +129,28 @@ public class RoomController {
     @GetMapping("Room/edit/{id}")
     public String edit(@PathVariable int id, ModelMap model, HttpSession session) {
         try {
+            Integer idHotel=(Integer) session.getAttribute("id");
+            model.put("typeRoom",typeService.findByHotel(idHotel));
             model.put("room",roomService.findById(id));
             model.put("picture",roomService.FindPictureByRoomId(id));
             return "Owner/Room/edit";
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    @PostMapping("Room/addType")
+    public String addType(@ModelAttribute("type")Type type,RedirectAttributes redirectAttributes) {
+        try {
+            if(typeService.addType(type)){
+                redirectAttributes.addFlashAttribute("message", "Type added successfully");
+                redirectAttributes.addFlashAttribute("messageType", "success");
+                return "redirect:/Owner/Room/add";
+            }else{
+                redirectAttributes.addFlashAttribute("message", "Type add failed");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Owner/Room/add";
+            }
         }catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -139,6 +160,9 @@ public class RoomController {
     public String add(ModelMap modelMap,HttpSession session){
         try {
             Integer id=(Integer) session.getAttribute("id");
+            Type type=new Type();
+            type.setHotelId(id);
+            modelMap.put("type",type);
             modelMap.put("id",id);
             return "Owner/Room/add";
 

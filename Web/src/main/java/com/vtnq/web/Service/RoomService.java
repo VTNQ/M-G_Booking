@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface RoomService {
-    public boolean addRoom(List<String>roomTypes, List<BigDecimal>roomPrices, List<Integer>roomCapacities, int idHotel,
+    public boolean addRoom(List<Integer>roomTypes, List<BigDecimal>roomPrices, List<Integer>roomCapacities, int idHotel,
                            List<List<MultipartFile>>roomImages);
     public List<Room>findAll(int id);
     public RoomDTO findById(int id);

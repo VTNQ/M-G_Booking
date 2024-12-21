@@ -2,7 +2,6 @@ package com.vtnq.web.Service;
 
 import com.vtnq.web.DTOs.AmenityDto;
 import com.vtnq.web.Entities.Amenity;
-import com.vtnq.web.Entities.Country;
 import com.vtnq.web.Entities.Room;
 import com.vtnq.web.Entities.RoomAmenity;
 import com.vtnq.web.Repositories.AmenityRepository;

@@ -42,7 +42,7 @@ public class RoomController {
     public ResponseEntity<Object>DeletePictureImage(@PathVariable int id){
         try {
             Map<String,Object>response=new LinkedHashMap<>();
-            if(roomService.delete(id)){
+            if(roomService.deleteMultipleImagesRoom(id)){
                 response.put("status",200);
                 response.put("message","Delete Image Successfully");
                 return ResponseEntity.ok(response);

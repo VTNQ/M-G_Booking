@@ -1,6 +1,7 @@
 package com.vtnq.web.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
@@ -13,19 +14,25 @@ public class Room {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
-    @Column(name = "type", nullable = false, length = 50)
-    private String type;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "type_id", nullable = false)
+    private Type type;
 
+    @NotNull
     @Column(name = "price", nullable = false, precision = 10)
     private BigDecimal price;
 
+    @NotNull
     @Column(name = "occupancy", nullable = false)
     private Integer occupancy;
 
+    @NotNull
     @ColumnDefault("b'1'")
     @Column(name = "status", nullable = false)
     private Boolean status = false;
@@ -46,11 +53,11 @@ public class Room {
         this.hotel = hotel;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
