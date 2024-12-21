@@ -15,6 +15,210 @@
     cursor: pointer;
     transition: color 0.2s ease;
 }
+.height-570 {
+    height: 35.625rem;
+}
+.slider {
+    position: relative;
+    width: 800px; /* Chiều rộng slider */
+    height: 400px; /* Chiều cao slider */
+    margin: auto;
+    overflow: hidden; /* Ẩn phần ngoài slider */
+}
+
+/* Vùng chứa tất cả các slide */
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Hiệu ứng chuyển slide */
+    width: 100%;
+}
+
+/* Mỗi slide */
+.slide {
+    min-width: 100%; /* Mỗi slide chiếm 100% chiều rộng */
+    box-sizing: border-box;
+}
+
+.slide img {
+    width: 100%; /* Hình ảnh chiếm toàn bộ chiều rộng slide */
+    height: auto;
+    object-fit: cover;
+}
+
+/* Nút điều hướng */
+.prev,
+.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.prev {
+    left: 10px; /* Căn bên trái */
+}
+
+.next {
+    right: 10px; /* Căn bên phải */
+}
+
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Hiệu ứng hover */
+}
+.caption.active {
+    display: block;
+}
+.caption {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    width: 15vh;
+    background-color: rgba(0, 0, 0, 0.8); /* Nền đen mờ */
+    color: #fff;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 5px;
+}
+/* Hiệu ứng fade-in */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Hiệu ứng fade-out */
+.fade-out {
+    animation: fadeOut 0.5s ease-in-out;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Hiệu ứng slide-in */
+.slide-in {
+    animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Hiệu ứng slide-out */
+.slide-out {
+    animation: slideOut 0.5s ease-in-out;
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+.custombox-overlay,
+.custombox-content {
+    display: none !important;
+}
+.modal-show {
+    display: block !important;
+}
+/* Chỉ báo (dots) */
+.dots {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background-color: #aaa;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: #fff;
+}
+.js-scrollbar {
+    max-height: 570px !important; /* Giới hạn chiều cao */
+    overflow-y: auto !important; /* Kích hoạt thanh cuộn dọc */
+    scrollbar-width: thin; /* Thanh cuộn nhỏ gọn (Firefox) */
+    scrollbar-color: #297cbb #f0f0f0; /* Màu thanh cuộn và nền (Firefox) */
+}
+
+/* Thanh cuộn trên Chrome, Edge, và Safari */
+.js-scrollbar::-webkit-scrollbar {
+    width: 8px; /* Độ rộng */
+}
+
+.js-scrollbar::-webkit-scrollbar-track {
+    background: #f0f0f0; /* Màu nền */
+}
+
+.js-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #297cbb; /* Màu của thanh cuộn */
+    border-radius: 4px; /* Góc bo tròn */
+    border: 2px solid transparent; /* Để tạo hiệu ứng padding */
+}
+.mCustomScrollbar {
+    -ms-touch-action: pinch-zoom;
+    touch-action: pinch-zoom;
+}
+.mCustomScrollBox {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    max-width: 100%;
+    outline: none;
+    direction: ltr;
+}
+.mr-n4, .mx-n4 {
+    margin-right: -1.5rem !important;
+}
+.mt-n4, .my-n4 {
+    margin-top: -1.5rem !important;
+}
+.width-50 {
+    width: 3.125rem;
+}
+
+.height-50 {
+    height: 3.125rem;
+}
 .fas.fa-star {
     color: gray; /* Default star color */
 }
@@ -339,6 +543,7 @@
 /* Slide Wrapper */
 .slides {
     display: flex;
+    height: 100%;
     transition: transform 0.5s ease-in-out;
 }
 
@@ -982,8 +1187,7 @@
 .slider {
     -webkit-appearance: none;
     width: 100%;
-    height: 5px;
-    background: #ddd;
+    height: 100%;
     border-radius: 5px;
     outline: none;
     cursor: pointer;

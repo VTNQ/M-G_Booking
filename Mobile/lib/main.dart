@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/Views/Login.dart';
+import 'package:mobile/Views/Auth/ForgotPassword.dart';
+import 'package:mobile/Views/Auth/Login.dart';
+import 'package:mobile/Views/Auth/LoginSuccess.dart';
+
+import 'package:mobile/Views/Auth/OtpVerificationScreen.dart';
+import 'package:mobile/Views/Auth/Register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +37,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginPage(),
+      home:LoginSuccessScreen(),
     );
   }
 }
