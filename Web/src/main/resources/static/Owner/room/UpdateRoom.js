@@ -101,44 +101,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         });
     });
 
-    function deleteImage(imageId, hotelId) {
-        console.log(imageId)
-        // Make the API request to delete the image
-        fetch(`http://localhost:8686/api/hotel/DeletePictureImage/${imageId}`, {
-            method: 'DELETE',
 
-
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 200) {
-                    // Show success message
-                    Swal.fire(
-                        'Deleted!',
-                        'The image has been deleted.',
-                        'success'
-                    ).then(() => {
-                        // Redirect to the desired page after a successful deletion
-                        window.location.href = `http://localhost:8386/Owner/Hotel/${hotelId}`;
-                    });
-                } else {
-                    // Show error message
-                    Swal.fire(
-                        'Error!',
-                        'There was an issue deleting the image.',
-                        'error'
-                    );
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting image:', error);
-                Swal.fire(
-                    'Error!',
-                    'An error occurred while deleting the image.',
-                    'error'
-                );
-            });
-    }
 
     const citySelect = new TomSelect("#city-select", {
         placeholder: "Select a city",
@@ -152,14 +115,25 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
 })
-document.querySelectorAll('.delete-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        const imageId = this.getAttribute('data-id');
-        const hotelId = this.getAttribute('data-hotel-id');
+const deleteButtons = document.querySelectorAll('#delete-btn'); // Lấy tất cả các nút có lớp .delete-btn
+for (let i = 1; i < deleteButtons.length; i++) { // Lặp qua danh sách nút
+    deleteButtons[i].addEventListener('click', function () {
+        const imageId = this.getAttribute('data-id'); // Lấy giá trị imageId từ thuộc tính data-id
+        const hotelId = this.getAttribute('data-hotel-id'); // Lấy giá trị hotelId từ thuộc tính data-hotel-id
 
-        deleteImage(imageId, hotelId);
+        if (!imageId) {
+            Swal.fire(
+                'Error!',
+                'Invalid image ID.',
+                'error'
+            );
+            return;
+        }
+
+        deleteImage(imageId, hotelId); // Gọi hàm deleteImage với imageId và hotelId
     });
-});
+}
+
 function deleteImage(imageId, hotelId) {
     console.log(imageId)
     // Make the API request to delete the image
@@ -178,7 +152,7 @@ function deleteImage(imageId, hotelId) {
                     'success'
                 ).then(() => {
                     // Redirect to the desired page after a successful deletion
-                    window.location.href = `http://localhost:8386/Owner/room/${hotelId}`;
+                    window.location.href = `http://localhost:8686/Owner/Room/${hotelId}`;
                 });
             } else {
                 // Show error message

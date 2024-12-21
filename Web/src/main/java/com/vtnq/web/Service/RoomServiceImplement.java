@@ -6,11 +6,9 @@ import com.vtnq.web.DTOs.Room.RoomDetailHotel;
 import com.vtnq.web.Entities.Hotel;
 import com.vtnq.web.Entities.Picture;
 import com.vtnq.web.Entities.Room;
+import com.vtnq.web.Entities.Type;
 import com.vtnq.web.Helper.FileHelper;
-import com.vtnq.web.Repositories.AmenityRepository;
-import com.vtnq.web.Repositories.HotelRepository;
-import com.vtnq.web.Repositories.PictureRepository;
-import com.vtnq.web.Repositories.RoomRepository;
+import com.vtnq.web.Repositories.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +33,19 @@ public class RoomServiceImplement implements RoomService{
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
+    private TypeRepository typeRepository;
+    @Autowired
     private PictureRepository pictureRepository;
     @Override
-    public boolean addRoom(List<String> roomTypes, List<BigDecimal> roomPrices, List<Integer> roomCapacities, int idHotel,List<List<MultipartFile>>roomImages)
+    public boolean addRoom(List<Integer> roomTypes, List<BigDecimal> roomPrices, List<Integer> roomCapacities, int idHotel,List<List<MultipartFile>>roomImages)
     {
         try {
             Hotel hotel=hotelRepository.findById(idHotel)
                     .orElseThrow(() -> new Exception("Hotel Not Found"));
             for (int i = 0; i < roomTypes.size(); i++) {
                 Room room=new Room();
-                room.setType(roomTypes.get(i));
+                Type type=typeRepository.findById(roomTypes.get(i)).orElseThrow(() -> new Exception("Type Not Found"));
+                room.setType(type);
                 room.setPrice(roomPrices.get(i));
                 room.setOccupancy(roomCapacities.get(i));
                 room.setHotel(hotel);
@@ -133,7 +134,10 @@ public class RoomServiceImplement implements RoomService{
         try {
             Hotel hotel=hotelRepository.findById(roomDTO.getIdHotel())
                     .orElseThrow(() -> new Exception("Hotel Not Found"));
+            Type type=typeRepository.findById(roomDTO.getType())
+                    .orElseThrow(() -> new Exception("Type Not Found"));
             Room room=modelMapper.map(roomDTO, Room.class);
+            room.setType(type);
             room.setHotel(hotel);
             roomRepository.save(room);
             return true;
@@ -192,7 +196,7 @@ public class RoomServiceImplement implements RoomService{
                 Path filePathImages=uploadPath.resolve(filenameImages);
                 file.transferTo(filePathImages.toFile());
                 Picture pictureImage=new Picture();
-                pictureImage.setHotelId(id);
+                pictureImage.setRoomId(id);
                 pictureImage.setImageUrl(filenameImages);
                 pictureImage.setIsMain(false);
                 pictureRepository.save(pictureImage);

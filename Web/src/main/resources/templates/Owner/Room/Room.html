@@ -174,6 +174,7 @@
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">occupancy</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Action</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Amenities</th>
+                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
                                     <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-collapse border-solid shadow-none dark:border-white/40 dark:text-white tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
                                 </tr>
                                 </thead>
@@ -184,7 +185,7 @@
                                             <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" th:text="${start.index+1}"></p>
                                         </td>
                                         <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"       >
-                                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" th:text="${Rooms.type}"></p>
+                                            <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" th:text="${Rooms.type.name}"></p>
                                         </td>
                                         <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent" style="padding: 23px !important;" >
                                             <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80" style="text-align: center" th:text="${Rooms.price}"></p>
@@ -205,6 +206,10 @@
                                             <a th:href="@{'/Owner/Amenities/'+${Rooms.id}}"   style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i  class="fa-solid fa-hotel" style="color: white !important;"></i></a>
 
 
+                                        </td>
+                                        <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  style="text-align: center">
+                                            <button th:if="${Rooms.status==false}" style="background-color: #4299e1;border-color: #4299e1;color: white" th:text="${'Available'}" type="button" class="btn btn-info" ></button>
+                                            <button th:if="${Rooms.status==true}" style="background-color: #dc3545;border-color: #4299e1;color: white" th:text="${'UnAvailable'}" type="button" class="btn btn-danger" ></button>
                                         </td>
                                     </tr>
                                 </th:block>

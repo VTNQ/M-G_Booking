@@ -49,7 +49,7 @@ public class SercurityConfiguration {
                             .requestMatchers("/Owner","/Owner/Hotel/add","/Owner/Hotel","/Owner/Hotel/edit/{id}","/Owner/Hotel/update","/Owner/Hotel/Detail/{id}"
                             ,"/Owner/service/add","/Owner/service/{id}","/Owner/service/edit/{id}","/Owner/service/update","/Owner/Room/{id}","/Owner/Room/add",
                                     "/Owner/Room/edit/{id}","/Owner/Room/update","/Owner/Room/delete/{id}","/Owner/Amenities/{id}","/Owner/Amenities/add","/Owner/Amenities/edit/{id}",
-                                    "/Owner/Amenities/update","/Owner/Amenities/delete/{id}").hasAnyRole("OWNER")
+                                    "/Owner/Amenities/update","/Owner/Amenities/delete/{id}","/Owner/Room/addType").hasAnyRole("OWNER")
                             .anyRequest().authenticated();
                 })
 

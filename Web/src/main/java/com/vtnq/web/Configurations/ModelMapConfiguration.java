@@ -23,6 +23,7 @@ public ModelMapper modelMap() {
     });
     modelMapper.typeMap(Room.class, RoomDTO.class).addMappings(mapping -> {
         mapping.map(rooms->rooms.getHotel().getId(),RoomDTO::setIdHotel);
+        mapping.map(rooms->rooms.getType().getId(),RoomDTO::setType);
     });
 return modelMapper;
 }

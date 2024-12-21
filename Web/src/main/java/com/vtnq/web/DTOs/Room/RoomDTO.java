@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 
 public class RoomDTO {
     private Integer id;
-    @NotBlank(message = "Type is required")
-    private String type;
+    @Min(value = 1,message = "Type is required")
+    private int type;
     @Min(value = 1,message = "Price is required")
     private BigDecimal price;
     @Min(value = 1,message = "Hotel is required")
@@ -39,14 +39,12 @@ public class RoomDTO {
         this.id = id;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
-
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
-
     public BigDecimal getPrice() {
         return price;
     }

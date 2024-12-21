@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{/Owner/layout/layout :: mainContent('add Hotel',~{this::#main})}">
+<html lang="en" th:replace="~{/Owner/layout/layout :: mainContent('add Room',~{this::#main})}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -139,6 +139,7 @@
 
 
     </div>
+    <input type="hidden" th:field="${type.hotelId}" id="hotelId">
     <form th:action="@{/Owner/Room/add}" method="post" enctype="multipart/form-data">
         <div class="w-full p-6 mx-auto">
             <div class="flex flex-wrap -mx-3">
@@ -146,8 +147,11 @@
                 <div class="w-full max-w-full px-3 shrink-0 md:w-8/12 md:flex-0">
                     <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
                         <div class="border-black/12.5 rounded-t-2xl border-b-0 border-solid p-6 pb-0">
-                            <div class="flex items-center">
+                            <div class="flex items-center justify-content-between">
                                 <p class="mb-0 dark:text-white/80">Room</p>
+                                <button type="button"  class="btn btn-primary  text-wrap  " id="openModalBtn" >
+                                    <i class="fa-solid fa-plus"></i>
+                                    Add Type</button>
                             </div>
                         </div>
                         <div class="flex-auto p-6">
@@ -217,7 +221,30 @@
         </div>
     </form>
 
+    <div class="modal" id="customModal">
+        <form th:action="@{/Owner/Room/addType}" method="post" id="typeForm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Add Type</h5>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
 
+                    <div class="mb-3">
+                        <label for="typeName" class="form-label">Type Name</label>
+                        <input type="text" id="typeName" th:field="${type.name}" placeholder="Enter type name" class="form-control">
+                    </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" th:field="${type.hotelId}"/>
+                <button class="btn-secondary" id="cancelModalBtn">Close</button>
+                <button class="btn-primary" id="saveModalBtn">Save Type</button>
+            </div>
+        </div>
+        </form>
+    </div>
     <script>
         // Function to generate room fields dynamically
         document.getElementById('numRooms').addEventListener('input', function() {
@@ -249,6 +276,7 @@
                        <div id="previewRoomImages${i}" class="flex flex-wrap gap-2 mt-2"></div>
                 `;
                     container.appendChild(roomDiv);
+                    fetchRoomTypes(i);
                     document.getElementById(`roomImages${i}`).addEventListener('change',function (event){
                         const previewContainer=document.getElementById(`previewRoomImages${i}`);
                         previewContainer.innerHTML='';
@@ -270,6 +298,35 @@
                 }
             }
         });
+        const modal=document.getElementById('customModal');
+        const openModalBtn=document.getElementById('openModalBtn');
+        const closeModalBtn=document.getElementById('closeModalBtn');
+        const cancelModalBtn=document.getElementById('cancelModalBtn');
+        openModalBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+        function fetchRoomTypes(roomIndex){
+            const Hotelid=document.getElementById('hotelId').value;
+            fetch(`http://localhost:8686/api/type/FindTypeByHotel/${Hotelid}`)
+                .then(response => response.json())
+                .then(data=>{
+                    const roomTypeSelect = document.getElementById(`roomType${roomIndex}`);
+                    roomTypeSelect.innerHTML = '';
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.text = 'Select Room Type';
+                    roomTypeSelect.appendChild(defaultOption);
+                    data.forEach(type => {
+                        const option = document.createElement('option');
+                        option.value = type.id; // Assuming 'name' is the property returned by the API
+                        option.text = type.name;
+                        roomTypeSelect.appendChild(option);
+                    });
+                }).catch(error => {
+                console.error('Error fetching room types:', error);
+            });
+
+        }
     </script>
 
 
