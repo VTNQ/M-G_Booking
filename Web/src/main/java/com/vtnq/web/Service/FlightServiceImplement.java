@@ -4,14 +4,9 @@ import com.vtnq.web.DTOs.Flight.DetailFlightDTO;
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
 import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
-import com.vtnq.web.Entities.Airline;
-import com.vtnq.web.Entities.Airport;
-import com.vtnq.web.Entities.DetailFlight;
-import com.vtnq.web.Entities.Flight;
-import com.vtnq.web.Repositories.AirlineRepository;
-import com.vtnq.web.Repositories.AirportRepository;
-import com.vtnq.web.Repositories.DetailFlightRepository;
-import com.vtnq.web.Repositories.FlightRepository;
+import com.vtnq.web.DTOs.Seat.SeatDTO;
+import com.vtnq.web.Entities.*;
+import com.vtnq.web.Repositories.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +25,8 @@ public class FlightServiceImplement implements FlightService{
     private AirportRepository airportRepository;
     @Autowired
     private FlightRepository flightRepository;
+    @Autowired
+    private SeatRepository seatRepository;
     @Autowired
     private DetailFlightRepository detailFlightRepository;
     @Autowired
@@ -150,6 +148,101 @@ public class FlightServiceImplement implements FlightService{
             return null;
         }
     }
+
+    @Override
+    public boolean CreateSeat(SeatDTO seatDTO) {
+        try {
+            List<Seat> seats = new ArrayList<>();
+            int seatsPerRow = 6; // Mỗi dãy có 6 ghế (A, B, C, D, E, F)
+
+            // Lấy tổng số ghế cho mỗi hạng
+            int totalFirstClassSeats = seatDTO.getFirstClassSeat();
+            int totalBusinessClassSeats = seatDTO.getBusinessClassSeat();
+            int totalEconomyClassSeats = seatDTO.getEconomyClassSeat();
+
+            int currentSeatIndex = 1; // Chỉ số ghế bắt đầu từ 1
+            int currentRow = 1; // Dùng để theo dõi dãy hiện tại
+            char currentColumn = 'A'; // Cột bắt đầu
+            int SeatsInRow=0;
+            // Tạo ghế cho Hạng Nhất
+            int firstClassRowCount = (int) Math.ceil((double) totalFirstClassSeats / seatsPerRow);
+            for (int row = 1; row <= firstClassRowCount; row++) {
+                for (char letter = currentColumn; letter <= 'F'; letter++) {
+                    if (currentSeatIndex > totalFirstClassSeats) {
+                        currentColumn = (letter == 'F') ? (char) letter: (char) (letter + 1); // Ghi nhớ cột tiếp theo
+                        break; // Nếu ghế đã đủ cho Hạng Nhất, thoát vòng lặp
+                    }
+                    Flight flight = flightRepository.findById(seatDTO.getIdFlight())
+                            .orElseThrow(() -> new Exception("Flight not found"));
+                    seats.add(new Seat(letter + Integer.toString(currentRow), "First Class", flight));
+                    currentSeatIndex++;
+                    SeatsInRow++;// Tăng chỉ số ghế sau mỗi lần tạo ghế
+                }
+                if (SeatsInRow == 6) {
+                    currentRow++;
+                   SeatsInRow = 0;
+                    currentColumn = 'A';
+                }
+
+            }
+
+            // Tạo ghế cho Hạng Thương Gia
+            int businessClassStartIndex = currentSeatIndex;
+            int CurrenRowBusiness=currentRow;
+            int businessClassRowCount = (int) Math.ceil((double) totalBusinessClassSeats / seatsPerRow);
+            for (int row = currentRow; row <= CurrenRowBusiness + businessClassRowCount; row++) {
+                for (char letter = currentColumn; letter <= 'F'; letter++) {
+                    if (currentSeatIndex > businessClassStartIndex + totalBusinessClassSeats - 1) {
+                        currentColumn = (letter == 'F') ? (char) letter:  (char) (letter + 1); // Ghi nhớ cột tiếp theo
+                        break; // Nếu ghế đã đủ cho Hạng Thương Gia, thoát vòng lặp
+                    }
+                    Flight flight = flightRepository.findById(seatDTO.getIdFlight())
+                            .orElseThrow(() -> new Exception("Flight not found"));
+                    seats.add(new Seat(letter + Integer.toString(row), "Business Class", flight));
+                    currentSeatIndex++;
+                    SeatsInRow++;
+                }
+                if (SeatsInRow == 6) {
+                    currentRow++;
+                    SeatsInRow = 0;
+                    currentColumn = 'A';
+                }
+
+            }
+
+
+            // Tạo ghế cho Hạng Phổ Thông
+            int economyClassStartIndex = currentSeatIndex;
+            int CurrenRowEconomy=currentRow;
+            int economyClassRowCount = (int) Math.ceil((double) totalEconomyClassSeats / seatsPerRow);
+            for (int row = currentRow; row <= CurrenRowEconomy + economyClassRowCount; row++) {
+                for (char letter = currentColumn; letter <= 'F'; letter++) {
+                    if (currentSeatIndex > economyClassStartIndex + totalEconomyClassSeats - 1) {
+                        currentColumn = (letter == 'F') ? (char) letter: (char) (letter + 1); // Ghi nhớ cột tiếp theo
+                        break; // Nếu ghế đã đủ cho Hạng Phổ Thông, thoát vòng lặp
+                    }
+                    Flight flight = flightRepository.findById(seatDTO.getIdFlight())
+                            .orElseThrow(() -> new Exception("Flight not found"));
+                    seats.add(new Seat(letter + Integer.toString(row), "Economy Class", flight));
+                    currentSeatIndex++;
+                    SeatsInRow++;
+                }
+                if (SeatsInRow == 6) {
+                    currentRow++;
+                    SeatsInRow = 0;
+                    currentColumn = 'A';
+                }
+            }
+
+            // Lưu tất cả ghế vào repository
+            seatRepository.saveAll(seats);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
 
 
 }

@@ -45,7 +45,7 @@ public class SercurityConfiguration {
                                     "Admin/City/UpdateCity","/Admin/City/delete/{id}","Admin/District/{id}",
                                     "Admin/District/add","/Admin/District/edit/{id}","/Admin/District/update","/Admin/District/delete/{id}",
                                     "Admin/AirPort/add","Admin/AirPort","/Admin/AirPort/edit/{id}","/Admin/Flight/add","/Admin/Flight/edit/{id}",
-                                    "Admin/Flight/AddDetailFlight","/Admin/Flight/UpdateFlight").hasAnyRole("ADMIN")
+                                    "Admin/Flight/AddDetailFlight","/Admin/Flight/UpdateFlight","/Admin/Flight/addSeat").hasAnyRole("ADMIN")
                             .requestMatchers("/Owner","/Owner/Hotel/add","/Owner/Hotel","/Owner/Hotel/edit/{id}","/Owner/Hotel/update","/Owner/Hotel/Detail/{id}"
                             ,"/Owner/service/add","/Owner/service/{id}","/Owner/service/edit/{id}","/Owner/service/update","/Owner/Room/{id}","/Owner/Room/add",
                                     "/Owner/Room/edit/{id}","/Owner/Room/update","/Owner/Room/delete/{id}","/Owner/Amenities/{id}","/Owner/Amenities/add","/Owner/Amenities/edit/{id}",

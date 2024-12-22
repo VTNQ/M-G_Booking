@@ -3,6 +3,8 @@ package com.vtnq.web.Service;
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
 import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
+import com.vtnq.web.DTOs.Seat.SeatDTO;
+import com.vtnq.web.Entities.Seat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,4 +19,6 @@ public interface FlightService  {
     public List<ResultFlightDTO>SearchFlight(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight);
     public List<ResultFlightDTO>SearchFlightAllDto(int departureAirport, int arrivalAirport, LocalDate departureTime,LocalDate ArrivalTime,String TypeFlight);
     public ResultFlightDTO FindResultFlightAndHotel(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight);
+    public boolean CreateSeat(SeatDTO seatDTO);
+
  }
