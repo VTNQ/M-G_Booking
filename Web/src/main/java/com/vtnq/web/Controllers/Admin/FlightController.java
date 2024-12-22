@@ -3,14 +3,12 @@ package com.vtnq.web.Controllers.Admin;
 import com.vtnq.web.DTOs.Flight.DetailFlightDTO;
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
+import com.vtnq.web.DTOs.Seat.SeatDTO;
 import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Entities.DetailFlight;
 import com.vtnq.web.Entities.Flight;
 import com.vtnq.web.Repositories.FlightRepository;
-import com.vtnq.web.Service.AirlineService;
-import com.vtnq.web.Service.AirportService;
-import com.vtnq.web.Service.DetailFlightService;
-import com.vtnq.web.Service.FlightService;
+import com.vtnq.web.Service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,8 @@ public class FlightController {
     private AirlineService airlineService;
     @Autowired
     private FlightService flightService;
+    @Autowired
+    private SeatService seatService;
 
     @Autowired
     private DetailFlightService detailFlightService;
@@ -44,12 +44,14 @@ public class FlightController {
             model.put("ArrivalAirPort", airportService.findAll());
             model.put("Airline", airlineService.findAll());
             model.put("flight", new FlightDto());
+
             return "Admin/Flight/add";
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
 
     @GetMapping("Flight/edit/{id}")
     public String editFlight(ModelMap model, @PathVariable int id, HttpServletRequest request) {
@@ -84,6 +86,8 @@ public class FlightController {
             model.put("Flight", paginatedFlights);
             model.put("totalPages", (int) Math.ceil((double) filterFlights.size() / size));
             model.put("currentPage", page);
+            model.put("Seat",new SeatDTO());
+
             return "Admin/Flight/Flight";
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,6 +120,23 @@ public class FlightController {
             return null;
         }
     }
+    @PostMapping("Flight/addSeat")
+    public String addSeat(@ModelAttribute("Seat")SeatDTO seatDTO,RedirectAttributes redirectAttributes){
+        try {
+            if(flightService.CreateSeat(seatDTO)) {
+                redirectAttributes.addFlashAttribute("messageType", "success");
+                redirectAttributes.addFlashAttribute("message", "Seat added successfully");
+                return "redirect:/Admin/Flight";
+            }else{
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                redirectAttributes.addFlashAttribute("message", "Seat add failed");
+                return "redirect:/Admin/Flight";
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        }
     @PostMapping("Flight/AddDetailFlight")
     public String addDetailFlight(@ModelAttribute("detailFlightAdd")@Valid DetailFlightDTO detailFlightDTO, BindingResult result, RedirectAttributes redirectAttributes) {
       try {

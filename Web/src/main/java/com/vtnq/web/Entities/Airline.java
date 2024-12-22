@@ -13,7 +13,7 @@ public class Airline {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 

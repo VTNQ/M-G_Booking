@@ -21,10 +21,19 @@ public class Seat {
     @Column(name = "type", length = 100)
     private String type;
 
+    public Seat() {
+    }
+
+    public Seat(String index, String type, Flight idFlight) {
+        this.index = index;
+        this.type = type;
+        this.idFlight = idFlight;
+    }
+
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_flight", nullable = false)
-    private DetailFlight idFlight;
+    private Flight idFlight;
 
     public Integer getId() {
         return id;
@@ -50,11 +59,11 @@ public class Seat {
         this.type = type;
     }
 
-    public DetailFlight getIdFlight() {
+    public Flight getIdFlight() {
         return idFlight;
     }
 
-    public void setIdFlight(DetailFlight idFlight) {
+    public void setIdFlight(Flight idFlight) {
         this.idFlight = idFlight;
     }
 

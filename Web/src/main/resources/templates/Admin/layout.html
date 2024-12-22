@@ -50,6 +50,7 @@
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" th:href="@{/SuperAdmin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}"/>
+    <link rel="stylesheet" th:href="@{/Admin/Admin.css}">
     <link rel="stylesheet" th:href="@{/SuperAdmin/assets/vendor/libs/apex-charts/apex-charts.css}"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3.7.0/notyf.min.css">
     <script src="https://cdn.jsdelivr.net/npm/notyf@3.7.0/notyf.min.js"></script>
@@ -275,6 +276,7 @@
 
 <div th:if="${title=='add Flight'}" th:insert="~{'/Admin/Flight/add':: customScripts}"></div>
 <div th:if="${title=='EditFlight'}" th:insert="~{'/Admin/Flight/Edit':: customScripts}"></div>
+<div th:if="${title=='Flight'}" th:insert="~{'/Admin/Flight/Flight':: customScripts}"></div>
 
 <div th:if="${message}" th:attr="data-message=${message}, data-type=${messageType}"></div>
 <!-- Core JS -->
