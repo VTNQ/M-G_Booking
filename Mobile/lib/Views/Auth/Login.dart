@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Views/Auth/Register.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -100,7 +101,8 @@ class LoginPageView extends State<LoginPage> {
                 child: ElevatedButton(onPressed: (){},style:ElevatedButton.styleFrom(backgroundColor: Colors.orange,shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),padding: EdgeInsets.symmetric(vertical: 16)) , child:Text("Continue",style: TextStyle(color: Colors.white,fontSize: 16),)),
-              )
+              ),
+              TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Register()),);}, child: Text("Create an account",style: TextStyle(color: Colors.blue),)),
             ],
           ),
         ),
