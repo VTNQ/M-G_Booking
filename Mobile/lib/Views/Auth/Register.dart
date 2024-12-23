@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/APIs/CountryAPi.dart';
+import 'package:mobile/Model/Country.dart';
+import 'package:mobile/Model/registerUser.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -8,12 +11,28 @@ class Register extends StatefulWidget {
 }
 
 class RegisterPage extends State<Register> {
-  var email = TextEditingController(text: "");
-  var password = TextEditingController(text: "");
-  var confirmPassword=TextEditingController(text: "");
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController accountTypeController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+  String selectValue = "Select Country";
+  List<Country> countries = CountryAPI().getCountries() as List<Country>;
   @override
   void initState() {
     super.initState();
+  }
+
+  void register() {
+    var registerUser = RegisterUser(
+      fullName: fullNameController.text,
+      email: emailController.text,
+      accountType: accountTypeController.text,
+      password: passwordController.text,
+      phone: phoneController.text,
+      countryId: 1,
+    );
   }
 
   @override
@@ -29,23 +48,34 @@ class RegisterPage extends State<Register> {
               children: [
                 Align(
                   alignment: Alignment.topLeft,
-                  child: IconButton(onPressed: (){}, icon:
+                  child: IconButton(onPressed: (){Navigator.pop(context);}, icon:
                   Icon(Icons.arrow_back)),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(height: 40,),
                 Text("Register Account",
                   style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold
                   ),),
-                SizedBox(height: 8,),
+                SizedBox(height: 16,),
                 Text("Complete your details or continue\n with social medias",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey[600]),
                 ),
-                SizedBox(height: 40,),
+                SizedBox(height: 16,),
                 TextField(
-                  controller: email,
+                  controller: fullNameController,
+                  decoration: InputDecoration(
+                    labelText: "Full Name",
+                    prefixIcon: Icon(Icons.person),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16,),
+                TextField(
+                  controller: emailController,
                   decoration: InputDecoration(
                     labelText: "Email",
                     prefixIcon: Icon(Icons.email),
@@ -56,7 +86,34 @@ class RegisterPage extends State<Register> {
                 ),
                 SizedBox(height: 16,),
                 TextField(
-                  controller: password,
+                  controller: phoneController,
+                  decoration: InputDecoration(
+                    labelText: "Phone",
+                    prefixIcon: Icon(Icons.phone),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16,),
+                // DropdownButton<String>(
+                //   hint: Text("Select Country"),
+                //   value: selectValue,
+                //   onChanged: (String? newValue) {
+                //     setState(() {
+                //       selectValue = newValue!;
+                //     });
+                //   },
+                //   items: countries.map<DropdownMenuItem<String>>((String value) {
+                //     return DropdownMenuItem<String>(
+                //       value: value,
+                //       child: Text(value),
+                //     );
+                //   }).toList(),
+                // ),
+                SizedBox(height: 16,),
+                TextField(
+                  controller: passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Password",
@@ -68,7 +125,7 @@ class RegisterPage extends State<Register> {
                 ),
                 SizedBox(height: 16,),
                 TextField(
-                  controller: confirmPassword,
+                  controller: confirmPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Confirm Password",
