@@ -7,286 +7,596 @@
 </head>
 <body>
 <main id="content" class="relative block">
-<div class="container-fluid pt-5 ">
-    <div class="row mb-5 mb-lg-8 mt-xl-1">
-        <div class="col-lg-4 col-xl-3 order-lg-1 width-md-50">
-            <div class="navbar-expand-lg navbar-expand-lg-collapse-block">
-                <button class="btn d-lg-none mb-5 p-0 collapsed" type="button"></button>
-                <div id="sidebar" class="collapse navbar-collapse">
-                    <div class="mb-6 w-100">
-                        <div class="pb-4 mb-2">
-                            <div class="sidebar border border-color-1 rounded-xs">
-                                <div class="p-4 mb-1">
-                                    <span class="d-block text-gray-1 mb-0 text-left" style="font-weight: 400 !important">Destination or Hotel Name</span>
-                                    <div class="mt-3 mb-4">
-                                        <div class="input-group border-bottom border-width-2 border-color-1 " style="border: none">
-                                            <i class="fa-solid fa-location-dot d-flex align-items-center mr-2 "   style="color: #297cbb !important;font-size: 1.375rem"></i>
-                                            <input type="text" class="form-control shadow-none hero-form border-0 p-0" placeholder="Where are you going?" style="font-weight: 500 !important;font-size: 1rem;color: #3b444f">
+
+    <div class="container-fluid pt-5 ">
+        <div style="position: relative;margin-bottom: 13vh">
+            <div style="padding-bottom: 5px;position: absolute;width: 100%">
+                <div style="background-image: url('https://cdn6.agoda.net/images/PACKAGES-251/default/pkg_headbg_modifysearch@2x.jpg');
+background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 100%;min-width: 980px;box-sizing: border-box;display: flex;align-items: center;flex-wrap: nowrap">
+                    <div style="margin: auto;width: 1100px;box-sizing: border-box;display: flex;align-items: center;flex-wrap: nowrap">
+                        <div style="max-width: calc(100% - 180px);box-sizing: border-box;margin: 0px;display: block;flex-basis: 100%;flex-grow: 0">
+                            <span style="font-size: 20px;font-weight: 500;color: #fff;line-height: 20px">Chuyến đi từ Hồ Chí Minh (SGN) tới Hà Nội (HAN)</span>
+                            <div style="box-sizing: border-box;display: flex;width: 100%;align-items: flex-start;flex-wrap: nowrap">
+                                <div style="box-sizing: border-box;margin: 0px">
+                                    <span style="background-color: rgb(37, 181, 124);border-radius: 2px;display: block;padding: 0px 8px;margin-top: 4px;font-size: 14px;line-height: 32px;font-weight: 400">
+                                        <i class="fa-solid fa-plane-circle-check"></i>
+                                        <span style="font-size: 17px;line-height: 16px;font-weight: 400">Flight</span>
+                                    </span>
+                                    <span style="background-color: rgb(37, 181, 124);border-radius: 2px;display: block;padding: 0px 8px;margin-top: 4px;font-size: 14px;line-height: 32px;font-weight: 400">
+                                        <i class="fa-solid fa-hotel"></i>
+                                        <span style="font-size: 17px;line-height: 16px;font-weight: 400">Hotel</span>
+                                    </span>
+                                </div>
+                                <div style="padding: 0px 8px">
+                                    <span style="display: block;padding: 2px 0px;margin-top: 4px">t2, 23 tháng 12 2024</span>
+                                    <span style="display: block;padding: 2px 0px;margin-top: 4px">t2, 23 tháng 12 2024</span>
+                                </div>
+                                <div style="padding-left: 8px;position: relative;box-sizing: border-box;margin: 0px"
+                                     class="kMETju">
+                                    <span style="display: block;padding: 2px 0px;margin-top: 4px;font-size: 17px;line-height: 16px;font-weight: 400;margin-bottom: 1vh">2 People</span>
+                                    <span style="display: block;padding: 2px 0px;margin-top: 4px;font-size: 17px;line-height: 16px;font-weight: 400">2 Room</span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 180px;box-sizing: border-box;margin: 0px">
+                            <div style="background-color: transparent;box-shadow: none;padding: 0px;border: 0px;float: right;border-radius: 0px">
+                                <button id="SearchBtn" style="min-width: 99px;max-width: 180px;position: relative;border: none;user-select: none;padding: 12px;border-radius: 4px;background-color: rgb(83, 146, 249);color: rgb(255, 255, 255);box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px 1px;transition: 0.15s ease-in-out">
+                                    <div style="display: flex;align-items: center">
+                                        <div>
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                            <span style="margin-left: 4px;font-size: 16px;line-height: 22px;font-weight: 400" >Search</span>
                                         </div>
                                     </div>
-                                    <span class="d-block text-gray-1 mb-0 text-left" style="font-weight: 500 !important">Check In - Out</span>
-                                    <div class="text-left d-block mb-4"
-                                         style="border-width: 2px;border-color: #eaeaea !important;border-bottom: 1px solid #e7eaf3 !important;border: none">
-                                        <div id="datepickerWrapperFromOne"
-                                             class="u-datepicker input-group relative">
-                                            <div class="input-group-prepend">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-5 mb-lg-8 mt-xl-1">
+            <div class="col-lg-4 col-xl-3 order-lg-1 width-md-50">
+                <div class="navbar-expand-lg navbar-expand-lg-collapse-block">
+                    <button class="btn d-lg-none mb-5 p-0 collapsed" type="button"></button>
+                    <div id="sidebar" class="collapse navbar-collapse">
+                        <div class="mb-6 w-100">
+                            <div class="pb-4 mb-2">
+                                <div class="sidebar border border-color-1 rounded-xs">
+                                    <div class="p-4 mb-1">
+                                        <span class="d-block text-gray-1 mb-0 text-left"
+                                              style="font-weight: 400 !important">Destination or Hotel Name</span>
+                                        <div class="mt-3 mb-4">
+                                            <div class="input-group border-bottom border-width-2 border-color-1 "
+                                                 style="border: none">
+                                                <i class="fa-solid fa-location-dot d-flex align-items-center mr-2 "
+                                                   style="color: #297cbb !important;font-size: 1.375rem"></i>
+                                                <input type="text"
+                                                       class="form-control shadow-none hero-form border-0 p-0"
+                                                       placeholder="Where are you going?"
+                                                       style="font-weight: 500 !important;font-size: 1rem;color: #3b444f">
+                                            </div>
+                                        </div>
+                                        <span class="d-block text-gray-1 mb-0 text-left"
+                                              style="font-weight: 500 !important">Check In - Out</span>
+                                        <div class="text-left d-block mb-4"
+                                             style="border-width: 2px;border-color: #eaeaea !important;border-bottom: 1px solid #e7eaf3 !important;border: none">
+                                            <div id="datepickerWrapperFromOne"
+                                                 class="u-datepicker input-group relative">
+                                                <div class="input-group-prepend">
                                                 <span class="d-flex align-items-center mr-2">
                                                     <i class="fa-solid fa-calendar"
                                                        style="color: #297cbb !important;font-weight: 500;font-style: normal"></i>
                                                 </span>
+                                                </div>
+                                                <input id="datePickerInput"
+                                                       class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
+                                                       style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 217.5px;height: 54px"
+                                                       data-rp-default-date="[&quot;Jul 7 / 2020&quot;, &quot;Aug 25 / 2020&quot;]"/>
                                             </div>
-                                            <input id="datePickerInput"
-                                                   class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
-                                                   style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 217.5px;height: 54px"
-                                                   data-rp-default-date="[&quot;Jul 7 / 2020&quot;, &quot;Aug 25 / 2020&quot;]"/>
                                         </div>
-                                    </div>
-                                    <span class="d-block text-gray-1 mb-0 text-left" style="font-weight: 500 !important">Rooms and Guests</span>
-                                    <a id="basicDropdownClickInvoker"
-                                       class="dropdown-nav-link dropdown-toggle text-decoration-none d-flex pt-4 pb-2 mb-4">
-                                        <i class="fa-solid fa-user-plus d-flex align-items-center mr-md-3 "
-                                           style="font-size: 1.125rem;color: #297cbb !important"></i>
-                                        <span class="text-black "
-                                              style="font-size: 1rem;font-weight: 500;color: black">2 Rooms - 3 Guests</span>
-                                    </a>
-                                    <div id="basicDropdownClick"
-                                         class="dropdown-menu  dropdown-unfold col-11 m-0 u-unfold--css-animation slideInUp "
-                                         style="max-width: 81%;top: 34vh;left: 4vh">
-                                        <div class="w-100 py-2 px-3 mb-3">
-                                            <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
-                                                 style="grid-template-columns: 1fr 1fr">
+                                        <span class="d-block text-gray-1 mb-0 text-left"
+                                              style="font-weight: 500 !important">Rooms and Guests</span>
+                                        <a id="basicDropdownClickInvoker"
+                                           class="dropdown-nav-link dropdown-toggle text-decoration-none d-flex pt-4 pb-2 mb-4">
+                                            <i class="fa-solid fa-user-plus d-flex align-items-center mr-md-3 "
+                                               style="font-size: 1.125rem;color: #297cbb !important"></i>
+                                            <span class="text-black "
+                                                  style="font-size: 1rem;font-weight: 500;color: black">2 Rooms - 3 Guests</span>
+                                        </a>
+                                        <div id="basicDropdownClick"
+                                             class="dropdown-menu  dropdown-unfold col-11 m-0 u-unfold--css-animation slideInUp "
+                                             style="max-width: 81%;top: 34vh;left: 4vh">
+                                            <div class="w-100 py-2 px-3 mb-3">
+                                                <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                                     style="grid-template-columns: 1fr 1fr">
                                                         <span class="block"
                                                               style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Rooms</span>
-                                                <div class="d-flex">
-                                                    <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                        <i class="fa-solid fa-minus" style="color: black;position: relative;left: -3px"></i>
-                                                    </a>
-                                                    <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
-                                                           value="1" style="color: #3b444f">
-                                                    <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                        <i class="fa-solid fa-plus" style="color: black;position: relative;left: -3px;top: -3px"></i>
-                                                    </a>
+                                                    <div class="d-flex">
+                                                        <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                           style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                            <i class="fa-solid fa-minus"
+                                                               style="color: black;position: relative;left: -3px"></i>
+                                                        </a>
+                                                        <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                               value="1" style="color: #3b444f">
+                                                        <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                           style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                            <i class="fa-solid fa-plus"
+                                                               style="color: black;position: relative;left: -3px;top: -3px"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="w-100 py-2 px-3 mb-3">
-                                            <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
-                                                 style="grid-template-columns: 1fr 1fr">
+                                            <div class="w-100 py-2 px-3 mb-3">
+                                                <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                                     style="grid-template-columns: 1fr 1fr">
                                                         <span class="block"
                                                               style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Adults</span>
-                                                <div class="d-flex">
-                                                    <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                        <i class="fa-solid fa-minus" style="color: black;position: relative;left: -3px"></i>
-                                                    </a>
-                                                    <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
-                                                           value="1" style="color: #3b444f">
-                                                    <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                        <i class="fa-solid fa-plus" style="color: black;position: relative;left: -3px;top: -3px"></i>
-                                                    </a>
+                                                    <div class="d-flex">
+                                                        <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                           style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                            <i class="fa-solid fa-minus"
+                                                               style="color: black;position: relative;left: -3px"></i>
+                                                        </a>
+                                                        <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                               value="1" style="color: #3b444f">
+                                                        <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                           style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                            <i class="fa-solid fa-plus"
+                                                               style="color: black;position: relative;left: -3px;top: -3px"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="w-100 py-2 px-3 mb-3">
-                                            <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
-                                                 style="grid-template-columns: 1fr 1fr">
+                                            <div class="w-100 py-2 px-3 mb-3">
+                                                <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                                     style="grid-template-columns: 1fr 1fr">
                                                         <span class="block"
                                                               style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Child</span>
-                                                <div class="d-flex">
-                                                    <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                        <i class="fa-solid fa-minus" style="color: black;position: relative;left: -3px"></i>
-                                                    </a>
-                                                    <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
-                                                           value="1" style="color: #3b444f">
-                                                    <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                                       style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                        <i class="fa-solid fa-plus" style="color: black;position: relative;left: -3px;top: -3px"></i>
-                                                    </a>
+                                                    <div class="d-flex">
+                                                        <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                           style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                            <i class="fa-solid fa-minus"
+                                                               style="color: black;position: relative;left: -3px"></i>
+                                                        </a>
+                                                        <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                               value="1" style="color: #3b444f">
+                                                        <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                           style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                            <i class="fa-solid fa-plus"
+                                                               style="color: black;position: relative;left: -3px;top: -3px"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit"
+                                                    class="btn height-60 w-100 mb-xl-0 transition-3d-hover"
+                                                    style="background-color: #297cbb;border-color: #297cbb;font-weight: 500!important;color: white">
+                                                <i class="fa-solid fa-magnifying-glass mr-2"
+                                                   style="font-size: 1.063rem;color: white"></i>
+                                                Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pb-4 mb-2">
+                                <a class="d-block border rounded">
+                                    <img width="100%"
+                                         src="https://transvelo.github.io/mytravel-html/assets/img/map-markers/map.jpg">
+                                </a>
+                            </div>
+                            <div class="flight-card">
+                                <div class="flight-card-header">
+                                    <span class="flight-type">Chuyến bay bán chung</span>
+                                    <button class="btn-cheapest">Chuyến bay rẻ nhất</button>
+                                </div>
+                                <div class="flight-details">
+                                    <div class="flight-info">
+                                        <div class="date" th:text="'Đi '+${Flight.dateDepart}">
+
+                                        </div>
+                                        <div class="time-location">
+                                            <span class="departure" th:text="${Flight.nameAiport}">SGN</span>
+
+                                            <i class="fa-solid fa-plane plane-icon"></i>
+                                            <span class="arrival" th:text="${Flight.nameArrivalAirport}">HAN</span>
+                                        </div>
+                                        <div class="time">
+                                            <span class="departure-time" th:text="${Flight.timeDepart}">20:45</span>
+                                            -
+                                            <span class="arrival-time" th:text="${Flight.timeArrival}">22:50</span>
+                                        </div>
+                                        <div class="flight-footer" style="display: flex">
+                                            <img th:src="'http://localhost:8686/images/flight/'+${Flight.imageUrl}"
+                                                 alt="VietJet Air" class="airline-logo">
+                                            <div class="flight-company">
+
+                                                <span class="airline-name"
+                                                      th:text="${Flight.nameAirline}">VietJet Air</span>
+                                                <span class="flight-duration" th:text="${Flight.timeDepart}">2h 5ph | Bay thẳng</span>
                                             </div>
                                         </div>
 
                                     </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn height-60 w-100 mb-xl-0 transition-3d-hover" style="background-color: #297cbb;border-color: #297cbb;font-weight: 500!important;color: white">
-                                            <i class="fa-solid fa-magnifying-glass mr-2" style="font-size: 1.063rem;color: white"></i>
-                                            Search
-                                        </button>
-                                    </div>
+                                    <button class="btn-details">Xem chi tiết</button>
+                                </div>
+                                <div class="flight-card-footer">
+                                    <p>Chuyến bay rẻ nhất, ưu đãi tốt nhất dành cho bạn!</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="pb-4 mb-2">
-                            <a class="d-block border rounded">
-                                <img width="100%" src="https://transvelo.github.io/mytravel-html/assets/img/map-markers/map.jpg">
-                            </a>
-                        </div>
-                        <div class="flight-card">
-                            <div class="flight-card-header">
-                                <span class="flight-type">Chuyến bay bán chung</span>
-                                <button class="btn-cheapest">Chuyến bay rẻ nhất</button>
-                            </div>
-                            <div class="flight-details">
-                                <div class="flight-info">
-                                    <div class="date" th:text="'Đi '+${Flight.dateDepart}">
 
-                                    </div>
-                                    <div class="time-location">
-                                        <span class="departure" th:text="${Flight.nameAiport}">SGN</span>
-
-                                        <i  class="fa-solid fa-plane plane-icon"></i>
-                                        <span class="arrival" th:text="${Flight.nameArrivalAirport}">HAN</span>
-                                    </div>
-                                    <div class="time">
-                                        <span class="departure-time" th:text="${Flight.timeDepart}">20:45</span>
-                                        -
-                                        <span class="arrival-time" th:text="${Flight.timeArrival}">22:50</span>
-                                    </div>
-                                    <div class="flight-footer" style="display: flex">
-                                        <img th:src="'http://localhost:8686/images/flight/'+${Flight.imageUrl}" alt="VietJet Air" class="airline-logo">
-                                        <div class="flight-company">
-
-                                            <span class="airline-name" th:text="${Flight.nameAirline}">VietJet Air</span>
-                                            <span class="flight-duration" th:text="${Flight.timeDepart}">2h 5ph | Bay thẳng</span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <button class="btn-details">Xem chi tiết</button>
-                            </div>
-                            <div class="flight-card-footer">
-                                <p>Chuyến bay rẻ nhất, ưu đãi tốt nhất dành cho bạn!</p>
-                            </div>
-                        </div>
-
-                    </div>
                         </div>
                     </div>
                 </div>
-        <div class="col-lg-8 col-xl-9 order-md-1 order-lg-2 pb-5 pb-lg-0">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="mb-0" style="font-size: 1.313rem;font-weight: bold!important;line-height: 1;color: #3b444f">London: 3292 hotels found</h3>
-                <ul class="nav tab-nav-shop flex-nowrap" id="pills-tab">
-                    <li class="nav-item" style="margin-right: 1rem">
-                        <a class="nav-link p-0" style="font-size: 1.375rem">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <i class="fa fa-list"></i>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item" style="margin-right: .25rem">
-                        <a class="nav-link p-0 active" style="font-size: 1.375rem">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <i class="fa fa-th"></i>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
             </div>
-            <div class="u-slick__tab">
-                <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane active" id="pills-three-example1">
-                        <div class="row">
-                            <th:block th:each="hotel,index : ${Hotel}">
-                                <div class="col-md-6 col-lg-4 mb-3 mb-md-4 pb-1">
-                                    <a th:href="'/DetailHotel/'+${hotel.id}" class="card transition-3d-hover shadow-hover-2 tab-card h-100 text-decoration-none">
-                                        <div class="position-relative">
-                                            <div class="d-block gradient-overlay-half-bg-gradient-v5">
-                                                <img class="min-height-230 bg-img-hero card-img-top"
-                                                     th:src="'http://localhost:8686/images/hotels/'+${hotel.image_url}"
-                                                     style="object-fit: contain">
-                                            </div>
-                                            <div class="position-absolute top-0 right-0 pt-3 pr-3">
-                                                <button class="btn btn-sm btn-icon text-white rounded-circle">
-                                                    <i class="fa-regular fa-heart" style="font-style: normal; font-size: 26px"></i>
-                                                </button>
-                                            </div>
-                                            <div class="position-absolute bottom-0 left-0 right-0">
-                                                <div class="px-4 pb-3">
-                                                    <div class="d-block" style="color: #297cbb; text-decoration: none;">
-                                                        <div class="d-flex align-items-center text-white"
-                                                             style="font-size: 16px; font-family: 'Rubik', Helvetica, Arial, sans-serif; font-weight: 400 !important;">
-                                                            <i class="fa-solid fa-location-dot icon mr-2" style="font-size: 1.25rem"></i>
-                                                            <span th:text="${hotel.city} + ', ' + ${hotel.country}"></span>
+            <div class="col-lg-8 col-xl-9 order-md-1 order-lg-2 pb-5 pb-lg-0">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0"
+                        style="font-size: 1.313rem;font-weight: bold!important;line-height: 1;color: #3b444f">London:
+                        3292 hotels found</h3>
+                    <ul class="nav tab-nav-shop flex-nowrap" id="pills-tab">
+                        <li class="nav-item" style="margin-right: 1rem">
+                            <a class="nav-link p-0" style="font-size: 1.375rem">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <i class="fa fa-list"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item" style="margin-right: .25rem">
+                            <a class="nav-link p-0 active" style="font-size: 1.375rem">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <i class="fa fa-th"></i>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="u-slick__tab">
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane active" id="pills-three-example1">
+                            <div class="row">
+                                <th:block th:each="hotel,index : ${Hotel}">
+                                    <div class="col-md-6 col-lg-4 mb-3 mb-md-4 pb-1">
+                                        <a th:href="'/DetailHotel/'+${hotel.id}"
+                                           class="card transition-3d-hover shadow-hover-2 tab-card h-100 text-decoration-none">
+                                            <div class="position-relative">
+                                                <div class="d-block gradient-overlay-half-bg-gradient-v5">
+                                                    <img class="min-height-230 bg-img-hero card-img-top"
+                                                         th:src="'http://localhost:8686/images/hotels/'+${hotel.image_url}"
+                                                         style="object-fit: cover; height: 230px; width: 100%;">
+                                                </div>
+                                                <div class="position-absolute top-0 right-0 pt-3 pr-3">
+                                                    <button class="btn btn-sm btn-icon text-white rounded-circle">
+                                                        <i class="fa-regular fa-heart"
+                                                           style="font-style: normal; font-size: 26px"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="position-absolute bottom-0 left-0 right-0">
+                                                    <div class="px-4 pb-3">
+                                                        <div class="d-block"
+                                                             style="color: #297cbb; text-decoration: none;">
+                                                            <div class="d-flex align-items-center text-white"
+                                                                 style="font-size: 16px; font-family: 'Rubik', Helvetica, Arial, sans-serif; font-weight: 400 !important;">
+                                                                <i class="fa-solid fa-location-dot icon mr-2"
+                                                                   style="font-size: 1.25rem"></i>
+                                                                <span th:text="${hotel.city} + ', ' + ${hotel.country}"></span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body pl-3 pr-4 pt-2 pb-3">
-                                            <div class="ml-1 mb-2">
-                                                <div class="d-inline-flex align-items-center font-size-13 text-lh-1 letter-spacing-3"
-                                                     style="color: #297cbb !important; font-size: 0.813rem; line-height: 1; letter-spacing: 0.188rem;">
-                                                    <div class="green-lighter">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
+                                            <div class="card-body pl-3 pr-4 pt-2 pb-3">
+                                                <div class="ml-1 mb-2">
+                                                    <div class="d-inline-flex align-items-center font-size-13 text-lh-1 letter-spacing-3"
+                                                         style="color: #297cbb !important; font-size: 0.813rem; line-height: 1; letter-spacing: 0.188rem;">
+                                                        <div class="green-lighter">
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <span class="card-title" style="font-size: 1.463rem; color: #3b444f !important; text-decoration: none; font-weight: 500 !important;"
-                                                  th:text="${hotel.name}"></span>
-                                            <div class="mt-2 mb-3">
+                                                <span class="card-title"
+                                                      style="font-size: 1.463rem; color: #3b444f !important; text-decoration: none; font-weight: 500 !important;"
+                                                      th:text="${hotel.name}"></span>
+                                                <div class="mt-2 mb-3">
                     <span class="badge badge-pill badge-primary py-1 px-2 font-size-14 border-radius-3 font-weight-normal"
                           style="font-size: 0.875rem; border-radius: 3px !important; font-weight: 400 !important; background-color: #297cbb;">4.6/5</span>
-                                                <span class="text-gray-1 ml-2" style="font-size: 0.875rem;">(166 reviews)</span>
+                                                    <span class="text-gray-1 ml-2" style="font-size: 0.875rem;">(166 reviews)</span>
+                                                </div>
+                                                <div class="mb-0">
+                                                    <span class="mr-1 text-gray-1"
+                                                          style="font-size: 0.875rem;">From</span>
+                                                    <span style="font-weight: 500 !important;">£350.00</span>
+                                                    <span class="text-gray-1"
+                                                          style="font-size: 0.875rem;"> / night</span>
+                                                </div>
                                             </div>
-                                            <div class="mb-0">
-                                                <span class="mr-1 text-gray-1" style="font-size: 0.875rem;">From</span>
-                                                <span style="font-weight: 500 !important;">£350.00</span>
-                                                <span class="text-gray-1" style="font-size: 0.875rem;"> / night</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </th:block>
+                                        </a>
+                                    </div>
+                                </th:block>
 
 
+                            </div>
+                            <div class="text-center text-md-end mb-3" style="font-size: 0.875rem;line-height: 1">Showing
+                                1–15
+                            </div>
+                            <nav style="display: block">
+                                <ul class="list-pagination-1 pagination border border-color-4 rounded-sm mb-5 mb-lg-0 overflow-auto overflow-xl-visible justify-content-md-center align-items-center py-2">
+                                    <li class="page-item">
+                                        <a class="page-link border-right rounded-0 " style="color: #18181b !important">
+                                            <i class="fa-solid fa-arrow-left" style="font-size: 0.625rem"></i>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link border-right rounded-0 " style="color: #18181b !important">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link border-right rounded-0" style="color: #18181b !important">
+                                            <i class="fa-solid fa-arrow-right" style="font-size: 0.625rem"></i>
+                                            <span class="sr-only">Previous</span>
 
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
-                        <div class="text-center text-md-end mb-3" style="font-size: 0.875rem;line-height: 1">Showing 1–15</div>
-                        <nav style="display: block">
-                            <ul class="list-pagination-1 pagination border border-color-4 rounded-sm mb-5 mb-lg-0 overflow-auto overflow-xl-visible justify-content-md-center align-items-center py-2">
-                                <li class="page-item">
-                                    <a class="page-link border-right rounded-0 " style="color: #18181b !important">
-                                        <i class="fa-solid fa-arrow-left" style="font-size: 0.625rem"></i>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link border-right rounded-0 " style="color: #18181b !important">
-                                       1
-                                    </a>
-                                </li> <li class="page-item">
-                                <a class="page-link border-right rounded-0" style="color: #18181b !important">
-                                    <i class="fa-solid fa-arrow-right" style="font-size: 0.625rem"></i>
-                                    <span class="sr-only">Previous</span>
-
-                                </a>
-                            </li>
-                            </ul>
-                        </nav>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    </div>
+    </div>
+    <div class="Modalstyled__Dialog-sc-1gd4uo9-0 dbxnYa" style="display: none" id="ModalContainer">
+        <div class="Modalstyled__TransparentBackdrop-sc-1gd4uo9-1 hfzrUP" id="ModalHeader" style="opacity: 0"></div>
+        <div class="Modalstyled__Backdrop-sc-1gd4uo9-2 jQOnFh">
+            <div class="Modalstyled__ContentContainer-sc-1gd4uo9-3 eVMow">
+                <div class="Box-sc-kv6pi1-0 cJiLOx sc-httYMd ikgtwJ" id="ModalBody" style="opacity: 0;">
+                    <div>
+                        <i class="fa-solid fa-pen-fancy" style="font-size: 24px"></i>
+                        <span class="Spanstyled__SpanStyled-sc-16tp9kb-0 cyPVoD kite-js-Span sc-cbDGPM gQallF">Edit</span>
+                    </div>
+                    <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
+                        <div class="col-sm-5 ">
+                                            <span class="d-block text-gray mb-0"
+                                                  style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Destination or Hotel Name</span>
+                            <div class="search-container">
+                                <div class="search-item" id="search-from">
+                                    <i class="fa-solid fa-plane-departure"></i>
+                                    <input
+                                            type="text"
+                                            placeholder="Bay từ"
+                                            id="from-input"
+                                            autocomplete="off"
+                                    />
+                                    <input type="hidden" id="from-input-id" th:field="${Search.departureAirport}"/>
+                                </div>
+                                <div class="search-dropdown" id="from-dropdown">
+                                    <ul id="airport-list-from"></ul>
+                                </div>
+                                <button type="button" class="swap-button">
+                                    <i class="fa-solid fa-right-left"></i>
+                                </button>
+                                <div class="search-item" id="search-to">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <input
+                                            type="text"
+                                            placeholder="Bay đến"
+                                            id="to-input"
+                                            autocomplete="off"
+                                    />
+                                    <input type="hidden" id="to-input-id" th:field="${Search.arrivalAirport}"/>
+                                </div>
+                                <div class="search-dropdown" id="to-dropdown">
+
+                                    <ul id="airport-list"></ul>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-5">
+                                            <span class="d-block text-gray mb-0"
+                                                  style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Check In - Out</span>
+                            <div class="text-left d-block"
+                                 style="border-width: 2px;border-color: #eaeaea !important;border-bottom: 1px solid #e7eaf3 !important;border: none">
+                                <div id="datepickerWrapperFromOne"
+                                     class="u-datepicker input-group relative">
+                                    <div class="input-group-prepend">
+                                                <span class="d-flex align-items-center mr-2">
+                                                    <i class="fa-solid fa-calendar"
+                                                       style="color: #297cbb !important;font-weight: 500;font-style: normal"></i>
+                                                </span>
+                                    </div>
+                                    <input type="date" id="datePickerInput"
+                                           th:field="${Search.departureTime}"
+                                           class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
+                                           style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 217.5px;height: 54px"
+                                    />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
+                        <div class="col-sm-5 ">
+                                            <span class="text-left d-block"
+                                                  style="color: #67747c !important;font-weight: 400;font-size: 1.2rem;text-align: left;margin-left: 1vh">At</span>
+                            <div class="search-container">
+                                <div class="search-item" id="search-At">
+                                    <i class="fa-solid fa-plane-departure"></i>
+                                    <input
+                                            type="text"
+                                            placeholder="Bay từ"
+                                            id="At-input"
+                                            autocomplete="off"
+                                    />
+
+                                    <div class="search-dropdown" style="width: 28%;top: 68%" id="At-dropdown">
+                                        <ul id="At-List"></ul>
+                                    </div>
+                                    <input type="hidden" id="idCity" th:field="${Search.idCity}">
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <div class="col-sm-5">
+  <span class="d-block text-gray mb-2"
+        style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Destination or Hotel Name</span>
+                            <div class="search-container">
+                                <div class="date-picker-container">
+                                    <div>
+                                        <label for="datePickerInputFrom" class="label">Nhận phòng</label>
+                                        <div class="date-picker">
+                                            <i class="fa-solid fa-calendar"></i>
+                                            <input type="date" id="datePickerInputFrom"
+                                                   th:field="${Search.departureTime}"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="datePickerInputTo" class="label">Trả phòng</label>
+                                        <div class="date-picker">
+                                            <i class="fa-solid fa-calendar"></i>
+                                            <input type="date" id="datePickerInputTo" th:field="${Search.arrivalTime}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 ">
+                                            <span class="text-left d-block"
+                                                  style="color: #67747c !important;font-weight: 400;font-size: 1.2rem;text-align: left">Rooms and Guests</span>
+                            <div class="dropdown-container">
+
+                                <div class="dropdown">
+                                    <select id="classSelect" th:field="${Search.typeFlight}" class="form-select "
+                                            style="margin-top: 2vh">
+                                        <option value="Popular">Popular</option>
+                                        <option value="Premium Economy">Premium Economy</option>
+                                        <option value="Merchant">Merchant</option>
+                                        <option value="First Class">First Class</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="basicDropdownClick"
+                                 class="dropdown-menu  dropdown-unfold col-11 m-0 u-unfold--css-animation slideInUp "
+                                 style="max-width: 22%">
+                                <div class="w-100 py-2 px-3 mb-3">
+                                    <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                         style="grid-template-columns: 1fr 1fr">
+                                                        <span class="block"
+                                                              style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Rooms</span>
+                                        <div class="d-flex">
+                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                               style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                <i class="fa-solid fa-minus" style="color: black"></i>
+                                            </a>
+                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                   value="1" style="color: #3b444f">
+                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                               style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                <i class="fa-solid fa-plus" style="color: black"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-100 py-2 px-3 mb-3">
+                                    <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                         style="grid-template-columns: 1fr 1fr">
+                                                        <span class="block"
+                                                              style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Adults</span>
+                                        <div class="d-flex">
+                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                               style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                <i class="fa-solid fa-minus" style="color: black"></i>
+                                            </a>
+                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                   value="1" style="color: #3b444f">
+                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                               style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                <i class="fa-solid fa-plus" style="color: black"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-100 py-2 px-3 mb-3">
+                                    <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                         style="grid-template-columns: 1fr 1fr">
+                                                        <span class="block"
+                                                              style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Child</span>
+                                        <div class="d-flex">
+                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                               style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                <i class="fa-solid fa-minus" style="color: black"></i>
+                                            </a>
+                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                   value="1" style="color: #3b444f">
+                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                               style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                <i class="fa-solid fa-plus" style="color: black"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-5 d-flex align-items-center justify-content-center"
+                             style="position: relative;left: -20vh;top: -2vh;margin-top: 2vh">
+                            <button type="submit"
+                                    class="btn btn-primary w-50 mb-xl-0 mb-lg-1 transition-3d-hover"
+                                    style="border-radius: 3px;transition: all 0.2s ease-in-out;background-color: #297cbb;border-color: #297cbb;
+                                        position:absolute;left: 22vh;width: calc(96% - 12px) !important;">
+                                <i class="fa-solid fa-magnifying-glass mr-2"
+                                   style="font-size: 1.25rem;"></i>
+                                Search
+                            </button>
+                        </div>
+
+
+                    </div>
+                    <div class="row d-block nav-select d-lg-flex mg-lg-3 px-2 px-lg-3 align-items-end">
+                        <div class="col-sm-5 d-flex align-items-center justify-content-center" style="position: relative;left: -20vh;top: -1vh;margin-top: 2vh">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" th:field="${Search.selectedHotel}" type="checkbox" id="flexSwitchCheckDefault" style="font-size: 21px">
+                                <label class="form-check-label" for="flexSwitchCheckDefault" style="position: absolute;top: 3px;width: 26vh">Default switch checkbox input</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 </main>
 
 <script th:fragment="customScripts">
     //Dropdown select
+    const ModalContainer=document.querySelector('#ModalContainer');
+    const ModalHeader=document.querySelector('#ModalHeader');
+    const ModalBody=document.querySelector('#ModalBody');
+    document.getElementById('SearchBtn').addEventListener('click',function (event){
 
-
+        ModalHeader.style.opacity='1';
+        ModalBody.style.opacity='1';
+        ModalContainer.style.display="block"
+    })
+    ModalContainer.addEventListener('click',function (event){
+        ModalContainer.style.display="none"
+    })
     // Close dropdown if clicked outside
 
     function initFlatpickr() {
@@ -299,6 +609,7 @@
             }
         });
     }
+
     const rangeMin = document.getElementById('range-min');
     const rangeMax = document.getElementById('range-max');
     const priceRangeText = document.getElementById('price-range-text');
@@ -345,7 +656,7 @@
         console.log(dropdownMenu)
         dropdownMenu.classList.toggle('show');
     });
-    document.addEventListener('click',function (event){
+    document.addEventListener('click', function (event) {
         const isClickInside = document.getElementById('basicDropdownClickInvoker').contains(event.target) ||
             document.querySelector('#basicDropdownClick').contains(event.target);
 
@@ -353,6 +664,7 @@
             document.querySelector('#basicDropdownClick').classList.remove('show');
         }
     })
+
 </script>
 </body>
 </html>
