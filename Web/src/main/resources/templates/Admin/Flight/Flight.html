@@ -197,41 +197,79 @@
             </div>
         </div>
         <div class="modal" id="customModal">
-            <form th:action="@{/Admin/Flight/addSeat}"  method="post" id="typeForm">
-                <div class="modal-content">
+            <form th:action="@{/Admin/Flight/addSeat}" method="post" id="typeForm">
+                <div class="modal-content" style="width: 222%;left: -40vh">
+                    <!-- Header -->
                     <div class="modal-header">
-                        <h5>Add Seat</h5>
-                        <button class="close-btn" id="closeModalBtn">&times;</button>
+                        <h5>Seat Management</h5>
+                        <button type="button" class="close-btn" id="closeModalBtn">&times;</button>
                     </div>
+
+                    <!-- Body -->
                     <div class="modal-body">
+                        <div id="seatContainer" style="display: flex;flex-direction: column;justify-content: center">
+                            <!-- Input Section -->
 
-                        <div class="mb-3">
-                            <label  class="form-label">Economy Seat</label>
-                            <input type="number" id="EconomySeat" th:field="${Seat.economyClassSeat}" placeholder="Enter Economy seat" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label  class="form-label">Business Seat</label>
-                            <input type="number" id="BusinessSeat" th:field="${Seat.businessClassSeat}" placeholder="Enter Business Seat" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label  class="form-label">First Seat</label>
-                            <input type="number" id="FirstSeat" th:field="${Seat.firstClassSeat}" placeholder="Enter First Seat" class="form-control">
-                        </div>
+                                <div class="seat-inputs">
+                                    <div class="mb-3">
+                                        <label  class="form-label">Economy Seat</label>
+                                        <input type="number" id="EconomySeat" th:field="${Seat.economyClassSeat}" placeholder="Enter Economy seat" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label  class="form-label">Business Seat</label>
+                                        <input type="number" id="BusinessSeat" th:field="${Seat.businessClassSeat}" placeholder="Enter Business Seat" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label  class="form-label">First Seat</label>
+                                        <input type="number" id="FirstSeat" th:field="${Seat.firstClassSeat}" placeholder="Enter First Seat" class="form-control">
+                                    </div>
+
+                                    <button type="button" id="generateSeats" class="btn btn-primary">Generate Seats</button>
+                                </div>
 
 
+
+                            <div style="display: flex; justify-content: space-around; margin: 10px 0; padding: 0 20px;">
+                                <div>
+                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #a7d2ff; border-radius: 4px;"></span> First Class
+                                </div>
+                                <div>
+                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #7199ff; border-radius: 4px;"></span>Business Class
+                                </div>
+                                <div>
+                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #2c4aff; border-radius: 4px;"></span> Economy Class
+                                </div>
+
+                                <div>
+                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #2ecc71; border-radius: 4px;"></span> Được chọn
+                                </div>
+                            </div>
+
+                            <!-- Seat Grid -->
+                                <div  style="position: relative;right: 4vh;margin-top: 8vh">
+                                    <div class="seat-grid" style="margin-left: 5vh">
+                                        <!-- Seat grid will be dynamically generated -->
+                                    </div>
+                                </div>
+
+                            <!-- Legend -->
+
+                        </div>
                     </div>
+
+                    <!-- Footer -->
                     <div class="modal-footer">
-                        <input type="hidden" th:field="${Seat.idFlight}" id="idFlight">
-                        <button class="btn-secondary" id="cancelModalBtn">Close</button>
-                        <button class="btn-primary" id="saveModalBtn">Save Type</button>
+                        <button type="button" id="cancelModalBtn" class="btn btn-secondary">Close</button>
+                        <button type="submit" class="btn btn-primary" id="saveSeatsBtn">Save Seats</button>
                     </div>
                 </div>
             </form>
         </div>
+
         <div style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); overflow: hidden;" id="seatDetail">
             <div style="background: white; padding: 20px; border-radius: 10px; width: 667px; text-align: center; position: relative; max-height: 90%; overflow: hidden;">
                 <!-- Close button -->
-                <button style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
+                <button style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 20px; cursor: pointer;" id="btnClose">&times;</button>
 
                 <!-- Title -->
                 <h2 style="margin-bottom: 5px;">Lựa chọn chỗ ngồi</h2>
@@ -240,17 +278,15 @@
                 <!-- Price Legend -->
                 <div style="display: flex; justify-content: space-around; margin: 10px 0; padding: 0 20px;">
                     <div>
-                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #a7d2ff; border-radius: 4px;"></span> 60.473 ₫
+                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #a7d2ff; border-radius: 4px;"></span> First Class
                     </div>
                     <div>
-                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #7199ff; border-radius: 4px;"></span> 90.710 ₫
+                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #7199ff; border-radius: 4px;"></span>Business Class
                     </div>
                     <div>
-                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #2c4aff; border-radius: 4px;"></span> 120.947 ₫
+                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #2c4aff; border-radius: 4px;"></span> Economy Class
                     </div>
-                    <div>
-                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #dcdcdc; border-radius: 4px;"></span> Không chọn được
-                    </div>
+
                     <div>
                         <span style="display: inline-block; width: 20px; height: 20px; background-color: #2ecc71; border-radius: 4px;"></span> Được chọn
                     </div>

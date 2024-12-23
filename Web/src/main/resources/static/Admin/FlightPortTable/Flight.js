@@ -1,6 +1,7 @@
 const openModalBtns = document.querySelectorAll('.open-modal-btn');
 const modal = document.getElementById('customModal');
-const closeModalBtn = document.getElementById('closeModalBtn');
+const closeModalBtn = document.getElementById('btnClose');
+const CloseBtn=document.getElementById('closeModalBtn');
 const cancelModalBtn = document.getElementById('cancelModalBtn');
 const DetailSeat=document.querySelectorAll('#DetailSeat');
 openModalBtns.forEach((btn) => {
@@ -13,6 +14,10 @@ openModalBtns.forEach((btn) => {
         document.getElementById('idFlight').value=flightId;
     });
 });
+CloseBtn.addEventListener('click',function (event){
+    event.preventDefault();
+    modal.style.display='none';
+})
 DetailSeat.forEach((btn) => {
     btn.addEventListener('click', function (event) {
         const idFlight = this.getAttribute('data-idFlight');
@@ -30,7 +35,11 @@ DetailSeat.forEach((btn) => {
             .catch(error => console.error('Error fetching seat details:', error));
     });
 });
+closeModalBtn.addEventListener('click',function (event){
 
+    event.preventDefault();
+    document.getElementById('seatDetail').style.display = 'none';
+})
 // Function to render seat details dynamically
 function renderSeatDetails(data) {
     const seatGrid = document.querySelector('#seatDetail .seat-grid');
@@ -42,17 +51,53 @@ function renderSeatDetails(data) {
 
     seatGrid.innerHTML = ''; // Clear existing seat details
 
+    // Add seat header (A, B, C, Row, D, E, F)
+    const headerRow = document.createElement('div');
+    headerRow.style.display = 'flex';
+    headerRow.style.alignItems = 'center';
+    headerRow.style.justifyContent = 'center';
+    headerRow.style.marginBottom = '10px';
+    headerRow.style.gap = '10px';
+
+    const headers = ['A', 'B', 'C', '', 'D', 'E', 'F'];
+    headers.forEach(label => {
+        const headerDiv = document.createElement('div');
+        headerDiv.style.width = '50px';
+        headerDiv.style.textAlign = 'center';
+        headerDiv.style.fontWeight = 'bold';
+        headerDiv.textContent = label;
+        headerRow.appendChild(headerDiv);
+    });
+
+    seatGrid.appendChild(headerRow); // Append header to seatGrid
+
+    // Create seat rows
+    let currentRowNumber = 0;
     let rowDiv; // Declare rowDiv outside the loop
     data.forEach((seat, index) => {
-        // Create a new row if it's the first seat or every 4 seats
-        if (index % 4 === 0) {
+        // Create a new row if it's the first seat or every 6 seats (excluding row number)
+        if (index % 6 === 0) {
+            if (rowDiv) {
+                seatGrid.appendChild(rowDiv); // Append the previous row before creating a new one
+            }
+
             rowDiv = document.createElement('div'); // Create a new row
             rowDiv.style.display = 'flex';
             rowDiv.style.alignItems = 'center';
-            rowDiv.style.justifyContent = 'center';
             rowDiv.style.marginBottom = '5px';
             rowDiv.style.gap = '10px';
-            seatGrid.appendChild(rowDiv); // Append row to seatGrid
+
+            currentRowNumber++;
+        }
+
+        // Add row number in the middle (between C and D)
+        if (index % 6 === 3) {
+            const rowNumberDiv = document.createElement('div');
+            rowNumberDiv.style.width = '50px';
+            rowNumberDiv.style.textAlign = 'center';
+            rowNumberDiv.style.fontWeight = 'bold';
+            rowNumberDiv.textContent = currentRowNumber;
+            rowDiv.appendChild(rowNumberDiv);
         }
 
         // Create seat element
@@ -61,17 +106,80 @@ function renderSeatDetails(data) {
         // Add seat to the current row
         rowDiv.appendChild(seatDiv);
     });
+
+    // Append the last row
+    if (rowDiv) {
+        seatGrid.appendChild(rowDiv);
+    }
 }
 
 // Helper function to create a seat div
 function createSeatDiv(seat) {
     const seatDiv = document.createElement('div');
-    seatDiv.style.width = '30px';
-    seatDiv.style.height = '30px';
+    seatDiv.style.width = '50px';
+    seatDiv.style.height = '50px';
     seatDiv.style.borderRadius = '4px';
-    seatDiv.style.backgroundColor = seat.color || '#2c4aff'; // Use seat color if available
+    seatDiv.style.backgroundColor =
+        seat.type === 'First Class' ? '#a7d2ff' :
+            seat.type === 'Business Class' ? '#7199ff' :
+                seat.type === 'Economy Class' ? '#2c4aff' : '#dcdcdc';
     seatDiv.title = `Seat ID: ${seat.id}`;
     seatDiv.dataset.seatId = seat.id;
-
     return seatDiv;
+}
+document.getElementById('generateSeats').addEventListener('click',()=>{
+    const firstClassSeats=parseInt(document.getElementById('FirstSeat').value)||0;
+    const BusinessClassSeats=parseInt(document.getElementById('BusinessSeat').value)||0;
+    const EconomyClassSeats=parseInt(document.getElementById('EconomySeat').value)||0;
+    const totalSeats = firstClassSeats + BusinessClassSeats + EconomyClassSeats;
+    const totalRows = Math.ceil(totalSeats / 6);
+    const seatData = generateSeatData(firstClassSeats, BusinessClassSeats,EconomyClassSeats, totalRows);
+    renderSeatGrid(seatData);
+})
+function generateSeatData(firstClassSeats,businessClassSeats,economyClassSeats,rows){
+    const seatTypes=[];
+    for(let i=0;i<firstClassSeats;i++)seatTypes.push('First Class');
+    for (let i=0;i<businessClassSeats;i++)seatTypes.push('Business Class');
+    for (let i=0;i<economyClassSeats;i++)seatTypes.push('Economy Class');
+    return {rows,cols:['A','B','C','D','E','F'],seatTypes};
+}
+function renderSeatGrid(data){
+    const seatGrid=document.querySelector('.seat-grid');
+    seatGrid.innerHTML='';
+    let seatIndex=0;
+    for(let row=1;row<=data.rows;row++){
+        const rowDiv=document.createElement('div');
+        rowDiv.classList.add('seat-row');
+
+        data.cols.forEach((col, colIndex)=>{
+            if (col === 'D') {
+                const indexDiv = document.createElement('div');
+                indexDiv.classList.add('seat-index');
+                indexDiv.textContent = row; // Hiển thị số thứ tự theo hàng
+                indexDiv.style.width = '30px';
+                indexDiv.style.textAlign = 'center';
+                rowDiv.appendChild(indexDiv);
+            }
+            const seatDiv=document.createElement('div');
+            seatDiv.classList.add('seat');
+
+            if (seatIndex < data.seatTypes.length) {
+                const seatType = data.seatTypes[seatIndex];
+                seatDiv.textContent = col;
+                seatDiv.classList.add(
+                    seatType === 'First Class'
+                        ? 'first-class'
+                        : seatType === 'Business Class'
+                            ? 'business-class'
+                            : 'economy-class'
+                );
+                seatIndex++;
+            } else {
+                // Nếu không còn ghế, tạo một phần tử trống hoặc bỏ qua
+
+            }
+            rowDiv.appendChild(seatDiv);
+        });
+        seatGrid.appendChild(rowDiv)
+    }
 }
