@@ -3,6 +3,7 @@ package com.vtnq.web.Service;
 import com.vtnq.web.DTOs.Account.AccountDto;
 import com.vtnq.web.DTOs.Account.AdminAccountList;
 import com.vtnq.web.DTOs.Account.RegisterUser;
+import com.vtnq.web.DTOs.Account.UserAccountDTO;
 import com.vtnq.web.Entities.Account;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -19,4 +20,6 @@ public interface AuthService extends UserDetailsService {
     public boolean ForgetAccount(String email);
     public boolean CheckOTP(String email, String otp);
     public boolean ChangePassword(String email, String password);
+    public UserAccountDTO GetAccountUser(int id);
+    public boolean UpdateProfileUser(UserAccountDTO userAccountDTO);
 }

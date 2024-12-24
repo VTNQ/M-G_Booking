@@ -1,15 +1,13 @@
 package com.vtnq.web.APIs;
 
+import com.vtnq.web.DTOs.City.CityDto;
 import com.vtnq.web.Entities.City;
 import com.vtnq.web.Service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +20,15 @@ public class CityController {
     public ResponseEntity<List<City>> SearchHotel(@RequestParam("name")String name) {
         try {
             return new ResponseEntity<List<City>>(cityService.SearchCityOrCountry(name), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<List<City>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping(value = "FindCityByCountry/{id}")
+    public ResponseEntity<List<City>>FindCityByCountry(@PathVariable("id")int id){
+        try {
+            return new ResponseEntity<List<City>>(cityService.findCityAll(id),HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<List<City>>(HttpStatus.BAD_REQUEST);

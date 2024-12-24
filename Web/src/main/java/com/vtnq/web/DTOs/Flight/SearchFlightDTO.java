@@ -6,7 +6,17 @@ public class SearchFlightDTO {
     private String departureTime;
     private String TypeFlight;
     private boolean selectedHotel;
+
+    public int getQuantityRoom() {
+        return QuantityRoom;
+    }
+
+    public void setQuantityRoom(int quantityRoom) {
+        QuantityRoom = quantityRoom;
+    }
+
     private int idCity;
+    private int QuantityRoom;
 
     public int getIdCity() {
         return idCity;
