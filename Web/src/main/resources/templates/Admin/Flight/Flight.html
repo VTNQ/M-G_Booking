@@ -10,81 +10,81 @@
 <div class="content-wrapper">
     <!-- Content -->
 
-<!--    <div class="container-xxl flex-grow-1 container-p-y">-->
+    <!--    <div class="container-xxl flex-grow-1 container-p-y">-->
 
-<!--        <div class="row ">-->
-<!--            &lt;!&ndash; Form controls &ndash;&gt;-->
-
-
-<!--            &lt;!&ndash; Input Sizing &ndash;&gt;-->
-<!--            <div class="col-md-12">-->
-<!--                <form th:action="@{/Admin/Flight}"  method="post">-->
-<!--                    <div class="card">-->
-
-<!--                        <div class="card-body">-->
-<!--                            <h5>Flight</h5>-->
-
-<!--                            <div class="mt-2 mb-4">-->
-<!--                                <label  class="form-label">Departure airport</label>-->
-<!--                                <select class="form-control " th:field="${flight.departure_airport}" >-->
-<!--                                    <option th:each="AirPorts : ${AirPort}" th:value="${AirPorts.id}"-->
-<!--                                            th:text="${AirPorts.name}"></option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                            <div class="mt-2 mb-4">-->
-<!--                                <label  class="form-label">Arrival airport</label>-->
-<!--                                <select class="form-control " th:field="${flight.arrival_airport}" >-->
-<!--                                    <option th:each="AirPorts : ${AirPort}" th:value="${AirPorts.id}"-->
-<!--                                            th:text="${AirPorts.name}"></option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                            <div class="mt-2 mb-4">-->
-<!--                                <label  class="form-label">Airline</label>-->
-<!--                                <select class="form-control" th:field="${flight.airline_id}">-->
-<!--                                    <option th:each="Airlines : ${Airline}" th:value="${Airlines.id}" th:text="${Airlines.name}"></option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                            <div class="mt-2 mb -4">-->
-<!--                                <label class="form-label">Departure Time</label>-->
-<!--                                <input type="datetime-local" id="Departure_Time" class="form-control" th:field="${flight.departureTime}">-->
-<!--                            </div>  <div class="form-group mt-2 mb-4">-->
-<!--                            <label class="form-label">Arrival time</label>-->
-<!--                            <input type="datetime-local" id="datetimepicker" class="form-control" th:field="${flight.arrivalTime}">-->
-<!--                        </div>-->
-<!--                            <h4>Detail Flights</h4>-->
-<!--                            <div id="detailFlights">-->
-<!--                                <div class="detail-flight mb-3">-->
-<!--                                    <div class="row">-->
-
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <button type="button" class="btn btn-secondary mb-3" id="addDetailFlight">Add Detail Flight</button>-->
+    <!--        <div class="row ">-->
+    <!--            &lt;!&ndash; Form controls &ndash;&gt;-->
 
 
-<!--                        </div>-->
+    <!--            &lt;!&ndash; Input Sizing &ndash;&gt;-->
+    <!--            <div class="col-md-12">-->
+    <!--                <form th:action="@{/Admin/Flight}"  method="post">-->
+    <!--                    <div class="card">-->
+
+    <!--                        <div class="card-body">-->
+    <!--                            <h5>Flight</h5>-->
+
+    <!--                            <div class="mt-2 mb-4">-->
+    <!--                                <label  class="form-label">Departure airport</label>-->
+    <!--                                <select class="form-control " th:field="${flight.departure_airport}" >-->
+    <!--                                    <option th:each="AirPorts : ${AirPort}" th:value="${AirPorts.id}"-->
+    <!--                                            th:text="${AirPorts.name}"></option>-->
+    <!--                                </select>-->
+    <!--                            </div>-->
+    <!--                            <div class="mt-2 mb-4">-->
+    <!--                                <label  class="form-label">Arrival airport</label>-->
+    <!--                                <select class="form-control " th:field="${flight.arrival_airport}" >-->
+    <!--                                    <option th:each="AirPorts : ${AirPort}" th:value="${AirPorts.id}"-->
+    <!--                                            th:text="${AirPorts.name}"></option>-->
+    <!--                                </select>-->
+    <!--                            </div>-->
+    <!--                            <div class="mt-2 mb-4">-->
+    <!--                                <label  class="form-label">Airline</label>-->
+    <!--                                <select class="form-control" th:field="${flight.airline_id}">-->
+    <!--                                    <option th:each="Airlines : ${Airline}" th:value="${Airlines.id}" th:text="${Airlines.name}"></option>-->
+    <!--                                </select>-->
+    <!--                            </div>-->
+    <!--                            <div class="mt-2 mb -4">-->
+    <!--                                <label class="form-label">Departure Time</label>-->
+    <!--                                <input type="datetime-local" id="Departure_Time" class="form-control" th:field="${flight.departureTime}">-->
+    <!--                            </div>  <div class="form-group mt-2 mb-4">-->
+    <!--                            <label class="form-label">Arrival time</label>-->
+    <!--                            <input type="datetime-local" id="datetimepicker" class="form-control" th:field="${flight.arrivalTime}">-->
+    <!--                        </div>-->
+    <!--                            <h4>Detail Flights</h4>-->
+    <!--                            <div id="detailFlights">-->
+    <!--                                <div class="detail-flight mb-3">-->
+    <!--                                    <div class="row">-->
+
+    <!--                                    </div>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                            <button type="button" class="btn btn-secondary mb-3" id="addDetailFlight">Add Detail Flight</button>-->
 
 
-<!--                        <div class="card-footer">-->
-<!--                            <button type="submit" class="btn btn-outline-primary">Save</button>-->
+    <!--                        </div>-->
 
 
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </form>-->
+    <!--                        <div class="card-footer">-->
+    <!--                            <button type="submit" class="btn btn-outline-primary">Save</button>-->
 
-<!--            </div>-->
 
-<!--            &lt;!&ndash; Default Checkboxes and radios & Default checkboxes and radios &ndash;&gt;-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </form>-->
 
-<!--        </div>-->
+    <!--            </div>-->
 
-<!--    </div>-->
+    <!--            &lt;!&ndash; Default Checkboxes and radios & Default checkboxes and radios &ndash;&gt;-->
+
+    <!--        </div>-->
+
+    <!--    </div>-->
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
             <div class="card">
-                <div class="card-header justify-content-between" style="border-bottom: 1px solid #e6e7e9"  >
-                    <h5 >Danh sách Flight</h5>
+                <div class="card-header justify-content-between" style="border-bottom: 1px solid #e6e7e9">
+                    <h5>Danh sách Flight</h5>
                     <a th:href="@{/Admin/Flight/add}" class="text-decoration-none btn btn-primary">
                         <i class="ti ti-plus" style="color:white;"></i>
                         <span class="ms-1" style="color: white">Thêm</span>
@@ -94,8 +94,10 @@
                     <form th:action="@{/Admin/Flight}" class="d-flex">
                         <div class="input-group">
                             <input type="text" name="name" id="searchFlight" class="form-control"
-                                   placeholder="Search for Flight" aria-label="Search" style="border-radius: 25px 0 0 25px;"/>
-                            <button class="btn btn-primary" type="submit" style="border-radius: 0 25px 25px 0;">Search</button>
+                                   placeholder="Search for Flight" aria-label="Search"
+                                   style="border-radius: 25px 0 0 25px;"/>
+                            <button class="btn btn-primary" type="submit" style="border-radius: 0 25px 25px 0;">Search
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -113,41 +115,51 @@
                         </tr>
                         </thead>
                         <tbody class="table-border-bottom-0" id="FlightTableBody">
-                            <th:block th:each="flight,start :${Flight}">
-                                <tr>
-                                    <td th:text="${start.index+1}"></td>
-                                    <td th:text="${flight.nameAirline}"></td>
-                                    <td th:text="${flight.departure_airport}"></td>
-                                    <td th:text="${flight.arrival_airport}"></td>
-                                    <td>
-                                        <a th:href="@{'/Admin/Flight/edit/'+${flight.id}}" style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i style="color: white" class="ti ti-edit"></i></a>
+                        <th:block th:each="flight,start :${Flight}">
+                            <tr>
+                                <td th:text="${start.index+1}"></td>
+                                <td th:text="${flight.nameAirline}"></td>
+                                <td th:text="${flight.departure_airport}"></td>
+                                <td th:text="${flight.arrival_airport}"></td>
+                                <td>
+                                    <a th:href="@{'/Admin/Flight/edit/'+${flight.id}}"
+                                       style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i
+                                            style="color: white" class="ti ti-edit"></i></a>
 
-                                    </td>
-                                    <td>
-                                        <a th:data-idFlight="${flight.id}" style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info open-modal-btn"><i style="color: white" class="fa-solid fa-chair"></i></a>
-                                    </td>
-                                    <td>
-                                        <a th:data-idFlight="${flight.id}" style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info" id="DetailSeat"><i style="color: white" class="fa-solid fa-chair"></i></a>
-                                    </td>
-                                </tr>
-                            </th:block>
+                                </td>
+                                <td>
+                                    <a th:data-idFlight="${flight.id}"
+                                       style="background-color: #4299e1;border-color: #4299e1"
+                                       class="btn btn-info open-modal-btn"><i style="color: white"
+                                                                              class="fa-solid fa-chair"></i></a>
+                                </td>
+                                <td>
+                                    <a th:data-idFlight="${flight.id}"
+                                       style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"
+                                       id="DetailSeat"><i style="color: white" class="fa-solid fa-chair"></i></a>
+                                </td>
+                            </tr>
+                        </th:block>
                         </tbody>
                     </table>
                     <th:block th:if="${totalPages > 0}">
                         <nav aria-label="Page navigation">
                             <ul class="pagination">
                                 <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                                    <a class="page-link" th:href="@{'/Admin/Flight'(page=${currentPage - 1})}" aria-label="Previous">
+                                    <a class="page-link" th:href="@{'/Admin/Flight'(page=${currentPage - 1})}"
+                                       aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
                                 <th:block th:each="page : ${#numbers.sequence(1, totalPages)}">
                                     <li class="page-item" th:classappend="${currentPage == page} ? 'active'">
-                                        <a class="page-link" th:href="@{'/Admin/Flight'(page=${page})}" th:text="${page}"></a>
+                                        <a class="page-link" th:href="@{'/Admin/Flight'(page=${page})}"
+                                           th:text="${page}"></a>
                                     </li>
                                 </th:block>
                                 <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                                    <a class="page-link" th:href="@{'/Admin/Flight'(page=${currentPage + 1})}" aria-label="Next">
+                                    <a class="page-link" th:href="@{'/Admin/Flight'(page=${currentPage + 1})}"
+                                       aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
@@ -210,68 +222,92 @@
                         <div id="seatContainer" style="display: flex;flex-direction: column;justify-content: center">
                             <!-- Input Section -->
 
-                                <div class="seat-inputs">
-                                    <div class="mb-3">
-                                        <div class="row">
-                                            <div class="col">
-                                                <label  class="form-label">Economy Seat</label>
-                                                <input type="number" id="EconomySeat" th:field="${Seat.economyClassSeat}" placeholder="Enter Economy seat" class="form-control">
-                                            </div>
-                                             <div class="col">
-                                                <label  class="form-label">Economy Price</label>
-                                                <input type="number"  th:field="${Seat.priceEconomyClassSeat}" placeholder="Enter Economy seat" class="form-control">
-                                            </div>
-
-                                        </div>
-
-
-                                    </div>
-                                    <div class="mb-3">
-
+                            <div class="seat-inputs">
+                                <div class="mb-3">
+                                    <div class="row">
                                         <div class="col">
-                                            <label  class="form-label">Business Seat</label>
-                                            <input type="number" id="BusinessSeat" th:field="${Seat.businessClassSeat}" placeholder="Enter Business Seat" class="form-control">
+                                            <label class="form-label">First Seat</label>
+                                            <input type="number" id="FirstSeat" th:field="${Seat.firstClassSeat}"
+                                                   placeholder="Enter Economy seat" class="form-control">
                                         </div>
                                         <div class="col">
-                                            <label  class="form-label mt-3">Economy Price</label>
-                                            <input type="number"  th:field="${Seat.economyClassSeat}" placeholder="Enter Economy seat" class="form-control mt-3">
+                                            <label class="form-label">First Price</label>
+                                            <input type="number" th:field="${Seat.priceClassSeat}"
+                                                   placeholder="Enter Economy seat" class="form-control">
                                         </div>
 
                                     </div>
-                                    <div class="mb-3">
-                                        <label  class="form-label">First Seat</label>
-                                        <input type="number" id="FirstSeat" th:field="${Seat.firstClassSeat}" placeholder="Enter First Seat" class="form-control">
-                                        <label  class="form-label mt-3">Economy Price</label>
-                                        <input type="number"  th:field="${Seat.economyClassSeat}" placeholder="Enter Economy seat" class="form-control mt-3">
+
+
+                                </div>
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label class="form-label">Business Seat</label>
+                                            <input type="number" id="BusinessSeat" th:field="${Seat.businessClassSeat}"
+                                                   placeholder="Enter Business Seat" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label class="form-label">Business Price</label>
+                                            <input type="number" th:field="${Seat.priceBusinessClassSeat}"
+                                                   placeholder="Enter Economy seat" class="form-control">
+                                        </div>
+
                                     </div>
 
-                                    <button type="button" id="generateSeats" class="btn btn-primary">Generate Seats</button>
+
+                                </div>
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label class="form-label">Economy Seat</label>
+                                            <input type="number"  id="EconomySeat" th:field="${Seat.economyClassSeat}"
+                                                   placeholder="Enter First Seat" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label class="form-label">First Price</label>
+                                            <input type="number" th:field="${Seat.priceEconomyClassSeat}"
+                                                   placeholder="Enter Economy seat" class="form-control">
+                                        </div>
+
+                                    </div>
+
+
+
+
+
                                 </div>
 
+                                <button type="button" id="generateSeats" class="btn btn-primary">Generate Seats</button>
+                            </div>
 
 
                             <div style="display: flex; justify-content: space-around; margin: 10px 0; padding: 0 20px;">
                                 <div>
-                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #a7d2ff; border-radius: 4px;"></span> First Class
+                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #a7d2ff; border-radius: 4px;"></span>
+                                    First Class
                                 </div>
                                 <div>
-                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #7199ff; border-radius: 4px;"></span>Business Class
+                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #7199ff; border-radius: 4px;"></span>Business
+                                    Class
                                 </div>
                                 <div>
-                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #2c4aff; border-radius: 4px;"></span> Economy Class
+                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #2c4aff; border-radius: 4px;"></span>
+                                    Economy Class
                                 </div>
 
                                 <div>
-                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #2ecc71; border-radius: 4px;"></span> Được chọn
+                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #2ecc71; border-radius: 4px;"></span>
+                                    Được chọn
                                 </div>
                             </div>
 
                             <!-- Seat Grid -->
-                                <div  style="position: relative;right: 4vh;margin-top: 2vh">
-                                    <div class="seat-grid" style="margin-left: 5vh">
-                                        <!-- Seat grid will be dynamically generated -->
-                                    </div>
+                            <div style="position: relative;right: 4vh;margin-top: 2vh">
+                                <div class="seat-grid" style="margin-left: 5vh">
+                                    <!-- Seat grid will be dynamically generated -->
                                 </div>
+                            </div>
 
                             <!-- Legend -->
 
@@ -282,15 +318,19 @@
                     <div class="modal-footer">
                         <button type="button" id="cancelModalBtn" class="btn btn-secondary">Close</button>
                         <button type="submit" class="btn btn-primary" id="saveSeatsBtn">Save Seats</button>
+                        <input type="hidden" th:field="${Seat.idFlight}" id="idFlight"/>
                     </div>
                 </div>
             </form>
         </div>
 
-        <div style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); overflow: hidden;" id="seatDetail">
+        <div style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); overflow: hidden;"
+             id="seatDetail">
             <div style="background: white; padding: 20px; border-radius: 10px; width: 667px; text-align: center; position: relative; max-height: 90%; overflow: hidden;">
                 <!-- Close button -->
-                <button style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 20px; cursor: pointer;" id="btnClose">&times;</button>
+                <button style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 20px; cursor: pointer;"
+                        id="btnClose">&times;
+                </button>
 
                 <!-- Title -->
                 <h2 style="margin-bottom: 5px;">Lựa chọn chỗ ngồi</h2>
@@ -299,26 +339,31 @@
                 <!-- Price Legend -->
                 <div style="display: flex; justify-content: space-around; margin: 10px 0; padding: 0 20px;">
                     <div>
-                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #a7d2ff; border-radius: 4px;"></span> First Class
+                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #a7d2ff; border-radius: 4px;"></span>
+                        First Class
                     </div>
                     <div>
-                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #7199ff; border-radius: 4px;"></span>Business Class
+                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #7199ff; border-radius: 4px;"></span>Business
+                        Class
                     </div>
                     <div>
-                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #2c4aff; border-radius: 4px;"></span> Economy Class
+                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #2c4aff; border-radius: 4px;"></span>
+                        Economy Class
                     </div>
 
                     <div>
-                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #2ecc71; border-radius: 4px;"></span> Được chọn
+                        <span style="display: inline-block; width: 20px; height: 20px; background-color: #2ecc71; border-radius: 4px;"></span>
+                        Được chọn
                     </div>
                 </div>
 
                 <!-- Seat Selection -->
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;" >
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                     <!-- Passenger Information -->
 
                     <!-- Seat Grid -->
-                    <div style="text-align: center; max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 8px;" class="seat-grid">
+                    <div style="text-align: center; max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 8px;"
+                         class="seat-grid">
                         <!-- Seat Header -->
                         <div style="display: flex; justify-content: center; margin-bottom: 5px; font-weight: bold;">
                             <div style="width: 30px; margin: 5px;">A</div>
