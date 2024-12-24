@@ -4,7 +4,6 @@ import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
 import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
 import com.vtnq.web.DTOs.Seat.SeatDTO;
-import com.vtnq.web.Entities.Seat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

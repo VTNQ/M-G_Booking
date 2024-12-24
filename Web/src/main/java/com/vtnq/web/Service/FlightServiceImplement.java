@@ -174,7 +174,7 @@ public class FlightServiceImplement implements FlightService{
                     }
                     Flight flight = flightRepository.findById(seatDTO.getIdFlight())
                             .orElseThrow(() -> new Exception("Flight not found"));
-                    seats.add(new Seat(letter + Integer.toString(currentRow), "First Class", flight));
+                    seats.add(new Seat(letter + Integer.toString(currentRow), "First Class", flight,seatDTO.getPriceClassSeat()));
                     currentSeatIndex++;
                     SeatsInRow++;// Tăng chỉ số ghế sau mỗi lần tạo ghế
                 }
@@ -198,7 +198,7 @@ public class FlightServiceImplement implements FlightService{
                     }
                     Flight flight = flightRepository.findById(seatDTO.getIdFlight())
                             .orElseThrow(() -> new Exception("Flight not found"));
-                    seats.add(new Seat(letter + Integer.toString(row), "Business Class", flight));
+                    seats.add(new Seat(letter + Integer.toString(row), "Business Class", flight,seatDTO.getPriceClassSeat()));
                     currentSeatIndex++;
                     SeatsInRow++;
                 }
@@ -223,7 +223,7 @@ public class FlightServiceImplement implements FlightService{
                     }
                     Flight flight = flightRepository.findById(seatDTO.getIdFlight())
                             .orElseThrow(() -> new Exception("Flight not found"));
-                    seats.add(new Seat(letter + Integer.toString(row), "Economy Class", flight));
+                    seats.add(new Seat(letter + Integer.toString(row), "Economy Class", flight,seatDTO.getPriceEconomyClassSeat()));
                     currentSeatIndex++;
                     SeatsInRow++;
                 }

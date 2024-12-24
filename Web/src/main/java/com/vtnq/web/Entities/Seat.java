@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "seats")
 public class Seat {
@@ -21,19 +23,23 @@ public class Seat {
     @Column(name = "type", length = 100)
     private String type;
 
-    public Seat() {
-    }
-
-    public Seat(String index, String type, Flight idFlight) {
+    public Seat(String index, String type, Flight idFlight, BigDecimal price) {
         this.index = index;
         this.type = type;
         this.idFlight = idFlight;
+        this.price = price;
     }
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_flight", nullable = false)
     private Flight idFlight;
+
+    @Column(name = "price", precision = 10)
+    private BigDecimal price;
+
+    public Seat() {
+    }
 
     public Integer getId() {
         return id;
@@ -65,6 +71,14 @@ public class Seat {
 
     public void setIdFlight(Flight idFlight) {
         this.idFlight = idFlight;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
 }

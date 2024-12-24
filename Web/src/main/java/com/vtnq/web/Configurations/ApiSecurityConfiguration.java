@@ -23,7 +23,7 @@ public class ApiSecurityConfiguration {
                         requestMatchers("/api/ForgetPassword","/api/CheckOTP","/api/ChangePassword","/api/District/{id}",
                                 "/api/hotel/DeletePictureImage/{id}","/api/hotel/UpdateMultipleImage/{id}",
                                 "/api/AirPort/SearchAirPort","/api/ContractOwner/AcceptContract","/api/city/SearchHotelByCityOrHotel",
-                                "/api/room/UpdateMultipleImage/{id}","/api/room/DeletePictureImage/{id}","/api/type/FindTypeByHotel/{id}","/api/seat/{id}").permitAll()
+                                "/api/room/UpdateMultipleImage/{id}","/api/room/DeletePictureImage/{id}","/api/type/FindTypeByHotel/{id}","/api/seat/{id}","/api/Country/All").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()) // This is still supported for versions below 6.1
