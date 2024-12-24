@@ -198,7 +198,7 @@
         </div>
         <div class="modal" id="customModal">
             <form th:action="@{/Admin/Flight/addSeat}" method="post" id="typeForm">
-                <div class="modal-content" style="width: 222%;left: -40vh">
+                <div class="modal-content" style="width: 222%;left: -40vh;height: 99vh">
                     <!-- Header -->
                     <div class="modal-header">
                         <h5>Seat Management</h5>
@@ -212,16 +212,37 @@
 
                                 <div class="seat-inputs">
                                     <div class="mb-3">
-                                        <label  class="form-label">Economy Seat</label>
-                                        <input type="number" id="EconomySeat" th:field="${Seat.economyClassSeat}" placeholder="Enter Economy seat" class="form-control">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label  class="form-label">Economy Seat</label>
+                                                <input type="number" id="EconomySeat" th:field="${Seat.economyClassSeat}" placeholder="Enter Economy seat" class="form-control">
+                                            </div>
+                                             <div class="col">
+                                                <label  class="form-label">Economy Price</label>
+                                                <input type="number"  th:field="${Seat.priceEconomyClassSeat}" placeholder="Enter Economy seat" class="form-control">
+                                            </div>
+
+                                        </div>
+
+
                                     </div>
                                     <div class="mb-3">
-                                        <label  class="form-label">Business Seat</label>
-                                        <input type="number" id="BusinessSeat" th:field="${Seat.businessClassSeat}" placeholder="Enter Business Seat" class="form-control">
+
+                                        <div class="col">
+                                            <label  class="form-label">Business Seat</label>
+                                            <input type="number" id="BusinessSeat" th:field="${Seat.businessClassSeat}" placeholder="Enter Business Seat" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <label  class="form-label mt-3">Economy Price</label>
+                                            <input type="number"  th:field="${Seat.economyClassSeat}" placeholder="Enter Economy seat" class="form-control mt-3">
+                                        </div>
+
                                     </div>
                                     <div class="mb-3">
                                         <label  class="form-label">First Seat</label>
                                         <input type="number" id="FirstSeat" th:field="${Seat.firstClassSeat}" placeholder="Enter First Seat" class="form-control">
+                                        <label  class="form-label mt-3">Economy Price</label>
+                                        <input type="number"  th:field="${Seat.economyClassSeat}" placeholder="Enter Economy seat" class="form-control mt-3">
                                     </div>
 
                                     <button type="button" id="generateSeats" class="btn btn-primary">Generate Seats</button>
@@ -246,7 +267,7 @@
                             </div>
 
                             <!-- Seat Grid -->
-                                <div  style="position: relative;right: 4vh;margin-top: 8vh">
+                                <div  style="position: relative;right: 4vh;margin-top: 2vh">
                                     <div class="seat-grid" style="margin-left: 5vh">
                                         <!-- Seat grid will be dynamically generated -->
                                     </div>
