@@ -22,9 +22,9 @@ public class ContractOwnerServiceImplement implements ContractOwnerService {
     private JavaMailSenderImpl mailSender;
 
     @Override
-    public List<ContractOwnerDto> findAll() {
+    public List<ContractOwnerDto> findAll(int id) {
         try {
-            return contractOwnerRepository.FindAll();
+            return contractOwnerRepository.FindAll(id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

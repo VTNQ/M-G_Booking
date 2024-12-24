@@ -362,308 +362,251 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
         <div class="Modalstyled__TransparentBackdrop-sc-1gd4uo9-1 hfzrUP" id="ModalHeader" style="opacity: 0"></div>
         <div class="Modalstyled__Backdrop-sc-1gd4uo9-2 jQOnFh">
             <div class="Modalstyled__ContentContainer-sc-1gd4uo9-3 eVMow">
-                <div class="Box-sc-kv6pi1-0 cJiLOx sc-httYMd ikgtwJ" id="ModalBody" style="opacity: 0;">
-                    <div>
-                        <i class="fa-solid fa-pen-fancy" style="font-size: 24px"></i>
-                        <span class="Spanstyled__SpanStyled-sc-16tp9kb-0 cyPVoD kite-js-Span sc-cbDGPM gQallF">Edit</span>
-                    </div>
-                    <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
-                        <div class="col-sm-5 ">
+                <form th:action="@{/SearchFlight}" method="get">
+                    <div class="Box-sc-kv6pi1-0 cJiLOx sc-httYMd ikgtwJ" id="ModalBody" style="opacity: 0;">
+                        <div>
+                            <i class="fa-solid fa-pen-fancy" style="font-size: 24px"></i>
+                            <span class="Spanstyled__SpanStyled-sc-16tp9kb-0 cyPVoD kite-js-Span sc-cbDGPM gQallF">Edit</span>
+                        </div>
+                        <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
+                            <div class="col-sm-5 ">
                                             <span class="d-block text-gray mb-0"
                                                   style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Destination or Hotel Name</span>
-                            <div class="search-container">
-                                <div class="search-item" id="search-from">
-                                    <i class="fa-solid fa-plane-departure"></i>
-                                    <input
-                                            type="text"
-                                            placeholder="Bay từ"
-                                            id="from-input"
-                                            autocomplete="off"
-                                    />
-                                    <input type="hidden" id="from-input-id" th:field="${Search.departureAirport}"/>
-                                </div>
-                                <div class="search-dropdown" id="from-dropdown">
-                                    <ul id="airport-list-from"></ul>
-                                </div>
-                                <button type="button" class="swap-button">
-                                    <i class="fa-solid fa-right-left"></i>
-                                </button>
-                                <div class="search-item" id="search-to">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    <input
-                                            type="text"
-                                            placeholder="Bay đến"
-                                            id="to-input"
-                                            autocomplete="off"
-                                    />
-                                    <input type="hidden" id="to-input-id" th:field="${Search.arrivalAirport}"/>
-                                </div>
-                                <div class="search-dropdown" id="to-dropdown">
+                                <div class="search-container">
+                                    <div class="search-item" id="search-from">
+                                        <i class="fa-solid fa-plane-departure"></i>
+                                        <input
+                                                type="text"
+                                                placeholder="Bay từ"
+                                                id="from-input"
+                                                autocomplete="off"
+                                        />
+                                        <input type="hidden" id="from-input-id" th:field="${Search.departureAirport}"/>
+                                    </div>
+                                    <div class="search-dropdown" id="from-dropdown" style="width: 69%">
+                                        <ul id="airport-list-from"></ul>
+                                    </div>
+                                    <button type="button" class="swap-button">
+                                        <i class="fa-solid fa-right-left"></i>
+                                    </button>
+                                    <div class="search-item" id="search-to">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <input
+                                                type="text"
+                                                placeholder="Bay đến"
+                                                id="to-input"
+                                                autocomplete="off"
+                                        />
+                                        <input type="hidden" id="to-input-id" th:field="${Search.arrivalAirport}"/>
+                                    </div>
+                                    <div class="search-dropdown" id="to-dropdown">
 
-                                    <ul id="airport-list"></ul>
+                                        <ul id="airport-list"></ul>
+                                    </div>
                                 </div>
+
                             </div>
-
-                        </div>
-                        <div class="col-sm-5">
+                            <div class="col-sm-5">
                                             <span class="d-block text-gray mb-0"
                                                   style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Check In - Out</span>
-                            <div class="text-left d-block"
-                                 style="border-width: 2px;border-color: #eaeaea !important;border-bottom: 1px solid #e7eaf3 !important;border: none">
-                                <div id="datepickerWrapperFromOne"
-                                     class="u-datepicker input-group relative">
-                                    <div class="input-group-prepend">
+                                <div class="text-left d-block"
+                                     style="border-width: 2px;border-color: #eaeaea !important;border-bottom: 1px solid #e7eaf3 !important;border: none">
+                                    <div id="datepickerWrapperFromOne"
+                                         class="u-datepicker input-group relative">
+                                        <div class="input-group-prepend">
                                                 <span class="d-flex align-items-center mr-2">
                                                     <i class="fa-solid fa-calendar"
                                                        style="color: #297cbb !important;font-weight: 500;font-style: normal"></i>
                                                 </span>
+                                        </div>
+                                        <input type="date" id="datePickerInput"
+                                               th:field="${Search.departureTime}"
+                                               class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
+                                               style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 217.5px;height: 54px"
+                                        />
                                     </div>
-                                    <input type="date" id="datePickerInput"
-                                           th:field="${Search.departureTime}"
-                                           class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
-                                           style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 217.5px;height: 54px"
-                                    />
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
-                    </div>
-                    <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
-                        <div class="col-sm-5 ">
+                        <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
+                            <div class="col-sm-5 ">
                                             <span class="text-left d-block"
                                                   style="color: #67747c !important;font-weight: 400;font-size: 1.2rem;text-align: left;margin-left: 1vh">At</span>
-                            <div class="search-container">
-                                <div class="search-item" id="search-At">
-                                    <i class="fa-solid fa-plane-departure"></i>
-                                    <input
-                                            type="text"
-                                            placeholder="Bay từ"
-                                            id="At-input"
-                                            autocomplete="off"
-                                    />
+                                <div class="search-container">
+                                    <div class="search-item" id="search-At">
+                                        <i class="fa-solid fa-plane-departure"></i>
+                                        <input
+                                                type="text"
+                                                placeholder="Bay từ"
+                                                id="At-input"
+                                                autocomplete="off"
+                                        />
 
-                                    <div class="search-dropdown" style="width: 28%;top: 68%" id="At-dropdown">
-                                        <ul id="At-List"></ul>
+                                        <div class="search-dropdown" style="width: 81%;top: 89%;left: 3%" id="At-dropdown">
+                                            <ul id="At-List"></ul>
+                                        </div>
+                                        <input type="hidden" id="idCity" th:field="${Search.idCity}">
                                     </div>
-                                    <input type="hidden" id="idCity" th:field="${Search.idCity}">
+
+
                                 </div>
 
-
                             </div>
-
-                        </div>
-                        <div class="col-sm-5">
+                            <div class="col-sm-5">
   <span class="d-block text-gray mb-2"
         style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Destination or Hotel Name</span>
-                            <div class="search-container">
-                                <div class="date-picker-container">
-                                    <div>
-                                        <label for="datePickerInputFrom" class="label">Nhận phòng</label>
-                                        <div class="date-picker">
-                                            <i class="fa-solid fa-calendar"></i>
-                                            <input type="date" id="datePickerInputFrom"
-                                                   th:field="${Search.departureTime}"/>
+                                <div class="search-container">
+                                    <div class="date-picker-container">
+                                        <div>
+                                            <label for="datePickerInputFrom" class="label">Nhận phòng</label>
+                                            <div class="date-picker">
+                                                <i class="fa-solid fa-calendar"></i>
+                                                <input type="date" id="datePickerInputFrom"
+                                                       th:field="${Search.departureTime}"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <label for="datePickerInputTo" class="label">Trả phòng</label>
-                                        <div class="date-picker">
-                                            <i class="fa-solid fa-calendar"></i>
-                                            <input type="date" id="datePickerInputTo" th:field="${Search.arrivalTime}"/>
+                                        <div>
+                                            <label for="datePickerInputTo" class="label">Trả phòng</label>
+                                            <div class="date-picker">
+                                                <i class="fa-solid fa-calendar"></i>
+                                                <input type="date" id="datePickerInputTo" th:field="${Search.arrivalTime}"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-5 ">
+                            <div class="col-sm-5">
+  <span class="d-block text-gray mb-2"
+        style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Room Number</span>
+                                <div class="dropdown-container">
+
+                                    <div class="dropdown">
+                                        <select id="classSelect" th:field="${Search.quantityRoom}" class="form-select " style="margin-top: 2vh">
+                                            <option value="1" >1</option>
+                                            <option value="2">2</option>
+                                            <option value="3" >3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="5">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">7</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 ">
                                             <span class="text-left d-block"
                                                   style="color: #67747c !important;font-weight: 400;font-size: 1.2rem;text-align: left">Rooms and Guests</span>
-                            <div class="dropdown-container">
+                                <div class="dropdown-container">
 
-                                <div class="dropdown">
-                                    <select id="classSelect" th:field="${Search.typeFlight}" class="form-select "
-                                            style="margin-top: 2vh">
-                                        <option value="Popular">Popular</option>
-                                        <option value="Premium Economy">Premium Economy</option>
-                                        <option value="Merchant">Merchant</option>
-                                        <option value="First Class">First Class</option>
-                                    </select>
+                                    <div class="dropdown">
+                                        <select id="classSelect" th:field="${Search.typeFlight}" class="form-select "
+                                                style="margin-top: 2vh">
+                                            <option value="Popular">Popular</option>
+                                            <option value="Premium Economy">Premium Economy</option>
+                                            <option value="Merchant">Merchant</option>
+                                            <option value="First Class">First Class</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div id="basicDropdownClick"
-                                 class="dropdown-menu  dropdown-unfold col-11 m-0 u-unfold--css-animation slideInUp "
-                                 style="max-width: 22%">
-                                <div class="w-100 py-2 px-3 mb-3">
-                                    <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
-                                         style="grid-template-columns: 1fr 1fr">
+                                <div id="basicDropdownClick"
+                                     class="dropdown-menu  dropdown-unfold col-11 m-0 u-unfold--css-animation slideInUp "
+                                     style="max-width: 22%">
+                                    <div class="w-100 py-2 px-3 mb-3">
+                                        <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                             style="grid-template-columns: 1fr 1fr">
                                                         <span class="block"
                                                               style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Rooms</span>
-                                        <div class="d-flex">
-                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                               style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                <i class="fa-solid fa-minus" style="color: black"></i>
-                                            </a>
-                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
-                                                   value="1" style="color: #3b444f">
-                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                               style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                <i class="fa-solid fa-plus" style="color: black"></i>
-                                            </a>
+                                            <div class="d-flex">
+                                                <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                   style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                    <i class="fa-solid fa-minus" style="color: black"></i>
+                                                </a>
+                                                <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                       value="1" style="color: #3b444f">
+                                                <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                   style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                    <i class="fa-solid fa-plus" style="color: black"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="w-100 py-2 px-3 mb-3">
-                                    <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
-                                         style="grid-template-columns: 1fr 1fr">
+                                    <div class="w-100 py-2 px-3 mb-3">
+                                        <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                             style="grid-template-columns: 1fr 1fr">
                                                         <span class="block"
                                                               style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Adults</span>
-                                        <div class="d-flex">
-                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                               style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                <i class="fa-solid fa-minus" style="color: black"></i>
-                                            </a>
-                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
-                                                   value="1" style="color: #3b444f">
-                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                               style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                <i class="fa-solid fa-plus" style="color: black"></i>
-                                            </a>
+                                            <div class="d-flex">
+                                                <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                   style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                    <i class="fa-solid fa-minus" style="color: black"></i>
+                                                </a>
+                                                <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                       value="1" style="color: #3b444f">
+                                                <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                   style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                    <i class="fa-solid fa-plus" style="color: black"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="w-100 py-2 px-3 mb-3">
-                                    <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
-                                         style="grid-template-columns: 1fr 1fr">
+                                    <div class="w-100 py-2 px-3 mb-3">
+                                        <div class="js-quantity mx-3 d-grid align-items-center justify-content-between"
+                                             style="grid-template-columns: 1fr 1fr">
                                                         <span class="block"
                                                               style="font-weight: 500;color: #77838f !important;font-size: 1rem;">Child</span>
-                                        <div class="d-flex">
-                                            <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                               style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                <i class="fa-solid fa-minus" style="color: black"></i>
-                                            </a>
-                                            <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
-                                                   value="1" style="color: #3b444f">
-                                            <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
-                                               style="color: #77838f;padding: 0.5rem 0.8rem">
-                                                <i class="fa-solid fa-plus" style="color: black"></i>
-                                            </a>
+                                            <div class="d-flex">
+                                                <a class="js-minus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                   style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                    <i class="fa-solid fa-minus" style="color: black"></i>
+                                                </a>
+                                                <input class="js-result form-control h-auto border-0 rounded p-0 max-width-6 text-center"
+                                                       value="1" style="color: #3b444f">
+                                                <a class="js-plus btn btn-icon btn-medium btn-outline-secondary rounded-circle"
+                                                   style="color: #77838f;padding: 0.5rem 0.8rem">
+                                                    <i class="fa-solid fa-plus" style="color: black"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
-
                             </div>
-                        </div>
-                        <div class="col-sm-5 d-flex align-items-center justify-content-center"
-                             style="position: relative;left: -20vh;top: -2vh;margin-top: 2vh">
-                            <button type="submit"
-                                    class="btn btn-primary w-50 mb-xl-0 mb-lg-1 transition-3d-hover"
-                                    style="border-radius: 3px;transition: all 0.2s ease-in-out;background-color: #297cbb;border-color: #297cbb;
+                            <div class="col-sm-5 "
+                                 style="position: absolute;right: 41vh;top: 40vh">
+                                <button type="submit"
+                                        class="btn btn-primary w-50 mb-xl-0 mb-lg-1 transition-3d-hover"
+                                        style="border-radius: 3px;transition: all 0.2s ease-in-out;background-color: #297cbb;border-color: #297cbb;
                                         position:absolute;left: 22vh;width: calc(96% - 12px) !important;">
-                                <i class="fa-solid fa-magnifying-glass mr-2"
-                                   style="font-size: 1.25rem;"></i>
-                                Search
-                            </button>
-                        </div>
-
-
-                    </div>
-                    <div class="row d-block nav-select d-lg-flex mg-lg-3 px-2 px-lg-3 align-items-end">
-                        <div class="col-sm-5 d-flex align-items-center justify-content-center" style="position: relative;left: -20vh;top: -1vh;margin-top: 2vh">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" th:field="${Search.selectedHotel}" type="checkbox" id="flexSwitchCheckDefault" style="font-size: 21px">
-                                <label class="form-check-label" for="flexSwitchCheckDefault" style="position: absolute;top: 3px;width: 26vh">Default switch checkbox input</label>
+                                    <i class="fa-solid fa-magnifying-glass mr-2"
+                                       style="font-size: 1.25rem;"></i>
+                                    Search
+                                </button>
                             </div>
-                        </div>
 
+
+                        </div>
+                        <div class="row d-block nav-select d-lg-flex mg-lg-3 px-2 px-lg-3 align-items-end">
+                            <div class="col-sm-5 d-flex align-items-center justify-content-center" style="position: relative;left: -20vh;top: -1vh;margin-top: 2vh">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" th:field="${Search.selectedHotel}" type="checkbox" id="flexSwitchCheckDefault" style="font-size: 21px">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault" style="position: absolute;top: 3px;width: 26vh">Default switch checkbox input</label>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
+                </form>
+
             </div>
         </div>
     </div>
 </main>
 
-<script th:fragment="customScripts">
+<script th:fragment="customScripts"  th:src="@{/user/Hotel/Hotel.js}">
     //Dropdown select
-    const ModalContainer=document.querySelector('#ModalContainer');
-    const ModalHeader=document.querySelector('#ModalHeader');
-    const ModalBody=document.querySelector('#ModalBody');
-    document.getElementById('SearchBtn').addEventListener('click',function (event){
-
-        ModalHeader.style.opacity='1';
-        ModalBody.style.opacity='1';
-        ModalContainer.style.display="block"
-    })
-    ModalContainer.addEventListener('click',function (event){
-        ModalContainer.style.display="none"
-    })
-    // Close dropdown if clicked outside
-
-    function initFlatpickr() {
-        flatpickr("#datePickerInput", {
-            mode: "range",  // Enable date range selection
-            dateFormat: "M j / Y",  // Format for displayed dates
-            defaultDate: ["Jul 7 / 2020", "Aug 25 / 2020"],  // Set default dates
-            onReady: function (selectedDates, dateStr, instance) {
-                instance.element.value = dateStr;
-            }
-        });
-    }
-
-    const rangeMin = document.getElementById('range-min');
-    const rangeMax = document.getElementById('range-max');
-    const priceRangeText = document.getElementById('price-range-text');
-    const sliderContainer = document.querySelector('.slider-container');
-
-    function updateSliderBackground() {
-        const min = parseInt(rangeMin.value);
-        const max = parseInt(rangeMax.value);
-        const rangeMinPosition = ((min - 200) / (3456 - 200)) * 100;
-        const rangeMaxPosition = ((max - 200) / (3456 - 200)) * 100;
-
-        // Update the background of the sliders
-        sliderContainer.style.setProperty('--start-percent', `${rangeMinPosition}%`);
-        sliderContainer.style.setProperty('--end-percent', `${rangeMaxPosition}%`);
-        priceRangeText.textContent = `£${min} - £${max}`;
-    }
-
-    rangeMin.addEventListener('input', () => {
-        if (parseInt(rangeMin.value) > parseInt(rangeMax.value) - 10) {
-            rangeMin.value = rangeMax.value - 10;
-        }
-        updateSliderBackground();
-    });
-
-    rangeMax.addEventListener('input', () => {
-        if (parseInt(rangeMax.value) < parseInt(rangeMin.value) + 10) {
-            rangeMax.value = parseInt(rangeMin.value) + 10;
-        }
-        updateSliderBackground();
-    });
-
-    // Initialize background
-    updateSliderBackground();
-
-    document.getElementById("datePickerInput").addEventListener("focus", function () {
-        // Initialize flatpickr only if not already initialized
-        if (!this.classList.contains("flatpickr-input-active")) {
-            initFlatpickr();
-            this.classList.add("flatpickr-input-active");
-        }
-    });
-    document.getElementById('basicDropdownClickInvoker').addEventListener('click', function () {
-        const dropdownMenu = document.querySelector('#basicDropdownClick');
-        console.log(dropdownMenu)
-        dropdownMenu.classList.toggle('show');
-    });
-    document.addEventListener('click', function (event) {
-        const isClickInside = document.getElementById('basicDropdownClickInvoker').contains(event.target) ||
-            document.querySelector('#basicDropdownClick').contains(event.target);
-
-        if (!isClickInside) {
-            document.querySelector('#basicDropdownClick').classList.remove('show');
-        }
-    })
 
 </script>
 </body>

@@ -3,10 +3,14 @@ package com.vtnq.web.Service;
 import com.vtnq.web.DTOs.Account.AccountDto;
 import com.vtnq.web.DTOs.Account.AdminAccountList;
 import com.vtnq.web.DTOs.Account.RegisterUser;
+import com.vtnq.web.DTOs.Account.UserAccountDTO;
 import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Entities.Level;
+import com.vtnq.web.Entities.SecurityCode;
+import com.vtnq.web.Helper.FileHelper;
 import com.vtnq.web.Repositories.AccountRepository;
 import com.vtnq.web.Repositories.LevelRepository;
+import com.vtnq.web.Repositories.SecurityCodeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -17,7 +21,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -30,11 +39,13 @@ public class AuthServiceImplement implements AuthService {
     @Autowired
     private JavaMailSenderImpl mailSender;
     @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
     private LevelRepository levelRepository;
     @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private SecurityCodeRepository securityCodeRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -211,6 +222,136 @@ public class AuthServiceImplement implements AuthService {
             return true;
         }catch (Exception e) {
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public UserAccountDTO GetAccountUser(int id) {
+        try {
+            UserAccountDTO userAccountDTO=accountRepository.GetUser(id);
+            UserAccountDTO securityCode=securityCodeRepository.findByIdAccount(userAccountDTO.getId());
+            if(securityCode!=null) {
+                userAccountDTO.setValueCode(securityCode.getValueCode());
+                userAccountDTO.setStartAt(securityCode.getStartAt());
+                userAccountDTO.setEndAt(securityCode.getEndAt());
+                userAccountDTO.setLocation(securityCode.getLocation());
+                userAccountDTO.setDob(securityCode.getDob());
+                userAccountDTO.setFront_security_code(securityCode.getFront_security_code());
+                userAccountDTO.setBack_security_code(securityCode.getBack_security_code());
+            }
+            return userAccountDTO;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    public boolean saveFileWithStream(MultipartFile file, String uploadDir, String fileName) {
+        try {
+            // Tạo thư mục nếu chưa tồn tại
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Đường dẫn tệp đích
+            Path filePath = uploadPath.resolve(fileName);
+
+            // Thực hiện trì hoãn 5 giây trước khi lưu file
+
+
+            // Lưu file vào đĩa
+            file.transferTo(filePath.toFile());
+
+            // Kiểm tra xem file đã được lưu thành công chưa
+            if (Files.exists(filePath)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (IOException e) {
+            // Nếu có lỗi, in thông báo lỗi
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean UpdateProfileUser(UserAccountDTO userAccountDTO) {
+        try {
+
+            SecurityCode securityCode=new SecurityCode();
+            Account account=modelMapper.map(userAccountDTO, Account.class);
+            if(userAccountDTO.getValueCode()!=null && userAccountDTO.getStartAt()!=null&&userAccountDTO.getEndAt()!=null&&
+            userAccountDTO.getLocation()!=null && userAccountDTO.getDob()!=null && !userAccountDTO.getBack_security_file().getOriginalFilename().isEmpty()
+            && !userAccountDTO.getBack_security_file().getOriginalFilename().isEmpty()) {
+                    if(userAccountDTO.getIdSecurityCode()!=0){
+                        securityCode.setId(userAccountDTO.getIdSecurityCode());
+                    }
+
+                    securityCode.setValueCode(userAccountDTO.getValueCode());
+                    securityCode.setStartAt(userAccountDTO.getStartAt());
+                    securityCode.setEndAt(userAccountDTO.getEndAt());
+                    securityCode.setLocation(userAccountDTO.getLocation());
+                    securityCode.setDob(userAccountDTO.getDob());
+
+                        String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "static", "images", "SecurityCode").toString();
+                        Path uploadPath = Paths.get(uploadDir);
+                        if (!Files.exists(uploadPath)) {
+                            Files.createDirectories(uploadPath);
+                        }
+                        String newFileFront= FileHelper.generateImageName(userAccountDTO.getFront_security_file().getOriginalFilename());
+                        if(saveFileWithStream(userAccountDTO.getFront_security_file(), uploadDir, newFileFront)) {
+                            securityCode.setFrontSecurityCode(newFileFront);
+                        }
+
+
+                        String uploadDirBack = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "static", "images", "SecurityCode").toString();
+                        Path uploadPathBack = Paths.get(uploadDirBack);
+                        if (!Files.exists(uploadPath)) {
+                            Files.createDirectories(uploadPathBack);
+                        }
+                        String BacknewFile= FileHelper.generateImageName(userAccountDTO.getBack_security_file().getOriginalFilename());
+                        if(saveFileWithStream(userAccountDTO.getFront_security_file(), uploadDir, BacknewFile)) {
+                            securityCode.setBackSecurityCode(BacknewFile);
+                        }
+                        securityCode.setBackSecurityCode(BacknewFile);
+                        securityCode.setFrontSecurityCode(newFileFront);
+                        securityCode.setDob(userAccountDTO.getDob());
+                        securityCode.setLocation(userAccountDTO.getLocation());
+                        securityCode.setValueCode(userAccountDTO.getValueCode());
+                        securityCode.setStartAt(userAccountDTO.getStartAt());
+                        securityCode.setEndAt(userAccountDTO.getEndAt());
+
+
+
+                SecurityCode insertedCode= securityCodeRepository.save(securityCode);
+                account.setSecurityCode(insertedCode);
+            }else{
+                account.setSecurityCode(null);
+            }
+
+
+            if(userAccountDTO.getAvatarFile()!=null) {
+                String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "static", "images", "users").toString();
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                String newFileName = FileHelper.generateImageName(userAccountDTO.getAvatarFile().getOriginalFilename());
+                if (saveFileWithStream(userAccountDTO.getAvatarFile(), uploadDir, newFileName)) {
+                    account.setAvatar(newFileName);
+                }
+            }
+            Level level=levelRepository.findById(userAccountDTO.getLevel_id())
+                    .orElseThrow(() -> new RuntimeException("Level not found"));
+            account.setLevel(level);
+            accountRepository.save(account);
+            return true;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
             return false;
         }
     }

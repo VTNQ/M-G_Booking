@@ -16,7 +16,7 @@ public List<ImageHotelListDTO>findImage(int id);
 public boolean UpdateHotel(HotelUpdateDTO hotel, MultipartFile file);
 public boolean deleteImageHotel(int id);
 public boolean updateMultipleImages(int id,List<MultipartFile> files);
-public List<HotelSearchDTO>SearchHotels(int id);
+public List<HotelSearchDTO>SearchHotels(int id,int quantityRoom);
 public ShowDetailHotel FindDetailHotel(int id);
 public List<Picture>FindImageInDetailHotel(int id);
 }

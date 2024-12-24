@@ -46,7 +46,7 @@ public class Account {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ColumnDefault("1")
-    @JoinColumn(name = "level_id", nullable = false)
+    @JoinColumn(name = "level_id", nullable = true)
     private Level level;
 
     @ColumnDefault("'ROLE_USER'")

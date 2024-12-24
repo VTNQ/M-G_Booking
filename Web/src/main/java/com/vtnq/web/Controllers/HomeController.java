@@ -43,7 +43,7 @@ public class HomeController {
         try {
             String sanitizedDepartureTime = search.getDepartureTime().replaceAll("[^\\d-]", "");
 
-            model.put("Hotel",hotelService.SearchHotels(search.getIdCity()));
+            model.put("Hotel",hotelService.SearchHotels(search.getIdCity(),search.getQuantityRoom()));
             DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate departureDate = LocalDate.parse(sanitizedDepartureTime, formatterDepartureDate);
 
