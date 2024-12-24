@@ -198,7 +198,7 @@ public class FlightServiceImplement implements FlightService{
                     }
                     Flight flight = flightRepository.findById(seatDTO.getIdFlight())
                             .orElseThrow(() -> new Exception("Flight not found"));
-                    seats.add(new Seat(letter + Integer.toString(row), "Business Class", flight,seatDTO.getPriceClassSeat()));
+                    seats.add(new Seat(letter + Integer.toString(row), "Business Class", flight,seatDTO.getPriceBusinessClassSeat()));
                     currentSeatIndex++;
                     SeatsInRow++;
                 }

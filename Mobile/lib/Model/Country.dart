@@ -3,17 +3,14 @@ class Country{
   String? name;
   Country({this.id, this.name});
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-    };
+  Country.fromMap(Map<String, dynamic> map) {
+    id = map["id"];
+    name = map["name"];
   }
-
-  factory Country.fromJson(Map<String, dynamic> json) {
-    return Country(
-      id: json['id'],
-      name: json['name'],
-    );
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      "id": id,
+      "name": name,
+    };
   }
 }
