@@ -1,9 +1,11 @@
 package com.vtnq.web.Configurations;
 
 import com.vtnq.web.DTOs.Airport.AirportDto;
+import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Room.RoomDTO;
 import com.vtnq.web.DTOs.Service.ServiceDTO;
 import com.vtnq.web.Entities.Airport;
+import com.vtnq.web.Entities.Flight;
 import com.vtnq.web.Entities.Room;
 import com.vtnq.web.Entities.Service;
 import org.modelmapper.ModelMapper;
@@ -24,6 +26,11 @@ public ModelMapper modelMap() {
     modelMapper.typeMap(Room.class, RoomDTO.class).addMappings(mapping -> {
         mapping.map(rooms->rooms.getHotel().getId(),RoomDTO::setIdHotel);
         mapping.map(rooms->rooms.getType().getId(),RoomDTO::setType);
+    });
+    modelMapper.typeMap(Flight.class, FlightDto.class).addMappings(mapping -> {
+        mapping.map(flight->flight.getDepartureAirport().getId(),FlightDto::setDeparture_airport);
+        mapping.map(flight->flight.getArrivalAirport().getId(),FlightDto::setArrival_airport);
+        mapping.map(flight->flight.getAirline().getId(),FlightDto::setAirline_id);
     });
 return modelMapper;
 }

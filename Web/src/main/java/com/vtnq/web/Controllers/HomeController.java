@@ -56,7 +56,15 @@ public class HomeController {
     }
     public String SearchFlight(ModelMap model,@ModelAttribute("Search")SearchFlightDTO searchFlightDTO) {
 
-        String selectedDateStr=searchFlightDTO.getDepartureTime();
+        String selectedDateStr=searchFlightDTO.getDepartureTime().trim();
+        if (selectedDateStr.endsWith(",")) {
+            selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
+        }
+        searchFlightDTO.setDepartureTime(selectedDateStr);
+        if(!searchFlightDTO.getArrivalTime().isEmpty()){
+            searchFlightDTO.setArrivalTime(searchFlightDTO.getArrivalTime().substring(0,searchFlightDTO.getArrivalTime().length()-1));
+
+        }
         DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
         List<Map<String, String>> dateList = new ArrayList<>();
@@ -68,12 +76,18 @@ public class HomeController {
             dateMap.put("day", String.valueOf(nextDate.getDayOfMonth()));
             dateMap.put("month", String.valueOf(nextDate.getMonthValue()));
             dateMap.put("minprice",String.valueOf(minPrice));
-            if(searchFlightDTO.getArrivalTime()==null){
+            if(searchFlightDTO.getArrivalTime().isEmpty()){
                 model.put("Flight"+i,flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),
                         nextDate,searchFlightDTO.getTypeFlight()));
             }else{
-                String departureTime = searchFlightDTO.getDepartureTime();
-                String ArrivatureTime=searchFlightDTO.getArrivalTime();// Assume this is "2024-12-16"
+                String departureTime = searchFlightDTO.getDepartureTime().trim();
+                if(departureTime.endsWith(",")){
+                    departureTime = departureTime.substring(0, departureTime.length() - 1);
+                }
+                String ArrivatureTime=searchFlightDTO.getArrivalTime();
+                if(ArrivatureTime.endsWith(",")){
+                    ArrivatureTime = ArrivatureTime.substring(0, ArrivatureTime.length() - 1);
+                }
                 DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate departureDate = LocalDate.parse(departureTime, formatterDepartureDate);
                 LocalDate ArrivatureTimeDate = LocalDate.parse(ArrivatureTime, formatterDepartureDate);
@@ -83,8 +97,10 @@ public class HomeController {
         }
         model.put("dateList", dateList);
         model.put("searchFlightDTO",searchFlightDTO);
-        String departureTime = searchFlightDTO.getDepartureTime();
-
+        String departureTime = searchFlightDTO.getDepartureTime().trim();
+        if(departureTime.endsWith(",")){
+            departureTime = departureTime.substring(0, departureTime.length() - 1);
+        }
         DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate departureDate = LocalDate.parse(departureTime, formatterDepartureDate);
 

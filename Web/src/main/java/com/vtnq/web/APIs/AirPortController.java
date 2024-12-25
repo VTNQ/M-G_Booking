@@ -1,14 +1,13 @@
 package com.vtnq.web.APIs;
 
+import com.vtnq.web.DTOs.Airport.AirportDto;
 import com.vtnq.web.DTOs.Airport.CountryAiportDTO;
+import com.vtnq.web.Entities.Airport;
 import com.vtnq.web.Service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +24,15 @@ public class AirPortController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<List<CountryAiportDTO>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping(value = "FindById/{id}")
+    public ResponseEntity<AirportDto>FindById(@PathVariable int id) {
+        try {
+            return new ResponseEntity<AirportDto>(airportService.findById(id), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<AirportDto>(HttpStatus.BAD_REQUEST);
         }
     }
 }

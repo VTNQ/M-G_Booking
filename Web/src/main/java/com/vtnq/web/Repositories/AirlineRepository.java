@@ -25,7 +25,7 @@ public interface AirlineRepository extends JpaRepository<Airline, Integer> {
             "where a.id = :id")
     UpdateAirlineDTO FindById(@Param("id") Integer id);
 
-    @Query("select a from Airline a Join Flight b on a.id=b.airline.id join DetailFlight c on c.idFlight.id=b.id " +
+    @Query("select a from Airline a Join Flight b on a.id=b.airline.id join Seat c on c.idFlight.id=b.id " +
             " where b.departureAirport.id= :departureAirport" +
             " and b.arrivalAirport.id = :arrivalAirport" +
             " and Date(b.departureTime) = :departureTime" +

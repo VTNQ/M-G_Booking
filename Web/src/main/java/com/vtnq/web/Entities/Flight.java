@@ -1,7 +1,9 @@
 package com.vtnq.web.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -12,23 +14,31 @@ public class Flight {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "airline_id", nullable = false)
     private Airline airline;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "departure_airport", nullable = false)
     private Airport departureAirport;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "arrival_airport", nullable = false)
     private Airport arrivalAirport;
 
+    @NotNull
     @Column(name = "departure_time", nullable = false)
     private Instant departureTime;
 
+    @NotNull
     @Column(name = "arrival_time", nullable = false)
     private Instant arrivalTime;
+
+    @Column(name = "price", precision = 10)
+    private BigDecimal price;
 
     public Integer getId() {
         return id;
@@ -76,6 +86,14 @@ public class Flight {
 
     public void setArrivalTime(Instant arrivalTime) {
         this.arrivalTime = arrivalTime;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
 }

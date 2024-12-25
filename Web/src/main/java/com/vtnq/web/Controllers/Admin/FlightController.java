@@ -1,13 +1,9 @@
 package com.vtnq.web.Controllers.Admin;
 
-import com.vtnq.web.DTOs.Flight.DetailFlightDTO;
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
 import com.vtnq.web.DTOs.Seat.SeatDTO;
 import com.vtnq.web.Entities.Account;
-import com.vtnq.web.Entities.DetailFlight;
-import com.vtnq.web.Entities.Flight;
-import com.vtnq.web.Repositories.FlightRepository;
 import com.vtnq.web.Service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -33,8 +29,6 @@ public class FlightController {
     @Autowired
     private SeatService seatService;
 
-    @Autowired
-    private DetailFlightService detailFlightService;
 
     @GetMapping("Flight/add")
     public String addFlight(ModelMap model, HttpServletRequest request) {
@@ -58,13 +52,10 @@ public class FlightController {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
             model.put("flight", flightService.findById(id));
-            model.put("detailFlight",detailFlightService.findAll(id));
+
             model.put("DepartureAirPort", airportService.findAll(currentAccount.getCountryId()));
             model.put("ArrivalAirPort", airportService.findAll());
             model.put("Airline", airlineService.findAll());
-            DetailFlightDTO detailFlight=new DetailFlightDTO();
-            detailFlight.setIdFlight(id);
-            model.put("detailFlightAdd",detailFlight);
             return "Admin/Flight/Edit";
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,37 +128,7 @@ public class FlightController {
             return null;
         }
         }
-    @PostMapping("Flight/AddDetailFlight")
-    public String addDetailFlight(@ModelAttribute("detailFlightAdd")@Valid DetailFlightDTO detailFlightDTO, BindingResult result, RedirectAttributes redirectAttributes) {
-      try {
-          if (result.hasErrors()) {
-              StringBuilder errorMessages = new StringBuilder("Validation errors: ");
-              result.getFieldErrors().forEach(error ->
-                      errorMessages.append(String.format("Field : %s. ", error.getDefaultMessage()))
-              );
-              redirectAttributes.addFlashAttribute("message", errorMessages.toString());
-              redirectAttributes.addFlashAttribute("messageType", "error");
-              return "redirect:/Admin/Flight/edit/"+detailFlightDTO.getIdFlight();
-          }
-          if(detailFlightService.existByType(detailFlightDTO.getType(),detailFlightDTO.getIdFlight())){
-              redirectAttributes.addFlashAttribute("messageType", "error");
-              redirectAttributes.addFlashAttribute("message", "This Type is already exists");
-              return "redirect:/Admin/Flight/edit/"+detailFlightDTO.getIdFlight();
-          }
-          if(detailFlightService.addDetailFlight(detailFlightDTO)){
-              redirectAttributes.addFlashAttribute("messageType", "success");
-              redirectAttributes.addFlashAttribute("message", "Add Detail Flight Success");
-              return "redirect:/Admin/Flight/edit/"+detailFlightDTO.getIdFlight();
-          }else{
-              redirectAttributes.addFlashAttribute("messageType", "error");
-              redirectAttributes.addFlashAttribute("message", "Add Detail Flight Failed");
-              return "redirect:/Admin/Flight/edit/"+detailFlightDTO.getIdFlight();
-          }
-      }catch (Exception e) {
-          e.printStackTrace();
-          return null;
-      }
-    }
+
     @PostMapping("Flight/add")
     public String addFlight(@ModelAttribute("flight") @Valid FlightDto flightDto,BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes
             ) {

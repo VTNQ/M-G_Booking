@@ -36,7 +36,7 @@ public class SercurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/LoginAdmin","/registerUser","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**",
                                     "/ForgotPassword","/images/flight/**","/images/hotels/**","/Home","/SearchFlight","/Admin/SignatureContract/{id}",
-                                    "/DetailHotel/{id}","/InformationCustomer","/rating","/Payment","/Success").permitAll()
+                                    "/DetailHotel/{id}","/InformationCustomer","/rating","/Payment","/Success","/InformationFly","/pay/**").permitAll()
                             .requestMatchers("SuperAdmin/Home","/SuperAdmin/Country/add","/SuperAdmin/Country"
                             ,"/SuperAdmin/Country/update","/SuperAdmin/Country/delete/{id}","/SuperAdmin/AccountAdmin/add"
                             ,"/SuperAdmin/Airline/add","/SuperAdmin/Airline","/SuperAdmin/Airline/edit/{id}",
@@ -44,8 +44,7 @@ public class SercurityConfiguration {
                             .requestMatchers("/Admin/Home","/Admin/City/add","/Admin/City","/Admin/City/edit/{id}",
                                     "Admin/City/UpdateCity","/Admin/City/delete/{id}","Admin/District/{id}",
                                     "Admin/District/add","/Admin/District/edit/{id}","/Admin/District/update","/Admin/District/delete/{id}",
-                                    "Admin/AirPort/add","Admin/AirPort","/Admin/AirPort/edit/{id}","/Admin/Flight/add","/Admin/Flight/edit/{id}",
-                                    "Admin/Flight/AddDetailFlight","/Admin/Flight/UpdateFlight","/Admin/Flight/addSeat","/Admin/Contract").hasAnyRole("ADMIN")
+                                    "Admin/AirPort/add","Admin/AirPort","/Admin/AirPort/edit/{id}","/Admin/Flight/add","/Admin/Flight/edit/{id}","/Admin/Flight/UpdateFlight","/Admin/Flight/addSeat","/Admin/Contract").hasAnyRole("ADMIN")
                             .requestMatchers("/Owner","/Owner/Hotel/add","/Owner/Hotel","/Owner/Hotel/edit/{id}","/Owner/Hotel/update","/Owner/Hotel/Detail/{id}"
                             ,"/Owner/service/add","/Owner/service/{id}","/Owner/service/edit/{id}","/Owner/service/update","/Owner/Room/{id}","/Owner/Room/add",
                                     "/Owner/Room/edit/{id}","/Owner/Room/update","/Owner/Room/delete/{id}","/Owner/Amenities/{id}","/Owner/Amenities/add","/Owner/Amenities/edit/{id}",

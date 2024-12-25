@@ -10,6 +10,37 @@
         padding-top: 3.5rem !important;
     }
 }
+.edit-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-section {
+    display: flex;
+    align-items: center;
+}
+
+.edit-text {
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.close-btn {
+    background-color: #f44336; /* Red color for close button */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.close-btn:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+
 .avatar-upload {
     text-align: center;
     position: relative;
@@ -433,13 +464,186 @@
 .text-white {
     color: #fff !important;
 }
+/* General Card Styling */
 .flight-card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    width: 48vh;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
+
+.flight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Header Styling */
+.flight-header {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+}
+
+.airline-logo {
+    width: 50px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.airline-info {
+    margin-left: 15px;
+}
+
+.airline-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.flight-tag {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    background-color: #e74c3c;
+    color: white;
+    margin-left: 10px;
+}
+
+.dropdown {
+    margin-left: auto;
+}
+
+.dropdown-toggle {
+    font-size: 14px;
+}
+
+/* Flight Details Styling */
+.flight-details {
+    padding: 20px;
+}
+
+.flight-time {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.departure, .arrival {
+    text-align: center;
+}
+
+.time {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.location {
+    font-size: 14px;
+    color: #666;
+}
+
+.date {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.arrow {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.duration {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #999;
+}
+
+/* Flight Info Section */
+.flight-info {
+    font-size: 14px;
+    color: #666;
+}
+
+.flight-info small {
+    font-size: 12px;
+    color: #aaa;
+}
+
+/* Footer (Price and Buttons) */
+.flight-price {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+
+}
+.pt-5, .py-5 {
+    padding-top: 2rem !important;
+}
+.currency {
+    font-size: 14px;
+    color: #888;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    color: #333;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+    color: #000;
+}
+
+/* Buttons */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
 
 .flight-card-header {
     display: flex;
@@ -1066,10 +1270,7 @@
 .custombox-fadein.custombox-content {
     opacity: 0;
 }
-.flight-card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
+
 
 .flight-header {
     background-color: #f8f9fa;
@@ -1153,12 +1354,26 @@
     font-size: 20px;
     font-weight: bold;
 }
-
+@media (min-width: 768px) {
+    .col-md-2gdot8 {
+        -ms-flex: 0 0 23.66667%;
+        flex: 0 0 23.66667%;
+        max-width: 23.66667%;
+    }
+}
+.flight-card-header {
+    background-color: #297cbb;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
 .date-tab .price {
     font-size: 14px;
 }
 .flight-details > div.hidden {
-    max-height: 0; /* Ẩn div bằng cách đặt max-height là 0 */
+    max-height: 0;
+    opacity: 0/* Ẩn div bằng cách đặt max-height là 0 */
 }
 
 .flight-time {

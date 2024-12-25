@@ -1,39 +1,10 @@
-const flightDetails = document.querySelector('.flight-details');
-const detailsDivs = flightDetails.querySelectorAll('div');
-const dropdownButton = document.querySelector('#dropdownToggle');
 
-// Ẩn tất cả các div con ban đầu
-detailsDivs.forEach(div => {
-    div.classList.add('hidden');
-});
 function convertTimeToDecimal(time) {
     const [hours, minutes] = time.split(':').map(Number);
     return hours + (minutes / 60);
 }
-// Thay đổi icon thành mũi tên xuống
-dropdownButton.innerHTML = '<i class="fa-solid fa-arrow-down"></i>';
 
 // Thêm sự kiện click cho nút dropdown
-dropdownButton.addEventListener('click', () => {
-    // Chuyển đổi trạng thái hiển thị và icon
-    if (detailsDivs[0].classList.contains('hidden')) {
-        detailsDivs.forEach((div, index) => {
-            setTimeout(() => {
-                div.classList.remove('hidden');
-                div.classList.add('show');
-            }, index * 100);
-        });
-        dropdownButton.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
-    } else {
-        detailsDivs.forEach((div, index) => {
-            setTimeout(() => {
-                div.classList.remove('show');
-                div.classList.add('hidden');
-            }, index * 100);
-        });
-        dropdownButton.innerHTML = '<i class="fa-solid fa-arrow-down"></i>';
-    }
-});
 
 
 let selectedAirlines=[];
@@ -112,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const maxPrice = parseFloat(values[1].replace('£', '').replace(',', ''));
 
         priceRangeText.textContent =  values[0]+' - '+values[1];
-        document.querySelectorAll('.flight-item').forEach(function (flightItem) {
+        document.querySelectorAll('#flight-item').forEach(function (flightItem) {
             const flightPrice = parseFloat(flightItem.getAttribute('data-price'));
 
             if (flightPrice >= minPrice && flightPrice <= maxPrice) {
@@ -213,7 +184,7 @@ document.addEventListener("DOMContentLoaded",function (){
         const start = parseFloat(values[0]);
         const end = parseFloat(values[1]);
         ScheduleStart.textContent="Đi "+values[0]+" - "+values[1];
-        document.querySelectorAll('.flight-item').forEach(function (flightItem) {
+        document.querySelectorAll('#flight-item').forEach(function (flightItem) {
             const flightTime = flightItem.getAttribute('data-TimeDepart');
             const flightHour = convertTimeToDecimal(flightTime);
             if (flightHour >= start && flightHour <= end) {
@@ -226,7 +197,7 @@ document.addEventListener("DOMContentLoaded",function (){
     });
     Timerange.noUiSlider.on('update', function (values, handle) {
        TimerangeText.textContent='Dưới '+values[0]+' Tiếng';
-        document.querySelectorAll('.flight-item').forEach(function (flightItem) {
+        document.querySelectorAll('#flight-item').forEach(function (flightItem) {
             const flightTime =parseInt(flightItem.getAttribute('data-duration'));
             if(flightTime<=values[0]){
                 flightItem.style.display='block'
@@ -241,7 +212,7 @@ document.addEventListener("DOMContentLoaded",function (){
         const start = parseFloat(values[0]);
         const end = parseFloat(values[1]);
         ScheduleEndText.textContent="Đến "+values[0]+" - "+values[1];
-        document.querySelectorAll('.flight-item').forEach(function (flightItem) {
+        document.querySelectorAll('#flight-item').forEach(function (flightItem) {
             const flightTime = flightItem.getAttribute('data-timeArrival');
 
             const flightHour = convertTimeToDecimal(flightTime);
@@ -359,7 +330,7 @@ document.querySelectorAll('.dropdown-item').forEach(item => {
 });
 async function SearchById( id){
     try {
-    const response=await fetch(`http://localhost:8686/AirPort/FindById/${encodeURIComponent(id)}`);
+    const response=await fetch(`http://localhost:8686/api/AirPort/FindById/${encodeURIComponent(id)}`);
    let airports=null;
     if(response.ok){
        airports=await response.json();
@@ -562,3 +533,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+document.addEventListener('DOMContentLoaded',()=>{
+    const flightDetailsLinks = document.querySelectorAll('.flight-details-link');
+    const popup = document.getElementById('flight-details-popup');
+    const popupContent = document.getElementById('flight-details-content');
+    const closeButton = document.getElementById('close-popup');
+    flightDetailsLinks.forEach(link=>{
+        link.addEventListener('click',(event)=>{
+            event.preventDefault();
+            popup.style.display='block';
+            popupContent.style.display='flex';
+        })
+    });
+    closeButton.addEventListener('click', () => {
+        popup.style.display = 'none';
+        popupContent.style.display='none'
+    });
+
+})

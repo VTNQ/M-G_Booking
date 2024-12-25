@@ -1,6 +1,5 @@
 package com.vtnq.web.Service;
 
-import com.vtnq.web.DTOs.Flight.DetailFlightDTO;
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
 import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
@@ -27,8 +26,7 @@ public class FlightServiceImplement implements FlightService{
     private FlightRepository flightRepository;
     @Autowired
     private SeatRepository seatRepository;
-    @Autowired
-    private DetailFlightRepository detailFlightRepository;
+
     @Autowired
     private ModelMapper modelMapper;
     @Override
@@ -47,20 +45,8 @@ public class FlightServiceImplement implements FlightService{
             flight.setDepartureAirport(depature_AirPort);
             flight.setArrivalAirport(arrival_AirPort);
             Flight insertFlight=flightRepository.save(flight);
-            DetailFlight detailFlight=new DetailFlight();
-            for (DetailFlightDTO detailFlightDTO:flightDto.getDetailFlights()){
-                try {
-                detailFlight.setType(detailFlightDTO.getType());
-                detailFlight.setIdFlight(insertFlight);
-                detailFlight.setPrice(detailFlightDTO.getPrice());
-                detailFlight.setQuantity(detailFlightDTO.getQuantity());
-                detailFlightRepository.save(detailFlight);
-                detailFlight=new DetailFlight();
-                }catch (Exception e){
-                    e.printStackTrace();
 
-                }
-            }
+
             return insertFlight!=null && insertFlight.getId()>0 ;
         }catch (Exception e) {
             e.printStackTrace();
@@ -90,7 +76,7 @@ public class FlightServiceImplement implements FlightService{
                 .orElseThrow(() -> new Exception("Airline not found"));
         Airport departure_airport=airportRepository.findById(flightDto.getDeparture_airport())
                 .orElseThrow(() -> new Exception("Departure Airport not found"));
-        Airport arrival_airport=airportRepository.findById(flightDto.getDeparture_airport())
+        Airport arrival_airport=airportRepository.findById(flightDto.getArrival_airport())
                 .orElseThrow(() -> new Exception("Arrival Airport not found"));
         Flight flight=modelMapper.map(flightDto, Flight.class);
         flight.setArrivalTime(flightDto.getArrivalInstant());

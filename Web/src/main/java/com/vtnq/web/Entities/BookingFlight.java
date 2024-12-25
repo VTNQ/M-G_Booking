@@ -1,6 +1,7 @@
 package com.vtnq.web.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
@@ -12,27 +13,41 @@ public class BookingFlight {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "flight_id_trip", nullable = false)
-    private DetailFlight flightIdTrip;
+    @JoinColumn(name = "seat_trip_id", nullable = false)
+    private Seat seatTrip;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private Account user;
 
+    @NotNull
     @Column(name = "total_price", nullable = false, precision = 10)
     private BigDecimal totalPrice;
 
+    @NotNull
     @Column(name = "status", nullable = false)
     private Boolean status = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "flight_id_return_trip")
-    private DetailFlight flightIdReturnTrip;
+    @JoinColumn(name = "seat_return_id")
+    private Seat seatReturn;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "flight_id", nullable = false)
     private Flight flight;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flight_id_return_trip")
+    private Flight flightIdReturnTrip;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "flight_id_trip", nullable = false)
+    private Flight flightIdTrip;
 
     public Integer getId() {
         return id;
@@ -42,12 +57,12 @@ public class BookingFlight {
         this.id = id;
     }
 
-    public DetailFlight getFlightIdTrip() {
-        return flightIdTrip;
+    public Seat getSeatTrip() {
+        return seatTrip;
     }
 
-    public void setFlightIdTrip(DetailFlight flightIdTrip) {
-        this.flightIdTrip = flightIdTrip;
+    public void setSeatTrip(Seat seatTrip) {
+        this.seatTrip = seatTrip;
     }
 
     public Account getUser() {
@@ -74,12 +89,12 @@ public class BookingFlight {
         this.status = status;
     }
 
-    public DetailFlight getFlightIdReturnTrip() {
-        return flightIdReturnTrip;
+    public Seat getSeatReturn() {
+        return seatReturn;
     }
 
-    public void setFlightIdReturnTrip(DetailFlight flightIdReturnTrip) {
-        this.flightIdReturnTrip = flightIdReturnTrip;
+    public void setSeatReturn(Seat seatReturn) {
+        this.seatReturn = seatReturn;
     }
 
     public Flight getFlight() {
@@ -88,6 +103,22 @@ public class BookingFlight {
 
     public void setFlight(Flight flight) {
         this.flight = flight;
+    }
+
+    public Flight getFlightIdReturnTrip() {
+        return flightIdReturnTrip;
+    }
+
+    public void setFlightIdReturnTrip(Flight flightIdReturnTrip) {
+        this.flightIdReturnTrip = flightIdReturnTrip;
+    }
+
+    public Flight getFlightIdTrip() {
+        return flightIdTrip;
+    }
+
+    public void setFlightIdTrip(Flight flightIdTrip) {
+        this.flightIdTrip = flightIdTrip;
     }
 
 }
