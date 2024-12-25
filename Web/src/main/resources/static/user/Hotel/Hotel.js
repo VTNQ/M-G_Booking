@@ -241,6 +241,12 @@ document.getElementById('SearchBtn').addEventListener('click',function (event){
     ModalBody.style.opacity='1';
     ModalContainer.style.display="block"
 })
+document.getElementById('closeBtn').addEventListener('click',function (event){
+    event.preventDefault();
+    ModalHeader.style.opacity='0';
+    ModalBody.style.opacity='0';
+    ModalContainer.style.display="none"
+})
 
 // Close dropdown if clicked outside
 

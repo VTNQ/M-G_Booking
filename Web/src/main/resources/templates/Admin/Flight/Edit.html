@@ -20,43 +20,50 @@
             <div class="col-md-12">
                 <form th:action="@{/Admin/Flight/UpdateFlight}" method="post">
                     <div class="card">
-                        <div class="card-header justify-content-between"  style="border-bottom: 1px solid #e6e7e9">
+                        <div class="card-header justify-content-between" style="border-bottom: 1px solid #e6e7e9">
                             <h3 class="mb-0">Flight</h3>
-                            <a th:href="@{/Admin/Flight}" type="button" class="btn btn-secondary mb-3" >Back</a>
+                            <a th:href="@{/Admin/Flight}" type="button" class="btn btn-secondary mb-3">Back</a>
                         </div>
                         <div class="card-body">
                             <h5>Flight</h5>
 
                             <div class="mt-2 mb-4">
-                                <label  class="form-label">Departure airport</label>
-                                <select class="form-control " th:field="${flight.departure_airport}" >
-                                    <option th:each="AirPorts : ${DepartureAirPort}" th:value="${AirPorts.id}"
-                                            th:text="${AirPorts.name}"></option>
-                                </select>
-                            </div>
-                            <div class="mt-2 mb-4">
-                                <label  class="form-label">Arrival airport</label>
-                                <select class="form-control " th:field="${flight.arrival_airport}" >
+                                <label class="form-label">Departure airport</label>
+                                <select class="form-control " th:field="${flight.departure_airport}">
                                     <option th:each="AirPorts : ${ArrivalAirPort}" th:value="${AirPorts.id}"
                                             th:text="${AirPorts.name}"></option>
                                 </select>
                             </div>
                             <div class="mt-2 mb-4">
-                                <label  class="form-label">Airline</label>
+                                <label class="form-label">Arrival airport</label>
+                                <select class="form-control " th:field="${flight.arrival_airport}">
+                                    <option th:each="AirPorts : ${ArrivalAirPort}" th:value="${AirPorts.id}"
+                                            th:text="${AirPorts.name}"></option>
+                                </select>
+                            </div>
+                            <div class="mt-2 mb-4">
+                                <label class="form-label">Airline</label>
                                 <select class="form-control" th:field="${flight.airline_id}">
-                                    <option th:each="Airlines : ${Airline}" th:value="${Airlines.id}" th:text="${Airlines.name}"></option>
+                                    <option th:each="Airlines : ${Airline}" th:value="${Airlines.id}"
+                                            th:text="${Airlines.name}"></option>
                                 </select>
                             </div>
                             <div class="mt-2 mb -4">
                                 <label class="form-label">Departure Time</label>
-                                <input type="text" id="Departure_Time" class="form-control" th:field="${flight.departureTime}">
+                                <input type="text" id="Departure_Time" class="form-control"
+                                       th:field="${flight.departureTime}">
 
-                            </div>  <div class="form-group mt-2 mb-4">
-                            <label class="form-label">Arrival time</label>
-                            <input type="text" id="datetimepicker" th:field="${flight.arrivalTime}" class="form-control" >
-                        </div>
+                            </div>
+                            <div class="form-group mt-2 mb-4">
+                                <label class="form-label">Arrival time</label>
+                                <input type="text" id="datetimepicker" th:field="${flight.arrivalTime}"
+                                       class="form-control">
+                            </div>
 
-
+                            <div class="form-group mt-2 mb-4">
+                                <label class="form-label">Price</label>
+                                <input type="number" class="form-control" th:field="${flight.price}">
+                            </div>
 
 
                         </div>
@@ -77,78 +84,6 @@
         </div>
 
     </div>
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row">
-            <div class="card">
-                <div class="card-header justify-content-between"  style="border-bottom: 1px solid #e6e7e9">
-                    <h3 class="mb-0">Detail Flight</h3>
-                    <button type="button" class="btn btn-secondary mb-3" id="addDetailFlight">Add Detail Flight</button>
-                </div>
-                <div class="table-responsive text-nowrap">
-
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody  id="detailFlightTableBody" class="table-border-bottom-0">
-                            <th:block th:each="item, iterStat: ${detailFlight}">
-                                <tr>
-                                    <td>
-                                        <label th:text="${item.type}" th:id="'type-label-' + ${item.id}"></label>
-                                        <select th:id="'type-' + ${item.id}" th:name="'detailFlight[' + ${iterStat.index} + '].type'"
-                                                th:value="${item.type}" class="form-control" style="display: none" >
-                                            <option value="Popular" th:selected="${item.type == 'Popular'}">Popular</option>
-                                            <option value="Premium Economy" th:selected="${item.type == 'Premium Economy'}">Premium Economy</option>
-                                            <option value="Merchant" th:selected="${item.type == 'Merchant'}">Merchant</option>
-                                            <option value="First Class" th:selected="${item.type == 'First Class'}">First Class</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <label th:text="${item.price}" th:id="'price-label-' + ${item.id}" ></label>
-                                        <input type="number" th:id="'price-' + ${item.id}" th:name="'detailFlight[' + ${iterStat.index} + '].price'"
-                                               th:value="${item.price}" class="form-control" style="display: none" />
-                                    </td>
-                                    <td>
-                                        <label th:text="${item.quantity}"  th:id="'quantity-label-' + ${item.id}" ></label>
-                                        <input type="number" step="0.01"  th:id="'quantity-' + ${item.id}"   th:name="'detailFlight[' + ${iterStat.index} + '].quantity'"
-                                               th:value="${item.quantity}" class="form-control" style="display: none" />
-                                    </td>
-                                    <td >
-                                        <a th:id="'editBtn'+${item.id}" style="background-color: #4299e1;border-color: #4299e1"
-                                           class="btn btn-inf edit-btn" th:data-id="${item.id}">
-                                            <i style="color: white" class="fa fa-pencil"></i>
-                                        </a>
-                                        <a th:id="'saveBtn'+${item.id}" style="background-color: #4299e1;border-color: #4299e1;display: none !important;"
-                                           class="btn btn-inf save-btn" th:data-id="${item.id}">
-                                            <i style="color: white" class="fa fa-save"></i>
-                                        </a>
-                                    </td>
-                                    <!-- Hidden fields for ID and related data -->
-                                    <input type="hidden" th:name="'detailFlight[' + ${iterStat.index} + '].id'"   th:value="${item.id}" />
-                                    <input type="hidden" th:name="'detailFlight[' + ${iterStat.index} + '].idFlight'"  th:value="${item.idFlight}" />
-                                </tr>
-                            </th:block>
-                            </tbody>
-                        </table>
-                        <div class="mt-5">
-                            <button type="button" id="saveButton" class="btn btn-outline-primary">Save</button>
-                        </div>
-
-
-
-
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <!-- / Content -->
 
@@ -190,33 +125,7 @@
 
     <div class="content-backdrop fade"></div>
     <script th:fragment="customScripts" th:src="@{/Admin/FlightPortTable/EditPortTable.js}"></script>
-    <div id="addDetailFlightModal" class="modal" style="display: none;">
-        <div class="modal-content" style="position: absolute;right: 66vh;top: 20vh">
-            <span id="closeModal" class="close">&times;</span>
-            <h3>Add Detail Flight</h3>
-            <form th:action="@{/Admin/Flight/AddDetailFlight}" method="post">
-                <div class="form-group">
-                    <label for="modalType">Type:</label>
-                    <select id="modalType" th:field="${detailFlightAdd.type}" class="form-control">
-                        <option value="Popular">Popular</option>
-                        <option value="Premium Economy">Premium Economy</option>
-                        <option value="Merchant">Merchant</option>
-                        <option value="First Class">First Class</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="modalPrice">Price:</label>
-                    <input type="number" th:field="${detailFlightAdd.price}" id="modalPrice" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label for="modalQuantity">Quantity:</label>
-                    <input type="number" id="modalQuantity" th:field="${detailFlightAdd.quantity}" class="form-control" />
-                </div>
-                <button type="submit" id="saveDetailFlight" class="btn btn-primary">Save</button>
-                <input type="hidden" th:field="${detailFlightAdd.idFlight}">
-            </form>
-        </div>
-    </div>
+
 </div>
 
 

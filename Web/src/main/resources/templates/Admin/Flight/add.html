@@ -49,20 +49,15 @@
                             <div class="mt-2 mb -4">
                                 <label class="form-label">Departure Time</label>
                                 <input type="datetime-local" id="Departure_Time" class="form-control" th:field="${flight.departureTime}">
-                            </div>  <div class="form-group mt-2 mb-4">
+                            </div>
+                            <div class="form-group mt-2 mb-4">
                             <label class="form-label">Arrival time</label>
                             <input type="datetime-local" id="datetimepicker" class="form-control" th:field="${flight.arrivalTime}">
                         </div>
-                            <h4>Detail Flights</h4>
-                            <div id="detailFlights">
-                                <div class="detail-flight mb-3">
-                                    <div class="row">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-secondary mb-3" id="addDetailFlight">Add Detail Flight</button>
-
+                            <div class="form-group mt-2 mb-4">
+                            <label class="form-label">Price</label>
+                            <input type="number"  class="form-control" th:field="${flight.price}">
+                        </div>
 
                         </div>
 

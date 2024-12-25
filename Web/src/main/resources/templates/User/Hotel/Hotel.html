@@ -192,10 +192,14 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                             </div>
                             <div class="flight-card">
                                 <div class="flight-card-header">
-                                    <span class="flight-type">Chuyến bay bán chung</span>
-                                    <button class="btn-cheapest">Chuyến bay rẻ nhất</button>
+                                    <div class="flight-type-container">
+                                        <span class="flight-type" style="color: #ffffff">Chuyến bay bán chung</span>
+                                    </div>
+
                                 </div>
+                                <button class="btn-cheapest" style="margin-left: 2vh">Chuyến bay rẻ nhất</button>
                                 <div class="flight-details">
+
                                     <div class="flight-info">
                                         <div class="date" th:text="'Đi '+${Flight.dateDepart}">
 
@@ -364,9 +368,12 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
             <div class="Modalstyled__ContentContainer-sc-1gd4uo9-3 eVMow">
                 <form th:action="@{/SearchFlight}" method="get">
                     <div class="Box-sc-kv6pi1-0 cJiLOx sc-httYMd ikgtwJ" id="ModalBody" style="opacity: 0;">
-                        <div>
-                            <i class="fa-solid fa-pen-fancy" style="font-size: 24px"></i>
-                            <span class="Spanstyled__SpanStyled-sc-16tp9kb-0 cyPVoD kite-js-Span sc-cbDGPM gQallF">Edit</span>
+                        <div class="edit-container">
+                            <div class="edit-section">
+                                <i class="fa-solid fa-pen-fancy" style="font-size: 24px"></i>
+                                <span class="edit-text">Edit</span>
+                            </div>
+                            <button class="close-btn" id="closeBtn">Close</button>
                         </div>
                         <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
                             <div class="col-sm-5 ">

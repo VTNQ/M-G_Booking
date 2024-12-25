@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -20,6 +21,8 @@ public class FlightDto  {
     @Min(value = 1,message = "AirLine is required")
     @JsonProperty("airline_id")
     private int airline_id;
+    @NotNull(message = "Price is required")
+    private BigDecimal price;
     @Min(value = 1,message = "Departure Airport is required")
     private int departure_airport;
     @Min(value = 1,message = "Arrival Airport is required")
@@ -96,14 +99,11 @@ public class FlightDto  {
     }
     @NotBlank(message = "Arrival Time is required")
     private String arrivalTime;
-    private List<DetailFlightDTO>detailFlights;
-
-    public List<DetailFlightDTO> getDetailFlights() {
-        return detailFlights;
+    public void setPrice( @NotNull(message = "Price is required") BigDecimal price) {
+        this.price = price;
     }
-
-    public void setDetailFlights(List<DetailFlightDTO> detailFlights) {
-        this.detailFlights = detailFlights;
+    public BigDecimal getPrice() {
+        return price;
     }
 
 }

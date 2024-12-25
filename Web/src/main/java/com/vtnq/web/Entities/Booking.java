@@ -1,6 +1,8 @@
 package com.vtnq.web.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
@@ -19,14 +21,17 @@ public class Booking {
     @JoinColumn(name = "booking_room_id")
     private BookingRoom bookingRoom;
 
+    @NotNull
     @ColumnDefault("0")
     @Column(name = "payment_status", nullable = false)
     private Integer paymentStatus;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
 
+    @Size(max = 100)
     @Column(name = "paypal_transaction_id", length = 100)
     private String paypalTransactionId;
 
