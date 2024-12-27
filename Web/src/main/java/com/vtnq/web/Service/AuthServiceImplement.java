@@ -118,6 +118,8 @@ public class AuthServiceImplement implements AuthService {
         try {
             Account account = modelMapper.map(accountDto, Account.class);
             account.setId(null);
+            account.setCountryId(accountDto.getCountry_id());
+            account.setCityId(accountDto.getCityId());
             account.setPassword(BCrypt.hashpw(account.getPassword(), BCrypt.gensalt()));
             account.setUsername(GeneateUsername(accountDto.getEmail()));
             Level level = levelRepository.findById(1).orElseThrow(() -> new RuntimeException("Level not found"));

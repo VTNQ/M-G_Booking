@@ -15,18 +15,235 @@
     justify-content: space-between;
     align-items: center;
 }
+.seat-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+}
+.unavailable{
+    background-color: rgb(233, 235, 238);
+}
+/* General Seat Map Styling */
+.seat-map {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.seat-row {
+    display: flex;
+    gap: 10px;
+}
+
+.seat-label {
+    width: 30px;
+    text-align: center;
+    padding: 5px;
+}
+
+.seat {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.seat.available {
+    background-color: green;
+    color: white;
+}
+
+.seat.occupied {
+    background-color: red;
+    color: white;
+}
+
+.seat.unavailable {
+    background-color: gray;
+}
+
+.seat i {
+    color: white;
+}
+
+.seat-container {
+    overflow-y: auto;
+    max-height: 300px;
+}
+.seat{
+    width: 32px;
+    height: 30px;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    margin-right: 5px;
+    margin-top: 1vh;
+}
+.flight-route {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+.edit-button {
+    background-color: #297cbb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .edit-section {
     display: flex;
     align-items: center;
 }
-
+.seat-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+    /* border: 1px solid #ccc; */
+    border-radius: 4px;
+}
 .edit-text {
     margin-left: 10px;
     font-size: 16px;
     color: #333;
 }
+.seat-icon.available {
+    background-color: rgb(189, 211, 231);
+}
+.close-button {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+.seat-icon.isSelected{
+    background-color: rgb(50, 169, 35);
+}
+.isSelected{
+    background-color: rgb(50, 169, 35) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.seat-icon.legroom {
+    background-color: rgb(89, 144, 194);
+}
 
+.seat-icon.occupied {
+    background-color: #333;
+}
+
+.seat-selection-container {
+    width: 100%; /* Điều chỉnh kích thước theo nhu cầu */
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    font-family: sans-serif;
+}
+.passenger-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid rgb(83, 146, 249);
+}
+
+.seat-row {
+
+    display: flex;
+;
+    justify-content: space-around;
+
+}
+.confirm-button {
+    background-color: #297cbb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    display: block;
+    width: 24%;
+    margin-right: 6vh;
+}
+.seat.occupied {
+    background-color: rgb(189, 211, 231);
+}
+.total-price {
+    text-align: left;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-left: 8vh;
+}
+.seat-label {
+    flex: 1; /*  Mỗi label chiếm 1 phần bằng nhau trong flex container */
+    text-align: center;
+    padding: 5px 0;
+}
+.passenger-block {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.passenger-type {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.selected-seat {
+    background-color: transparent;
+    color: white;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    min-width: 36px;
+    /* padding: 5px 10px; */
+    border-radius: 3px;
+    font-weight: bold;
+    margin-right: 10px;
+    border: 1px solid rgb(190, 194, 201);
+}
+.seat-info {
+    display: flex;
+    align-items: center;
+}
+.box-isselected{
+    background-color: rgb(41, 78, 133);
+}
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.header i {
+    margin-right: 10px;
+    font-size: 1.2em;
+}
 .close-btn {
     background-color: #f44336; /* Red color for close button */
     color: white;
@@ -313,6 +530,10 @@
 .fade-in {
     animation: fadeIn 0.5s ease-in-out;
 }
+.popup.show{
+    display: flex;
+    animation: fadeIn 0.5s ease forwards;
+}
 
 @keyframes fadeIn {
     from {
@@ -587,6 +808,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+.route {
+    display: flex;
+    align-items: center;
+}
+.note {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.route img {
+    height: 20px; /* Điều chỉnh kích thước logo */
+    margin-right: 10px;
 }
 
 .price {
