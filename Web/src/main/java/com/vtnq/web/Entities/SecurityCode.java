@@ -1,6 +1,11 @@
 package com.vtnq.web.Entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
@@ -8,28 +13,38 @@ import java.time.LocalDate;
 @Table(name = "security_code")
 public class SecurityCode {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Size(max = 50)
+    @NotNull
     @Column(name = "`value_ code`", nullable = false, length = 50)
     private String valueCode;
 
+    @NotNull
     @Column(name = "start_at", nullable = false)
     private LocalDate startAt;
 
+    @NotNull
     @Column(name = "end_at", nullable = false)
     private LocalDate endAt;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "location", nullable = false, length = 100)
     private String location;
 
+    @NotNull
     @Column(name = "dob", nullable = false)
     private LocalDate dob;
 
+    @Size(max = 200)
+    @NotNull
     @Column(name = "front_security_code", nullable = false, length = 200)
     private String frontSecurityCode;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "back_security_code", nullable = false, length = 100)
     private String backSecurityCode;
 

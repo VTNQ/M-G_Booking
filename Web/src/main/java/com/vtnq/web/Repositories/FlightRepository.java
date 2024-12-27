@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface FlightRepository extends JpaRepository<Flight, Integer> {
 @Query("select new com.vtnq.web.DTOs.Flight.FlightListDTO(f.id,f.airline.name,f.departureAirport.name,f.arrivalAirport.name,f.departureTime,f.arrivalTime)" +
-        " from Flight f where f.airline.country.id = :id")
+        " from Flight f where f.airline.countryId = :id")
     List<FlightListDTO> findFlightListDTO(@Param("id") int id);
     @Query("SELECT MIN(G.price) FROM Flight f Join Seat G on f.id=G.idFlight.id where  DATE(f.departureTime) = :departureTime")
     public BigDecimal FindPrice(@Param("departureTime") LocalDate departureTime);

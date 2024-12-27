@@ -1,21 +1,27 @@
 package com.vtnq.web.Entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "airlines")
 public class Airline {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "country_id", nullable = false)
-    private Country country;
+    @NotNull
+    @Column(name = "country_id", nullable = false)
+    private Integer countryId;
 
     public Integer getId() {
         return id;
@@ -33,12 +39,12 @@ public class Airline {
         this.name = name;
     }
 
-    public Country getCountry() {
-        return country;
+    public Integer getCountryId() {
+        return countryId;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setCountryId(Integer countryId) {
+        this.countryId = countryId;
     }
 
 }

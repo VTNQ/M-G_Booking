@@ -6,7 +6,6 @@ import com.vtnq.web.Entities.Airport;
 import com.vtnq.web.Service.AirportService;
 import com.vtnq.web.Service.CityService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

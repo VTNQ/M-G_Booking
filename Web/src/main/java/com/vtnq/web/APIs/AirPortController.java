@@ -2,7 +2,6 @@ package com.vtnq.web.APIs;
 
 import com.vtnq.web.DTOs.Airport.AirportDto;
 import com.vtnq.web.DTOs.Airport.CountryAiportDTO;
-import com.vtnq.web.Entities.Airport;
 import com.vtnq.web.Service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

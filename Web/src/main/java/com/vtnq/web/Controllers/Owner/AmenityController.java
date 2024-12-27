@@ -1,8 +1,6 @@
 package com.vtnq.web.Controllers.Owner;
 
-import ch.qos.logback.core.model.Model;
 import com.vtnq.web.DTOs.AmenityDto;
-import com.vtnq.web.DTOs.Hotel.HotelListDto;
 import com.vtnq.web.Entities.Amenity;
 import com.vtnq.web.Service.AmenitiesService;
 import jakarta.servlet.http.HttpSession;

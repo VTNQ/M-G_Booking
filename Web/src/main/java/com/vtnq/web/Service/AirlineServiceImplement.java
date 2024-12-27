@@ -36,10 +36,8 @@ public class AirlineServiceImplement implements AirlineService {
     @Override
     public boolean addAirline(AirlineDto airlineDto) {
         try {
-            Country country = countryRepository.findById(airlineDto.getCountry_id())
-                    .orElseThrow(() -> new RuntimeException("Country not found"));
             Airline airline=modelMapper.map(airlineDto, Airline.class);
-            airline.setCountry(country);
+            airline.setCountryId(airlineDto.getCountry_id());
             Airline savedAirline=airlineRepository.save(airline);
             int airline_id=savedAirline.getId();
             MultipartFile multipartFile=airlineDto.getImage();
@@ -107,13 +105,11 @@ public class AirlineServiceImplement implements AirlineService {
     public boolean updateArline(UpdateAirlineDTO updateAirlineDTO, MultipartFile file) {
         try {
             String imagecase = file!= null ? file.getOriginalFilename() : "null";
-            Country country = countryRepository.findById(updateAirlineDTO.getIdCountry())
-                    .orElseThrow(() -> new RuntimeException("Country not found"));
             Airline airline=modelMapper.map(updateAirlineDTO, Airline.class);
             switch (imagecase){
                 case "null":
 
-                    airline.setCountry(country);
+                    airline.setCountryId(updateAirlineDTO.getIdCountry());
                     airlineRepository.save(airline);
                     break;
                 default:
@@ -127,11 +123,9 @@ public class AirlineServiceImplement implements AirlineService {
                     if(oldFile.exists() && oldFile.isFile()){
                         oldFile.delete();
                     }
-                    country = countryRepository.findById(updateAirlineDTO.getIdCountry())
-                            .orElseThrow(() -> new RuntimeException("Country not found"));
+
                     airline=modelMapper.map(updateAirlineDTO, Airline.class);
-                    airline.setCountry(country);
-                    airline.setCountry(country);
+                    airline.setCountryId(updateAirlineDTO.getIdCountry());
                     airlineRepository.save(airline);
                     MultipartFile multipartFile=file;
 

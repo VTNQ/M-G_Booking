@@ -4,7 +4,6 @@ import com.vtnq.web.DTOs.Hotel.HotelDto;
 import com.vtnq.web.DTOs.Hotel.HotelListDto;
 import com.vtnq.web.DTOs.Hotel.HotelUpdateDTO;
 import com.vtnq.web.Entities.Account;
-import com.vtnq.web.Entities.City;
 import com.vtnq.web.Entities.District;
 import com.vtnq.web.Service.CityService;
 import com.vtnq.web.Service.DistrictService;

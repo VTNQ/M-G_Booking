@@ -14,14 +14,14 @@ public interface AirlineRepository extends JpaRepository<Airline, Integer> {
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END FROM Airline a WHERE a.name = :name")
     public boolean IsExistName(@Param("name") String name);
 
-    @Query("select new com.vtnq.web.DTOs.Airline.ListAirlineDto(a.id,a.name,i.imageUrl,a.country.name) " +
+    @Query("select new com.vtnq.web.DTOs.Airline.ListAirlineDto(a.id,a.name,i.imageUrl,c.name) " +
             "from Airline a "
-            + "join Picture i On a.id =i.airlineId order by a.id desc")
+            + "join Picture i On a.id =i.airlineId join Country c on c.id=a.countryId order by a.id desc")
     List<ListAirlineDto> ShowAll();
 
-    @Query("select new com.vtnq.web.DTOs.Airline.UpdateAirlineDTO(a.id,a.name,a.country.id,i.imageUrl) " +
+    @Query("select new com.vtnq.web.DTOs.Airline.UpdateAirlineDTO(a.id,a.name,c.id,i.imageUrl) " +
             "From Airline a " +
-            "join Picture i on a.id=i.airlineId " +
+            "join Picture i on a.id=i.airlineId join Country c on a.countryId=c.id " +
             "where a.id = :id")
     UpdateAirlineDTO FindById(@Param("id") Integer id);
 
