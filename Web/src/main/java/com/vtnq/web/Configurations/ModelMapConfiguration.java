@@ -1,13 +1,11 @@
 package com.vtnq.web.Configurations;
 
+import com.vtnq.web.DTOs.Account.AccountDto;
 import com.vtnq.web.DTOs.Airport.AirportDto;
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Room.RoomDTO;
 import com.vtnq.web.DTOs.Service.ServiceDTO;
-import com.vtnq.web.Entities.Airport;
-import com.vtnq.web.Entities.Flight;
-import com.vtnq.web.Entities.Room;
-import com.vtnq.web.Entities.Service;
+import com.vtnq.web.Entities.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +29,9 @@ public ModelMapper modelMap() {
         mapping.map(flight->flight.getDepartureAirport().getId(),FlightDto::setDeparture_airport);
         mapping.map(flight->flight.getArrivalAirport().getId(),FlightDto::setArrival_airport);
         mapping.map(flight->flight.getAirline().getId(),FlightDto::setAirline_id);
+    });
+    modelMapper.typeMap(Account.class, AccountDto.class).addMappings(mapping -> {
+        mapping.map(account->account.getCountryId(),AccountDto::setCountryId);
     });
 return modelMapper;
 }

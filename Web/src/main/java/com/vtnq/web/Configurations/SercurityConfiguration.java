@@ -36,7 +36,7 @@ public class SercurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/LoginAdmin","/registerUser","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**",
                                     "/ForgotPassword","/images/flight/**","/images/hotels/**","/Home","/SearchFlight","/Admin/SignatureContract/{id}",
-                                    "/DetailHotel/{id}","/InformationCustomer","/rating","/Payment","/Success","/InformationFly","/pay/**").permitAll()
+                                    "/DetailHotel/{id}","/InformationCustomer","/rating","/Payment","/Success","/payFlight/**").permitAll()
                             .requestMatchers("SuperAdmin/Home","/SuperAdmin/Country/add","/SuperAdmin/Country"
                             ,"/SuperAdmin/Country/update","/SuperAdmin/Country/delete/{id}","/SuperAdmin/AccountAdmin/add"
                             ,"/SuperAdmin/Airline/add","/SuperAdmin/Airline","/SuperAdmin/Airline/edit/{id}",
@@ -49,7 +49,7 @@ public class SercurityConfiguration {
                             ,"/Owner/service/add","/Owner/service/{id}","/Owner/service/edit/{id}","/Owner/service/update","/Owner/Room/{id}","/Owner/Room/add",
                                     "/Owner/Room/edit/{id}","/Owner/Room/update","/Owner/Room/delete/{id}","/Owner/Amenities/{id}","/Owner/Amenities/add","/Owner/Amenities/edit/{id}",
                                     "/Owner/Amenities/update","/Owner/Amenities/delete/{id}","/Owner/Room/addType").hasAnyRole("OWNER")
-                            .requestMatchers("/Profile").hasAnyRole("USER")
+                            .requestMatchers("/Profile","/InformationFly/{id}").hasAnyRole("USER")
                             .anyRequest().authenticated();
                 })
 

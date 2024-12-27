@@ -1,5 +1,6 @@
 package com.vtnq.web.Service;
 
+import com.vtnq.web.DTOs.Booking.BookingListFly;
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
 import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
@@ -229,6 +230,20 @@ public class FlightServiceImplement implements FlightService{
         }
     }
 
+    @Override
+    public Flight getFlight(int id) {
+        return flightRepository.findById(id).get();
+    }
+
+    @Override
+    public BookingListFly getResultPaymentFlight(int id) {
+        try {
+            return flightRepository.findFlightsByAirportsAndDepartureTime(id);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
 
 }

@@ -5,6 +5,15 @@ public class RegisterUser {
     private String email;
     private String accountType;
     private String password;
+    private int cityId;
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
 
     public String getPassword() {
         return password;

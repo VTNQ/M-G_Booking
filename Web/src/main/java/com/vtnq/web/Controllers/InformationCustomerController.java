@@ -3,24 +3,47 @@ package com.vtnq.web.Controllers;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import com.vtnq.web.DTOs.Booking.BookingFlightDTO;
+import com.vtnq.web.DTOs.BookingDto;
+import com.vtnq.web.DTOs.BookingFlightDto;
+import com.vtnq.web.Entities.Account;
+import com.vtnq.web.Entities.Flight;
+import com.vtnq.web.Service.BookingService;
+import com.vtnq.web.Service.FlightService;
 import com.vtnq.web.Service.PayPalService;
+import com.vtnq.web.Service.SeatService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping({"","/"})
 public class InformationCustomerController {
     @Autowired
     private PayPalService payPalService;
-    private static final String SUCCESS_URL = "pay/success";
-    private static final String CANCEL_URL = "pay/cancel";
-    @GetMapping("pay")
-    public RedirectView payment() {
+    @Autowired
+    private BookingService bookingService;
+    @Autowired
+    private SeatService seatService;
+    @Autowired
+    private FlightService flightService;
+    private static final String SUCCESS_URL = "payFlight/success";
+    private static final String CANCEL_URL = "payFlight/cancel";
+    @GetMapping("payFlight")
+    public RedirectView payment(@RequestParam(required = true) double amount,
+                                @RequestParam(defaultValue = "JPY") String currency, @ModelAttribute BookingFlightDTO bookingFlightDTO, HttpSession session, HttpServletRequest request) {
         try {
-            Payment payment = payPalService.createPayment(100.00, "JPY", "paypal",
+            Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+            bookingFlightDTO.setUserId(currentAccount.getId());
+            bookingFlightDTO.setTotalPrice(BigDecimal.valueOf(amount));
+            session.setAttribute("booking", bookingFlightDTO);
+            Payment payment = payPalService.createPayment(amount, currency, "paypal",
                     "sale", "Test payment", "http://localhost:8686/" + CANCEL_URL,
                     "http://localhost:8686/" + SUCCESS_URL);
             for (Links link : payment.getLinks()) {
@@ -33,6 +56,20 @@ public class InformationCustomerController {
         }
         return new RedirectView("/");
     }
+    @GetMapping(SUCCESS_URL)
+    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId,HttpServletRequest request) {
+        try {
+            Payment payment = payPalService.executePayment(paymentId, payerId);
+            BookingFlightDTO bookingFlightDto=(BookingFlightDTO) request.getSession().getAttribute("booking");
+            if (payment.getState().equals("approved") && bookingService.addBooking(bookingFlightDto)) {
+                return "redirect:/Success";
+            }
+        } catch (PayPalRESTException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/";
+    }
+
     @GetMapping("InformationCustomer")
     public String InformationCustomer() {
         try {
@@ -42,9 +79,14 @@ public class InformationCustomerController {
             return null;
         }
     }
-    @GetMapping("InformationFly")
-    public String InformationFly() {
+    @GetMapping("InformationFly/{id}")
+    public String InformationFly(@PathVariable int id, ModelMap modelMap) {
         try {
+            modelMap.put("flight",flightService.getResultPaymentFlight(id));
+            modelMap.put("seat",seatService.FindSeatByFlight(id));
+            BookingFlightDTO bookingDto=new BookingFlightDTO();
+            bookingDto.setFlightId(id);
+            modelMap.put("payment",bookingDto);
             return "/User/InformationCustomer/InformationFly";
         }catch (Exception e) {
             e.printStackTrace();
