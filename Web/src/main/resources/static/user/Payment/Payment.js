@@ -154,7 +154,8 @@ async function fetchSeatData(id) {
 
 // Fetch seat data for flight ID 5 (for example)
 totalpricePopup1.textContent=totalPrice+' USD';
-fetchSeatData(6);
+const flightId=document.getElementById('flightId');
+fetchSeatData(flightId.value);
 document.querySelector('.edit-button').addEventListener('click',function (event){
 let popup=document.querySelector('.popup');
 popup.classList.add('show');
