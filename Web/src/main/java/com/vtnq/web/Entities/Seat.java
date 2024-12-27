@@ -9,10 +9,20 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "seats")
 public class Seat {
+    public Seat() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    public Seat(String index, String type, Flight idFlight, BigDecimal price) {
+        this.index = index;
+        this.type = type;
+        this.idFlight = idFlight;
+        this.price = price;
+    }
 
     @Size(max = 50)
     @NotNull
@@ -23,23 +33,13 @@ public class Seat {
     @Column(name = "type", length = 100)
     private String type;
 
-    public Seat(String index, String type, Flight idFlight, BigDecimal price) {
-        this.index = index;
-        this.type = type;
-        this.idFlight = idFlight;
-        this.price = price;
-    }
-
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_flight", nullable = false)
     private Flight idFlight;
 
     @Column(name = "price", precision = 10)
     private BigDecimal price;
-
-    public Seat() {
-    }
 
     public Integer getId() {
         return id;

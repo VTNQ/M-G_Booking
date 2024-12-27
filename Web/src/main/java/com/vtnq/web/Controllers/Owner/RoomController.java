@@ -140,7 +140,7 @@ public class RoomController {
         }
     }
     @PostMapping("Room/addType")
-    public String addType(@ModelAttribute("type")Type type,RedirectAttributes redirectAttributes) {
+    public String addType(@ModelAttribute("type") Type type, RedirectAttributes redirectAttributes) {
         try {
             if(typeService.addType(type)){
                 redirectAttributes.addFlashAttribute("message", "Type added successfully");

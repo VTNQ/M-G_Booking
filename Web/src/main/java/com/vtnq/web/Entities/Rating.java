@@ -10,14 +10,12 @@ import java.time.Instant;
 @Table(name = "rating")
 public class Rating {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private Account user;
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -44,12 +42,12 @@ public class Rating {
         this.id = id;
     }
 
-    public Account getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(Account user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Hotel getHotel() {

@@ -1,6 +1,5 @@
 package com.vtnq.web.Controllers;
 
-import ch.qos.logback.core.model.Model;
 import com.vtnq.web.DTOs.Account.UserAccountDTO;
 import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Service.AuthService;

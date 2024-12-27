@@ -16,6 +16,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class FlightServiceImplement implements FlightService{
@@ -137,92 +140,42 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
+
     public boolean CreateSeat(SeatDTO seatDTO) {
         try {
-            List<Seat> seats = new ArrayList<>();
-            int seatsPerRow = 6; // Mỗi dãy có 6 ghế (A, B, C, D, E, F)
+            int seatsPerRow = 6;
 
             // Lấy tổng số ghế cho mỗi hạng
             int totalFirstClassSeats = seatDTO.getFirstClassSeat();
             int totalBusinessClassSeats = seatDTO.getBusinessClassSeat();
             int totalEconomyClassSeats = seatDTO.getEconomyClassSeat();
 
-            int currentSeatIndex = 1; // Chỉ số ghế bắt đầu từ 1
-            int currentRow = 1; // Dùng để theo dõi dãy hiện tại
-            char currentColumn = 'A'; // Cột bắt đầu
-            int SeatsInRow=0;
-            // Tạo ghế cho Hạng Nhất
-            int firstClassRowCount = (int) Math.ceil((double) totalFirstClassSeats / seatsPerRow);
-            for (int row = 1; row <= firstClassRowCount; row++) {
-                for (char letter = currentColumn; letter <= 'F'; letter++) {
-                    if (currentSeatIndex > totalFirstClassSeats) {
-                        currentColumn = (letter == 'F') ? (char) letter: (char) (letter + 1); // Ghi nhớ cột tiếp theo
-                        break; // Nếu ghế đã đủ cho Hạng Nhất, thoát vòng lặp
-                    }
-                    Flight flight = flightRepository.findById(seatDTO.getIdFlight())
-                            .orElseThrow(() -> new Exception("Flight not found"));
-                    seats.add(new Seat(letter + Integer.toString(currentRow), "First Class", flight,seatDTO.getPriceClassSeat()));
-                    currentSeatIndex++;
-                    SeatsInRow++;// Tăng chỉ số ghế sau mỗi lần tạo ghế
-                }
-                if (SeatsInRow == 6) {
-                    currentRow++;
-                   SeatsInRow = 0;
-                    currentColumn = 'A';
-                }
+            ExecutorService executor = Executors.newFixedThreadPool(3); // Sử dụng 3 threads
 
-            }
+            CompletableFuture<List<Seat>> firstClassFuture = CompletableFuture.supplyAsync(() -> {
+                return createSeatsForClass(1, totalFirstClassSeats, "First Class", seatDTO.getIdFlight(), seatDTO.getPriceClassSeat());
+            }, executor);
 
-            // Tạo ghế cho Hạng Thương Gia
-            int businessClassStartIndex = currentSeatIndex;
-            int CurrenRowBusiness=currentRow;
-            int businessClassRowCount = (int) Math.ceil((double) totalBusinessClassSeats / seatsPerRow);
-            for (int row = currentRow; row <= CurrenRowBusiness + businessClassRowCount; row++) {
-                for (char letter = currentColumn; letter <= 'F'; letter++) {
-                    if (currentSeatIndex > businessClassStartIndex + totalBusinessClassSeats - 1) {
-                        currentColumn = (letter == 'F') ? (char) letter:  (char) (letter + 1); // Ghi nhớ cột tiếp theo
-                        break; // Nếu ghế đã đủ cho Hạng Thương Gia, thoát vòng lặp
-                    }
-                    Flight flight = flightRepository.findById(seatDTO.getIdFlight())
-                            .orElseThrow(() -> new Exception("Flight not found"));
-                    seats.add(new Seat(letter + Integer.toString(row), "Business Class", flight,seatDTO.getPriceBusinessClassSeat()));
-                    currentSeatIndex++;
-                    SeatsInRow++;
-                }
-                if (SeatsInRow == 6) {
-                    currentRow++;
-                    SeatsInRow = 0;
-                    currentColumn = 'A';
-                }
+            CompletableFuture<List<Seat>> businessClassFuture = CompletableFuture.supplyAsync(() -> {
+                int startSeat = totalFirstClassSeats + 1;
+                int endSeat = startSeat + totalBusinessClassSeats - 1;
+                return createSeatsForClass(startSeat, endSeat, "Business Class", seatDTO.getIdFlight(), seatDTO.getPriceBusinessClassSeat());
+            }, executor);
 
-            }
+            CompletableFuture<List<Seat>> economyClassFuture = CompletableFuture.supplyAsync(() -> {
+                int startSeat = totalFirstClassSeats + totalBusinessClassSeats + 1;
+                int endSeat = startSeat + totalEconomyClassSeats - 1;
+                return createSeatsForClass(startSeat, endSeat, "Economy Class", seatDTO.getIdFlight(), seatDTO.getPriceEconomyClassSeat());
+            }, executor);
 
+            CompletableFuture.allOf(firstClassFuture, businessClassFuture, economyClassFuture).join();
 
-            // Tạo ghế cho Hạng Phổ Thông
-            int economyClassStartIndex = currentSeatIndex;
-            int CurrenRowEconomy=currentRow;
-            int economyClassRowCount = (int) Math.ceil((double) totalEconomyClassSeats / seatsPerRow);
-            for (int row = currentRow; row <= CurrenRowEconomy + economyClassRowCount; row++) {
-                for (char letter = currentColumn; letter <= 'F'; letter++) {
-                    if (currentSeatIndex > economyClassStartIndex + totalEconomyClassSeats - 1) {
-                        currentColumn = (letter == 'F') ? (char) letter: (char) (letter + 1); // Ghi nhớ cột tiếp theo
-                        break; // Nếu ghế đã đủ cho Hạng Phổ Thông, thoát vòng lặp
-                    }
-                    Flight flight = flightRepository.findById(seatDTO.getIdFlight())
-                            .orElseThrow(() -> new Exception("Flight not found"));
-                    seats.add(new Seat(letter + Integer.toString(row), "Economy Class", flight,seatDTO.getPriceEconomyClassSeat()));
-                    currentSeatIndex++;
-                    SeatsInRow++;
-                }
-                if (SeatsInRow == 6) {
-                    currentRow++;
-                    SeatsInRow = 0;
-                    currentColumn = 'A';
-                }
-            }
+            List<Seat> allSeats = new ArrayList<>();
+            allSeats.addAll(firstClassFuture.join());
+            allSeats.addAll(businessClassFuture.join());
+            allSeats.addAll(economyClassFuture.join());
 
-            // Lưu tất cả ghế vào repository
-            seatRepository.saveAll(seats);
+            seatRepository.saveAll(allSeats);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -230,6 +183,25 @@ public class FlightServiceImplement implements FlightService{
         }
     }
 
+    private List<Seat> createSeatsForClass(int startSeatIndex, int endSeatIndex, String seatClass, int flightId, BigDecimal price) {
+        List<Seat> seats = new ArrayList<>();
+        int seatsPerRow = 6;
+        int currentRow = (int) Math.ceil((double) startSeatIndex / seatsPerRow);
+        int seatNumberInRow = (startSeatIndex - 1) % seatsPerRow;
+        char currentColumn = (char) ('A' + seatNumberInRow);
+
+        for (int i = startSeatIndex; i <= endSeatIndex; i++) {
+            Flight flight = flightRepository.findById(flightId).orElse(null);
+            seats.add(new Seat(currentColumn + Integer.toString(currentRow), seatClass, flight, price));
+
+            currentColumn++;
+            if (currentColumn > 'F') {
+                currentColumn = 'A';
+                currentRow++;
+            }
+        }
+        return seats;
+    }
     @Override
     public Flight getFlight(int id) {
         return flightRepository.findById(id).get();

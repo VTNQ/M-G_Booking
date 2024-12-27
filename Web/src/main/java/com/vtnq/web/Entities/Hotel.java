@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Size;
 @Table(name = "hotels")
 public class Hotel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 

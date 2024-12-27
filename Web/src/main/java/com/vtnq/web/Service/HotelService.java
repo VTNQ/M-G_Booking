@@ -1,7 +1,6 @@
 package com.vtnq.web.Service;
 
 import com.vtnq.web.DTOs.Hotel.*;
-import com.vtnq.web.Entities.Hotel;
 import com.vtnq.web.Entities.Picture;
 import org.springframework.web.multipart.MultipartFile;
 

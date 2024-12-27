@@ -1,6 +1,8 @@
 package com.vtnq.web.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -9,46 +11,60 @@ import java.time.Instant;
 @Table(name = "account")
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "username", nullable = false, length = 100)
     private String username;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "full_name", nullable = false, length = 100)
     private String fullName;
 
+    @Size(max = 100)
+    @NotNull
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
+    @Size(max = 20)
+    @NotNull
     @Column(name = "phone", nullable = false, length = 20)
     private String phone;
 
-    @Column(name = "address", nullable = true, length = 200)
+    @Size(max = 200)
+    @Column(name = "address", length = 200)
     private String address;
 
-    @Column(name = "city_id",nullable = true)
+    @Column(name = "city_id")
     private Integer cityId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "security_code_id")
     private SecurityCode securityCode;
 
+    @Size(max = 20)
     @Column(name = "OTP", length = 20)
     private String otp;
 
+    @Size(max = 200)
     @Column(name = "avatar", length = 200)
     private String avatar;
 
+    @Size(max = 200)
     @Column(name = "password", length = 200)
     private String password;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ColumnDefault("1")
-    @JoinColumn(name = "level_id", nullable = true)
+    @JoinColumn(name = "level_id", nullable = false)
     private Level level;
 
+    @Size(max = 100)
+    @NotNull
     @ColumnDefault("'ROLE_USER'")
     @Column(name = "account_type", nullable = false, length = 100)
     private String accountType;

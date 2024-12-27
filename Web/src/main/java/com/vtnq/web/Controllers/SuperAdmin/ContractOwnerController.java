@@ -2,7 +2,6 @@ package com.vtnq.web.Controllers.SuperAdmin;
 
 import com.vtnq.web.DTOs.ContractOwner.ContractOwnerDto;
 import com.vtnq.web.Entities.Account;
-import com.vtnq.web.Entities.City;
 import com.vtnq.web.Service.ContractOwnerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
