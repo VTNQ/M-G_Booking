@@ -34,7 +34,7 @@ public class Seat {
     private String type;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_flight", nullable = false)
     private Flight idFlight;
 
