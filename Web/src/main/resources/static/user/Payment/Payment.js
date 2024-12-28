@@ -40,14 +40,14 @@ function createSeatDiv(seat) {
             userIcon.classList.add('fa', 'fa-user');
             userIcon.style.color = 'white'; // Font Awesome icon for selected
             seatDiv.appendChild(userIcon);
-            const selectedPassengerSpan = document.querySelector('.span-index');
+            const selectedPassengerSpan = document.querySelector('.passenger-block .passenger-type .selected-seat.selected');
             if (selectedPassengerSpan) {
                 console.log(selectedPassengerSpan.textContent);
             } else {
                 console.log('No selected passenger span found');
             }
             // Update passenger seat display
-            selectedPassenger.querySelector('.span-index .selected').textContent = seatName;
+            document.querySelector('.passenger-block .passenger-type .selected-seat.selected').textContent = seatName;
         }
     });
 
