@@ -5,6 +5,8 @@ import 'package:mobile/Views/Auth/LoginSuccess.dart';
 
 import 'package:mobile/Views/Auth/OtpVerificationScreen.dart';
 import 'package:mobile/Views/Auth/Register.dart';
+import 'package:mobile/Views/Home.dart';
+import 'package:mobile/Views/List%20Flight.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:Register(),
+      home:FlightPage(),
     );
   }
 }
