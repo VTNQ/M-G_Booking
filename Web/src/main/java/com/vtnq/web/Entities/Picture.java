@@ -1,15 +1,13 @@
 package com.vtnq.web.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "picture")
 public class Picture {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -34,12 +32,6 @@ public class Picture {
 
     @Column(name = "user_id")
     private Integer userId;
-
-    @Column(name = "amenity_id")
-    private Integer amenityId;
-
-    @Column(name = "service_id")
-    private Integer serviceId;
 
     public Integer getId() {
         return id;
@@ -95,22 +87,6 @@ public class Picture {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public Integer getAmenityId() {
-        return amenityId;
-    }
-
-    public void setAmenityId(Integer amenityId) {
-        this.amenityId = amenityId;
-    }
-
-    public Integer getServiceId() {
-        return serviceId;
-    }
-
-    public void setServiceId(Integer serviceId) {
-        this.serviceId = serviceId;
     }
 
 }

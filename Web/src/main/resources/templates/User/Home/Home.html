@@ -105,7 +105,8 @@
                                                             id="from-input"
                                                             autocomplete="off"
                                                     />
-                                                    <input type="hidden" id="from-input-id" th:field="${Search.departureAirport}" />
+                                                    <input type="hidden" id="from-input-id"
+                                                           th:field="${Search.departureAirport}"/>
                                                 </div>
                                                 <div class="search-dropdown" id="from-dropdown">
                                                     <ul id="airport-list-from"></ul>
@@ -121,7 +122,8 @@
                                                             id="to-input"
                                                             autocomplete="off"
                                                     />
-                                                    <input type="hidden" id="to-input-id" th:field="${Search.arrivalAirport}" />
+                                                    <input type="hidden" id="to-input-id"
+                                                           th:field="${Search.arrivalAirport}"/>
                                                 </div>
                                                 <div class="search-dropdown" id="to-dropdown">
 
@@ -147,7 +149,7 @@
                                                            th:field="${Search.departureTime}"
                                                            class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
                                                            style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 217.5px;height: 54px"
-                                                          />
+                                                    />
                                                 </div>
                                             </div>
 
@@ -169,7 +171,8 @@
                                                             autocomplete="off"
                                                     />
 
-                                                    <div class="search-dropdown" style="width: 28%;top: 68%" id="At-dropdown">
+                                                    <div class="search-dropdown" style="width: 28%;top: 68%"
+                                                         id="At-dropdown">
                                                         <ul id="At-List"></ul>
                                                     </div>
                                                     <input type="hidden" id="idCity" th:field="${Search.idCity}">
@@ -185,17 +188,20 @@
                                             <div class="search-container">
                                                 <div class="date-picker-container">
                                                     <div>
-                                                        <label for="datePickerInputFrom" class="label">Nhận phòng</label>
+                                                        <label for="datePickerInputFrom" class="label">Nhận
+                                                            phòng</label>
                                                         <div class="date-picker">
                                                             <i class="fa-solid fa-calendar"></i>
-                                                            <input type="date" id="datePickerInputFrom" th:field="${Search.departureTime}"/>
+                                                            <input type="date" id="datePickerInputFrom"
+                                                                   th:field="${Search.departureTime}"/>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label for="datePickerInputTo" class="label">Trả phòng</label>
                                                         <div class="date-picker">
                                                             <i class="fa-solid fa-calendar"></i>
-                                                            <input type="date" id="datePickerInputTo" th:field="${Search.arrivalTime}"/>
+                                                            <input type="date" id="datePickerInputTo"
+                                                                   th:field="${Search.arrivalTime}"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -207,15 +213,36 @@
                                             <div class="dropdown-container">
 
                                                 <div class="dropdown">
-                                                    <select id="classSelect" th:field="${Search.quantityRoom}" class="form-select " style="margin-top: 2vh">
-                                                        <option value="1" >1</option>
+                                                    <select id="classSelect" th:field="${Search.quantityRoom}"
+                                                            class="form-select " style="margin-top: 2vh">
+                                                        <option value="1">1</option>
                                                         <option value="2">2</option>
-                                                        <option value="3" >3</option>
+                                                        <option value="3">3</option>
                                                         <option value="4">4</option>
                                                         <option value="5">5</option>
                                                         <option value="5">6</option>
                                                         <option value="7">7</option>
                                                         <option value="8">7</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
+  <span class="d-block text-gray mb-2"
+        style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">People Fly</span>
+                                            <div class="dropdown-container">
+
+                                                <div class="dropdown">
+                                                    <select id="classSelect" th:field="${Search.numberPeopleRight}"
+                                                            class="form-select " style="margin-top: 2vh">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="5">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -226,10 +253,11 @@
                                             <div class="dropdown-container">
 
                                                 <div class="dropdown">
-                                                    <select id="classSelect" th:field="${Search.typeFlight}" class="form-select " style="margin-top: 2vh">
-                                                        <option value="First Class" >First Class</option>
+                                                    <select id="classSelect" th:field="${Search.typeFlight}"
+                                                            class="form-select " style="margin-top: 2vh">
+                                                        <option value="First Class">First Class</option>
                                                         <option value="Business Class">Business Class</option>
-                                                        <option value="Merchant" >Merchant</option>
+                                                        <option value="Merchant">Merchant</option>
                                                         <option value="Economy Class">Economy Class</option>
                                                     </select>
                                                 </div>
@@ -298,10 +326,15 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-sm-5 d-flex align-items-center justify-content-center" style="position: relative;left: -20vh;top: -1vh;margin-top: 2vh">
+                                        <div class="col-sm-5 d-flex align-items-center justify-content-center"
+                                             style="position: relative;left: -20vh;top: -1vh;margin-top: 2vh">
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" th:field="${Search.selectedHotel}" type="checkbox" id="flexSwitchCheckDefault" style="font-size: 21px">
-                                                <label class="form-check-label" for="flexSwitchCheckDefault" style="position: absolute;top: 3px">Default switch checkbox input</label>
+                                                <input class="form-check-input" th:field="${Search.selectedHotel}"
+                                                       type="checkbox" id="flexSwitchCheckDefault"
+                                                       style="font-size: 21px">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault"
+                                                       style="position: absolute;top: 3px">Default switch checkbox
+                                                    input</label>
                                             </div>
                                         </div>
 
@@ -1008,8 +1041,9 @@
             </div>
         </div>
     </div>
-    <div class="deals-carousel-block deals-carousel-v1 border-bottom border-color-8" style="border-color: #ebf0f7 !important;border-bottom: 1px solid #e7eaf3 !important">
-        <div class="container mt-3" >
+    <div class="deals-carousel-block deals-carousel-v1 border-bottom border-color-8"
+         style="border-color: #ebf0f7 !important;border-bottom: 1px solid #e7eaf3 !important">
+        <div class="container mt-3">
             <h2 class="section-title text-center mb-5">
                 Today's Top Deals
             </h2>
@@ -1065,18 +1099,19 @@
                 </div>
 
                 <!-- Controls with custom styles and event listeners -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#dealsCarousel" data-bs-slide="prev" style="background-color: #297cbb; border-radius: 19%; width: 2.5rem; height: 2.5rem; opacity: 1; color: #297cbb">
+                <button class="carousel-control-prev" type="button" data-bs-target="#dealsCarousel" data-bs-slide="prev"
+                        style="background-color: #297cbb; border-radius: 19%; width: 2.5rem; height: 2.5rem; opacity: 1; color: #297cbb">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#dealsCarousel" data-bs-slide="next" style="background-color: #297cbb; border-radius: 19%; width: 2.5rem; height: 2.5rem; opacity: 1; color: #297cbb">
+                <button class="carousel-control-next" type="button" data-bs-target="#dealsCarousel" data-bs-slide="next"
+                        style="background-color: #297cbb; border-radius: 19%; width: 2.5rem; height: 2.5rem; opacity: 1; color: #297cbb">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
         </div>
     </div>
-
 
 
 </main>

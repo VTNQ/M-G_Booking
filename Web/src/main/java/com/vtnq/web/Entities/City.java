@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "city")
 public class City {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;

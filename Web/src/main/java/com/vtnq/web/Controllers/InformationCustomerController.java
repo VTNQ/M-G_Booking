@@ -77,13 +77,15 @@ public class InformationCustomerController {
         }
     }
     @GetMapping("InformationFly/{id}")
-    public String InformationFly(@PathVariable int id, ModelMap modelMap) {
+    public String InformationFly(@PathVariable int id, ModelMap modelMap,HttpServletRequest request) {
         try {
+            Integer NumberPeople = (Integer) request.getSession().getAttribute("NumberPeople");
             modelMap.put("flight",flightService.getResultPaymentFlight(id));
             modelMap.put("seat",seatService.FindSeatByFlight(id));
             BookingFlightDTO bookingDto=new BookingFlightDTO();
             bookingDto.setFlightId(id);
             modelMap.put("payment",bookingDto);
+            modelMap.put("number",NumberPeople);
             return "/User/InformationCustomer/InformationFly";
         }catch (Exception e) {
             e.printStackTrace();

@@ -8,16 +8,17 @@ import java.time.Instant;
 @Entity
 @Table(name = "bookings")
 public class Booking {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "booking_flight_id", nullable = false)
     private BookingFlight bookingFlight;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "booking_room_id")
     private BookingRoom bookingRoom;
 

@@ -5,6 +5,7 @@ import com.vtnq.web.Service.AirlineService;
 import com.vtnq.web.Service.FlightService;
 import com.vtnq.web.Service.HotelService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -54,7 +55,7 @@ public class HomeController {
             return null;
         }
     }
-    public String SearchFlight(ModelMap model,@ModelAttribute("Search")SearchFlightDTO searchFlightDTO) {
+    public String SearchFlight(ModelMap model, @ModelAttribute("Search")SearchFlightDTO searchFlightDTO, HttpSession session) {
 
         String selectedDateStr=searchFlightDTO.getDepartureTime().trim();
         if (selectedDateStr.endsWith(",")) {
@@ -103,14 +104,14 @@ public class HomeController {
         }
         DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate departureDate = LocalDate.parse(departureTime, formatterDepartureDate);
-
+        session.setAttribute("NumberPeople",searchFlightDTO.getNumberPeopleRight());
         model.put("Airline",airlineService.searchAirline(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight()));
         return "User/Flight/Flight";
     }
     @GetMapping("SearchFlight")
-    public String SearchFlight(HttpServletRequest request, ModelMap model,@ModelAttribute("Search")SearchFlightDTO searchFlightDTO) {
+    public String SearchFlight(HttpServletRequest request, ModelMap model,@ModelAttribute("Search")SearchFlightDTO searchFlightDTO,HttpSession session) {
       if(searchFlightDTO.isSelectedHotel()==false){
-          return SearchFlight(model,searchFlightDTO);
+          return SearchFlight(model,searchFlightDTO,session);
       }else{
           return SearchHotel(model,searchFlightDTO);
       }

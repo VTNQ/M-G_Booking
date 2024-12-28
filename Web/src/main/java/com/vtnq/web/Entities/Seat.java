@@ -12,17 +12,17 @@ public class Seat {
     public Seat() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Integer id;
-
     public Seat(String index, String type, Flight idFlight, BigDecimal price) {
         this.index = index;
         this.type = type;
         this.idFlight = idFlight;
         this.price = price;
     }
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
     @Size(max = 50)
     @NotNull
