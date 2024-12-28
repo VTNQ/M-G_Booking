@@ -25,7 +25,7 @@ public class BookingServiceImplement implements BookingService {
         try {
             BookingFlight booking=new BookingFlight();
             Flight flight=flightRepository.findById(bookingFlightDTO.getFlightId()).orElseThrow(()->new RuntimeException("Flight not found"));
-            Seat seat=seatRepository.findById(bookingFlightDTO.getSeatId()).orElseThrow(()->new RuntimeException("Seat Not Found"));
+            Seat seat=seatRepository.findById(bookingFlightDTO.getFlightId()).orElseThrow(()->new RuntimeException("Seat Not Found"));
             Account account=accountRepository.findById(bookingFlightDTO.getUserId()).orElseThrow(()->new RuntimeException("Account Not Found"));
 
             bookingRepository.save(booking);

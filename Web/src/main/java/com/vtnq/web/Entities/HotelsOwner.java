@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "hotels_owner")
 public class HotelsOwner {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;

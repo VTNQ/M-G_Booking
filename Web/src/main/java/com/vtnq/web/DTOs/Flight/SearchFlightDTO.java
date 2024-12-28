@@ -7,6 +7,15 @@ public class SearchFlightDTO {
     private String TypeFlight;
     private boolean selectedHotel;
 
+    public int getNumberPeopleRight() {
+        return numberPeopleRight;
+    }
+
+    public void setNumberPeopleRight(int numberPeopleRight) {
+        this.numberPeopleRight = numberPeopleRight;
+    }
+
+    private int numberPeopleRight;
     public int getQuantityRoom() {
         return QuantityRoom;
     }

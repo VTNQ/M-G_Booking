@@ -277,17 +277,27 @@
             </div>
             <div class="container">
                 <div class="row" style="justify-content: center">
-                    <div class="passenger-info col-3" style="height: 11vh">
-                        <div class="passenger-block">
-                            <div class="passenger-type">
-                                <div class="selected-seat">4B</div>
-                                Người lớn 1
-                            </div>
-                            <div class="seat-info">
-                                <span class="seat-price">442.523 ₫</span>
-                            </div>
-                        </div>
-                    </div>
+
+                       <div class="" style="display: flex;flex-direction: column;width: 32%;height: 300px; overflow-y: auto;">
+                           <th:block th:each="num, index : ${#numbers.sequence(1, number)}">
+                               <div class="passenger-info " style="height: 11vh;width: 65%">
+                                   <div class="passenger-block">
+                                       <div class="passenger-type">
+                                           <div class="selected-seat">Seat <span th:text="${num}">1A</span></div>
+                                           Người lớn <span class="span-index" th:text="${index.index+1}">1</span>
+                                       </div>
+                                       <div class="seat-info">
+                                           <span class="seat-price">442.523 ₫</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </th:block>
+
+
+                       </div>
+
+
+
                     <div class="seat-container col-6" style="margin-left: 7vh">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <!-- Passenger Information -->

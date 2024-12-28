@@ -162,6 +162,10 @@
     margin-bottom: 15px;
     border-radius: 5px;
     padding: 10px;
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px 1px;
+}
+.passenger-info.selected{
     border: 1px solid rgb(83, 146, 249);
 }
 

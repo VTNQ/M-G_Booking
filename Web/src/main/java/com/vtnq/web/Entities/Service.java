@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "services")
 public class Service {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -28,7 +29,7 @@ public class Service {
     private BigDecimal price;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 

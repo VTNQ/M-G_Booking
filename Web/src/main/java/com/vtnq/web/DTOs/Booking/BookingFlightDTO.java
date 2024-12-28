@@ -1,20 +1,14 @@
 package com.vtnq.web.DTOs.Booking;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class BookingFlightDTO {
     private int flightId;
     private BigDecimal TotalPrice;
     private int userId;
-    private int seatId;
+    private List<Integer> seatId;
 
-    public int getSeatId() {
-        return seatId;
-    }
-
-    public void setSeatId(int seatId) {
-        this.seatId = seatId;
-    }
 
     public int getUserId() {
         return userId;
@@ -34,6 +28,14 @@ public class BookingFlightDTO {
 
     public int getFlightId() {
         return flightId;
+    }
+
+    public List<Integer> getSeatId() {
+        return seatId;
+    }
+
+    public void setSeatId(List<Integer> seatId) {
+        this.seatId = seatId;
     }
 
     public void setFlightId(int flightId) {

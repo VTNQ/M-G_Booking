@@ -10,6 +10,7 @@ import com.vtnq.web.Repositories.CityRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class AirportServiceImplement implements AirportService {
     public boolean save(AirportDto airportDto) {
         try{
             City city=cityRepository.findById(airportDto.getIdCity())
-                    .orElse(new City());
+                    .orElseThrow(() -> new Exception("City not found"));
             Airport airport=modelMapper.map(airportDto,Airport.class);
             airport.setCity(city);
             Airport insertAirport=airportRepository.save(airport);

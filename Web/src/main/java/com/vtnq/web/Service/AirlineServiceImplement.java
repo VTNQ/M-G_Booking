@@ -4,7 +4,6 @@ import com.vtnq.web.DTOs.Airline.AirlineDto;
 import com.vtnq.web.DTOs.Airline.ListAirlineDto;
 import com.vtnq.web.DTOs.Airline.UpdateAirlineDTO;
 import com.vtnq.web.Entities.Airline;
-import com.vtnq.web.Entities.Country;
 import com.vtnq.web.Entities.Picture;
 import com.vtnq.web.Helper.FileHelper;
 import com.vtnq.web.Repositories.AirlineRepository;
