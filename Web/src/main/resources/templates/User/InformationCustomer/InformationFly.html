@@ -210,7 +210,8 @@
                 </div>
             </div>
                 <input type="hidden" id="flightId" th:field="${payment.flightId}">
-                <input type="hidden" id="seatId" th:field="${payment.seatId}">
+                <input type="hidden" id="bookings" name="bookings" >
+
         </div>
         </form>
 <div class="row">
@@ -249,7 +250,7 @@
 </div>
     </div>
     <div class="popup">
-        <div class="popup-content" style="width: 47%;">
+        <div class="popup-content" style="width: 49%;">
             <span class="close-button">&times;</span>
             <h2>Lựa chọn chỗ ngồi</h2>
             <div class="flight-route">HAN - NRT</div>
@@ -283,7 +284,7 @@
                                <div class="passenger-info " style="height: 11vh;width: 65%">
                                    <div class="passenger-block">
                                        <div class="passenger-type">
-                                           <div class="selected-seat">Seat <span th:text="${num}">1A</span></div>
+                                           <div class="selected-seat"> <span th:text="${num}">1A</span></div>
                                            Người lớn <span class="span-index" th:text="${index.index+1}">1</span>
                                        </div>
                                        <div class="seat-info">

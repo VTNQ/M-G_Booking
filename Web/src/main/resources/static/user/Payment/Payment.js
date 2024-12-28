@@ -1,9 +1,19 @@
-let totalpricePopup1 = document.getElementById('totalPrice');
+
 let selectedPassenger = null;
 let selectedSeat = null;
 let selectedSeatName=null;
 let totalPrice=0;
+const selectedSeats = new Map();
+function addSeat(seatId,SeatName){
+    selectedSeats.set(seatId,SeatName);
 
+}
+let bookings=[];
+function removeSeat(seatId){
+    if(selectedSeats.has(seatId)){
+        selectedSeats.delete(seatId);
+    }
+}
 function createSeatDiv(seat) {
 
     const seatDiv = document.createElement('div');
@@ -20,34 +30,143 @@ function createSeatDiv(seat) {
 
     // Add event listener for selecting/deselecting seats
     seatDiv.addEventListener('click', () => {
-        console.log(selectedPassenger)
 
+        const hiddenInput = document.getElementById('bookings');
+        const exists = bookings.some(booking => booking.id === seat.id);
+        if(exists){
+            const index = bookings.findIndex(booking => booking.id === seat.id);
+
+            if (index !== -1) {
+                bookings.splice(index, 1);
+                hiddenInput.value=JSON.stringify(bookings);
+
+            }
+        }
         const seatName = seatDiv.dataset.seatName;
         if (seatDiv.classList.contains('isSelected')) {
             // Deselect the seat
+            totalPrice=totalPrice-seat.price;
+            if (totalPrice < 0) {
+                totalPrice = 0;
+            }
+            document.getElementById('totalPrice').textContent=totalPrice+' USD';
             seatDiv.classList.remove('isSelected');
-            seatDiv.querySelector('.fa-user')?.remove(); // Remove icon if deselected
 
-            // Update passenger seat display
-            selectedPassenger.querySelector('.selected-seat span').textContent = '';
+            document.getElementById('totalPrice').textContent=totalPrice+' USD';
+            seatDiv.querySelector('.fa-user')?.remove();
+            const PassagerInfo=document.querySelectorAll('.passenger-info');
+            console.log(PassagerInfo)
+            PassagerInfo.forEach(pass=>{
+                console.log(pass.dataset.seat1Id);
+                if(pass.dataset.seat1Id===seat.id.toString()){
+                    pass.classList.add('selected')
+                    pass.querySelector('.passenger-block .seat-info .seat-price').textContent='0 USD'
+                }else{
+                    pass.classList.remove('selected')
+                }
+            })
+            const seatIdElements = document.querySelectorAll(`.passenger-block .passenger-type .selected-seat`);
+            seatIdElements.forEach(seatElement => {
+                // Check if this seat element has a matching seat ID
+
+                if (seatElement.dataset.seatId=== seat.id.toString() ) {
+                    seatElement.textContent='';
+
+                    delete seatElement.dataset.seatId;
+                    removeSeat(seat.id)
+                    seatElement.classList.remove('IsSelected')
+                    seatElement.classList.add('selected')
+
+
+                }
+
+            });
+
         } else {
-            // Check if the passenger already has a seat assigned
-            const alreadyAssignedSeat = selectedPassenger.querySelector('.selected-seat span').textContent;
+            const exists = bookings.some(booking => booking.id === seat.id);
+            if(!exists){
+                bookings.push({id:seat.id,totalPrice:seat.price});
+                hiddenInput.value=JSON.stringify(bookings);
+            }
 
+            // Check if the passenger already has a seat assigned
+            totalPrice+=seat.price;
+            document.getElementById('totalPrice').textContent=totalPrice+' USD';
             // Select the seat
             seatDiv.classList.add('isSelected');
             const userIcon = document.createElement('i');
             userIcon.classList.add('fa', 'fa-user');
             userIcon.style.color = 'white'; // Font Awesome icon for selected
             seatDiv.appendChild(userIcon);
-            const selectedPassengerSpan = document.querySelector('.passenger-block .passenger-type .selected-seat.selected');
-            if (selectedPassengerSpan) {
-                console.log(selectedPassengerSpan.textContent);
-            } else {
-                console.log('No selected passenger span found');
-            }
+
             // Update passenger seat display
-            document.querySelector('.passenger-block .passenger-type .selected-seat.selected').textContent = seatName;
+            const seatIdElements = document.querySelectorAll(`.passenger-block .passenger-type .selected-seat.selected`);
+
+// Check if any of these elements already contain the desired seat ID
+            let seatExists = false;
+            seatIdElements.forEach(seatElement => {
+                // Check if this seat element has a matching seat ID
+
+                if (seatElement.dataset.seatId=== seat.id.toString()) {
+                    seatExists = true; // Seat already exists
+                }
+
+            });
+
+            if (seatExists===false) {
+
+                addSeat(seat.id,seat.index);
+                const query = document.querySelector('.passenger-block .passenger-type .selected-seat.selected');
+                const queryText = document.querySelectorAll('.passenger-block .passenger-type .selected-seat ');
+                const passagerInfo = document.querySelectorAll('.passenger-info');
+                const PassageQuery=document.querySelector('.passenger-info.selected');
+                PassageQuery.setAttribute('data-seat1-id', seat.id);
+// Tìm index của phần tử có class 'selected' trong passagerInfo
+                const Passager = Array.from(passagerInfo).findIndex(span => span.classList.contains('selected'));
+
+// Tìm index của phần tử có class 'selected' trong queryText
+                const indexOfSelected = Array.from(queryText).findIndex(span => span.classList.contains('selected'));
+
+// Kiểm tra điều kiện tồn tại và tránh lỗi
+                if (
+                    Passager !== -1 && // Kiểm tra có phần tử selected trong passagerInfo
+                    indexOfSelected !== -1 && // Kiểm tra có phần tử selected trong queryText
+                    Passager + 1 < passagerInfo.length && // Đảm bảo không vượt quá số lượng phần tử trong passagerInfo
+                    indexOfSelected + 1 < queryText.length // Đảm bảo không vượt quá số lượng phần tử trong queryText
+                ) {
+
+                    // Thêm class 'selected' vào phần tử kế tiếp
+                    passagerInfo[Passager + 1].classList.add('selected');
+                    queryText[indexOfSelected + 1].classList.add('selected');
+                } else {
+
+
+                }
+                const isLast = Passager === passagerInfo.length - 1;
+                if(isLast){
+                    passagerInfo[Passager].classList.remove('selected')
+                    passagerInfo[0].classList.add('selected');
+                }else{
+
+                    document.querySelector('.passenger-info.selected').classList.remove('selected');
+
+                }
+                passagerInfo[Passager].querySelector('.seat-price').textContent=seat.price+' USD';
+
+                query.textContent= seatName;
+                query.setAttribute('data-seat-id', seat.id);
+                query.classList.add('IsSelected');
+
+
+                query.classList.remove('selected')
+
+
+
+
+
+            }
+
+
         }
     });
 
@@ -154,7 +273,7 @@ async function fetchSeatData(id) {
 }
 
 // Fetch seat data for flight ID 5 (for example)
-totalpricePopup1.textContent=totalPrice+' USD';
+
 const flightId=document.getElementById('flightId');
 fetchSeatData(flightId.value);
 document.querySelector('.edit-button').addEventListener('click',function (event){
@@ -164,7 +283,8 @@ popup.classList.add('show');
 document.querySelector('.confirm-button').addEventListener('click',function (event){
     let popup=document.querySelector('.popup');
     document.querySelector('.flight-info').style.display='flex';
-    document.querySelector('.passengers').textContent=selectedSeatName;
+    const seatNames=Array.from(selectedSeats.values());
+    document.querySelector('.passengers').textContent=seatNames.join(', ');
     document.querySelector('.note').style.display='flex';
     document.querySelector('.price').style.display='flex'
     document.querySelector('.price').textContent='+ '+totalPrice+' USD';
@@ -174,23 +294,28 @@ document.querySelector('.confirm-button').addEventListener('click',function (eve
 document.querySelectorAll('.passenger-info').forEach((passenger, index) => {
     passenger.addEventListener('click', () => {
 
+        // Deselect any previously selected passengers and their spans
         document.querySelectorAll('.passenger-info').forEach(p => p.classList.remove('selected'));
-        document.querySelectorAll('.passenger-info span').forEach(p=>p.classList.remove('selected'));
+        document.querySelectorAll('.passenger-info span').forEach(p => p.classList.remove('selected'));
 
         passenger.classList.add('selected');
-        const span = passenger.querySelector('.passenger-block .passenger-type .selected-seat')
+        selectedPassenger = passenger; // Update the selected passenger
 
+        // If there is a selected seat already assigned, highlight it
+        const span = passenger.querySelector('.passenger-block .passenger-type .selected-seat');
         if (span) {
             span.classList.add('selected');
-            console.log(span)
         }
     });
 });
+
 const firstPassenger = document.querySelector('.passenger-info');
-const spanFirstPssager=document.querySelector('.passenger-info span');
+const spanFirstPassenger = document.querySelector('.selected-seat span');
+
 if (firstPassenger) {
+    firstPassenger.querySelector('.passenger-block .passenger-type .selected-seat').classList.add('selected');
     firstPassenger.classList.add('selected');
-    spanFirstPssager.classList.add('selected');
-    selectedPassenger=firstPassenger;
+    spanFirstPassenger.classList.add('selected');
+
 
 }

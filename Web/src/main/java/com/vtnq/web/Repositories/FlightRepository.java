@@ -16,8 +16,17 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
 @Query("select new com.vtnq.web.DTOs.Flight.FlightListDTO(f.id,f.airline.name,f.departureAirport.name,f.arrivalAirport.name,f.departureTime,f.arrivalTime)" +
         " from Flight f where f.airline.countryId = :id")
     List<FlightListDTO> findFlightListDTO(@Param("id") int id);
-    @Query("SELECT MIN(G.price) FROM Flight f Join Seat G on f.id=G.idFlight.id where  DATE(f.departureTime) = :departureTime")
-    public BigDecimal FindPrice(@Param("departureTime") LocalDate departureTime);
+    @Query("SELECT MIN(G.price) FROM Flight f Join Seat G on f.id=G.idFlight.id " +
+            "where  DATE(f.departureTime) = :departureTime " +
+            "and f.departureAirport.id = :departureAirport " +
+            "and f.arrivalAirport.id = :arrivalAirport " +
+            "and G.type = :TypeFlight" +
+            " and (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople")
+    public BigDecimal FindPrice(@Param("departureAirport") int departureAirport,
+                                @Param("arrivalAirport") int arrivalAirport,
+                                @Param("departureTime") LocalDate departureTime,
+                                @Param("TypeFlight") String TypeFlight,
+                                @Param("totalPeople")int totalPeople);
     @Query("SELECT distinct new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id,d.imageUrl,f.arrivalAirport.city.name,f.arrivalTime,f.departureTime," +
             "G.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id,f.arrivalAirport.name) FROM Flight f " +
             "JOIN Airport a on a.id=f.departureAirport.id " +
@@ -35,23 +44,25 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
                                             @Param("arrivalAirport") int arrivalAirport,
                                             @Param("departureTime") LocalDate departureTime,
                                             @Param("TypeFlight") String TypeFlight);
-    @Query("SELECT distinct  new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id,d.imageUrl,f.arrivalAirport.city.name,f.arrivalTime,f.departureTime," +
-            "G.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id,f.arrivalAirport.name) FROM Flight f " +
-            "JOIN Airport a on a.id=f.departureAirport.id " +
-            "JOIN Airport b on b.id=f.arrivalAirport.id " +
-            "JOIN Airline c on c.id=f.airline.id "+
-            "JOIN Picture d on c.id=d.airlineId "+
-            "left Join Seat G on f.id=G.idFlight.id "+
-            "join City e on e.id=b.city.id "+
-            "WHERE f.departureAirport.id= :departureAirport " +
+    @Query("SELECT distinct new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, " +
+            "G.price, c.name, f.departureTime, f.arrivalTime, f.departureTime, f.arrivalTime, f.departureAirport.name, f.airline.id, f.arrivalAirport.name) " +
+            "FROM Flight f " +
+            "JOIN Airport a ON a.id = f.departureAirport.id " +
+            "JOIN Airport b ON b.id = f.arrivalAirport.id " +
+            "JOIN Airline c ON c.id = f.airline.id " +
+            "JOIN Picture d ON c.id = d.airlineId " +
+            "LEFT JOIN Seat G ON f.id = G.idFlight.id " +
+            "JOIN City e ON e.id = b.city.id " +
+            "WHERE f.departureAirport.id = :departureAirport " +
             "AND f.arrivalAirport.id = :arrivalAirport " +
-            "AND DATE(f.departureTime) = :departureTime "+
-            "And G.type = :TypeFlight")
+            "AND DATE(f.departureTime) = :departureTime " +
+            "AND G.type = :TypeFlight " +
+            "AND (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople")
     List<ResultFlightDTO> findFlightsByAirportsAndDepartureTime(
             @Param("departureAirport") int departureAirport,
             @Param("arrivalAirport") int arrivalAirport,
             @Param("departureTime") LocalDate departureTime,
-            @Param("TypeFlight") String TypeFlight );
+            @Param("TypeFlight") String TypeFlight ,@Param("totalPeople")int totalPeople);
     @Query("SELECT distinct  new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id,d.imageUrl,f.arrivalAirport.city.name,f.arrivalTime,f.departureTime," +
             "G.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id,f.arrivalAirport.name) FROM Flight f " +
             "JOIN Airport a on a.id=f.departureAirport.id " +

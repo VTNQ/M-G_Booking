@@ -16,8 +16,9 @@ public interface FlightService  {
     public List<FlightListDTO>findAllByCountry(int id);
     public FlightDto findById(int id);
     public boolean UpdateFlightDto(FlightDto flightDto);
-    public BigDecimal FindPrice(LocalDate departureTime  );
-    public List<ResultFlightDTO>SearchFlight(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight);
+    public BigDecimal FindPrice(int departureAirport,int arrivalAirport
+            ,LocalDate departureTime,String TypeFlight,int totalPeople  );
+    public List<ResultFlightDTO>SearchFlight(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight,int totalPeople);
     public List<ResultFlightDTO>SearchFlightAllDto(int departureAirport, int arrivalAirport, LocalDate departureTime,LocalDate ArrivalTime,String TypeFlight);
     public ResultFlightDTO FindResultFlightAndHotel(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight);
     public boolean CreateSeat(SeatDTO seatDTO);

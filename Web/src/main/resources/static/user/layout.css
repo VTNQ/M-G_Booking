@@ -215,7 +215,9 @@
     align-items: center;
     margin-bottom: 5px;
 }
-
+.selected-seat.IsSelected{
+    background-color: rgb(41, 78, 133);
+}
 .selected-seat {
     background-color: transparent;
     color: white;
