@@ -28,7 +28,7 @@ public class FlightAPI {
     public ResponseEntity<Object> getAllFlight(@RequestBody SearchFlightDTO flight) {
         Map<String,Object> response=new LinkedHashMap<>();
         try {
-            if(flightService.SearchFlight(flight.getDepartureAirport(),flight.getArrivalAirport(), LocalDate.parse(flight.getDepartureTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")), flight.getTypeFlight())){
+            if(flightService.SearchFlight(flight.getDepartureAirport(),flight.getArrivalAirport(), LocalDate.parse(flight.getDepartureTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")), flight.getTypeFlight())!=null){
                 response.put("status",200);
                 response.put("message","Success");
                 response.put("data",flightService.SearchFlight(flight.getDepartureAirport(),flight.getArrivalAirport(), LocalDate.parse(flight.getDepartureTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")), flight.getTypeFlight()));
