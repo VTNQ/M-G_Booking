@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/APIs/CountryAPi.dart';
+import 'package:mobile/APIs/CountryAPI.dart';
 import 'package:mobile/Model/Country.dart';
 import 'package:mobile/Model/registerUser.dart';
 
