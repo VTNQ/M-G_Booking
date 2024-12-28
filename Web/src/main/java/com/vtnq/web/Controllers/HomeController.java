@@ -72,14 +72,16 @@ public class HomeController {
         for (int i=0;i<=4;i++){
             LocalDate nextDate = selectedDate.plusDays(i);
             String nextDateStr = nextDate.format(formatter);
-            BigDecimal minPrice=flightService.FindPrice(nextDate);
+            BigDecimal minPrice=flightService.FindPrice(searchFlightDTO.getDepartureAirport(),
+                    searchFlightDTO.getArrivalAirport(),nextDate,
+                    searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight());
             Map<String, String> dateMap = new HashMap<>();
             dateMap.put("day", String.valueOf(nextDate.getDayOfMonth()));
             dateMap.put("month", String.valueOf(nextDate.getMonthValue()));
             dateMap.put("minprice",String.valueOf(minPrice));
             if(searchFlightDTO.getArrivalTime().isEmpty()){
                 model.put("Flight"+i,flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),
-                        nextDate,searchFlightDTO.getTypeFlight()));
+                        nextDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
             }else{
                 String departureTime = searchFlightDTO.getDepartureTime().trim();
                 if(departureTime.endsWith(",")){

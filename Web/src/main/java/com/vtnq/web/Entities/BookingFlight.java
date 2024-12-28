@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "booking_flight")
 public class BookingFlight {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -25,6 +25,11 @@ public class BookingFlight {
     @NotNull
     @Column(name = "total_price", nullable = false, precision = 10)
     private BigDecimal totalPrice;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "flight_id", nullable = false)
+    private Flight flight;
 
     public Integer getId() {
         return id;
@@ -56,6 +61,14 @@ public class BookingFlight {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight;
     }
 
 }

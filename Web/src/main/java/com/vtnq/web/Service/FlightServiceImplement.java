@@ -97,9 +97,11 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
-    public BigDecimal FindPrice(LocalDate departureTime) {
+    public BigDecimal FindPrice(int departureAirport,int arrivalAirport
+            ,LocalDate departureTime,String TypeFlight,int totalPeople) {
         try {
-            return modelMapper.map(flightRepository.FindPrice(departureTime), new TypeToken<BigDecimal>(){}.getType());
+            return modelMapper.map(flightRepository.FindPrice(departureAirport,
+                    arrivalAirport,departureTime,TypeFlight,totalPeople), new TypeToken<BigDecimal>(){}.getType());
         }catch (Exception e) {
             e.printStackTrace();
             return BigDecimal.ZERO;
@@ -107,9 +109,9 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
-    public List<ResultFlightDTO> SearchFlight(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight) {
+    public List<ResultFlightDTO> SearchFlight(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight,int totalPeople) {
         try {
-            return flightRepository.findFlightsByAirportsAndDepartureTime(departureAirport,arrivalAirport,departureTime,TypeFlight);
+            return flightRepository.findFlightsByAirportsAndDepartureTime(departureAirport,arrivalAirport,departureTime,TypeFlight,totalPeople);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;

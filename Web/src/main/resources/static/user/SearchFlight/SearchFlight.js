@@ -541,8 +541,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     flightDetailsLinks.forEach(link=>{
         link.addEventListener('click',(event)=>{
             event.preventDefault();
-            popup.style.display='block';
-            popupContent.style.display='flex';
+            popup.style.setProperty('display', 'block', 'important');
+            popup.style.zIndex='1000';
+            popupContent.style.setProperty('display', 'flex', 'important');
         })
     });
     closeButton.addEventListener('click', () => {

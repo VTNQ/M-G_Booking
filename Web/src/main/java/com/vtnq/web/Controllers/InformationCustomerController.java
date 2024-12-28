@@ -4,6 +4,7 @@ import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.vtnq.web.DTOs.Booking.BookingFlightDTO;
+import com.vtnq.web.DTOs.Booking.BookingFlightDetail;
 import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Service.BookingService;
 import com.vtnq.web.Service.FlightService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 @RequestMapping({"","/"})
@@ -34,12 +36,13 @@ public class InformationCustomerController {
     private static final String CANCEL_URL = "payFlight/cancel";
     @GetMapping("payFlight")
     public RedirectView payment(@RequestParam(required = true) double amount,
-                                @RequestParam(defaultValue = "JPY") String currency, @ModelAttribute BookingFlightDTO bookingFlightDTO, HttpSession session, HttpServletRequest request) {
+                                @RequestParam(defaultValue = "JPY") String currency, @ModelAttribute BookingFlightDTO bookingFlightDTO, @RequestParam("bookings") String bookingsJson, HttpSession session, HttpServletRequest request) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
             bookingFlightDTO.setUserId(currentAccount.getId());
             bookingFlightDTO.setTotalPrice(BigDecimal.valueOf(amount));
             session.setAttribute("booking", bookingFlightDTO);
+            session.setAttribute("bookings", bookingsJson);
             Payment payment = payPalService.createPayment(amount, currency, "paypal",
                     "sale", "Test payment", "http://localhost:8686/" + CANCEL_URL,
                     "http://localhost:8686/" + SUCCESS_URL);
@@ -58,7 +61,8 @@ public class InformationCustomerController {
         try {
             Payment payment = payPalService.executePayment(paymentId, payerId);
             BookingFlightDTO bookingFlightDto=(BookingFlightDTO) request.getSession().getAttribute("booking");
-            if (payment.getState().equals("approved") && bookingService.addBooking(bookingFlightDto)) {
+            String bookings=(String) request.getSession().getAttribute("bookings");
+            if (payment.getState().equals("approved") && bookingService.addBooking(bookingFlightDto,bookings)) {
                 return "redirect:/Success";
             }
         } catch (PayPalRESTException e) {
