@@ -7,6 +7,16 @@ public class SearchFlightDTO {
     private String TypeFlight;
     private boolean selectedHotel;
 
+    public boolean isRoundTrip() {
+        return IsRoundTrip;
+    }
+
+    public void setRoundTrip(boolean roundTrip) {
+        IsRoundTrip = roundTrip;
+    }
+
+    private boolean IsRoundTrip;
+
     public int getNumberPeopleRight() {
         return numberPeopleRight;
     }

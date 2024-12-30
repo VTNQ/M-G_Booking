@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "booking_flight_detail")
 public class BookingFlightDetail {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -27,6 +27,11 @@ public class BookingFlightDetail {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "booking_flight_id", nullable = false)
     private BookingFlight bookingFlight;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "flight_id", nullable = false)
+    private Flight flight;
 
     @Size(max = 20)
     @Column(name = "status", length = 20)
@@ -62,6 +67,14 @@ public class BookingFlightDetail {
 
     public void setBookingFlight(BookingFlight bookingFlight) {
         this.bookingFlight = bookingFlight;
+    }
+
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight;
     }
 
     public String getStatus() {

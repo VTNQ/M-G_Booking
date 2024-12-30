@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class BookingFlightDTO {
-    private int flightId;
+
     private BigDecimal TotalPrice;
     private int userId;
 
@@ -26,13 +26,5 @@ public class BookingFlightDTO {
         TotalPrice = totalPrice;
     }
 
-    public int getFlightId() {
-        return flightId;
-    }
 
-
-
-    public void setFlightId(int flightId) {
-        this.flightId = flightId;
-    }
 }

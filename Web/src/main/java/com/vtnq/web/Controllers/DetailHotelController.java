@@ -42,7 +42,10 @@ public class DetailHotelController {
             Hotel hotel=hotelRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Hotel not found"));
             rating.setHotel(hotel);
-            rating.setUserId(currentAccount.getId());
+            if(currentAccount!=null){
+                rating.setUserId(currentAccount.getId());
+            }
+
             modelMap.put("Rating",rating);
             return "User/DetailHotel/DetailHotel";
         }catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.vtnq.web.APIs;
 
+import com.vtnq.web.Controllers.Seat.SeatDTO;
 import com.vtnq.web.Entities.Seat;
 import com.vtnq.web.Service.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,12 @@ public class SeatController {
     @Autowired
     private SeatService seatService;
     @GetMapping("{id}")
-    public ResponseEntity<List<Seat>>DetailSeats(@PathVariable int id){
+    public ResponseEntity<List<SeatDTO>>DetailSeats(@PathVariable int id){
     try {
-    return new ResponseEntity<List<Seat>>(seatService.FindSeatByFlight(id), HttpStatus.OK);
+    return new ResponseEntity<List<SeatDTO>>(seatService.FindSeatByFlight(id), HttpStatus.OK);
     }catch (Exception e){
         e.printStackTrace();
-        return new ResponseEntity<List<Seat>>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<List<SeatDTO>>(HttpStatus.BAD_REQUEST);
     }
     }
 }

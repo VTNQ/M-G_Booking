@@ -249,7 +249,7 @@ color: #3b444f">
                                                     <span style="font-size: 22px;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 400;line-height: 1.5;
 color: #3b444f"> / night</span>
                                                 </div>
-                                                <a class="btn btn-outline-primary border-radius-3 border-width-2 px-4 py-2 "
+                                                <a th:href="@{'/InformationCustomer/'+${detailRooms.id}}" class="btn btn-outline-primary border-radius-3 border-width-2 px-4 py-2 "
                                                    style="border-radius: 3px !important;font-weight: 500!important;
 min-width: 12.5rem;line-height: 1.9">Book Now</a>
                                             </div>
@@ -407,7 +407,7 @@ min-width: 12.5rem;line-height: 1.9">Book Now</a>
                                 </button>
                                 <input type="hidden" th:field="${Rating.rating}" id="ViewRating">
                                 <input type="hidden" th:field="${Rating.hotel}">
-                                <input type="hidden" th:field="${Rating.user}">
+                                <input type="hidden" th:if="${Rating.userId!=null}" th:field="${Rating.userId}">
                             </div>
                         </div>
                     </form>

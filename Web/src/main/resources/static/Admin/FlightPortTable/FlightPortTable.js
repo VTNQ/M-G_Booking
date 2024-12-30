@@ -1,36 +1,44 @@
 document.addEventListener("DOMContentLoaded", function () {
     var departureTimeInput = document.getElementById("datetimepicker");
+    var arrivalTimeInput = document.getElementById("Departure_Time");
 
+    var arrivalDateValue = arrivalTimeInput.value.replace('Z', '') || new Date().toISOString(); // Nếu không có giá trị, sử dụng ngày hiện tại
+    console.log(arrivalDateValue);
 
-    var dateValue = departureTimeInput.value.replace('Z', '');
-    flatpickr("#datetimepicker", {
+    // Khởi tạo flatpickr cho "datetimepicker"
+    var datetimepicker = flatpickr("#datetimepicker", {
         enableTime: true,
-        dateFormat: "Y-m-d\\TH:i",  // Date and time format without UTC 'Z'
-        altInput: true,               // Use alternate input for user-friendly display
-        altFormat: "F j, Y, H:i",     // User-friendly display format (e.g., "November 28, 2024, 19:00")
-        time_24hr: true,              // 24-hour format
-        defaultDate: dateValue,  // Default local time (e.g., HCM time)
-        timezone: "Asia/Ho_Chi_Minh", // Set the time zone to HCM
+        dateFormat: "Y-m-d\\TH:i", // Định dạng ngày giờ ISO
+        altInput: true,            // Hiển thị định dạng thân thiện hơn
+        altFormat: "F j, Y, H:i",  // Định dạng thân thiện hơn
+        time_24hr: true,           // Định dạng 24 giờ
+        timezone: "Asia/Ho_Chi_Minh",
+        minDate: arrivalDateValue, // Ngày tối thiểu là ngày khởi hành
     });
-});
 
-
-document.addEventListener("DOMContentLoaded", function () {
-    var departureTimeInput = document.getElementById("Departure_Time");
-
-
-    var dateValue = departureTimeInput.value.replace('Z', '');
+    // Cập nhật minDate của datetimepicker khi người dùng thay đổi Departure_Time
     flatpickr("#Departure_Time", {
         enableTime: true,
-        dateFormat: "Y-m-d\\TH:i",  // Date and time format without UTC 'Z'
-        altInput: true,               // Use alternate input for user-friendly display
-        altFormat: "F j, Y, H:i",     // User-friendly display format (e.g., "November 28, 2024, 19:00")
-        time_24hr: true,              // 24-hour format
-        defaultDate: dateValue,  // Default local time (e.g., HCM time)
-        timezone: "Asia/Ho_Chi_Minh", // Set the time zone to HCM
+        dateFormat: "Y-m-d\\TH:i",  // Định dạng ngày giờ ISO
+        altInput: true,             // Hiển thị định dạng thân thiện hơn
+        altFormat: "F j, Y, H:i",   // Định dạng thân thiện hơn
+        time_24hr: true,            // Định dạng 24 giờ
+        defaultDate: arrivalDateValue,  // Mặc định là ngày khởi hành
+        timezone: "Asia/Ho_Chi_Minh",
+        minDate: "today",          // Ngày tối thiểu là ngày hiện tại
+        onChange: function(selectedDates) {
+            // Lấy ngày khởi hành đã chọn
+            var selectedDate = selectedDates[0];
+
+            // Thêm 1 ngày vào ngày khởi hành để làm ngày tối thiểu cho datetimepicker
+            var minReturnDate = new Date(selectedDate);
+            minReturnDate.setDate(minReturnDate.getDate() + 1); // Thêm 1 ngày
+
+            // Cập nhật minDate của datetimepicker
+            datetimepicker.set("minDate", minReturnDate); // Đặt minDate của datetimepicker từ ngày đã chọn
+        }
     });
 });
-
 
 
 console.log(document.getElementById("Departure_Time").value)

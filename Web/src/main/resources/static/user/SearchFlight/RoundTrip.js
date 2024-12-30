@@ -9,7 +9,7 @@ function convertTimeToDecimal(time) {
 
 let selectedAirlines=[];
 function updateFlightVisibility(){
-    document.querySelectorAll('.flight-item').forEach(function(flightItem) {
+    document.querySelectorAll('#flight-itemArrival').forEach(function(flightItem) {
         const airlineId = flightItem.getAttribute('data-airline-id');
 
 
@@ -49,7 +49,7 @@ document.querySelectorAll('.airline-checkbox').forEach(function(checkbox) {
             });
         }
 
-      updateFlightVisibility();
+        updateFlightVisibility();
 
     });
 });
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const maxPrice = parseFloat(values[1].replace('£', '').replace(',', ''));
 
         priceRangeText.textContent =  values[0]+' - '+values[1];
-        document.querySelectorAll('#flight-item').forEach(function (flightItem) {
+        document.querySelectorAll('#flight-itemArrival').forEach(function (flightItem) {
             const flightPrice = parseFloat(flightItem.getAttribute('data-price'));
 
             if (flightPrice >= minPrice && flightPrice <= maxPrice) {
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded",function (){
         const start = parseFloat(values[0]);
         const end = parseFloat(values[1]);
         ScheduleStart.textContent="Đi "+values[0]+" - "+values[1];
-        document.querySelectorAll('#flight-item').forEach(function (flightItem) {
+        document.querySelectorAll('#flight-itemArrival').forEach(function (flightItem) {
             const flightTime = flightItem.getAttribute('data-TimeDepart');
             const flightHour = convertTimeToDecimal(flightTime);
             if (flightHour >= start && flightHour <= end) {
@@ -196,8 +196,8 @@ document.addEventListener("DOMContentLoaded",function (){
         });
     });
     Timerange.noUiSlider.on('update', function (values, handle) {
-       TimerangeText.textContent='Dưới '+values[0]+' Tiếng';
-        document.querySelectorAll('#flight-item').forEach(function (flightItem) {
+        TimerangeText.textContent='Dưới '+values[0]+' Tiếng';
+        document.querySelectorAll('#flight-itemArrival').forEach(function (flightItem) {
             const flightTime =parseInt(flightItem.getAttribute('data-duration'));
             if(flightTime<=values[0]){
                 flightItem.style.display='block'
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded",function (){
         const start = parseFloat(values[0]);
         const end = parseFloat(values[1]);
         ScheduleEndText.textContent="Đến "+values[0]+" - "+values[1];
-        document.querySelectorAll('#flight-item').forEach(function (flightItem) {
+        document.querySelectorAll('#flight-itemArrival').forEach(function (flightItem) {
             const flightTime = flightItem.getAttribute('data-timeArrival');
 
             const flightHour = convertTimeToDecimal(flightTime);
@@ -225,6 +225,16 @@ document.addEventListener("DOMContentLoaded",function (){
         });
     });
 })
+function goBack() {
+    // Kiểm tra nếu có lịch sử trang trước
+    if (document.referrer) {
+        window.history.back();
+    } else {
+        // Nếu không có trang trước, có thể điều hướng về trang mặc định hoặc trang chủ
+        window.location.href = "/SearchFlight"; // Hoặc bất kỳ URL nào bạn muốn
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     // Get all the tab buttons
     const tabButtons = document.querySelectorAll('.nav-tabs .nav-link');
@@ -330,15 +340,15 @@ document.querySelectorAll('.dropdown-item').forEach(item => {
 });
 async function SearchById( id){
     try {
-    const response=await fetch(`http://localhost:8686/api/AirPort/FindById/${encodeURIComponent(id)}`);
-   let airports=null;
-    if(response.ok){
-       airports=await response.json();
+        const response=await fetch(`http://localhost:8686/api/AirPort/FindById/${encodeURIComponent(id)}`);
+        let airports=null;
+        if(response.ok){
+            airports=await response.json();
 
-    }else {
-        console.error(`Error: ${response.status} - ${response.statusText}`);
-    }
-    return airports;
+        }else {
+            console.error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        return airports;
     }catch (error){
         console.log(error)
     }
@@ -395,46 +405,46 @@ document.getElementById('from-airport').addEventListener('input',async (event)=>
         return;
     }
     try {
-    const response=await fetch(`http://localhost:8686/api/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
-    if(response.ok){
-        const airports=await response.json();
-        airportList.innerHTML = "";
-        airports.forEach(airport => {
-            const li = document.createElement("li");
+        const response=await fetch(`http://localhost:8686/api/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
+        if(response.ok){
+            const airports=await response.json();
+            airportList.innerHTML = "";
+            airports.forEach(airport => {
+                const li = document.createElement("li");
 
-            // Set the dropdown header with the country of the airport
-            li.innerHTML = `
+                // Set the dropdown header with the country of the airport
+                li.innerHTML = `
                     <div class="dropdown-header" style="display: flex">
                         <span id="city-name">${airport.country}</span>
                         <span id="all-airports">Mọi sân bay</span>
                     </div>
                 `;
 
-            // Iterate over the airportDTOS and append each airport item
-            airport.aiportDTOS.forEach(airportdto => {
-                const airportItem = document.createElement("div");
-                airportItem.classList.add("airport-item");
-                airportItem.innerHTML = `
+                // Iterate over the airportDTOS and append each airport item
+                airport.aiportDTOS.forEach(airportdto => {
+                    const airportItem = document.createElement("div");
+                    airportItem.classList.add("airport-item");
+                    airportItem.innerHTML = `
                         <div class="airport-info">
                             <span class="airport-name"><i class="fa fa-plane icon" style="margin-right: 8px; color: #2a2a2a;"></i>Sân bay ${airportdto.name}</span>
                             <span class="airport-code">${airportdto.code}</span>
                         </div>
                     `;
 
-                // Add click event listener specifically to the 'airport-item' div
-                airportItem.addEventListener("click", () => {
-                    document.getElementById("from-airport").value = `${airportdto.name} (${airportdto.code})`;
-                    document.getElementById("to-input-id").value = airportdto.id;
-                    dropdown.style.display = "none"; // Hide dropdown after selection
+                    // Add click event listener specifically to the 'airport-item' div
+                    airportItem.addEventListener("click", () => {
+                        document.getElementById("from-airport").value = `${airportdto.name} (${airportdto.code})`;
+                        document.getElementById("to-input-id").value = airportdto.id;
+                        dropdown.style.display = "none"; // Hide dropdown after selection
+                    });
+
+                    li.appendChild(airportItem);
                 });
 
-                li.appendChild(airportItem);
+                airportList.appendChild(li);
             });
-
-            airportList.appendChild(li);
-        });
-        dropdown.style.display = "block";
-    }
+            dropdown.style.display = "block";
+        }
     }catch (error){
         console.error("Error fetching airport data:", error);
     }
@@ -533,7 +543,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
 document.addEventListener('DOMContentLoaded',()=>{
     const flightDetailsLinks = document.querySelectorAll('.flight-details-link');
     const popup = document.getElementById('flight-details-popup');
@@ -541,20 +550,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     const closeButton = document.getElementById('close-popup');
     flightDetailsLinks.forEach(link=>{
         link.addEventListener('click',(event)=>{
-            const flightId = link.getAttribute('data-idFlight');
-           fetch(`http://localhost:8686/api/Flight/detail/${flightId}`)
-               .then(response=>response.json())
-               .then(data=>{
-
-                   document.getElementById('durationString').textContent=data.durationString;
-                 document.getElementById("img-popup").src="http://localhost:8686/images/flight/"+data.imageUrl;
-                 document.getElementById('nameAirline').textContent=data.nameAirline;
-                 document.getElementById('dateArrival').textContent=data.dateArrival;
-                 document.getElementById('dateDepart').textContent=data.dateDepart;
-                 document.getElementById('TimeArrival').textContent=data.timeArrival;
-                 document.getElementById('DepartureTime').textContent=data.timeDepart;
-               })
-               .catch(error => console.error('Error fetching seat details:', error));
             event.preventDefault();
             popup.style.setProperty('display', 'block', 'important');
             popup.style.zIndex='1000';

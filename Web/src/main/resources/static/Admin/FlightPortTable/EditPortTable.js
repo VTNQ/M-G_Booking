@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
         altFormat: "F j, Y, H:i",     // User-friendly display format (e.g., "November 28, 2024, 19:00")
         time_24hr: true,              // 24-hour format
         defaultDate: dateValue,  // Default local time (e.g., HCM time)
-        timezone: "Asia/Ho_Chi_Minh", // Set the time zone to HCM
+        timezone: "Asia/Ho_Chi_Minh",
+        // Set the time zone to HCM
     });
 });
 document.addEventListener('DOMContentLoaded', function () {

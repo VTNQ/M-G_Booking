@@ -21,7 +21,7 @@ CloseBtn.addEventListener('click',function (event){
 DetailSeat.forEach((btn) => {
     btn.addEventListener('click', function (event) {
         const idFlight = this.getAttribute('data-idFlight');
-        console.log(idFlight);
+
 
         fetch(`http://localhost:8686/api/seat/${idFlight}`)
             .then(response => response.json())

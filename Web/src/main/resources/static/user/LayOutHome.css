@@ -49,18 +49,18 @@ a{
     -moz-appearance: none;
     width: 150px; /* Điều chỉnh chiều rộng input */
 }
-.date-picker-container::before {
-    content: "";
-    display: block;
-    width: 1px;
-    height: 50px;
-    background-color: #ced4da;
-    margin-left: 10px;
-    margin-right: 10px;
-    position: absolute;
-    left: 77vh;
-    top: 19vh;
-}
+/*.date-picker-container::before {*/
+/*    content: "";*/
+/*    display: block;*/
+/*    width: 1px;*/
+/*    height: 50px;*/
+/*    background-color: #ced4da;*/
+/*    margin-left: 10px;*/
+/*    margin-right: 10px;*/
+/*    position: absolute;*/
+/*    left: 77vh;*/
+/*    top: 19vh;*/
+/*}*/
 /* Thêm kiểu dáng cho nút swap */
 .swap-button {
     background-color: transparent;

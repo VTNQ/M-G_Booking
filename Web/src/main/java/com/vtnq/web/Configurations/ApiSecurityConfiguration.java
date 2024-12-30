@@ -24,7 +24,8 @@ public class ApiSecurityConfiguration {
                                 "/api/hotel/DeletePictureImage/{id}","/api/hotel/UpdateMultipleImage/{id}",
                                 "/api/AirPort/SearchAirPort","/api/ContractOwner/AcceptContract","/api/city/SearchHotelByCityOrHotel",
                                 "/api/room/UpdateMultipleImage/{id}","/api/room/DeletePictureImage/{id}","/api/type/FindTypeByHotel/{id}","/api/seat/{id}","/api/Country/All",
-                                "/api/city/FindCityByCountry/{id}","/api/AirPort/FindById/{id}","/api/account/register/user").permitAll()
+                                "/api/city/FindCityByCountry/{id}","/api/AirPort/FindById/{id}","/api/account/register/user",
+                                "/api/Flight/detail/{id}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()) // This is still supported for versions below 6.1

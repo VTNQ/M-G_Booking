@@ -44,6 +44,16 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
                                             @Param("arrivalAirport") int arrivalAirport,
                                             @Param("departureTime") LocalDate departureTime,
                                             @Param("TypeFlight") String TypeFlight);
+    @Query("select new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, G.price, c.name, f.departureTime, f.arrivalTime, f.departureTime, f.arrivalTime, f.departureAirport.name, f.airline.id, f.arrivalAirport.name) " +
+            "from Flight f " +
+            "join Airport a on a.id = f.departureAirport.id " +
+            "join Airport b on b.id = f.arrivalAirport.id " +
+            "join Airline c on c.id = f.airline.id " +
+            "join Picture d on c.id = d.airlineId " +
+            "join Seat G on f.id = G.idFlight.id " +
+            "where f.id = :id " +
+            "group by f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, G.price, c.name, f.departureAirport.name, f.airline.id, f.arrivalAirport.name")
+    ResultFlightDTO FindByFlightId(int id);
     @Query("SELECT distinct new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, " +
             "G.price, c.name, f.departureTime, f.arrivalTime, f.departureTime, f.arrivalTime, f.departureAirport.name, f.airline.id, f.arrivalAirport.name) " +
             "FROM Flight f " +
@@ -88,4 +98,19 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "JOIN Picture d on c.id=d.airlineId "+
             "WHERE f.id = :id")
     BookingListFly findFlightsByAirportsAndDepartureTime(@Param("id")int id);
-}
+    @Query("SELECT  new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id,d.imageUrl,f.arrivalAirport.city.name,f.arrivalTime,f.departureTime,e.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id,f.arrivalAirport.name) from Flight f " +
+            "join Airport a on a.id=f.departureAirport.id " +
+            "join Airport b on b.id=f.arrivalAirport.id " +
+            "join Airline c on c.id=f.airline.id " +
+            "join Picture d on d.airlineId=c.id " +
+            "join Seat e on e.idFlight.id =f.id " +
+            "where f.departureAirport.id = :arrivalAirport " +
+            "and f.arrivalAirport.id = :departureAirport " +
+            "and DATE(f.arrivalTime) = :arrivalTime " +
+            "and e.type = :TypeFlight " +
+            "group by f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, e.price, c.name, f.departureAirport.name, f.airline.id, f.arrivalAirport.name")
+    List<ResultFlightDTO>FindArrivalTimeFlights(@Param("departureAirport") int departureAirport,
+                                                @Param("arrivalAirport") int arrivalAirport,
+                                                @Param("arrivalTime")LocalDate arrivalTime,
+                                                @Param("TypeFlight") String TypeFlight);
+ }

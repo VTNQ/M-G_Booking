@@ -1,5 +1,7 @@
 package com.vtnq.web.Controllers;
 
+import com.vtnq.web.DTOs.Flight.FlightDto;
+import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
 import com.vtnq.web.DTOs.Flight.SearchFlightDTO;
 import com.vtnq.web.Service.AirlineService;
 import com.vtnq.web.Service.FlightService;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
@@ -40,21 +43,50 @@ public class HomeController {
            return null;
        }
     }
-    public String SearchHotel(ModelMap model,@ModelAttribute("Search")SearchFlightDTO search) {
+    public String SearchHotel(ModelMap model, @ModelAttribute("Search") SearchFlightDTO search) {
         try {
-            String sanitizedDepartureTime = search.getDepartureTime().replaceAll("[^\\d-]", "");
+            String selectedDateStr = search.getDepartureTime().trim();
 
-            model.put("Hotel",hotelService.SearchHotels(search.getIdCity(),search.getQuantityRoom()));
+            // Kiểm tra nếu selectedDateStr rỗng hoặc null
+            if (selectedDateStr == null || selectedDateStr.isEmpty()) {
+                throw new IllegalArgumentException("Departure time is required.");
+            }
+
+            // Xóa dấu phẩy cuối nếu có
+            if (selectedDateStr.endsWith(",")) {
+                selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
+            }
+
+            // Định dạng và parse ngày
             DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate departureDate = LocalDate.parse(sanitizedDepartureTime, formatterDepartureDate);
+            LocalDate departureDate = LocalDate.parse(selectedDateStr, formatterDepartureDate);
 
-            model.put("Flight",flightService.FindResultFlightAndHotel(search.getDepartureAirport(), search.getArrivalAirport(),departureDate,search.getTypeFlight()));
+            // Thêm dữ liệu vào model
+            model.put("Hotel", hotelService.SearchHotels(search.getIdCity(), search.getQuantityRoom()));
+            model.put("Flight", flightService.FindResultFlightAndHotel(
+                    search.getDepartureAirport(),
+                    search.getArrivalAirport(),
+                    departureDate,
+                    search.getTypeFlight()
+            )!=null?flightService.FindResultFlightAndHotel(
+                    search.getDepartureAirport(),
+                    search.getArrivalAirport(),
+                    departureDate,
+                    search.getTypeFlight()
+            ):new ResultFlightDTO());
+
             return "User/Hotel/Hotel";
-        }catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+            model.put("error", "Invalid departure time: " + e.getMessage());
             e.printStackTrace();
-            return null;
+            return "User/ErrorPage"; // Đưa người dùng tới trang lỗi
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.put("error", "An unexpected error occurred.");
+            return "User/ErrorPage"; // Đưa người dùng tới trang lỗi
         }
     }
+
     public String SearchFlight(ModelMap model, @ModelAttribute("Search")SearchFlightDTO searchFlightDTO, HttpSession session) {
 
         String selectedDateStr=searchFlightDTO.getDepartureTime().trim();
@@ -79,23 +111,8 @@ public class HomeController {
             dateMap.put("day", String.valueOf(nextDate.getDayOfMonth()));
             dateMap.put("month", String.valueOf(nextDate.getMonthValue()));
             dateMap.put("minprice",String.valueOf(minPrice));
-            if(searchFlightDTO.getArrivalTime().isEmpty()){
-                model.put("Flight"+i,flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),
-                        nextDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-            }else{
-                String departureTime = searchFlightDTO.getDepartureTime().trim();
-                if(departureTime.endsWith(",")){
-                    departureTime = departureTime.substring(0, departureTime.length() - 1);
-                }
-                String ArrivatureTime=searchFlightDTO.getArrivalTime();
-                if(ArrivatureTime.endsWith(",")){
-                    ArrivatureTime = ArrivatureTime.substring(0, ArrivatureTime.length() - 1);
-                }
-                DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate departureDate = LocalDate.parse(departureTime, formatterDepartureDate);
-                LocalDate ArrivatureTimeDate = LocalDate.parse(ArrivatureTime, formatterDepartureDate);
-                model.put("Flight"+i,flightService.SearchFlightAllDto(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,ArrivatureTimeDate,searchFlightDTO.getTypeFlight()));
-            }
+            model.put("Flight"+i,flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),
+                    nextDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
             dateList.add(dateMap);
         }
         model.put("dateList", dateList);
@@ -107,7 +124,9 @@ public class HomeController {
         DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate departureDate = LocalDate.parse(departureTime, formatterDepartureDate);
         session.setAttribute("NumberPeople",searchFlightDTO.getNumberPeopleRight());
+        session.setAttribute("searchFlightDTO",searchFlightDTO);
         model.put("Airline",airlineService.searchAirline(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight()));
+
         return "User/Flight/Flight";
     }
     @GetMapping("SearchFlight")
@@ -117,5 +136,28 @@ public class HomeController {
       }else{
           return SearchHotel(model,searchFlightDTO);
       }
+    }
+    @GetMapping("RoundTrip/{id}")
+    public String RoundTrip(@PathVariable("id") int id, ModelMap model, HttpServletRequest request,HttpSession session) {
+        try {
+            List<Integer>idFlight=new ArrayList<>();
+            idFlight.add(id);
+            session.setAttribute("idFlight",idFlight);
+            SearchFlightDTO searchFlightDTO = (SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
+            String ArrivalTime = searchFlightDTO.getArrivalTime().trim();
+            if(ArrivalTime.endsWith(",")){
+                ArrivalTime = ArrivalTime.substring(0, ArrivalTime.length() - 1);
+            }
+
+            DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate ArrivalDate = LocalDate.parse(ArrivalTime, formatterDepartureDate);
+            model.put("searchFlightDTO",searchFlightDTO);
+            model.put("flight",flightService.FindByIdFlight(id));
+            model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight()));
+            return "User/Flight/RoundTripFlight";
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

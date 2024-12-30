@@ -152,6 +152,9 @@ public class ResultFlightDTO {
         this.departureTime = departureTime;
     }
 
+    public ResultFlightDTO() {
+    }
+
     private Instant departureTime;
 
     public ResultFlightDTO(int id, String imageUrl, String nameCity, Instant arrivalTime, Instant departureTime, BigDecimal price,

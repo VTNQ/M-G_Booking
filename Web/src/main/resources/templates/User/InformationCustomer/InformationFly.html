@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{/User/layout/layout :: mainContent('Payment',~{this::#content})}">
+      th:replace="~{/User/layout/layout :: mainContent('Payment Flight',~{this::#content})}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -15,6 +15,7 @@
                 <div class="mb-5 shadow-soft"
                      style="background-color: white;border-radius: 0.25rem!important;box-shadow: 0 3px 6px 0 rgba(140, 152, 164, 0.25) !important">
                     <div class="py-3 px-4 px-xl-12 border-bottom">
+
                         <ul class="list-group flex-nowrap  list-group-horizontal list-group-borderless flex-center-between pt-1">
                             <li class="list-group-item text-center flex-shrink-0 flex-xl-shrink-1">
                                 <div class="mr-auto ml-auto border mb-2"
@@ -44,6 +45,12 @@
                                 </div>
                             </li>
                         </ul>
+                        <div class="reservation-bar">
+                            <span>Chúng tôi đang giữ giá cho quý khách...</span>
+                            <div class="icon">🕒</div>
+                            <div class="timer" id="countdown">00:01:02</div>
+                        </div>
+                        <input type="hidden" th:value="${timeout}" id="timeout">
                     </div>
                     <div class="pt-4 pb-5 px-5">
                         <h5 id="scroll-description" class="text-dark mb-4"
@@ -126,66 +133,69 @@
                             </div>
                             <input type="hidden" name="currency" value="JPY">
                             <input type="hidden"  id="amount" step="0.01" class="form-control" name="amount" placeholder="Enter amount" required>
-                            <input type="hidden" th:value="${flight.id}"  class="form-control" name="flight" placeholder="Enter amount" required>
+
 
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-xl-4">
                 <div class="shadow-soft rounded-sm" style="background-color: #ffffff">
-                    <div class="pt-5 pb-3 border-bottom" style="padding-left: 2rem;padding-right: 2rem">
-                        <a class="d-block mb-3">
-                            <img class="img-fluid " style="border-radius: 0.188rem;width: 100%"
-                                 th:src="'http://localhost:8686/images/flight/'+${flight.imageUrl}">
-                        </a>
-                        <a class="mb-1"
-                           style="color: #3b444f !important;font-weight: 500 !important;text-decoration: none;background-color: transparent" th:text="${flight.nameAirline}">
-                            Indianapolis to paris
-                        </a>
-                        <div class="mb-2" style="display: flex;align-items: center;justify-content: space-between">
-                            <div class="flex-horizontal-center" style="color: #67747c !important">Oneway flight</div>
-                            <div style="color: #77838f !important">
-                                <a style="text-decoration: underline">Edit</a>
+                    <th:block th:each="flights,index :${flight}">
+                        <div class="pt-5 pb-3 border-bottom" style="padding-left: 2rem;padding-right: 2rem">
+                            <a class="d-block mb-3">
+                                <img class="img-fluid " style="border-radius: 0.188rem;width: 100%"
+                                     th:src="'http://localhost:8686/images/flight/'+${flights.imageUrl}">
+                            </a>
+                            <a class="mb-1"
+                               style="color: #3b444f !important;font-weight: 500 !important;text-decoration: none;background-color: transparent" th:text="${flights.nameAirline}">
+                                Indianapolis to paris
+                            </a>
+                            <div class="mb-2" style="display: flex;align-items: center;justify-content: space-between">
+                                <div class="flex-horizontal-center" style="color: #67747c !important">Oneway flight</div>
+                                <div style="color: #77838f !important">
+                                    <a style="text-decoration: underline">Edit</a>
+                                </div>
+                            </div>
+                            <div class="mb-1"
+                                 style="display: flex;align-items: center;justify-content: center;flex-direction: column">
+                                <h6 class=" mb-0"
+                                    style="font-weight: 500!important;font-size: 0.875rem;color: #18181b !important" th:text="${flights.durationString}">02 hrs
+                                    45 mins</h6>
+                                <div class="my-1 mt-2 border-top"
+                                     style="width: 3.75rem;border-width: 2px !important;border-color: #297cbb !important"></div>
+                                <div style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                    Non Stop
+                                </div>
+                            </div>
+                            <div class="flex-horizontal-center justify-content-between">
+                                <div class="flex-horizontal-center">
+                                    <div class="mr-2">
+                                        <i class="fa-solid fa-plane-departure"
+                                           style="font-size: 1.875rem;color: #297cbb !important"></i>
+                                    </div>
+                                    <div class="ml-1" style="line-height: 1.2">
+                                        <h6 class="mb-0" th:text="${flights.timeDepart}"
+                                            style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important">
+                                            18:30</h6>
+                                        <span style="font-size: 0.875rem;color: #67747c !important;font-weight: 400 !important;;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi</span>
+                                    </div>
+                                </div>
+                                <div class="flex-horizontal-center">
+                                    <div class="mr-2">
+                                        <i class="fa-solid fa-plane-departure"
+                                           style="font-size: 1.875rem;color: #297cbb !important"></i>
+                                    </div>
+                                    <div class="ml-1" style="line-height: 1.2">
+                                        <h6 class="mb-0"
+                                            style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important" th:text="${flights.timeArrival}">
+                                            18:30</h6>
+                                        <span style="font-size: 0.875rem;color: #67747c !important;font-weight: 400 !important;;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="mb-1"
-                             style="display: flex;align-items: center;justify-content: center;flex-direction: column">
-                            <h6 class=" mb-0"
-                                style="font-weight: 500!important;font-size: 0.875rem;color: #18181b !important" th:text="${flight.durationString}">02 hrs
-                                45 mins</h6>
-                            <div class="my-1 mt-2 border-top"
-                                 style="width: 3.75rem;border-width: 2px !important;border-color: #297cbb !important"></div>
-                            <div style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                                Non Stop
-                            </div>
-                        </div>
-                        <div class="flex-horizontal-center justify-content-between">
-                            <div class="flex-horizontal-center">
-                                <div class="mr-2">
-                                    <i class="fa-solid fa-plane-departure"
-                                       style="font-size: 1.875rem;color: #297cbb !important"></i>
-                                </div>
-                                <div class="ml-1" style="line-height: 1.2">
-                                    <h6 class="mb-0" th:text="${flight.timeDepart}"
-                                        style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important">
-                                        18:30</h6>
-                                    <span style="font-size: 0.875rem;color: #67747c !important;font-weight: 400 !important;;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi</span>
-                                </div>
-                            </div>
-                            <div class="flex-horizontal-center">
-                                <div class="mr-2">
-                                    <i class="fa-solid fa-plane-departure"
-                                       style="font-size: 1.875rem;color: #297cbb !important"></i>
-                                </div>
-                                <div class="ml-1" style="line-height: 1.2">
-                                    <h6 class="mb-0"
-                                        style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important" th:text="${flight.timeArrival}">
-                                        18:30</h6>
-                                    <span style="font-size: 0.875rem;color: #67747c !important;font-weight: 400 !important;;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </th:block>
+
                     <div id="basicsAccordion">
                         <div class="card rounded-0 " style="border-left: 0;border-top: 0;border-right: 0">
                             <div class="card-header card-collapse border-0" style="background-color: transparent">
@@ -209,7 +219,7 @@
                     </div>
                 </div>
             </div>
-                <input type="hidden" id="flightId" th:field="${payment.flightId}">
+
                 <input type="hidden" id="bookings" name="bookings" >
 
         </div>
@@ -224,16 +234,18 @@
                     <h2>Lựa chọn chỗ ngồi</h2>
                 </div>
                 <p>Tuyệt vời, hành trình này cho quý khách lựa chọn chỗ ngồi! Nếu quý khách không lựa chọn chỗ ngồi bây giờ thì hãng hàng không có thể ngẫu nhiên xếp cho quý khách một chỗ ngồi hoặc cho phép quý khách lựa chọn từ những chỗ ngồi còn lại khi quý khách làm thủ tục.</p>
+                <th:block th:each="flights,index : ${flight}">
+                    <div class="flight-info"  style="background-color: #f5f5f5;padding: 10px;border-radius: 5px;margin-bottom: 10px;display: none" >
+                        <h3>Chuyến đi</h3>
+                        <div class="route">
+                            <img alt="Vietjet Logo"> <span th:text="${flights.departureAirport}+'  -  '+${flights.arrivalAirport}">HAN - NRT</span>
+                        </div>
+                        <div class="passengers" th:id="'passagers'+${flights.id}">
+                            4B
+                        </div>
+                    </div>
+                </th:block>
 
-                <div class="flight-info"  style="background-color: #f5f5f5;padding: 10px;border-radius: 5px;margin-bottom: 10px;display: none" >
-                    <h3>Chuyến đi</h3>
-                    <div class="route">
-                        <img th:src="'http://localhost:8686/images/flight/'+${flight.imageUrl}" alt="Vietjet Logo"> <span th:text="${flight.cityDeparture}+' - '+${flight.cityArrival}">HAN - NRT</span>
-                    </div>
-                    <div class="passengers">
-                        4B
-                    </div>
-                </div>
 
                 <p class="note" style="display: none">Việc xếp chỗ ngồi có thể thay đổi vì lý do an toàn hoặc vận hành</p>
 
@@ -253,135 +265,159 @@
         <div class="popup-content" style="width: 49%;">
             <span class="close-button">&times;</span>
             <h2>Lựa chọn chỗ ngồi</h2>
-            <div class="flight-route">HAN - NRT</div>
 
-            <div class="seat-legend">
-                <div class="legend-item">
-                    <div class="seat-icon available"></div> First Class
-                </div>
-                <div class="legend-item">
-                    <div class="seat-icon legroom"></div> Business Class
-                </div>
-                <div class="legend-item">
-                    <div class="seat-icon occupied"></div> 442.523 ₫
-                </div>
-                <div class="legend-item">
-                    <div class="seat-icon isSelected"><i class="fas fa-user"></i></div>
-                     Được chọn
-                </div>
-                <div class="legend-item">
-                    <i class="fas fa-times"></i> Không chọn được
-                </div>
-                <div class="legend-item">
-                    <i class="fas fa-person-booth"></i> Thêm chỗ duỗi chân
-                </div>
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <th:block th:each="flighttabs, index : ${flightTab}">
+                    <button
+                            class="tab-link"
+                            th:classappend="${index.index == 0} ? 'active' : ''"
+                            th:onclick="'openTab(event, ' + ${index.index} + ')'"
+                            th:text="${flighttabs.departureAirport.name} + ' -> ' + ${flighttabs.arrivalAirport.name}">
+                    </button>
+                </th:block>
+
             </div>
-            <div class="container">
-                <div class="row" style="justify-content: center">
 
-                       <div class="" style="display: flex;flex-direction: column;width: 32%;height: 300px; overflow-y: auto;">
-                           <th:block th:each="num, index : ${#numbers.sequence(1, number)}">
-                               <div class="passenger-info " style="height: 11vh;width: 65%">
-                                   <div class="passenger-block">
-                                       <div class="passenger-type">
-                                           <div class="selected-seat"> <span th:text="${num}">1A</span></div>
-                                           Người lớn <span class="span-index" th:text="${index.index+1}">1</span>
-                                       </div>
-                                       <div class="seat-info">
-                                           <span class="seat-price">442.523 ₫</span>
-                                       </div>
-                                   </div>
-                               </div>
-                           </th:block>
+            <!-- Tab Content -->
+            <th:block th:each="flighttabs, index : ${flightTab}">
+                <div th:id="${index.index}" class="tab-content" th:style="${index.index == 0} ? 'display: block;' : 'display: none;'">
+                    <!-- Nội dung Chuyến đi -->
+                    <div class="flight-route">HAN - NRT</div>
 
-
-                       </div>
-
-
-
-                    <div class="seat-container col-6" style="margin-left: 7vh">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                            <!-- Passenger Information -->
-
-                            <!-- Seat Grid -->
-                            <div style="text-align: center; max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 8px;"
-                                 class="seat-grid">
-                                <!-- Seat Header -->
-                                <div style="display: flex; justify-content: center; margin-bottom: 5px; font-weight: bold;">
-                                    <div style="width: 30px; margin: 5px;">A</div>
-                                    <div style="width: 30px; margin: 5px;">B</div>
-                                    <div style="width: 30px; margin: 5px;">C</div>
-                                    <div style="width: 30px;margin: 5px;margin-left: 43px;">D</div>
-                                    <div style="width: 30px; margin: 5px;">E</div>
-                                    <div style="width: 30px; margin: 5px;">F</div>
-                                </div>
-
-                                <!-- Seat Rows -->
-                                <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 5px;">
-                                    <!-- Row 1 -->
-                                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px; gap: 10px;">
-                                        <!-- Left seats -->
-                                        <div style="display: flex; gap: 5px;">
-                                            <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
-                                            <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
-                                            <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
-                                        </div>
-
-                                        <!-- Row number -->
-                                        <div style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                            1
-                                        </div>
-
-                                        <!-- Right seats -->
-                                        <div style="display: flex; gap: 5px;">
-                                            <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
-                                            <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
-                                            <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Row 2 -->
-                                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px; gap: 10px;">
-                                        <!-- Left seats -->
-                                        <div style="display: flex; gap: 5px;">
-                                            <div style="width: 30px; height: 30px; background-color: #a7d2ff; border-radius: 4px;"></div>
-                                            <div style="width: 30px; height: 30px; background-color: #a7d2ff; border-radius: 4px;"></div>
-                                            <div style="width: 30px; height: 30px; background-color: #7199ff; border-radius: 4px;"></div>
-                                        </div>
-
-                                        <!-- Row number -->
-                                        <div style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                            2
-                                        </div>
-
-                                        <!-- Right seats -->
-                                        <div style="display: flex; gap: 5px;">
-                                            <div style="width: 30px; height: 30px; background-color: #7199ff; border-radius: 4px;"></div>
-                                            <div style="width: 30px; height: 30px; background-color: #2c4aff; border-radius: 4px;"></div>
-                                            <div style="width: 30px; height: 30px; background-color: #2c4aff; border-radius: 4px;"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Add more rows as needed -->
-                                </div>
-
-                            </div>
+                    <div class="seat-legend">
+                        <!-- Legend Items -->
+                        <div class="legend-item">
+                            <div class="seat-icon available"></div> First Class
+                        </div>
+                        <div class="legend-item">
+                            <div class="seat-icon legroom"></div> Business Class
+                        </div>
+                        <div class="legend-item">
+                            <div class="seat-icon occupied"></div> 442.523 ₫
+                        </div>
+                        <div class="legend-item">
+                            <div class="seat-icon isSelected"><i class="fas fa-user"></i></div>
+                            Được chọn
+                        </div>
+                        <div class="legend-item">
+                            <i class="fas fa-times"></i> Không chọn được
+                        </div>
+                        <div class="legend-item">
+                            <i class="fas fa-person-booth"></i> Thêm chỗ duỗi chân
                         </div>
                     </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="" style="display: flex;flex-direction: column;width: 32%;height: 300px; overflow-y: auto;">
+                                <th:block th:each="num, index : ${#numbers.sequence(1, number)}">
+                                    <div th:class="'passenger-info tab-passage'+${flighttabs.id}"  style="height: 11vh;width: 65%">
+                                        <div class="passenger-block">
+                                            <div class="passenger-type">
+                                                <div th:class="'selected-seat seat-tabs'+${flighttabs.id}"> <span th:text="${num}">1A</span></div>
+                                                Người lớn <span class="span-index" th:text="${index.index+1}">1</span>
+                                            </div>
+                                            <div class="seat-info">
+                                                <span class="seat-price">442.523 ₫</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th:block>
 
-                </div>
-                <div class="footer-popup" style="display: flex;justify-content: space-between">
-                    <div class="total-price">
-                        Tổng số phụ: <span id="totalPrice">442.523 ₫</span>
+
+                            </div>
+
+                                <div class="seat-container col-6" style="margin-left: 7vh">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                        <!-- Passenger Information -->
+
+                                        <!-- Seat Grid -->
+                                        <div style="text-align: center; max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 8px;"
+                                             th:class="'seat-grid'+${flighttabs.id}">
+                                            <!-- Seat Header -->
+                                            <div style="display: flex; justify-content: center; margin-bottom: 5px; font-weight: bold;">
+                                                <div style="width: 30px; margin: 5px;">A</div>
+                                                <div style="width: 30px; margin: 5px;">B</div>
+                                                <div style="width: 30px; margin: 5px;">C</div>
+                                                <div style="width: 30px;margin: 5px;margin-left: 43px;">D</div>
+                                                <div style="width: 30px; margin: 5px;">E</div>
+                                                <div style="width: 30px; margin: 5px;">F</div>
+                                            </div>
+
+                                            <!-- Seat Rows -->
+                                            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 5px;">
+                                                <!-- Row 1 -->
+                                                <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px; gap: 10px;">
+                                                    <!-- Left seats -->
+                                                    <div style="display: flex; gap: 5px;">
+                                                        <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
+                                                        <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
+                                                        <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
+                                                    </div>
+
+                                                    <!-- Row number -->
+                                                    <div style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                                        1
+                                                    </div>
+
+                                                    <!-- Right seats -->
+                                                    <div style="display: flex; gap: 5px;">
+                                                        <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
+                                                        <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
+                                                        <div style="width: 30px; height: 30px; background-color: #dcdcdc; border-radius: 4px;"></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Row 2 -->
+                                                <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px; gap: 10px;">
+                                                    <!-- Left seats -->
+                                                    <div style="display: flex; gap: 5px;">
+                                                        <div style="width: 30px; height: 30px; background-color: #a7d2ff; border-radius: 4px;"></div>
+                                                        <div style="width: 30px; height: 30px; background-color: #a7d2ff; border-radius: 4px;"></div>
+                                                        <div style="width: 30px; height: 30px; background-color: #7199ff; border-radius: 4px;"></div>
+                                                    </div>
+
+                                                    <!-- Row number -->
+                                                    <div style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                                        2
+                                                    </div>
+
+                                                    <!-- Right seats -->
+                                                    <div style="display: flex; gap: 5px;">
+                                                        <div style="width: 30px; height: 30px; background-color: #7199ff; border-radius: 4px;"></div>
+                                                        <div style="width: 30px; height: 30px; background-color: #2c4aff; border-radius: 4px;"></div>
+                                                        <div style="width: 30px; height: 30px; background-color: #2c4aff; border-radius: 4px;"></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Add more rows as needed -->
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+                    <!-- Seat Grid for Chuyến đi -->
 
-                    <button class="confirm-button">Xong</button>
+
+
+
+            </th:block>
+            <input type="hidden" th:value="${idFlight}" id="idFlight">
+
+            <div class="footer-popup" style="display: flex; justify-content: space-between">
+                <div class="total-price">
+                    Tổng số phụ: <span id="totalPrice">442.523 ₫</span>
                 </div>
 
+                <button class="confirm-button">Xong</button>
             </div>
-
         </div>
     </div>
+
 
     <script th:fragment="customScripts" th:src="@{/user/Payment/Payment.js}"></script>
 </main>

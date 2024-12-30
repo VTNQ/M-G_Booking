@@ -93,6 +93,17 @@
                             <div class="card-body">
                                 <form th:action="@{/SearchFlight}" method="get">
                                     <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
+                                        <div class="col-sm-1 mr-2">
+                                            <button type="button" style="min-height: 36px;font-family: inherit;color: #2067da;padding-bottom: 4px;padding-top: 4px;padding-left: 16px;padding-right: 16px;fill: #2067da;background-color: #e5efff;border-color: #2067da;border-style: solid;border-radius: 999px;
+                                            border-width: 2px;white-space: nowrap" id="OneWay"  value="false">One way</button>
+                                            <input type="hidden" th:field="${Search.roundTrip}" id="TripTypeValue">
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="button" style="min-height: 36px;font-family: inherit;color: #24262c;padding-bottom: 4px;padding-top: 4px;padding-left: 16px;padding-right: 16px;fill: #2067da;background-color: #fff;border-color: rgba(94,107,130,.32);border-style: solid;border-radius: 999px;
+                                            border-width: 2px;white-space: nowrap" id="RoundTrip" th:field="${Search.roundTrip}" value="True">Round-trip</button>
+                                        </div>
+                                    </div>
+                                    <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
                                         <div class="col-sm-5 ">
                                             <span class="d-block text-gray mb-0"
                                                   style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Destination or Hotel Name</span>
@@ -133,23 +144,30 @@
 
                                         </div>
                                         <div class="col-sm-5">
-                                            <span class="d-block text-gray mb-0"
-                                                  style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Check In - Out</span>
-                                            <div class="text-left d-block"
-                                                 style="border-width: 2px;border-color: #eaeaea !important;border-bottom: 1px solid #e7eaf3 !important;border: none">
-                                                <div id="datepickerWrapperFromOne"
-                                                     class="u-datepicker input-group relative">
-                                                    <div class="input-group-prepend">
-                                                <span class="d-flex align-items-center mr-2">
-                                                    <i class="fa-solid fa-calendar"
-                                                       style="color: #297cbb !important;font-weight: 500;font-style: normal"></i>
-                                                </span>
+                                            <div class="search-container">
+                                                <div class="date-picker-container">
+                                                    <div>
+                                                        <label for="datePickerInputFrom" class="label">Departure date</label>
+                                                        <div class="date-picker">
+                                                            <i class="fa-solid fa-calendar"></i>
+                                                            <input type="date" id="departtime"
+                                                                   th:field="${Search.departureTime}"
+                                                                   class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
+                                                                   style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 156px;height: 20px"
+                                                            />
+                                                        </div>
                                                     </div>
-                                                    <input type="date" id="datePickerInput"
-                                                           th:field="${Search.departureTime}"
-                                                           class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
-                                                           style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 217.5px;height: 54px"
-                                                    />
+                                                    <div id="ArrivalDate" style="display: none">
+                                                        <label for="datePickerInputTo" class="label">Return date</label>
+                                                        <div class="date-picker">
+                                                            <i class="fa-solid fa-calendar"></i>
+                                                            <input type="date" id="arrivalTime"
+                                                                   th:field="${Search.arrivalTime}"
+                                                                   class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
+                                                                   style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 156px;height: 20px"
+                                                            />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -158,7 +176,7 @@
 
                                     </div>
                                     <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
-                                        <div class="col-sm-5 ">
+                                        <div class="col-sm-5 " id="AtHotel" style="display:none;">
                                             <span class="text-left d-block"
                                                   style="color: #67747c !important;font-weight: 400;font-size: 1.2rem;text-align: left;margin-left: 1vh">At</span>
                                             <div class="search-container">
@@ -182,7 +200,7 @@
                                             </div>
 
                                         </div>
-                                        <div class="col-sm-5">
+                                        <div class="col-sm-5" id="TimeHotel" style="display: none">
   <span class="d-block text-gray mb-2"
         style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Destination or Hotel Name</span>
                                             <div class="search-container">
@@ -207,7 +225,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-5">
+                                        <div class="col-sm-5" id="RoomNumber" style="display:none;">
   <span class="d-block text-gray mb-2"
         style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Room Number</span>
                                             <div class="dropdown-container">

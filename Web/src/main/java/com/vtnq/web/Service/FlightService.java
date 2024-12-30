@@ -24,4 +24,6 @@ public interface FlightService  {
     public boolean CreateSeat(SeatDTO seatDTO);
     public Flight getFlight(int id);
     public BookingListFly getResultPaymentFlight(int id);
+    public ResultFlightDTO FindByIdFlight(int id);
+    public List<ResultFlightDTO>FindArrivalTime(int departureAirport,int arrivalAirport,LocalDate arrivalTime,String TypeFlight);
  }

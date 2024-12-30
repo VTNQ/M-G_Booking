@@ -219,5 +219,25 @@ public class FlightServiceImplement implements FlightService{
         }
     }
 
+    @Override
+    public ResultFlightDTO FindByIdFlight(int id) {
+        try {
+            return flightRepository.FindByFlightId(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<ResultFlightDTO> FindArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight) {
+        try {
+        return flightRepository.FindArrivalTimeFlights(departureAirport, arrivalAirport, arrivalTime, TypeFlight);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
 
 }

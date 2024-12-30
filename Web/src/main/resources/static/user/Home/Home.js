@@ -195,33 +195,112 @@ document.addEventListener("click", (event) => {
 
 // Close dropdown if clicked outside
 
-function initFlatpickr() {
-    flatpickr("#datePickerInput", {
+function initFlatpickr(selector, options) {
+    // Khởi tạo flatpickr với selector và các tùy chọn
+    flatpickr(selector, options);
+}
+
+function initDepartTime() {
+    initFlatpickr("#departtime", {
         mode: "range", // Enable date range selection
         dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
-        defaultDate: [new Date()], // Set default dates in LocalDate format
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
         onReady: function (selectedDates, dateStr, instance) {
             if (selectedDates.length) {
-                // Display only the first date in the range
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date
             }
         },
-        onChange: function (selectedDates, dateStr, instance) {
+    });
+}
+
+function initArrivalTime() {
+    const departTimeInput = document.getElementById("departtime");
+    let departDateValue = departTimeInput.value;
+
+    // Nếu departtime chưa được chọn, sử dụng ngày mai
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    // Nếu departtime đã được chọn, tính minDate từ giá trị này
+    if (departDateValue) {
+        const departDate = new Date(departDateValue);
+        departDate.setDate(departDate.getDate() + 1); // Phải lớn hơn departtime 1 ngày
+        departDateValue = departDate.toISOString().split('T')[0];
+    } else {
+        departDateValue = tomorrow.toISOString().split('T')[0];
+    }
+
+    initFlatpickr("#arrivalTime", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
+        onReady: function (selectedDates, dateStr, instance) {
             if (selectedDates.length) {
-                // Update the input value to show only the first selected date
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
-                instance.element.value = firstDate;
+                instance.element.value = firstDate; // Set the input value to the first date
             }
-        }
+        },
     });
 }
 
 
-document.getElementById("datePickerInput").addEventListener("focus", function () {
-    // Initialize flatpickr only if not already initialized
-    if (!this.classList.contains("flatpickr-input-active")) {
-        initFlatpickr();
-        this.classList.add("flatpickr-input-active");
+// Thêm sự kiện chỉ khởi tạo Flatpickr một lần khi focus vào input
+document.getElementById("departtime").addEventListener("focus", function () {
+    if (!this.classList.contains("flatpickr-initialized")) {
+        initDepartTime();
+        this.classList.add("flatpickr-initialized");
     }
 });
+
+document.getElementById("arrivalTime").addEventListener("focus", function () {
+    if (!this.classList.contains("flatpickr-initialized")) {
+        initArrivalTime();
+        this.classList.add("flatpickr-initialized");
+    }
+});
+
+document.getElementById('OneWay').addEventListener('click',function (){
+    const OneWay=document.getElementById('OneWay');
+    const RoundTrip=document.getElementById('RoundTrip');
+    OneWay.style.color='#2067da';
+    OneWay.style.backgroundColor='#e5efff';
+    OneWay.style.borderColor='#2067da';
+    RoundTrip.style.color='#24262c';
+    RoundTrip.style.backgroundColor='#fff';
+    RoundTrip.style.borderColor='rgba(94,107,130,.32)';
+    document.getElementById('ArrivalDate').style.display='none';
+    document.getElementById('TripTypeValue').value=false;
+
+})
+document.getElementById('RoundTrip').addEventListener('click',function (){
+
+    const RoundTrip=document.getElementById('RoundTrip');
+    const OneWay=document.getElementById('OneWay');
+    RoundTrip.style.color='#2067da';
+    RoundTrip.style.backgroundColor='#e5efff';
+    RoundTrip.style.borderColor='#2067da';
+    OneWay.style.color='#24262c';
+    OneWay.style.backgroundColor='#fff';
+    OneWay.style.borderColor='rgba(94,107,130,.32)';
+    document.getElementById('ArrivalDate').style.display='block';
+    document.getElementById('TripTypeValue').value=true;
+
+})
+document.getElementById('flexSwitchCheckDefault').addEventListener('change',function (){
+const AtHotel=document.getElementById('AtHotel');
+const TimeHotel=document.getElementById('TimeHotel');
+const RoomNumber=document.getElementById('RoomNumber');
+if(this.checked){
+    AtHotel.style.display='block';
+    TimeHotel.style.display='block';
+    RoomNumber.style.display='block';
+}else {
+    AtHotel.style.display='none';
+    TimeHotel.style.display='none';
+    RoomNumber.style.display='none'
+}
+})
