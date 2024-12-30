@@ -26,11 +26,6 @@ public class BookingFlight {
     @Column(name = "total_price", nullable = false, precision = 10)
     private BigDecimal totalPrice;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "flight_id", nullable = false)
-    private Flight flight;
-
     public Integer getId() {
         return id;
     }
@@ -61,14 +56,6 @@ public class BookingFlight {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public Flight getFlight() {
-        return flight;
-    }
-
-    public void setFlight(Flight flight) {
-        this.flight = flight;
     }
 
 }

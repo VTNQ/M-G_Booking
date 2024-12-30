@@ -4,6 +4,15 @@ import java.math.BigDecimal;
 
 public class BookingFlightDetail {
     private int id;
+    private int flightId;
+
+    public int getFlightId() {
+        return flightId;
+    }
+
+    public void setFlightId(int flightId) {
+        this.flightId = flightId;
+    }
 
     public int getId() {
         return id;

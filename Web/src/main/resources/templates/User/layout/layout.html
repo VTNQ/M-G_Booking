@@ -11,10 +11,12 @@
     <link th:href="@{/user/layout.css}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
-    <link rel="stylesheet" th:if="${title=='SearchFlight'}"  href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css"/>
-    <script th:if="${title=='SearchFlight'}"  src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
+    <link rel="stylesheet"    th:if="${title == 'SearchFlight' or title == 'Round Trip'}"   href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css"/>
+    <script th:if="${title == 'SearchFlight' or title == 'Round Trip'}"   src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
     <link rel="stylesheet" th:if="${cssPath != null}" th:href="${cssPath}">
+    <link rel="stylesheet" th:if="${title}=='Payment Flight'" th:href="@{/user/Payment/Payment.css}">
     <link rel="stylesheet" th:if="${title=='ChangeOwner'}" th:href="@{/user/ChangeProfile/Change.css}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Toastr JS -->
@@ -406,7 +408,9 @@
 <div  th:if="${title=='Forget Password'}" th:insert="~{'/User/Forgot/ForgotPassword' :: customScripts}"></div>
 <div th:if="${title=='Profile'}" th:insert="~{'/User/Profile/Profile':: customScripts}"></div>
 <div th:if="${title=='Hotel'}" th:insert="~{'/User/Hotel/Hotel':: customScripts}"></div>
-<div th:if="${title=='Payment'}" th:insert="~{'/User/InformationCustomer/InformationFly.html':: customScripts}"></div>
+<div th:if="${title=='Payment'}" th:insert="~{'/User/InformationCustomer/InformationFly':: customScripts}"></div>
+<div th:if="${title=='Round Trip'}" th:insert="~{'/User/Flight/RoundTripFlight':: customScripts}"></div>
+
 
 </body>
 </html>

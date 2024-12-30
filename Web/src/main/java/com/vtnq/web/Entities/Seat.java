@@ -19,8 +19,8 @@ public class Seat {
         this.price = price;
     }
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -40,6 +40,9 @@ public class Seat {
 
     @Column(name = "price", precision = 10)
     private BigDecimal price;
+
+    @Column(name = "status")
+    private Integer status;
 
     public Integer getId() {
         return id;
@@ -79,6 +82,14 @@ public class Seat {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
 }
