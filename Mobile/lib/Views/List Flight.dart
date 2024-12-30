@@ -70,7 +70,7 @@ class ListFlight extends State<FlightPage>{
                             subtitle: Text(snapshot.data![index].from!),
                             trailing: Text(snapshot.data![index].price.toString()),
                           ),
-                        )
+                        );
                       },
                     );
                   }else if(snapshot.hasError){
