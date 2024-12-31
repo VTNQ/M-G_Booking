@@ -214,6 +214,51 @@ function initDepartTime() {
         },
     });
 }
+function initCheckInTime() {
+    initFlatpickr("#datePickerInputFrom", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
+        onReady: function (selectedDates, dateStr, instance) {
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
+function initCheckOutTime() {
+    const departTimeInput = document.getElementById("datePickerInputFrom");
+    let departDateValue = departTimeInput.value;
+
+    // Nếu departtime chưa được chọn, sử dụng ngày mai
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    // Nếu departtime đã được chọn, tính minDate từ giá trị này
+    if (departDateValue) {
+        const departDate = new Date(departDateValue);
+        departDate.setDate(departDate.getDate() + 1); // Phải lớn hơn departtime 1 ngày
+        departDateValue = departDate.toISOString().split('T')[0];
+    } else {
+        departDateValue = tomorrow.toISOString().split('T')[0];
+    }
+
+    initFlatpickr("#datePickerInputTo", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
+        onReady: function (selectedDates, dateStr, instance) {
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
 
 function initArrivalTime() {
     const departTimeInput = document.getElementById("departtime");
@@ -247,7 +292,18 @@ function initArrivalTime() {
     });
 }
 
-
+document.getElementById('datePickerInputFrom').addEventListener('focus',function (){
+    if (!this.classList.contains("flatpickr-initialized")) {
+        initCheckInTime();
+        this.classList.add("flatpickr-initialized");
+    }
+});
+document.getElementById('datePickerInputTo').addEventListener('focus',function (){
+    if (!this.classList.contains("flatpickr-initialized")) {
+        initCheckOutTime();
+        this.classList.add("flatpickr-initialized");
+    }
+})
 // Thêm sự kiện chỉ khởi tạo Flatpickr một lần khi focus vào input
 document.getElementById("departtime").addEventListener("focus", function () {
     if (!this.classList.contains("flatpickr-initialized")) {

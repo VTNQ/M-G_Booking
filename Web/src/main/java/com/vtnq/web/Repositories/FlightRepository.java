@@ -106,7 +106,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "join Seat e on e.idFlight.id =f.id " +
             "where f.departureAirport.id = :arrivalAirport " +
             "and f.arrivalAirport.id = :departureAirport " +
-            "and DATE(f.arrivalTime) = :arrivalTime " +
+            "and DATE(f.departureTime) = :arrivalTime " +
             "and e.type = :TypeFlight " +
             "group by f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, e.price, c.name, f.departureAirport.name, f.airline.id, f.arrivalAirport.name")
     List<ResultFlightDTO>FindArrivalTimeFlights(@Param("departureAirport") int departureAirport,

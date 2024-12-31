@@ -4,9 +4,27 @@ public class SearchFlightDTO {
     private int departureAirport;
     private int arrivalAirport;
     private String departureTime;
+
+    public String getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(String checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+    public String getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(String checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
     private String TypeFlight;
     private boolean selectedHotel;
-
+    private String checkInTime;
+    private String checkOutTime;
     public boolean isRoundTrip() {
         return IsRoundTrip;
     }

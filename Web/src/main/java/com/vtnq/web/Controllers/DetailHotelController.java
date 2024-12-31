@@ -1,5 +1,6 @@
 package com.vtnq.web.Controllers;
 
+import com.vtnq.web.DTOs.Flight.SearchFlightDTO;
 import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Entities.Hotel;
 import com.vtnq.web.Entities.Rating;
@@ -33,6 +34,7 @@ public class DetailHotelController {
     public String DetailController(ModelMap modelMap, @PathVariable int id, HttpServletRequest request) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+            SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("HotelSearch");
             modelMap.put("Hotel",hotelService.FindDetailHotel(id));
             modelMap.put("Image",hotelService.FindImageInDetailHotel(id));
             modelMap.put("Amenities",amenitiesService.FindAmenitiesByHotel(id));
@@ -45,6 +47,7 @@ public class DetailHotelController {
             if(currentAccount!=null){
                 rating.setUserId(currentAccount.getId());
             }
+            modelMap.put("search",searchFlightDTO);
 
             modelMap.put("Rating",rating);
             return "User/DetailHotel/DetailHotel";
