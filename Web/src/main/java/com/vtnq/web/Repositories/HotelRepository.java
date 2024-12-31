@@ -1,5 +1,6 @@
 package com.vtnq.web.Repositories;
 
+import com.vtnq.web.DTOs.Booking.BookingHotel;
 import com.vtnq.web.DTOs.Hotel.HotelListDto;
 import com.vtnq.web.DTOs.Hotel.HotelSearchDTO;
 import com.vtnq.web.DTOs.Hotel.HotelUpdateDTO;
@@ -31,4 +32,11 @@ HotelUpdateDTO findHotelById(int id);
     List<HotelSearchDTO> SearchHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom);
     @Query("select new com.vtnq.web.DTOs.Hotel.ShowDetailHotel(a.id,a.name,a.address,b.name,a.decription,b.country.name,c.price) from Hotel a join City b on a.cityId=b.id join Room c on a.id=c.hotel.id  where a.id = :id order by c.price desc")
 ShowDetailHotel showDetailHotel(@Param("id") int id);
+    @Query("select new com.vtnq.web.DTOs.Booking.BookingHotel(c.id,a.name,b.name,c.type.name,d.imageUrl,c.price) " +
+            "from Hotel a " +
+            "join City b on a.cityId=b.id " +
+            "join Room c on a.id=c.hotel.id " +
+            "join Picture d on d.hotelId=a.id " +
+            "where c.id = :id")
+    BookingHotel FindBookingHotel(@Param("id")int id);
 }

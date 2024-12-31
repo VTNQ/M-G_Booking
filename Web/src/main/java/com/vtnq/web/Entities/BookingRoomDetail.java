@@ -10,15 +10,10 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "booking_room_detail")
 public class BookingRoomDetail {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -34,6 +29,11 @@ public class BookingRoomDetail {
     private LocalDate checkInDate;
 
     @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
+
+    @NotNull
     @Column(name = "check_out_date", nullable = false)
     private LocalDate checkOutDate;
 
@@ -47,14 +47,6 @@ public class BookingRoomDetail {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
     }
 
     public BookingRoom getBookingRoom() {
@@ -79,6 +71,14 @@ public class BookingRoomDetail {
 
     public void setCheckInDate(LocalDate checkInDate) {
         this.checkInDate = checkInDate;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public LocalDate getCheckOutDate() {

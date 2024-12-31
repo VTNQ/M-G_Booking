@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "booking_room")
 public class BookingRoom {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 

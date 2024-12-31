@@ -606,7 +606,9 @@
                                                                         £4,177
                                                                     </span>
                                                         </div>
-                                                        <a th:href="'/InformationFly/'+${flightarrivals.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
+                                                        <a th:if="${searchFlightDTO.selectedHotel==false}" th:href="'/InformationFly/'+${flightarrivals.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
+                                                           style="min-height: 3.125rem">Book Now</a>
+                                                        <a th:if="${searchFlightDTO.selectedHotel==true}" th:href="'/SearchHotel/'+${flightarrivals.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
                                                            style="min-height: 3.125rem">Book Now</a>
                                                         <a class="flight-details-link mt-1"  style="font-size: 1rem;color: #67747c !important;display: block;text-decoration: none;background-color: transparent;font-family: 'Rubik', Helvetica, Arial, sans-serif">
                                                             Flight Details
