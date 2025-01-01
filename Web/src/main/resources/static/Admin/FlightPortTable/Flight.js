@@ -119,10 +119,15 @@ function createSeatDiv(seat) {
     seatDiv.style.width = '50px';
     seatDiv.style.height = '50px';
     seatDiv.style.borderRadius = '4px';
-    seatDiv.style.backgroundColor =
-        seat.type === 'First Class' ? '#a7d2ff' :
-            seat.type === 'Business Class' ? '#7199ff' :
-                seat.type === 'Economy Class' ? '#2c4aff' : '#dcdcdc';
+    if(seat.status==1){
+        seatDiv.style.backgroundColor='#2ecc71'
+    }else{
+        seatDiv.style.backgroundColor =
+            seat.type === 'First Class' ? '#a7d2ff' :
+                seat.type === 'Business Class' ? '#7199ff' :
+                    seat.type === 'Economy Class' ? '#2c4aff' : '#dcdcdc';
+    }
+
     seatDiv.title = `Seat ID: ${seat.id}`;
     seatDiv.dataset.seatId = seat.id;
     return seatDiv;

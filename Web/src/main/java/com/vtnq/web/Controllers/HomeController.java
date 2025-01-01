@@ -50,7 +50,15 @@ public class HomeController {
            SearchFlightDTO resultFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
             List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
             if(idFlight!=null){
+                boolean existsFlightTab=idFlight.stream().anyMatch(flight->flight==id);
+                if(!existsFlightTab){
+                    idFlight.add(id);
+                }
+
+            }else{
+                idFlight=new ArrayList<>();
                 idFlight.add(id);
+                session.setAttribute("idFlight",idFlight);
             }
             String selectedDateStr = resultFlightDTO.getDepartureTime().trim();
             // Kiểm tra nếu selectedDateStr rỗng hoặc null
@@ -101,10 +109,7 @@ public class HomeController {
             selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
         }
         searchFlightDTO.setDepartureTime(selectedDateStr);
-        if(!searchFlightDTO.getArrivalTime().isEmpty()){
-            searchFlightDTO.setArrivalTime(searchFlightDTO.getArrivalTime().substring(0,searchFlightDTO.getArrivalTime().length()-1));
 
-        }
         model.put("Hotel", hotelService.SearchHotels(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
         DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
@@ -143,11 +148,7 @@ public class HomeController {
         if (selectedDateStr.endsWith(",")) {
             selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
         }
-        searchFlightDTO.setDepartureTime(selectedDateStr);
-        if(!searchFlightDTO.getArrivalTime().isEmpty()){
-            searchFlightDTO.setArrivalTime(searchFlightDTO.getArrivalTime().substring(0,searchFlightDTO.getArrivalTime().length()-1));
 
-        }
         DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
         List<Map<String, String>> dateList = new ArrayList<>();

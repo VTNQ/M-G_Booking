@@ -155,19 +155,19 @@ public class FlightServiceImplement implements FlightService{
             ExecutorService executor = Executors.newFixedThreadPool(3); // Sử dụng 3 threads
 
             CompletableFuture<List<Seat>> firstClassFuture = CompletableFuture.supplyAsync(() -> {
-                return createSeatsForClass(1, totalFirstClassSeats, "First Class", seatDTO.getIdFlight(), seatDTO.getPriceClassSeat());
+                return createSeatsForClass(1, totalFirstClassSeats, "First Class", seatDTO.getIdFlight(), seatDTO.getPriceClassSeat(),0);
             }, executor);
 
             CompletableFuture<List<Seat>> businessClassFuture = CompletableFuture.supplyAsync(() -> {
                 int startSeat = totalFirstClassSeats + 1;
                 int endSeat = startSeat + totalBusinessClassSeats - 1;
-                return createSeatsForClass(startSeat, endSeat, "Business Class", seatDTO.getIdFlight(), seatDTO.getPriceBusinessClassSeat());
+                return createSeatsForClass(startSeat, endSeat, "Business Class", seatDTO.getIdFlight(), seatDTO.getPriceBusinessClassSeat(),0);
             }, executor);
 
             CompletableFuture<List<Seat>> economyClassFuture = CompletableFuture.supplyAsync(() -> {
                 int startSeat = totalFirstClassSeats + totalBusinessClassSeats + 1;
                 int endSeat = startSeat + totalEconomyClassSeats - 1;
-                return createSeatsForClass(startSeat, endSeat, "Economy Class", seatDTO.getIdFlight(), seatDTO.getPriceEconomyClassSeat());
+                return createSeatsForClass(startSeat, endSeat, "Economy Class", seatDTO.getIdFlight(), seatDTO.getPriceEconomyClassSeat(),0);
             }, executor);
 
             CompletableFuture.allOf(firstClassFuture, businessClassFuture, economyClassFuture).join();
@@ -185,7 +185,7 @@ public class FlightServiceImplement implements FlightService{
         }
     }
 
-    private List<Seat> createSeatsForClass(int startSeatIndex, int endSeatIndex, String seatClass, int flightId, BigDecimal price) {
+    private List<Seat> createSeatsForClass(int startSeatIndex, int endSeatIndex, String seatClass, int flightId, BigDecimal price,int status) {
         List<Seat> seats = new ArrayList<>();
         int seatsPerRow = 6;
         int currentRow = (int) Math.ceil((double) startSeatIndex / seatsPerRow);
@@ -194,7 +194,7 @@ public class FlightServiceImplement implements FlightService{
 
         for (int i = startSeatIndex; i <= endSeatIndex; i++) {
             Flight flight = flightRepository.findById(flightId).orElse(null);
-            seats.add(new Seat(currentColumn + Integer.toString(currentRow), seatClass, flight, price));
+            seats.add(new Seat(currentColumn + Integer.toString(currentRow), seatClass, flight, price,status));
 
             currentColumn++;
             if (currentColumn > 'F') {

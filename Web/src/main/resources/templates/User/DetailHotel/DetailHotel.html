@@ -120,27 +120,8 @@ font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 22px;font-weight: 
                         combines warm hospitality with a lovely ambiance to make your stay in New York (NY)
                         unforgettable.
                     </p>
-                    <div class="collapse" id="collapseLinkExample">
-                        <p style="color: #77838f; line-height: 1.7; margin-top: 0; margin-bottom: 1rem;
-        font-family: 'Rubik', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 500; text-align: left;">
-                            Once inside the historic palace located on the Right Bank of the Seine, see unmissable and
-                            iconic sights such as the Mona Lisa and Venus de Milo. Discover masterpieces of the
-                            Renaissance and ancient Egyptian relics,
-                            along with paintings from the 13th to 20th centuries, prints from the Royal Collection, and
-                            much more such as the Mona Lisa
-                            and Venus de Milo. Discover masterpieces of the Renaissance and ancient Egyptian relics,
-                            along with paintings from the
-                            13th to 20th centuries, prints from the Royal Collection, and much more.
-                        </p>
-                    </div>
-                    <a
-                            class="link-collapse link-collapse-custom gradient-overlay-half mb-5 d-inline-block border-bottom border-primary collapsed"
-                            aria-expanded="false" id="viewLink">
-    <span class="link-collapse__default font-size-14" style="font-size:1.2rem">
-        View More
-        <i class="fa-solid fa-arrow-down-long" id="ViewIcon"></i>
-    </span>
-                    </a>
+
+
                 </div>
                 <div class="border-bottom py-4">
                     <h5 id="scroll-amenities" class="mb-4"
@@ -163,7 +144,7 @@ font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 22px;font-weight: 
                                             <div class="product-item__header mt-2 mt-md-0">
                                                 <div class="position-relative">
                                                     <img class="img-fluid rounded-sm" style="width: 89%"
-                                                         src="https://transvelo.github.io/mytravel-html/assets/img/200x154/img1.jpg">
+                                                         th:src="'http://localhost:8686/images/rooms/'+${detailRooms.imageUrl}">
                                                 </div>
                                             </div>
                                         </div>
@@ -285,7 +266,7 @@ min-width: 12.5rem;line-height: 1.9">Book Now</a>
                         <div class="col-md-4 mb-4 mb-md-0">
                             <div class="border rounded flex-center-between py-5 border-width-2 justify-content-center">
                                 <div class="text-center">
-                                    <h2 class="mb-2"
+                                    <h2 class="mb-2" th:text="${#numbers.formatDecimal(avgRating, 1, 1)}"
                                         style="line-height: 1.2;font-weight: 500!important;font-size: 3.825rem;color: #297cbb !important">
                                         4.2<span style="font-size: 1.8rem">/5</span>
                                     </h2>
@@ -469,73 +450,7 @@ min-width: 12.5rem;line-height: 1.9">Book Now</a>
                                 <span style="font-size: 0.875rem;color: #18181a !important;font-family: 'Rubik', Helvetica, Arial, sans-serif"> / night</span>
                             </div>
                         </div>
-                        <div class="p-4">
-                            <div class="d-block font-weight-normal mb-0 text-left"
-                                 style="color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                                Check In - Out
-                            </div>
-                            <span class="mb-4">
-                                <div class="border-bottom border-width-2 border-color-1">
-                                    <div id="datepickerWrapperFromOne"
-                                         class="u-datepicker input-group relative">
-                                                    <div class="input-group-prepend">
-                                                <span class="d-flex align-items-center mr-2">
-                                                    <i class="fa-solid fa-calendar"
-                                                       style="color: #297cbb !important;font-weight: 500;font-style: normal"></i>
-                                                </span>
-                                                    </div>
-                                                    <input type="date" id="datePickerInput"
 
-                                                           class="js-range-datepicker font-size-16 shadow-none font-weight-medium form-control hero-form bg-transparent border-0 flatpickr-input"
-                                                           style="font-weight: 500;font-size: 1rem;box-shadow: none;width: 217.5px;height: 54px"
-                                                    />
-                                                </div>
-                                </div>
-                            </span>
-                        </div>
-                        <div class="p-4">
-                            <div class="d-block font-weight-normal mb-0 text-left"
-                                 style="color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                                Check In - Out
-                            </div>
-                            <span class="mb-4">
-                                <div class="border-bottom border-width-2 border-color-1">
-                                    <div class="dropdown bootstrap-select js-select dropdown-select"
-                                         style="width: 89%">
-
-                                                    <input type="hidden" id="selectElement">
-                                                    <button type="button" id="dropdownMenuButton"
-                                                            data-bs-toggle="dropdown" aria-expanded="false"
-                                                            class="btn dropdown-toggle btn-light">
-                                                        <div class="filter-option">
-                                                            <div class="filter-option-inner">
-                                                                <div class="filter-option-inner-inner"
-                                                                     id="dropdownSelectedItem">Popular</div>
-                                                            </div>
-                                                        </div>
-                                                        <span class="dropdown-icon"></span>
-                                                        <!-- Adding a down arrow icon -->
-                                                    </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <li><a class="dropdown-item" href="#" data-value="Popular">Popular</a></li>
-                                                        <li><a class="dropdown-item" href="#"
-                                                               data-value="Premium Economy">Premium Economy</a></li>
-                                                        <li><a class="dropdown-item" href="#" data-value="Merchant">Merchant</a></li>
-                                                        <li><a class="dropdown-item" href="#" data-value="First Class">First Class</a></li>
-                                                    </ul>
-                                                </div>
-                                </div>
-                                <div class="text-center mt-2">
-                                    <button type="submit" class="btn btn-primary w-100 mb-xl-1 transition-3d-hover"
-                                            style="background-color: #297cbb;border-color:#297cbb;height: 3.75rem">
-                                        <i class="fa-solid fa-magnifying-glass mr-2">
-
-                                        </i>
-                                        Search
-                                    </button>
-                                </div>
-                            </span>
-                        </div>
                     </div>
                 </div>
                 <div class="border border-color-7 rounded px-4 pt-4 pb-3 mb-5">

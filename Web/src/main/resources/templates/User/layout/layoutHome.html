@@ -74,8 +74,8 @@
                     </ul>
                     <div class="relative px-3 u-header-Login-Form">
                         <div class="dropdown">
-                            <a class="d-flex align-items-center text-dark text-decoration-none bg-transparent dropdown-toggle" onclick="toggleDropdown(event)"
-                               id="loginDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <a th:href="@{/Login}" class="d-flex align-items-center text-dark text-decoration-none bg-transparent dropdown-toggle" 
+                           role="button">
                                 <i class="fa-regular fa-user mr-2 ml-1" style="font-size: 23px; color: white;"></i>
                                 <span class="d-inline-block mr-1" style="font-size: 18px; font-weight: 400; color: white;"
                                       data-translate-key="SignRegister">Sign in or Register</span>
@@ -110,7 +110,7 @@
                  style="grid-template-columns: 1fr 1fr 1fr ">
                 <a class="d-flex align-items-center text-decoration-none bg-transparent"
                    style="padding-top: 0.2505rem;padding-bottom: 0.2505rem;margin-right: 1.875rem;font-size: 1.25rem;line-height: inherit;white-space: nowrap;color: #297cbb">
-                    <img th:src="@{/images/istockphoto-1461138981-612x612.jpg}" class="w-auto "
+                    <img th:src="@{'http://localhost:8686/images/istockphoto-1461138981-612x612.jpg'}" class="w-auto "
                          style="height: 99px; width: auto; margin-right: 0.5rem; transition: background-color 0.3s, color 0.3s;max-height: 88px">
                     <span class="font-bold"
                           style="font-size: 1.75rem;margin-left: 0.875rem;color: white">MyTravel</span>
