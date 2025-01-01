@@ -12,6 +12,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     List<Room>findAll(int id);
     @Query("select a from Room a where a.id = :id")
     Room findById(int id);
-    @Query("select new com.vtnq.web.DTOs.Room.RoomDetailHotel(a.id,a.type.name,a.price,a.occupancy) from Room a where a.hotel.id= :id")
+    @Query("select new com.vtnq.web.DTOs.Room.RoomDetailHotel(a.type.id,a.type.name,a.price,a.occupancy,b.imageUrl) from Room a join Picture b on b.roomId=a.id where a.hotel.id= :id")
     List<RoomDetailHotel>findRoomDetailHotel(int id);
+    @Query("select a from Room  a where a.type.id = :id and a.status!=true")
+    Room findByTypeId(int id);
 }

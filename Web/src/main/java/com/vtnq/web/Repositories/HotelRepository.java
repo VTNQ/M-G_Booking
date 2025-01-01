@@ -26,7 +26,7 @@ HotelUpdateDTO findHotelById(int id);
             "join Picture b on a.id = b.hotelId " +
             "join City c on a.cityId = c.id " +
             "join Room d on d.hotel.id = a.id " +
-            "where a.cityId = :id " +
+            "where a.cityId = :id and d.status==false " +
             "group by a.id, a.name, c.name, c.country.name, b.imageUrl " +
             "having count(d.id) >= :quantityRoom")
     List<HotelSearchDTO> SearchHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom);
@@ -37,6 +37,6 @@ ShowDetailHotel showDetailHotel(@Param("id") int id);
             "join City b on a.cityId=b.id " +
             "join Room c on a.id=c.hotel.id " +
             "join Picture d on d.hotelId=a.id " +
-            "where c.id = :id")
+            "where c.type.id = :id")
     BookingHotel FindBookingHotel(@Param("id")int id);
 }

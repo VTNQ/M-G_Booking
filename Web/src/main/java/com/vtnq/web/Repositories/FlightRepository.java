@@ -38,7 +38,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "WHERE f.departureAirport.id= :departureAirport " +
             "AND f.arrivalAirport.id = :arrivalAirport " +
             "AND DATE(f.departureTime) = :departureTime "+
-            "And G.type = :TypeFlight " +
+            "And G.type = :TypeFlight and G.status==0 " +
             "order by G.price ASC")
     ResultFlightDTO findResulFlightAndHotel(@Param("departureAirport") int departureAirport,
                                             @Param("arrivalAirport") int arrivalAirport,
@@ -66,7 +66,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "WHERE f.departureAirport.id = :departureAirport " +
             "AND f.arrivalAirport.id = :arrivalAirport " +
             "AND DATE(f.departureTime) = :departureTime " +
-            "AND G.type = :TypeFlight " +
+            "AND G.type = :TypeFlight And G.status==0 " +
             "AND (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople")
     List<ResultFlightDTO> findFlightsByAirportsAndDepartureTime(
             @Param("departureAirport") int departureAirport,
@@ -84,7 +84,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "WHERE f.departureAirport.id= :departureAirport " +
             "AND f.arrivalAirport.id = :arrivalAirport " +
             "AND DATE(f.departureTime) = :departureTime "+
-            "And G.type = :TypeFlight "+
+            "And G.type = :TypeFlight and G.status ==0 "+
             "And Date(f.arrivalTime) = :arrivalTime")
     List<ResultFlightDTO>SearchFindFlightAll( @Param("departureAirport") int departureAirport,
                                               @Param("arrivalAirport") int arrivalAirport,
@@ -106,7 +106,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "join Seat e on e.idFlight.id =f.id " +
             "where f.departureAirport.id = :arrivalAirport " +
             "and f.arrivalAirport.id = :departureAirport " +
-            "and DATE(f.departureTime) = :arrivalTime " +
+            "and DATE(f.departureTime) = :arrivalTime and e.status==0 " +
             "and e.type = :TypeFlight " +
             "group by f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, e.price, c.name, f.departureAirport.name, f.airline.id, f.arrivalAirport.name")
     List<ResultFlightDTO>FindArrivalTimeFlights(@Param("departureAirport") int departureAirport,

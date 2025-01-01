@@ -12,11 +12,12 @@ public class Seat {
     public Seat() {
     }
 
-    public Seat(String index, String type, Flight idFlight, BigDecimal price) {
+    public Seat(String index, String type, Flight idFlight, BigDecimal price,Integer status) {
         this.index = index;
         this.type = type;
         this.idFlight = idFlight;
         this.price = price;
+        this.status = status;
     }
 
     @Id

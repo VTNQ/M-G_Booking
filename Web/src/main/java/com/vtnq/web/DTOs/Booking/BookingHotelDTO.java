@@ -1,11 +1,31 @@
 package com.vtnq.web.DTOs.Booking;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class BookingHotelDTO {
+    private LocalDate CheckInDate;
+    private LocalDate CheckOutDate;
     private BigDecimal TotalPrice;
     private int userId;
-    private int roomId;
+
+    public LocalDate getCheckInDate() {
+        return CheckInDate;
+    }
+
+    public void setCheckInDate(LocalDate checkInDate) {
+        CheckInDate = checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return CheckOutDate;
+    }
+
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        CheckOutDate = checkOutDate;
+    }
+
+    private int typeId;
     private BigDecimal price;
     private int quantity;
 
@@ -25,12 +45,12 @@ public class BookingHotelDTO {
         this.price = price;
     }
 
-    public int getRoomId() {
-        return roomId;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public BigDecimal getTotalPrice() {

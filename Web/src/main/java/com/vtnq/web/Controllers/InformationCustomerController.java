@@ -21,6 +21,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,12 @@ public class InformationCustomerController {
        try {
            Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
            bookingHotelDTO.setUserId(currentAccount.getId());
+           SearchFlightDTO resultFlightDTO = (SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
+           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+           LocalDate CheckInDate = LocalDate.parse(resultFlightDTO.getCheckInTime(), formatter);
+           LocalDate CheckOutDate = LocalDate.parse(resultFlightDTO.getCheckOutTime(), formatter);
+           bookingHotelDTO.setCheckInDate(CheckInDate);
+           bookingHotelDTO.setCheckOutDate(CheckOutDate);
            bookingFlightDTO.setUserId(currentAccount.getId());
            session.setAttribute("amount", BigDecimal.valueOf(amount));
            session.setAttribute("Hotel",bookingHotelDTO);
@@ -109,7 +117,7 @@ public class InformationCustomerController {
            modelMap.put("flight",FlightBooking);
            modelMap.put("total",total);
            BookingHotelDTO hotelDTO=new BookingHotelDTO();
-           hotelDTO.setRoomId(id);
+           hotelDTO.setTypeId(id);
            hotelDTO.setPrice(bookingHotel.getPrice());
            hotelDTO.setTotalPrice(total);
            hotelDTO.setQuantity(resultFlightDTO.getQuantityRoom());
@@ -225,7 +233,7 @@ public class InformationCustomerController {
             modelMap.put("flight",FlightBooking);
             modelMap.put("total",total);
             BookingHotelDTO hotelDTO=new BookingHotelDTO();
-            hotelDTO.setRoomId(id);
+            hotelDTO.setTypeId(id);
             hotelDTO.setPrice(bookingHotel.getPrice());
             hotelDTO.setTotalPrice(total);
             hotelDTO.setQuantity(resultFlightDTO.getQuantityRoom());
