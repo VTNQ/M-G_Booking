@@ -518,11 +518,7 @@
                                                                         £4,177
                                                                     </span>
                                                     </div>
-                                                    <a th:href="'/InformationFly/'+${flight.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
-                                                       style="min-height: 3.125rem">Book Now</a>
-                                                    <a class="flight-details-link mt-1"  style="font-size: 1rem;color: #67747c !important;display: block;text-decoration: none;background-color: transparent;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                                                        Flight Details
-                                                    </a>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -538,7 +534,7 @@
                 </div>   <div  >
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 pb-1">
                         <h3 class="mb-4 mb-md-0 text-center"
-                            style="font-size: 1.313rem;font-weight: 500;line-height: 1;text-align: left">Chọn chuyến bay trở về Hà Nội</h3>
+                            style="font-size: 1.313rem;font-weight: 500;line-height: 1;text-align: left" th:text="'Chọn chuyến bay trở về  '+${NameArrivalAirport}">Chọn chuyến bay trở về Hà Nội</h3>
 
                     </div>
                 <p>Giá bổ sung cho mỗi hành khách. Giá bao gồm thuế và phí.</p>
@@ -653,10 +649,10 @@
                 </button>
                 <header class="card-header py-4 px-4" style="background-color: #f8f9fa !important">
                     <div class="row align-items-center text-center">
-                        <div class="col-md-auto mb-4 mb-md-0">
+                        <div class="col-md-auto mb-4 ">
                             <div class="d-block d-lg-flex flex-horizontal-center">
-                                <img class="img-fluid mr-3 mb-3 mb-lg-0" src="https://transvelo.github.io/mytravel-html/assets/img/90x90/img1.png">
-                                <div class="" style="font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif">Spicejet SG 143 | Boeing 737-700</div>
+                                <img style="max-width: 8%" id="img-popup" class="img-fluid mr-3 mb-3 mb-lg-0" src="https://transvelo.github.io/mytravel-html/assets/img/90x90/img1.png">
+                                <div id="nameAirline" class="" style="font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif">Spicejet SG 143 | Boeing 737-700</div>
                             </div>
                         </div>
                         <div class="col-md-auto mb-4 mb-md-0">
@@ -666,14 +662,14 @@
                                 </div>
                                 <div style="text-align: left">
                                     <h6 class="mb-0" style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">18:30</h6>
-                                    <div class="" style="font-size: 0.875rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Sat, 21 Sep 19</div>
+                                    <div id="dateDepart" class="" style="font-size: 0.875rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Sat, 21 Sep 19</div>
                                     <span class="" style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi, India</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-auto mb-4 mb-md-0">
                             <div class="mx-2 mx-xl-3" style="display: flex;align-items: center;justify-content: center;flex-direction: column">
-                                <h6 style="font-weight: 500!important;font-size: 0.975rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">02 hrs 45 mins</h6>
+                                <h6 id="durationString" style="font-weight: 500!important;font-size: 0.975rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">02 hrs 45 mins</h6>
                                 <div class="border-top my-1" style="width: 3.75rem;border-color: #297cbb !important;border-width: 2px !important"></div>
                                 <div style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Non Stop</div>
                             </div>
@@ -685,65 +681,65 @@
 
                                 </div>
                                 <div style="text-align: left">
-                                    <h6 class="mb-0" style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">18:30</h6>
-                                    <div class="" style="font-size: 0.875rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Sat, 21 Sep 19</div>
+                                    <h6 id="TimeArrival" class="mb-0" style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">18:30</h6>
+                                    <div id="dateArrival" class="" style="font-size: 0.875rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Sat, 21 Sep 19</div>
                                     <span class="" style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi, India</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </header>
-                <div class="card-body py-4 p-md-5">
-                    <div class="row">
-                        <div class="col">
-                            <ul class="d-block d-md-flex list-group list-group-borderless list-group-horizontal list-group-flush no-gutters">
-                                <li class="mr-md-8 mr-lg-10 mb-5 list-group-item py-0">
-                                    <div class="" style="font-weight: 500 !important;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Baggage</div>
-                                    <span class="" style="color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Adult</span>
-                                </li>
-                                <li class="mr-md-8 mr-lg-10 mb-5 list-group-item py-0">
-                                    <div class="" style="font-weight: 500 !important;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Baggage</div>
-                                    <span class="" style="color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Adult</span>
-                                </li>
-                                <li class="mr-md-8 mr-lg-10 mb-5 list-group-item py-0">
-                                    <div class="" style="font-weight: 500 !important;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Baggage</div>
-                                    <span class="" style="color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Adult</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-auto">
-                            <div class="" style="min-width: 15.625rem">
-                                <h5 style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Fare breakup</h5>
-                                <ul class="list-unstyled mb-0" style="font-size: 1rem">
-                                    <li class="d-flex py-2"  style="justify-content: space-between">
-                                        <span class="" style="font-weight: 500!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">
-                                            Base Fare
-                                        </span>
-                                        <span class="" style="font-weight: 400!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #77838f !important">
-                                         €580,00
-                                        </span>
-                                    </li>
-                                    <li class="d-flex py-2"  style="justify-content: space-between">
-                                        <span class="" style="font-weight: 500!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">
-                                            Surcharges
-                                        </span>
-                                        <span class="" style="font-weight: 400!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #77838f !important">
-                                         €00,00
-                                        </span>
-                                    </li>
-                                    <li class="d-flex py-2"  style="justify-content: space-between">
-                                        <span class="" style="font-weight: 500!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">
-                                           Pay Amount
-                                        </span>
-                                        <span class="" style="font-weight: 400!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #77838f !important">
-                                         €00,00
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!--                <div class="card-body py-4 p-md-5">-->
+                <!--                    <div class="row">-->
+                <!--                        <div class="col">-->
+                <!--                            <ul class="d-block d-md-flex list-group list-group-borderless list-group-horizontal list-group-flush no-gutters">-->
+                <!--                                <li class="mr-md-8 mr-lg-10 mb-5 list-group-item py-0">-->
+                <!--                                    <div class="" style="font-weight: 500 !important;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Baggage</div>-->
+                <!--                                    <span class="" style="color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Adult</span>-->
+                <!--                                </li>-->
+                <!--                                <li class="mr-md-8 mr-lg-10 mb-5 list-group-item py-0">-->
+                <!--                                    <div class="" style="font-weight: 500 !important;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Baggage</div>-->
+                <!--                                    <span class="" style="color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Adult</span>-->
+                <!--                                </li>-->
+                <!--                                <li class="mr-md-8 mr-lg-10 mb-5 list-group-item py-0">-->
+                <!--                                    <div class="" style="font-weight: 500 !important;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Baggage</div>-->
+                <!--                                    <span class="" style="color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Adult</span>-->
+                <!--                                </li>-->
+                <!--                            </ul>-->
+                <!--                        </div>-->
+                <!--                        <div class="col-auto">-->
+                <!--                            <div class="" style="min-width: 15.625rem">-->
+                <!--                                <h5 style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Fare breakup</h5>-->
+                <!--                                <ul class="list-unstyled mb-0" style="font-size: 1rem">-->
+                <!--                                    <li class="d-flex py-2"  style="justify-content: space-between">-->
+                <!--                                        <span class="" style="font-weight: 500!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">-->
+                <!--                                            Base Fare-->
+                <!--                                        </span>-->
+                <!--                                        <span class="" style="font-weight: 400!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #77838f !important">-->
+                <!--                                         €580,00-->
+                <!--                                        </span>-->
+                <!--                                    </li>-->
+                <!--                                    <li class="d-flex py-2"  style="justify-content: space-between">-->
+                <!--                                        <span class="" style="font-weight: 500!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">-->
+                <!--                                            Surcharges-->
+                <!--                                        </span>-->
+                <!--                                        <span class="" style="font-weight: 400!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #77838f !important">-->
+                <!--                                         €00,00-->
+                <!--                                        </span>-->
+                <!--                                    </li>-->
+                <!--                                    <li class="d-flex py-2"  style="justify-content: space-between">-->
+                <!--                                        <span class="" style="font-weight: 500!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">-->
+                <!--                                           Pay Amount-->
+                <!--                                        </span>-->
+                <!--                                        <span class="" style="font-weight: 400!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #77838f !important">-->
+                <!--                                         €00,00-->
+                <!--                                        </span>-->
+                <!--                                    </li>-->
+                <!--                                </ul>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
             </div>
         </div>
     </div>

@@ -2,18 +2,13 @@ package com.vtnq.web.APIs;
 
 import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
 import com.vtnq.web.DTOs.Flight.SearchFlightDTO;
-import com.vtnq.web.Entities.Flight;
 import com.vtnq.web.Service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController

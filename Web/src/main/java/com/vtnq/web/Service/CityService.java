@@ -12,4 +12,5 @@ public interface CityService {
     public boolean existName(String name);
     public boolean deleteCity(int id);
     public List<City>SearchCityOrCountry(String name);
+    public int CountCity(int id);
 }

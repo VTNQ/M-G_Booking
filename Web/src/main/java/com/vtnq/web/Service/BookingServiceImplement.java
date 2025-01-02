@@ -193,5 +193,65 @@ public class BookingServiceImplement implements BookingService {
         }
     }
 
+    @Override
+    public List<Booking> FindBookings(int id) {
+        try {
+            return bookingRepository.findBookingByCountry(id);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<com.vtnq.web.Entities.BookingFlightDetail> findBookingFlights(int id) {
+        try {
+            return bookingRepository.FindBookingByFlight(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public BigDecimal getTotalPrice(int id) {
+        try {
+            return bookingRepository.getBookingTotalPrice(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<BookingRoomDetail> getBookingRooms(int id) {
+        try {
+        return bookingRepository.getBookingRoomDetails(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public BigDecimal GetTotalPriceHotel(int id) {
+        try {
+            return bookingRepository.getBookingHotelPrice(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public int CountBookings(int id) {
+        try {
+            return bookingRepository.CountBooking(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
 
 }

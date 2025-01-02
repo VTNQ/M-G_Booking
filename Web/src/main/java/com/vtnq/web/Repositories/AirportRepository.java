@@ -15,4 +15,6 @@ public interface AirportRepository extends JpaRepository<Airport, Integer> {
     boolean existsByName(@Param("name") String name);
     @Query("SELECT new com.vtnq.web.DTOs.Airport.SearchAiportDTO(t.id,t.name,t.city,t.city.country.name) from  Airport t where t.name like %:SearchName% or  t.city.name like %:SearchName%")
     List<SearchAiportDTO>SearchAirPort(@Param("SearchName") String SearchName);
+    @Query("select count(a) from Airport a where a.city.country.id= :id")
+    public int CountAirPort(int id);
 }

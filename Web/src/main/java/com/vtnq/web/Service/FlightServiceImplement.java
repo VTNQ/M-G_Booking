@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,6 +34,16 @@ public class FlightServiceImplement implements FlightService{
 
     @Autowired
     private ModelMapper modelMapper;
+    private String generateRandomAlphanumericCode(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder code = new StringBuilder(length);
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            code.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return code.toString();
+    }
+
     @Override
     public boolean save(FlightDto flightDto) {
         try {
@@ -43,6 +54,7 @@ public class FlightServiceImplement implements FlightService{
             Airport arrival_AirPort=airportRepository.findById(flightDto.getArrival_airport())
                     .orElseThrow(() -> new Exception("Airport not found"));
             Flight flight=modelMapper.map(flightDto, Flight.class);
+            flight.setFlightCode(generateRandomAlphanumericCode(5));
             flight.setArrivalTime(flightDto.getArrivalInstant());
             flight.setDepartureTime(flightDto.getDepartureInstant());
             flight.setAirline(airline);
@@ -236,6 +248,16 @@ public class FlightServiceImplement implements FlightService{
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public int CountFlight(int id) {
+        try {
+            return flightRepository.CountFlight(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return 0;
         }
     }
 

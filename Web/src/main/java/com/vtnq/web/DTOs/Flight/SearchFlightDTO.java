@@ -26,11 +26,15 @@ public class SearchFlightDTO {
     private String checkInTime;
     private String checkOutTime;
     public boolean isRoundTrip() {
+
         return IsRoundTrip;
     }
 
     public void setRoundTrip(boolean roundTrip) {
         IsRoundTrip = roundTrip;
+        if(IsRoundTrip && (this.arrivalTime==null || this.arrivalTime.isEmpty())){
+            throw new IllegalArgumentException("Arrival time Required");
+        }
     }
 
     private boolean IsRoundTrip;
@@ -60,6 +64,9 @@ public class SearchFlightDTO {
     }
 
     public void setIdCity(int idCity) {
+        if(selectedHotel && idCity>0){
+            throw new IllegalArgumentException("city Required");
+        }
         this.idCity = idCity;
     }
 
@@ -73,9 +80,13 @@ public class SearchFlightDTO {
 
     public void setSelectedHotel(boolean selectedHotel) {
         this.selectedHotel = selectedHotel;
+
     }
 
     public void setArrivalTime(String arrivalTime) {
+        if(IsRoundTrip &&(arrivalTime==null || arrivalTime.isEmpty())){
+            throw new IllegalArgumentException("Arrival time Required");
+        }
         this.arrivalTime = arrivalTime;
     }
 
