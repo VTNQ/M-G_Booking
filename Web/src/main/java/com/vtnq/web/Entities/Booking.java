@@ -2,6 +2,7 @@ package com.vtnq.web.Entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
 
@@ -25,6 +26,10 @@ public class Booking {
     @NotNull
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
+
+    @Size(max = 10)
+    @Column(name = "booking_code", length = 10)
+    private String bookingCode;
 
     public Integer getId() {
         return id;
@@ -56,6 +61,14 @@ public class Booking {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getBookingCode() {
+        return bookingCode;
+    }
+
+    public void setBookingCode(String bookingCode) {
+        this.bookingCode = bookingCode;
     }
 
 }

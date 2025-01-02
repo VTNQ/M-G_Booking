@@ -3,6 +3,8 @@ package com.vtnq.web.Controllers;
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
 import com.vtnq.web.DTOs.Flight.SearchFlightDTO;
+import com.vtnq.web.Entities.Airport;
+import com.vtnq.web.Repositories.AirportRepository;
 import com.vtnq.web.Service.AirlineService;
 import com.vtnq.web.Service.FlightService;
 import com.vtnq.web.Service.HotelService;
@@ -31,6 +33,8 @@ public class HomeController {
     private FlightService flightService;
     @Autowired
     private AirlineService airlineService;
+    @Autowired
+    private AirportRepository airportRepository;
     @Autowired
     private HotelService hotelService;
     @GetMapping("Home")
@@ -217,7 +221,10 @@ public class HomeController {
             List<Integer>idFlight=new ArrayList<>();
             idFlight.add(id);
             session.setAttribute("idFlight",idFlight);
+
             SearchFlightDTO searchFlightDTO = (SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
+            Airport airport=airportRepository.findById(searchFlightDTO.getArrivalAirport())
+                    .orElseThrow(()->new RuntimeException("Aiport not found"));
             String ArrivalTime = searchFlightDTO.getArrivalTime().trim();
             if(ArrivalTime.endsWith(",")){
                 ArrivalTime = ArrivalTime.substring(0, ArrivalTime.length() - 1);
@@ -226,6 +233,7 @@ public class HomeController {
             DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate ArrivalDate = LocalDate.parse(ArrivalTime, formatterDepartureDate);
             model.put("searchFlightDTO",searchFlightDTO);
+            model.put("NameArrivalAirport",airport.getCity().getName());
             model.put("flight",flightService.FindByIdFlight(id));
             model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight()));
             return "User/Flight/RoundTripFlight";

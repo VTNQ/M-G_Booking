@@ -97,6 +97,11 @@ public class FlightController {
                 redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/Admin/Flight/edit/"+flightDto.getId();
             }
+            if(flightDto.getDeparture_airport()==flightDto.getArrival_airport()){
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                redirectAttributes.addFlashAttribute("message", "The flight and return are not the same");
+                return "redirect:/Admin/Flight/edit/"+flightDto.getId();
+            }
             if(flightService.UpdateFlightDto(flightDto)) {
                 redirectAttributes.addFlashAttribute("messageType", "success");
                 redirectAttributes.addFlashAttribute("message", "Flight updated successfully");
@@ -140,6 +145,11 @@ public class FlightController {
                 );
                 redirectAttributes.addFlashAttribute("message", errorMessages.toString());
                 redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Admin/Flight/add";
+            }
+            if(flightDto.getDeparture_airport()==flightDto.getArrival_airport()){
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                redirectAttributes.addFlashAttribute("message", "The flight and return are not the same");
                 return "redirect:/Admin/Flight/add";
             }
             if (flightService.save(flightDto)) {

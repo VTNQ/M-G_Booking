@@ -80,4 +80,14 @@ public class CityServiceImplement implements CityService{
             return null;
         }
     }
+
+    @Override
+    public int CountCity(int id) {
+        try {
+            return cityRepository.CountCity(id);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

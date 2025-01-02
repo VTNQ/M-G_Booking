@@ -261,39 +261,10 @@ function initFlatpickr() {
     });
 }
 
-const rangeMin = document.getElementById('range-min');
-const rangeMax = document.getElementById('range-max');
-const priceRangeText = document.getElementById('price-range-text');
-const sliderContainer = document.querySelector('.slider-container');
 
-function updateSliderBackground() {
-    const min = parseInt(rangeMin.value);
-    const max = parseInt(rangeMax.value);
-    const rangeMinPosition = ((min - 200) / (3456 - 200)) * 100;
-    const rangeMaxPosition = ((max - 200) / (3456 - 200)) * 100;
 
-    // Update the background of the sliders
-    sliderContainer.style.setProperty('--start-percent', `${rangeMinPosition}%`);
-    sliderContainer.style.setProperty('--end-percent', `${rangeMaxPosition}%`);
-    priceRangeText.textContent = `£${min} - £${max}`;
-}
 
-rangeMin.addEventListener('input', () => {
-    if (parseInt(rangeMin.value) > parseInt(rangeMax.value) - 10) {
-        rangeMin.value = rangeMax.value - 10;
-    }
-    updateSliderBackground();
-});
 
-rangeMax.addEventListener('input', () => {
-    if (parseInt(rangeMax.value) < parseInt(rangeMin.value) + 10) {
-        rangeMax.value = parseInt(rangeMin.value) + 10;
-    }
-    updateSliderBackground();
-});
-
-// Initialize background
-updateSliderBackground();
 
 document.getElementById("datePickerInput").addEventListener("focus", function () {
     // Initialize flatpickr only if not already initialized
@@ -302,11 +273,7 @@ document.getElementById("datePickerInput").addEventListener("focus", function ()
         this.classList.add("flatpickr-input-active");
     }
 });
-document.getElementById('basicDropdownClickInvoker').addEventListener('click', function () {
-    const dropdownMenu = document.querySelector('#basicDropdownClick');
-    console.log(dropdownMenu)
-    dropdownMenu.classList.toggle('show');
-});
+
 document.addEventListener('click', function (event) {
     const isClickInside = document.getElementById('basicDropdownClickInvoker').contains(event.target) ||
         document.querySelector('#basicDropdownClick').contains(event.target);
@@ -315,3 +282,56 @@ document.addEventListener('click', function (event) {
         document.querySelector('#basicDropdownClick').classList.remove('show');
     }
 })
+document.addEventListener('DOMContentLoaded',async function (){
+    const FromInputDropDown=document.querySelector('#from-input');
+    const At=document.querySelector('#At-input');
+    const City=document.querySelector('#idCity');
+    const FromInput=document.querySelector('#from-input-id');
+    const ArrivalInputDropDown=document.querySelector('#to-input');
+    const ToInput=document.querySelector('#to-input-id');
+    try {
+   let fromAirports=await SearchById(FromInput.value);
+   let ArrivalAirports=await SearchById(ToInput.value);
+   let Cities=await SearchCityById(City.value);
+   console.log(City.value)
+   if(Cities!=null){
+       At.value=Cities.name;
+   }
+   if(fromAirports!=null){
+       FromInputDropDown.value=fromAirports.name;
+
+   }
+   if(ArrivalAirports!=null){
+       ArrivalInputDropDown.value=ArrivalAirports.name;
+   }
+    }catch (error) {
+        console.log(error);
+    }
+})
+async function SearchCityById(id){
+    try {
+    const response=await fetch(`http://localhost:8686/api/city/FindById/${encodeURIComponent(id)}`);
+    let cities=null;
+    if(response.ok){
+        cities=await response.json();
+    }
+    return cities;
+    }catch (error){
+        console.log(error)
+    }
+}
+async function SearchById( id){
+    try {
+        const response=await fetch(`http://localhost:8686/api/AirPort/FindById/${encodeURIComponent(id)}`);
+        let airports=null;
+        if(response.ok){
+            airports=await response.json();
+
+        }else {
+            console.error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        return airports;
+    }catch (error){
+        console.log(error)
+    }
+}

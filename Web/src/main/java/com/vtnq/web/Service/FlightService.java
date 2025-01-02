@@ -26,4 +26,5 @@ public interface FlightService  {
     public BookingListFly getResultPaymentFlight(int id);
     public ResultFlightDTO FindByIdFlight(int id);
     public List<ResultFlightDTO>FindArrivalTime(int departureAirport,int arrivalAirport,LocalDate arrivalTime,String TypeFlight);
+    public int CountFlight(int id);
  }

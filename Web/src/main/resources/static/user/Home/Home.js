@@ -42,7 +42,16 @@ document.getElementById("from-input").addEventListener('input',async (event)=>{
 
                         // Store the actual airport.id in the hidden input
                         document.getElementById("from-input-id").value = airportdto.id;
-
+                        const toInputValue = document.getElementById("to-input").value;
+                        if (toInputValue === document.getElementById("from-input").value) {
+                            Swal.fire({
+                                title:'Departure and arrival locations cannot be the same!',
+                                icon:'error'
+                            });
+                            document.getElementById("from-input-id").value=0;
+                            document.getElementById('from-input').value=''
+                            return; // Prevent the selection if they are the same
+                        }
                         dropdown.style.display = "none";
                     });
 
@@ -155,6 +164,16 @@ document.getElementById("to-input").addEventListener('input', async (event) => {
                     airportItem.addEventListener("click", () => {
                         document.getElementById("to-input").value = `${airportdto.name} (${airportdto.code})`;
                         document.getElementById("to-input-id").value = airportdto.id;
+                        const FromInputValue = document.getElementById("from-input").value;
+                        if(FromInputValue===document.getElementById("to-input").value){
+                            Swal.fire({
+                                title:'Departure and arrival locations cannot be the same!',
+                                icon:'error'
+                            })
+                            document.getElementById('to-input-id').value=0;
+                            document.getElementById("to-input").value='';
+                        }
+
                         dropdown.style.display = "none"; // Hide dropdown after selection
                     });
 

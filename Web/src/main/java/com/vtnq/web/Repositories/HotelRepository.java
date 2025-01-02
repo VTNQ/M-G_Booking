@@ -26,7 +26,7 @@ HotelUpdateDTO findHotelById(int id);
             "join Picture b on a.id = b.hotelId " +
             "join City c on a.cityId = c.id " +
             "join Room d on d.hotel.id = a.id " +
-            "where a.cityId = :id and d.status==false " +
+            "where a.cityId = :id and d.status=false " +
             "group by a.id, a.name, c.name, c.country.name, b.imageUrl " +
             "having count(d.id) >= :quantityRoom")
     List<HotelSearchDTO> SearchHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom);

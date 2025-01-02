@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,12 +44,13 @@ public class SercurityConfiguration {
                             .requestMatchers("/Admin/Home","/Admin/City/add","/Admin/City","/Admin/City/edit/{id}",
                                     "Admin/City/UpdateCity","/Admin/City/delete/{id}","Admin/District/{id}",
                                     "Admin/District/add","/Admin/District/edit/{id}","/Admin/District/update","/Admin/District/delete/{id}",
-                                    "Admin/AirPort/add","Admin/AirPort","/Admin/AirPort/edit/{id}","/Admin/Flight/add","/Admin/Flight/edit/{id}","/Admin/Flight/UpdateFlight","/Admin/Flight/addSeat","/Admin/Contract").hasAnyRole("ADMIN")
+                                    "Admin/AirPort/add","Admin/AirPort","/Admin/AirPort/edit/{id}","/Admin/Flight/add","/Admin/Flight/edit/{id}","/Admin/Flight/UpdateFlight","/Admin/Flight/addSeat","/Admin/Contract", "/Admin/Booking","/Admin/Booking/detail/{id}").hasAnyRole("ADMIN")
                             .requestMatchers("/Owner","/Owner/Hotel/add","/Owner/Hotel","/Owner/Hotel/edit/{id}","/Owner/Hotel/update","/Owner/Hotel/Detail/{id}"
                             ,"/Owner/service/add","/Owner/service/{id}","/Owner/service/edit/{id}","/Owner/service/update","/Owner/Room/{id}","/Owner/Room/add",
                                     "/Owner/Room/edit/{id}","/Owner/Room/update","/Owner/Room/delete/{id}","/Owner/Amenities/{id}","/Owner/Amenities/add","/Owner/Amenities/edit/{id}",
                                     "/Owner/Amenities/update","/Owner/Amenities/delete/{id}","/Owner/Room/addType").hasAnyRole("OWNER")
-                            .requestMatchers("/Profile","/InformationFly/{id}","/payHotelFlight","/payHotelFlight/**","/InformationFlightHotel/{id}").hasAnyRole("USER")
+                            .requestMatchers("/Profile","/InformationFly/{id}","/payHotelFlight","/payHotelFlight/**","/InformationFlightHotel/{id}"
+                                   ).hasAnyRole("USER")
                             .anyRequest().authenticated();
                 })
 
@@ -89,10 +91,34 @@ public class SercurityConfiguration {
                             }
                         })
                 )
-                .logout(logout -> logout
-                        .logoutUrl("/account/logout")
-                        .logoutSuccessUrl("/Login/index")
-                )
+            .logout(logout -> logout
+                    .logoutUrl("/account/logout")
+                    .addLogoutHandler((request, response, authentication) -> {
+                        // Get the current account from the session
+                        HttpSession session = request.getSession(false); // Get the current session, if any
+                        if (session != null) {
+                            Account currentAccount = (Account) session.getAttribute("currentAccount");
+                            if (currentAccount != null) {
+                                // Custom logic with currentAccount
+                                try {
+                                    if ("ROLE_ADMIN".equals(currentAccount.getAccountType()) || "ROLE_SUPERADMIN".equals(currentAccount.getAccountType())) {
+                                        // Redirect to /LoginAdmin
+                                        response.sendRedirect("/LoginAdmin");
+                                        session.invalidate();
+                                        return;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace(); // Log the exception
+                                }
+                            }
+                            // Invalidate session after processing
+                            session.invalidate();
+                        }
+                    })
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID")
+            )
                 .exceptionHandling(ex -> ex
                         .accessDeniedPage("/account/access-denied")
                 )

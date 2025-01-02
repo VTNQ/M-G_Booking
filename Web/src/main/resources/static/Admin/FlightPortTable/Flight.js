@@ -7,37 +7,81 @@ const DetailSeat=document.querySelectorAll('#DetailSeat');
 openModalBtns.forEach((btn) => {
     btn.addEventListener('click', function(event) {
         event.preventDefault(); // Ngừng việc chuyển hướng trang
-        modal.style.display = 'flex'; // Hiển thị modal
-
-        // Lấy id chuyến bay từ data-idFlight và truyền vào form nếu cần
         const flightId = this.getAttribute('data-idFlight');
-        document.getElementById('idFlight').value=flightId;
+
+
+        fetch(`http://localhost:8686/api/seat/existBySeat/${flightId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Render and display seat data
+                if(!data){
+                    modal.style.display = 'flex'; // Hiển thị modal
+                    document.getElementById('idFlight').value=flightId;
+                }else{
+                    Swal.fire({
+                        title:"Flight has created seats",
+                        icon:'error',
+                        
+                    })
+                }
+
+
+
+            })
+            .catch(error => console.error('Error fetching seat details:', error));
+        // Lấy id chuyến bay từ data-idFlight và truyền vào form nếu cần
+
     });
 });
 CloseBtn.addEventListener('click',function (event){
     event.preventDefault();
+    const seatGrid=document.querySelector('.seat-grid');
+    if(seatGrid){
+        seatGrid.innerHTML='';
+    }
+    document.getElementById('FirstSeat').value=0;
+    document.getElementById('BusinessSeat').value=0;
+    document.getElementById('EconomySeat').value=0;
     modal.style.display='none';
 })
 DetailSeat.forEach((btn) => {
     btn.addEventListener('click', function (event) {
         const idFlight = this.getAttribute('data-idFlight');
 
-
-        fetch(`http://localhost:8686/api/seat/${idFlight}`)
+        fetch(`http://localhost:8686/api/seat/existBySeat/${idFlight}`)
             .then(response => response.json())
             .then(data => {
                 // Render and display seat data
-                renderSeatDetails(data);
+                if(data){
+                    fetch(`http://localhost:8686/api/seat/${idFlight}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Render and display seat data
+                            renderSeatDetails(data);
 
-                // Show the modal (ensure you implement modal logic here if needed)
-                document.getElementById('seatDetail').style.display = 'flex';
+                            // Show the modal (ensure you implement modal logic here if needed)
+                            document.getElementById('seatDetail').style.display = 'flex';
+                        })
+                        .catch(error => console.error('Error fetching seat details:', error));
+                }else{
+                    Swal.fire({
+                        title:"flight not available",
+                        icon:'error',
+
+                    })
+                }
+
+
+
             })
             .catch(error => console.error('Error fetching seat details:', error));
+
     });
 });
 closeModalBtn.addEventListener('click',function (event){
 
     event.preventDefault();
+
     document.getElementById('seatDetail').style.display = 'none';
 })
 // Function to render seat details dynamically
