@@ -1,14 +1,16 @@
 package com.vtnq.web.Controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.vtnq.web.DTOs.Booking.*;
+import com.vtnq.web.DTOs.Booking.BookingFlightDetail;
 import com.vtnq.web.DTOs.Flight.SearchFlightDTO;
-import com.vtnq.web.Entities.Account;
-import com.vtnq.web.Entities.Flight;
-import com.vtnq.web.Entities.Seat;
+import com.vtnq.web.Entities.*;
+import com.vtnq.web.Repositories.BookingRepository;
 import com.vtnq.web.Repositories.FlightRepository;
+import com.vtnq.web.Repositories.SeatRepository;
 import com.vtnq.web.Service.*;
 import com.vtnq.web.WebSocket.SeatUpdateWebSocketHandler;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +26,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping({"","/"})
@@ -34,13 +38,18 @@ public class InformationCustomerController {
     @Autowired
     private BookingService bookingService;
     @Autowired
+    private BookingRepository bookingRepository;
+    @Autowired
     private HotelService hotelService;
+    @Autowired
+    private SeatRepository seatRepository;
+    @Autowired
+    private FlightRepository flightRepository;
     @Autowired
     private SeatService seatService;
     @Autowired
     private SeatUpdateWebSocketHandler seatUpdateWebSocketHandler;
-    @Autowired
-    private FlightRepository flightRepository;
+
     @Autowired
     private FlightService flightService;
     private static final String SUCCESS_URL = "payFlight/success";
@@ -172,13 +181,14 @@ public class InformationCustomerController {
         return "redirect:/";
     }
     @GetMapping(SUCCESS_URL)
-    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, HttpServletRequest request) {
+    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, HttpServletRequest request,HttpSession session) {
         try {
             Payment payment = payPalService.executePayment(paymentId, payerId);
             BookingFlightDTO bookingFlightDto = (BookingFlightDTO) request.getSession().getAttribute("booking");
             String bookings = (String) request.getSession().getAttribute("bookings");
-
-            if (payment.getState().equals("approved") && bookingService.addBooking(bookingFlightDto, bookings)) {
+            int Booking= bookingService.addBooking(bookingFlightDto, bookings);
+            if (payment.getState().equals("approved") && Booking>0) {
+                session.setAttribute("idBooking",Booking);
                 return "redirect:/Success";
             }
 
@@ -313,8 +323,13 @@ public class InformationCustomerController {
         }
     }
     @GetMapping("Success")
-    public String Success() {
+    public String Success(HttpServletRequest request,ModelMap modelMap) {
         try {
+            Integer idBooking=(Integer)request.getSession().getAttribute("idBooking");
+            Booking booking=bookingRepository.findById(idBooking).
+                    orElseThrow(()->new RuntimeException("Booking not found"));
+
+            modelMap.put("Booking",booking);
             return "/User/InformationCustomer/Success";
         }catch (Exception e) {
             e.printStackTrace();

@@ -9,6 +9,8 @@ import com.vtnq.web.DTOs.Booking.BookingFlightDTO;
 import com.vtnq.web.DTOs.Booking.BookingFlightDetail;
 import com.vtnq.web.DTOs.Booking.BookingHotelDTO;
 import com.vtnq.web.DTOs.BookingFlightDto;
+import com.vtnq.web.DTOs.HistoryOrder.HistoryOrderFlight;
+import com.vtnq.web.DTOs.HistoryOrder.HistoryOrderHotel;
 import com.vtnq.web.Entities.*;
 import com.vtnq.web.Repositories.*;
 import com.vtnq.web.WebSocket.SeatUpdateWebSocketHandler;
@@ -41,6 +43,9 @@ public class BookingServiceImplement implements BookingService {
     @Autowired
     private SeatRepository seatRepository;
     @Autowired
+    private LevelRepository levelRepository;
+
+    @Autowired
     private SeatUpdateWebSocketHandler seatUpdateWebSocketHandler;
     @Autowired
     private FlightRepository flightRepository;
@@ -54,7 +59,7 @@ public class BookingServiceImplement implements BookingService {
     private ModelMapper modelMapper;
 
     @Override
-    public boolean addBooking(BookingFlightDTO bookingFlightDTO, String bookings) {
+    public int addBooking(BookingFlightDTO bookingFlightDTO, String bookings) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             BookingFlight booking = new BookingFlight();
@@ -64,7 +69,7 @@ public class BookingServiceImplement implements BookingService {
                         .orElseThrow(() -> new RuntimeException("Seat Not Found"));
                 if (seat.getStatus() != null && seat.getStatus() == 1) {
                     seatUpdateWebSocketHandler.notifySeatStatus(seat, false);
-                    return false;
+                    return 0;
                 }
             }
             Account account = accountRepository.findById(bookingFlightDTO.getUserId()).orElseThrow(() -> new RuntimeException("Account Not Found"));
@@ -95,12 +100,24 @@ public class BookingServiceImplement implements BookingService {
                     .orElseThrow(() -> new RuntimeException("Booking Flight not found"));
             bookingFlight.setBookingFlight(bookingFlightEntity);
             bookingFlight.setCreatedAt(Instant.now());
-            bookingRepository.save(bookingFlight);
-            return true;
+            bookingFlight.setUserId(bookingFlightDTO.getUserId());
+            bookingFlight.setTotalPrice(bookingFlightDTO.getTotalPrice());
+          Booking insertBooking=  bookingRepository.save(bookingFlight);
+
+            List<Booking> userBookings = bookingRepository.FindBookingByUserId(account.getId());
+            BigDecimal totalPrice = userBookings.stream()
+                    .map(Booking::getTotalPrice)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            if (totalPrice.compareTo(new BigDecimal("10000000")) >= 0) {
+                Level level = levelRepository.findById(2).orElseThrow(() -> new RuntimeException("Level Not Found"));
+                account.setLevel(level);
+                accountRepository.save(account);
+            }
+            return insertBooking.getId();
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
     }
 
@@ -197,7 +214,7 @@ public class BookingServiceImplement implements BookingService {
     public List<Booking> FindBookings(int id) {
         try {
             return bookingRepository.findBookingByCountry(id);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -207,7 +224,7 @@ public class BookingServiceImplement implements BookingService {
     public List<com.vtnq.web.Entities.BookingFlightDetail> findBookingFlights(int id) {
         try {
             return bookingRepository.FindBookingByFlight(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
@@ -217,7 +234,7 @@ public class BookingServiceImplement implements BookingService {
     public BigDecimal getTotalPrice(int id) {
         try {
             return bookingRepository.getBookingTotalPrice(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
@@ -226,8 +243,8 @@ public class BookingServiceImplement implements BookingService {
     @Override
     public List<BookingRoomDetail> getBookingRooms(int id) {
         try {
-        return bookingRepository.getBookingRoomDetails(id);
-        }catch (Exception ex){
+            return bookingRepository.getBookingRoomDetails(id);
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
@@ -237,7 +254,7 @@ public class BookingServiceImplement implements BookingService {
     public BigDecimal GetTotalPriceHotel(int id) {
         try {
             return bookingRepository.getBookingHotelPrice(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
@@ -247,9 +264,33 @@ public class BookingServiceImplement implements BookingService {
     public int CountBookings(int id) {
         try {
             return bookingRepository.CountBooking(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return 0;
+        }
+    }
+
+    @Override
+    public List<HistoryOrderFlight> FindHistoryOrderFlights(int id) {
+        try {
+            return bookingFlightRepository.FindFlightByUser(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<HistoryOrderHotel> FindHistoryOrderHotels(int id) {
+        try {
+           List<HistoryOrderHotel> historyOrderHotel= bookingRoomRepository.FindHotelById(id);
+           for (HistoryOrderHotel h : historyOrderHotel) {
+               h.setTotalRoom(bookingRoomRepository.CountBookingRoomByRoomId(h.getId()));
+           }
+           return historyOrderHotel;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
         }
     }
 

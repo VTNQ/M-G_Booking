@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -30,6 +31,12 @@ public class Booking {
     @Size(max = 10)
     @Column(name = "booking_code", length = 10)
     private String bookingCode;
+
+    @Column(name = "user_id")
+    private Integer userId;
+
+    @Column(name = "totalPrice", precision = 10)
+    private BigDecimal totalPrice;
 
     public Integer getId() {
         return id;
@@ -69,6 +76,22 @@ public class Booking {
 
     public void setBookingCode(String bookingCode) {
         this.bookingCode = bookingCode;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
 }

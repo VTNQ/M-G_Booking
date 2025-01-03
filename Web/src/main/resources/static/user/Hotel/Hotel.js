@@ -260,7 +260,23 @@ function initFlatpickr() {
         }
     });
 }
+document.getElementById('flexSwitchCheckDefault').addEventListener('change',function (){
+    const AtHotel=document.getElementById('AtHotel');
+    const TimeHotel=document.getElementById('TimeHotel');
+    const RoomNumber=document.getElementById('RoomNumber');
+    if(this.checked){
+        AtHotel.style.display='block';
+        TimeHotel.style.display='block';
+        RoomNumber.style.display='block';
+        document.getElementById('btn-Submit').style.top='43vh'
+    }else{
+        AtHotel.style.display='none';
+        TimeHotel.style.display='none';
+        RoomNumber.style.display='none';
 
+        document.getElementById('btn-Submit').style.top='28vh'
+    }
+})
 
 
 

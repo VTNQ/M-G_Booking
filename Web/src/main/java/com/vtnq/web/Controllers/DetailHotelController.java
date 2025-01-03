@@ -39,6 +39,7 @@ public class DetailHotelController {
             modelMap.put("Image",hotelService.FindImageInDetailHotel(id));
             modelMap.put("Amenities",amenitiesService.FindAmenitiesByHotel(id));
             modelMap.put("DetailRoom",roomService.ShowDetailHotel(id));
+            modelMap.put("Hotels",hotelService.ShowHotelsAll(id));
             modelMap.put("avgRating",ratingService.getAverageRating(id));
             Rating rating=new Rating();
             Hotel hotel=hotelRepository.findById(id)

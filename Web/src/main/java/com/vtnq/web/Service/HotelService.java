@@ -20,4 +20,5 @@ public List<HotelSearchDTO>SearchHotels(int id,int quantityRoom);
 public ShowDetailHotel FindDetailHotel(int id);
 public List<Picture>FindImageInDetailHotel(int id);
 public BookingHotel FindBookingHotel(int id);
+public List<HotelList>ShowHotelsAll(int id);
 }

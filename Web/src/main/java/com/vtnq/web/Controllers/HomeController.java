@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,11 +49,28 @@ public class HomeController {
            return null;
        }
     }
-
+    private String formatDate(Instant time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yy")
+                .withZone(ZoneId.of("UTC"));
+        return formatter.format(time);
+    }
+    private Instant parseToInstant(String date) {
+        LocalDate localDate=LocalDate.parse(date);
+        return localDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
+    }
     @GetMapping("SearchHotel/{id}")
     public String SearchHotel(@PathVariable("id")int id,ModelMap model,HttpSession session,HttpServletRequest request) {
         try {
            SearchFlightDTO resultFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
+           resultFlightDTO.setSelectedHotel(false);
+           Instant dateDepartureTime=parseToInstant(resultFlightDTO.getDepartureTime());
+           Instant dateCheckInTime=parseToInstant(resultFlightDTO.getCheckInTime());
+           String dateCheckIn=formatDate(dateCheckInTime);
+           Instant dateCheckOutTime=parseToInstant(resultFlightDTO.getCheckOutTime());
+           String dateCheckOut=formatDate(dateCheckOutTime);
+           String dateDeparture=formatDate(dateDepartureTime);
+           Instant ArrivalTime=parseToInstant(resultFlightDTO.getArrivalTime());
+           String dateArrival=formatDate(ArrivalTime);
             List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
             if(idFlight!=null){
                 boolean existsFlightTab=idFlight.stream().anyMatch(flight->flight==id);
@@ -94,7 +113,12 @@ public class HomeController {
                     departureDate,
                     resultFlightDTO.getTypeFlight()
             ):new ResultFlightDTO());
-
+            model.put("DepartureDate",dateDeparture);
+            model.put("ArrivalDate",dateArrival);
+            model.put("CheckIn",dateCheckIn);
+            model.put("CheckOut",dateCheckOut);
+            model.put("People",resultFlightDTO.getNumberPeopleRight());
+            model.put("Room",resultFlightDTO.getQuantityRoom());
             return "User/Hotel/Hotel";
         } catch (IllegalArgumentException e) {
             model.put("error", "Invalid departure time: " + e.getMessage());
