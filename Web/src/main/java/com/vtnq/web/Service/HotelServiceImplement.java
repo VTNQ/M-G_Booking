@@ -276,4 +276,14 @@ public class HotelServiceImplement implements HotelService{
             return null;
         }
     }
+
+    @Override
+    public List<HotelList> ShowHotelsAll(int id) {
+        try {
+            return hotelRepository.showHotelList(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }

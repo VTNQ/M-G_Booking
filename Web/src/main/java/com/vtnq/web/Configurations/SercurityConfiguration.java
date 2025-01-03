@@ -36,7 +36,7 @@ public class SercurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/LoginAdmin","/registerUser","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**",
                                     "/ForgotPassword","/images/flight/**","/images/hotels/**","/images/**","/Home","/SearchFlight","/Admin/SignatureContract/{id}",
-                                    "/DetailHotel/{id}","/InformationCustomer/{id}","/rating","/Payment","/Success","/payFlight/**","/RoundTrip/{id}","/SearchHotel/{id}","/RoundTripHotel/{id}").permitAll()
+                                    "/DetailHotel/{id}","/InformationCustomer/{id}","/rating","/Payment","/Success","/payFlight/**","/RoundTrip/{id}","/SearchHotel/{id}","/RoundTripHotel/{id}","/HistoryOrder").permitAll()
                             .requestMatchers("SuperAdmin/Home","/SuperAdmin/Country/add","/SuperAdmin/Country"
                             ,"/SuperAdmin/Country/update","/SuperAdmin/Country/delete/{id}","/SuperAdmin/AccountAdmin/add"
                             ,"/SuperAdmin/Airline/add","/SuperAdmin/Airline","/SuperAdmin/Airline/edit/{id}",

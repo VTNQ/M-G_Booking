@@ -496,177 +496,77 @@ min-width: 12.5rem;line-height: 1.9">Book Now</a>
             <div class="slider-container">
                 <!-- Wrapper for slides -->
                 <div class="slides">
-                    <!-- Slide 1 -->
-                    <div class="slide">
-                        <div class="card transition-3d-hover shadow-hover-2 w-100 mt-2 mr-2"
-                             style="width: 30% !important;">
-
-                            <div class="position-relative">
-                                <a class="d-block gradient-overlay-half-bg-gradient-v5">
-                                    <img class="card-img-top"
-                                         src="https://transvelo.github.io/mytravel-html/assets/img/300x230/img9.jpg"
-                                         alt="Hotel 1">
-                                </a>
-                                <div class="position-absolute bottom-0 left-0 right-0" style="left: 0;right: 0">
-                                    <div class="px-4 pb-3">
-                                        <a class="d-block"
-                                           style="color: #297cbb;text-decoration: none;background-color: transparent">
-                                            <div class="d-flex align-items-center"
-                                                 style="font-size: 19px;color: white!important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                                                <i style="color: white;" class="fa-solid fa-location-dot mr-2"></i>
-                                                Greater London, United Kingdom
+                    <th:block th:each="hotel, index : ${Hotels}">
+                        <!-- Mở slide mới khi index là bội của 3 -->
+                        <div class="slide" th:if="${index.index % 3 == 0}">
+                            <div class="card transition-3d-hover shadow-hover-2 w-100 mt-2 mr-2"
+                                 style="width: 30% !important;">
+                                <div class="position-relative">
+                                    <a class="d-block gradient-overlay-half-bg-gradient-v5">
+                                        <img class="card-img-top"
+                                             th:src="@{'https://transvelo.github.io/mytravel-html/assets/img/300x230/img9.jpg'}"
+                                             th:alt="${hotel.hotelName}">
+                                    </a>
+                                    <div class="position-absolute bottom-0 left-0 right-0" style="left: 0;right: 0">
+                                        <div class="px-4 pb-3">
+                                            <a class="d-block"
+                                               style="color: #297cbb;text-decoration: none;background-color: transparent">
+                                                <div class="d-flex align-items-center"
+                                                     style="font-size: 19px;color: white!important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                                    <i style="color: white;" class="fa-solid fa-location-dot mr-2"></i>
+                                                    <span th:text="${hotel.city}+ ',  '+${hotel.country}"></span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body px-4 pt-2 pb-3">
+                                    <div class="mb-2">
+                                        <div class="d-inline-flex align-items-center font-size-13 text-lh-1 text-primary letter-spacing-3">
+                                            <div class="green-lighter">
+                                                <small class="fas fa-star"></small>
+                                                <small class="fas fa-star"></small>
+                                                <small class="fas fa-star"></small>
+                                                <small class="fas fa-star"></small>
+                                                <small class="fas fa-star"></small>
+                                                <small class="fas fa-star"></small>
                                             </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body px-4 pt-2 pb-3">
-                                <div class="mb-2">
-                                    <div class="d-inline-flex align-items-center font-size-13 text-lh-1 text-primary letter-spacing-3">
-                                        <div class="green-lighter">
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
                                         </div>
                                     </div>
-                                </div>
-                                <a class="card-title"
-                                   style="font-size: 1.363rem;font-weight: 500!important;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;text-decoration: none">
-                                    Empire Prestige Causeway Bay
-                                </a>
-                                <div class="mt-2 mb-3">
-                                    <span class="badge badge-pill badge-primary py-1 px-2 font-weight-normal"
-                                          style="font-size: 1.2rem;border-radius: 3px;background-color: #297cbb">
-                                        4.6/5
-                                    </span>
-                                    <span class="ml-2" style="font-size:0.875rem;color: #67747c !important ">
-                                        (166 reviews)
-                                    </span>
-                                </div>
-                                <div class="mb-0">
-                                    <span class="mr-1" style="font-size: 1.3rem;color: #67747c !important">From</span>
-                                    <span class=""
-                                          style="font-weight: 500!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 23px">£899.00</span>
-                                    <span class=""
-                                          style="color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 17px"> / night</span>
+                                    <a class="card-title"
+                                       style="font-size: 1.363rem;font-weight: 500!important;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;text-decoration: none"
+                                       th:text="${hotel.hotelName}">
+                                    </a>
+                                    <div class="mt-2 mb-3">
+                <span class="badge badge-pill badge-primary py-1 px-2 font-weight-normal"
+                      style="font-size: 1.2rem;border-radius: 3px;background-color: #297cbb"
+                      th:text="${hotel.rating + '/5'}">
+                </span>
+                                        <span class="ml-2" style="font-size:0.875rem;color: #67747c !important"
+                                              th:text="'(' + ${hotel.rating} + ' reviews)'">
+                </span>
+                                    </div>
+                                    <div class="mb-0">
+                                        <span class="mr-1" style="font-size: 1.3rem;color: #67747c !important">From</span>
+                                        <span style="font-weight: 500!important;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 23px"
+                                              th:text="'£123'">
+                </span>
+                                        <span style="color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 17px"> / night</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card transition-3d-hover shadow-hover-2 w-100 mt-2 mr-2"
-                             style="width: 30% !important;">
 
-                            <div class="position-relative">
-                                <a class="d-block gradient-overlay-half-bg-gradient-v5">
-                                    <img class="card-img-top"
-                                         src="https://transvelo.github.io/mytravel-html/assets/img/300x230/img9.jpg"
-                                         alt="Hotel 1">
-                                </a>
-                            </div>
-                            <div class="card-body px-4 pt-2 pb-3">
-                                <div class="mb-2">
-                                    <div class="d-inline-flex align-items-center font-size-13 text-lh-1 text-primary letter-spacing-3">
-                                        <div class="green-lighter">
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                        <div class="card transition-3d-hover shadow-hover-2 w-100 mt-2 mr-2"
-                             style="width: 30% !important;">
 
-                            <div class="position-relative">
-                                <a class="d-block gradient-overlay-half-bg-gradient-v5">
-                                    <img class="card-img-top"
-                                         src="https://transvelo.github.io/mytravel-html/assets/img/300x230/img9.jpg"
-                                         alt="Hotel 1">
-                                </a>
-                            </div>
-                            <div class="card-body px-4 pt-2 pb-3">
-                                <div class="mb-2">
-                                    <div class="d-inline-flex align-items-center font-size-13 text-lh-1 text-primary letter-spacing-3">
-                                        <div class="green-lighter">
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card transition-3d-hover shadow-hover-2 w-100 mt-2 mr-2"
-                             style="width: 30% !important;">
+                        <!-- Nội dung mỗi item khách sạn -->
 
-                            <div class="position-relative">
-                                <a class="d-block gradient-overlay-half-bg-gradient-v5">
-                                    <img class="card-img-top"
-                                         src="https://transvelo.github.io/mytravel-html/assets/img/300x230/img9.jpg"
-                                         alt="Hotel 1">
-                                </a>
-                            </div>
-                            <div class="card-body px-4 pt-2 pb-3">
-                                <div class="mb-2">
-                                    <div class="d-inline-flex align-items-center font-size-13 text-lh-1 text-primary letter-spacing-3">
-                                        <div class="green-lighter">
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                            <small class="fas fa-star"></small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Slide 2 -->
-                    <div class="slide">
-                        <div class="item">
-                            <img src="https://source.unsplash.com/random/300x150?pool" alt="Hotel 4">
-                            <h3>Hotel 4</h3>
-                            <p>Location 4</p>
-                        </div>
-                        <div class="item">
-                            <img src="https://source.unsplash.com/random/300x150?room" alt="Hotel 5">
-                            <h3>Hotel 5</h3>
-                            <p>Location 5</p>
-                        </div>
-                        <div class="item">
-                            <img src="https://source.unsplash.com/random/300x150?city" alt="Hotel 6">
-                            <h3>Hotel 6</h3>
-                            <p>Location 6</p>
-                        </div>
-                    </div>
-                    <!-- Slide 3 -->
-                    <div class="slide">
-                        <div class="item">
-                            <img src="https://source.unsplash.com/random/300x150?villa" alt="Hotel 7">
-                            <h3>Hotel 7</h3>
-                            <p>Location 7</p>
-                        </div>
-                        <div class="item">
-                            <img src="https://source.unsplash.com/random/300x150?mountain" alt="Hotel 8">
-                            <h3>Hotel 8</h3>
-                            <p>Location 8</p>
-                        </div>
-                        <div class="item">
-                            <img src="https://source.unsplash.com/random/300x150?forest" alt="Hotel 9">
-                            <h3>Hotel 9</h3>
-                            <p>Location 9</p>
-                        </div>
-                    </div>
+                        <!-- Đóng slide khi index tiếp theo cũng là bội của 3 -->
+                        <th:block th:if="${index.index % 3 == 2 || index.index == Hotels.size() - 1}">
+                            <!-- Đóng slide -->
+                        </th:block>
+                    </th:block>
+
+
                 </div>
 
                 <!-- Navigation Buttons -->
