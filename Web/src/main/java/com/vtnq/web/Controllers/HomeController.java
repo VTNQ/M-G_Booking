@@ -3,7 +3,9 @@ package com.vtnq.web.Controllers;
 import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
 import com.vtnq.web.DTOs.Flight.SearchFlightDTO;
+import com.vtnq.web.DTOs.Hotel.HotelSearchDTO;
 import com.vtnq.web.Entities.Airport;
+import com.vtnq.web.Entities.City;
 import com.vtnq.web.Repositories.AirportRepository;
 import com.vtnq.web.Service.AirlineService;
 import com.vtnq.web.Service.FlightService;
@@ -13,10 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -58,162 +57,158 @@ public class HomeController {
         LocalDate localDate=LocalDate.parse(date);
         return localDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
     }
-    @GetMapping("SearchHotel/{id}")
-    public String SearchHotel(@PathVariable("id")int id,ModelMap model,HttpSession session,HttpServletRequest request) {
-        try {
-           SearchFlightDTO resultFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
-           resultFlightDTO.setSelectedHotel(false);
-           Instant dateDepartureTime=parseToInstant(resultFlightDTO.getDepartureTime());
-           Instant dateCheckInTime=parseToInstant(resultFlightDTO.getCheckInTime());
-           String dateCheckIn=formatDate(dateCheckInTime);
-           Instant dateCheckOutTime=parseToInstant(resultFlightDTO.getCheckOutTime());
-           String dateCheckOut=formatDate(dateCheckOutTime);
-           String dateDeparture=formatDate(dateDepartureTime);
-           Instant ArrivalTime=parseToInstant(resultFlightDTO.getArrivalTime());
-           String dateArrival=formatDate(ArrivalTime);
-            List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
-            if(idFlight!=null){
-                boolean existsFlightTab=idFlight.stream().anyMatch(flight->flight==id);
-                if(!existsFlightTab){
-                    idFlight.add(id);
-                }
+    @GetMapping("SearchHotelFlight/{id}")
+    public String SearchHotel(@PathVariable("id")int id,ModelMap model,HttpSession session,HttpServletRequest request, @RequestParam(value = "page", defaultValue = "0") int page,
+                              @RequestParam(value = "size", defaultValue = "10") int size,@RequestParam(value="minPrice",defaultValue = "0")BigDecimal minPrice,@RequestParam(value = "maxPrice",defaultValue = "10000")BigDecimal maxPrice) {
+      try {
+          session.setAttribute("idRoom",id);
+          SearchFlightDTO searchFlightDTO = (SearchFlightDTO) request.getSession().getAttribute("HotelSearch");
+          String selectedDateStr = searchFlightDTO.getDepartureTime().trim();
+          if (selectedDateStr.endsWith(",")) {
+              selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
+          }
 
-            }else{
-                idFlight=new ArrayList<>();
-                idFlight.add(id);
-                session.setAttribute("idFlight",idFlight);
-            }
-            String selectedDateStr = resultFlightDTO.getDepartureTime().trim();
-            // Kiểm tra nếu selectedDateStr rỗng hoặc null
-            if (selectedDateStr == null || selectedDateStr.isEmpty()) {
-                throw new IllegalArgumentException("Departure time is required.");
-            }
+          model.put("searchFlightDTO", searchFlightDTO);
+          String departureTime = searchFlightDTO.getDepartureTime().trim();
+          if (departureTime.endsWith(",")) {
+              departureTime = departureTime.substring(0, departureTime.length() - 1);
+          }
 
-            // Xóa dấu phẩy cuối nếu có
-            if (selectedDateStr.endsWith(",")) {
-                selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
-            }
+          // Định dạng ngày
+          DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+          LocalDate departureDate = LocalDate.parse(departureTime, formatterDepartureDate);
+          session.setAttribute("NumberPeople", searchFlightDTO.getNumberPeopleRight());
+          session.setAttribute("searchFlightDTO", searchFlightDTO);
 
-            // Định dạng và parse ngày
-            DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate departureDate = LocalDate.parse(selectedDateStr, formatterDepartureDate);
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+          LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
 
-            // Thêm dữ liệu vào model
-            model.put("Search",resultFlightDTO);
-            model.put("Hotel", hotelService.SearchHotels(resultFlightDTO.getIdCity(), resultFlightDTO.getQuantityRoom()));
-            session.setAttribute("HotelSearch", resultFlightDTO);
-            model.put("Flight", flightService.FindResultFlightAndHotel(
-                    resultFlightDTO.getDepartureAirport(),
-                    resultFlightDTO.getArrivalAirport(),
-                    departureDate,
-                    resultFlightDTO.getTypeFlight()
-            )!=null?flightService.FindResultFlightAndHotel(
-                    resultFlightDTO.getDepartureAirport(),
-                    resultFlightDTO.getArrivalAirport(),
-                    departureDate,
-                    resultFlightDTO.getTypeFlight()
-            ):new ResultFlightDTO());
-            model.put("DepartureDate",dateDeparture);
-            model.put("ArrivalDate",dateArrival);
-            model.put("CheckIn",dateCheckIn);
-            model.put("CheckOut",dateCheckOut);
-            model.put("People",resultFlightDTO.getNumberPeopleRight());
-            model.put("Room",resultFlightDTO.getQuantityRoom());
-            return "User/Hotel/Hotel";
-        } catch (IllegalArgumentException e) {
-            model.put("error", "Invalid departure time: " + e.getMessage());
-            e.printStackTrace();
-            return "User/ErrorPage"; // Đưa người dùng tới trang lỗi
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.put("error", "An unexpected error occurred.");
-            return "User/ErrorPage"; // Đưa người dùng tới trang lỗi
-        }
+          // Lấy danh sách chuyến bay
+          List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
+                  searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight());
+
+
+          model.put("Flight", resultFlightDTOS);
+
+          model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+          model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+          // Lấy thông tin hãng hàng không
+          model.put("Airline", airlineService.searchAirline(searchFlightDTO.getDepartureAirport(), searchFlightDTO.getArrivalAirport(),
+                  departureDate, searchFlightDTO.getTypeFlight()));
+            return "User/Flight/Flight";
+      }catch (Exception e) {
+          e.printStackTrace();
+          return null;
+      }
     }
-    public String SearchHotelFlight(ModelMap model, @ModelAttribute("Search") SearchFlightDTO searchFlightDTO,HttpSession session) {
+    public String SearchHotelFlight(ModelMap model, @ModelAttribute("Search") SearchFlightDTO searchFlightDTO, HttpSession session,
+                                    @RequestParam(value = "page", defaultValue = "0") int page,
+                                    @RequestParam(value = "size", defaultValue = "10") int size,@RequestParam(value="minPrice",defaultValue = "0")BigDecimal minPrice,@RequestParam(value = "maxPrice",defaultValue = "10000")BigDecimal maxPrice) {
 
-        String selectedDateStr=searchFlightDTO.getDepartureTime().trim();
-        if (selectedDateStr.endsWith(",")) {
-            selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
+
+        minPrice=hotelService.FindMinPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom());
+        maxPrice=hotelService.FindMaxPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom());
+        Instant dateDepartureTime=parseToInstant(searchFlightDTO.getDepartureTime());
+        Instant dateCheckInTime=parseToInstant(searchFlightDTO.getCheckInTime());
+        String dateCheckIn=formatDate(dateCheckInTime);
+        Instant dateCheckOutTime=parseToInstant(searchFlightDTO.getCheckOutTime());
+        String dateCheckOut=formatDate(dateCheckOutTime);
+        String dateDeparture=formatDate(dateDepartureTime);
+        Instant ArrivalTime=parseToInstant(searchFlightDTO.getArrivalTime());
+        String dateArrival=formatDate(ArrivalTime);
+        String selectedDateStr = searchFlightDTO.getDepartureTime().trim();
+        // Kiểm tra nếu selectedDateStr rỗng hoặc null
+        if (selectedDateStr == null || selectedDateStr.isEmpty()) {
+            throw new IllegalArgumentException("Departure time is required.");
         }
-        searchFlightDTO.setDepartureTime(selectedDateStr);
 
-        model.put("Hotel", hotelService.SearchHotels(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
-        DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-        List<Map<String, String>> dateList = new ArrayList<>();
-        for (int i=0;i<=4;i++){
-            LocalDate nextDate = selectedDate.plusDays(i);
-            String nextDateStr = nextDate.format(formatter);
-            BigDecimal minPrice=flightService.FindPrice(searchFlightDTO.getDepartureAirport(),
-                    searchFlightDTO.getArrivalAirport(),nextDate,
-                    searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight());
-            Map<String, String> dateMap = new HashMap<>();
-            dateMap.put("day", String.valueOf(nextDate.getDayOfMonth()));
-            dateMap.put("month", String.valueOf(nextDate.getMonthValue()));
-            dateMap.put("minprice",String.valueOf(minPrice));
-            model.put("Flight"+i,flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),
-                    nextDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-            dateList.add(dateMap);
-        }
-        model.put("dateList", dateList);
-        model.put("searchFlightDTO",searchFlightDTO);
-        String departureTime = searchFlightDTO.getDepartureTime().trim();
-        if(departureTime.endsWith(",")){
-            departureTime = departureTime.substring(0, departureTime.length() - 1);
-        }
-        DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate departureDate = LocalDate.parse(departureTime, formatterDepartureDate);
-        session.setAttribute("NumberPeople",searchFlightDTO.getNumberPeopleRight());
-        session.setAttribute("searchFlightDTO",searchFlightDTO);
-        model.put("Airline",airlineService.searchAirline(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight()));
-
-        return "User/Flight/Flight";
-    }
-    public String SearchFlight(ModelMap model, @ModelAttribute("Search")SearchFlightDTO searchFlightDTO, HttpSession session) {
-
-        String selectedDateStr=searchFlightDTO.getDepartureTime().trim();
+        // Xóa dấu phẩy cuối nếu có
         if (selectedDateStr.endsWith(",")) {
             selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
         }
 
-        DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-        List<Map<String, String>> dateList = new ArrayList<>();
-        for (int i=0;i<=4;i++){
-            LocalDate nextDate = selectedDate.plusDays(i);
-            String nextDateStr = nextDate.format(formatter);
-            BigDecimal minPrice=flightService.FindPrice(searchFlightDTO.getDepartureAirport(),
-                    searchFlightDTO.getArrivalAirport(),nextDate,
-                    searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight());
-            Map<String, String> dateMap = new HashMap<>();
-            dateMap.put("day", String.valueOf(nextDate.getDayOfMonth()));
-            dateMap.put("month", String.valueOf(nextDate.getMonthValue()));
-            dateMap.put("minprice",String.valueOf(minPrice));
-            model.put("Flight"+i,flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),
-                    nextDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-            dateList.add(dateMap);
+        // Định dạng và parse ngày
+        DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate departureDate = LocalDate.parse(selectedDateStr, formatterDepartureDate);
+
+        // Thêm dữ liệu vào model
+        model.put("Search",searchFlightDTO);
+        List<HotelSearchDTO>allHotel=hotelService.SearchHotels(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom(),minPrice,maxPrice);
+        model.put("Hotel", allHotel);
+        model.put("currentPage", page);
+        model.put("totalPages", (int) Math.ceil((double) allHotel.size() / size));
+        model.put("totalItems", allHotel.size());
+        model.put("pageSize", size);
+        model.put("MinPrice",hotelService.FindMinPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
+        model.put("MaxPrice",hotelService.FindMaxPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
+        session.setAttribute("HotelSearch", searchFlightDTO);
+        model.put("Flight", flightService.FindResultFlightAndHotel(
+                searchFlightDTO.getDepartureAirport(),
+                searchFlightDTO.getArrivalAirport(),
+                departureDate,
+                searchFlightDTO.getTypeFlight()
+        )!=null?flightService.FindResultFlightAndHotel(
+                searchFlightDTO.getDepartureAirport(),
+                searchFlightDTO.getArrivalAirport(),
+                departureDate,
+                searchFlightDTO.getTypeFlight()
+        ):new ResultFlightDTO());
+        model.put("DepartureDate",dateDeparture);
+        model.put("ArrivalDate",dateArrival);
+        model.put("CheckIn",dateCheckIn);
+        model.put("CheckOut",dateCheckOut);
+        model.put("People",searchFlightDTO.getNumberPeopleRight());
+        model.put("Room",searchFlightDTO.getQuantityRoom());
+
+        return "User/Hotel/Hotel";
+    }
+    public String SearchFlight(ModelMap model, @ModelAttribute("Search") SearchFlightDTO searchFlightDTO, HttpSession session
+     ) {
+
+        // Xử lý ngày tháng
+        String selectedDateStr = searchFlightDTO.getDepartureTime().trim();
+        if (selectedDateStr.endsWith(",")) {
+            selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
         }
-        model.put("dateList", dateList);
-        model.put("searchFlightDTO",searchFlightDTO);
+
+        model.put("searchFlightDTO", searchFlightDTO);
         String departureTime = searchFlightDTO.getDepartureTime().trim();
-        if(departureTime.endsWith(",")){
+        if (departureTime.endsWith(",")) {
             departureTime = departureTime.substring(0, departureTime.length() - 1);
         }
+
+        // Định dạng ngày
         DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate departureDate = LocalDate.parse(departureTime, formatterDepartureDate);
-        session.setAttribute("NumberPeople",searchFlightDTO.getNumberPeopleRight());
-        session.setAttribute("searchFlightDTO",searchFlightDTO);
-        model.put("Airline",airlineService.searchAirline(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight()));
+        session.setAttribute("NumberPeople", searchFlightDTO.getNumberPeopleRight());
+        session.setAttribute("searchFlightDTO", searchFlightDTO);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
+
+        // Lấy danh sách chuyến bay
+        List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
+                searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight());
+
+
+        model.put("Flight", resultFlightDTOS);
+        model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+        model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+        // Lấy thông tin hãng hàng không
+        model.put("Airline", airlineService.searchAirline(searchFlightDTO.getDepartureAirport(), searchFlightDTO.getArrivalAirport(),
+                departureDate, searchFlightDTO.getTypeFlight()));
 
         return "User/Flight/Flight";
     }
     @GetMapping("SearchFlight")
-    public String SearchFlight(HttpServletRequest request, ModelMap model,@ModelAttribute("Search")SearchFlightDTO searchFlightDTO,HttpSession session) {
+    public String SearchFlight(HttpServletRequest request, ModelMap model,@ModelAttribute("Search")SearchFlightDTO searchFlightDTO,HttpSession session,
+                               @RequestParam(value = "page", defaultValue = "0") int page,
+                               @RequestParam(value = "size", defaultValue = "10") int size,
+                               @RequestParam(value="minPrice",defaultValue = "0")BigDecimal minPrice,@RequestParam(value = "maxPrice",defaultValue = "10000")BigDecimal maxPrice) {
       if(searchFlightDTO.isSelectedHotel()==false){
           return SearchFlight(model,searchFlightDTO,session);
       }else{
-          return SearchHotelFlight(model,searchFlightDTO,session);
+          return SearchHotelFlight(model,searchFlightDTO,session,page,size,minPrice,maxPrice);
       }
     }
     @GetMapping("RoundTrip/{id}")
@@ -227,12 +222,16 @@ public class HomeController {
             if(ArrivalTime.endsWith(",")){
                 ArrivalTime = ArrivalTime.substring(0, ArrivalTime.length() - 1);
             }
-
+            Airport airport=airportRepository.findById(searchFlightDTO.getArrivalAirport())
+                    .orElseThrow(()->new RuntimeException("Aiport not found"));
             DateTimeFormatter formatterDepartureDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate ArrivalDate = LocalDate.parse(ArrivalTime, formatterDepartureDate);
             model.put("searchFlightDTO",searchFlightDTO);
+            model.put("NameArrivalAirport",airport.getCity().getName());
             model.put("flight",flightService.FindByIdFlight(id));
-            model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight()));
+            model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+            model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+            model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
             return "User/Flight/RoundTripFlight";
         }catch (Exception e) {
             e.printStackTrace();
@@ -259,7 +258,7 @@ public class HomeController {
             model.put("searchFlightDTO",searchFlightDTO);
             model.put("NameArrivalAirport",airport.getCity().getName());
             model.put("flight",flightService.FindByIdFlight(id));
-            model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight()));
+            model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
             return "User/Flight/RoundTripFlight";
         }catch (Exception e) {
             e.printStackTrace();

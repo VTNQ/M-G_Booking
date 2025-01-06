@@ -38,7 +38,7 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="tab-content hero-tab-pane">
+                    <div class="tab-content hero-tab-pane" style="display:block;border: none;background-color: transparent">
                         <div class="tab-pane fade active show">
                             <form th:action="@{/SearchFlight}" method="get" class="js-validate">
                                 <div class="row nav-select nav-select-1 d-block d-lg-flex mb-lg-2 px-lg-3 px-2 align-items-end">
@@ -143,7 +143,7 @@
                                                     <div class="dropdown-container">
 
                                                         <div class="dropdown">
-                                                            <select id="classSelect" th:field="${Search.typeFlight}" class="form-select " style="margin-top: 2vh;background-color: transparent;outline: none;border: none">
+                                                            <select id="classSelect" th:field="${searchFlightDTO.typeFlight}" class="form-select " style="margin-top: 2vh;background-color: transparent;outline: none;border: none">
                                                                 <option value="First Class" >First Class</option>
                                                                 <option value="Business Class">Business Class</option>
                                                                 <option value="Merchant" >Merchant</option>
@@ -501,18 +501,18 @@
                         </ul>
                     </div>
                 </div>
-                <div class="tab-content">
-                    <th:block th:each="item, iterStat: ${dateList}">
-                        <div class="tab-pane fade TabShow" th:id="'TabPanel' + ${iterStat.index}">
+                <div class="tab-content" style="display: flex;border: none">
+
+                        <div >
                             <div class="row">
-                                <th:block th:with="currentFlights=${#vars['Flight' + iterStat.index]}">
-                                    <th:block th:each="item: ${currentFlights}">
+
+                                    <th:block th:each="item, iterStat : ${Flight}">
                                         <div id="flight-item"
                                              class="hover-bg-gray-1 border rounded-xs py-4 px-4 px-xl-5 mb-5"
                                              style="border-radius: 0.188rem" th:data-airline-id="${item.idFlight}"
                                              th:data-price="${item.price}" th:data-TimeDepart="${item.timeDepart}"
                                              th:data-timeArrival="${item.timeArrival}"
-                                             th:data-duration="${item.durationString}">
+                                             th:data-duration="${item.durationString}" th:data-page="${iterStat.index / 5 + 1}">
                                             <div class="row align-items-center text-center">
                                                 <div class="col-md mb-4 mb-md-0">
                                                     <img class="img-fluid"
@@ -585,11 +585,12 @@
                                                 </div>
                                             </div>
                                     </th:block>
-                                </th:block>
                                         </div>
+
                         </div>
-                                    </th:block>
-                                </th:block>
+<input type="hidden" id="minPrice" th:value="${MinPrice}">
+<input type="hidden" id="maxPrice" th:value="${MaxPrice}">
+
 
 
                             </div>

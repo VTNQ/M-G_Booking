@@ -93,4 +93,14 @@ public class AirportServiceImplement implements AirportService {
             return 0;
         }
     }
+
+    @Override
+    public boolean existAirportInCity(int id) {
+        try {
+            return airportRepository.existsAirportInCity(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

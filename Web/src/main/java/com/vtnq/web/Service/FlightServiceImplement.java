@@ -20,6 +20,7 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightServiceImplement implements FlightService{
@@ -131,6 +132,8 @@ public class FlightServiceImplement implements FlightService{
 
     }
 
+
+
     @Override
     public List<ResultFlightDTO> SearchFlightAllDto(int departureAirport, int arrivalAirport, LocalDate departureTime, LocalDate ArrivalTime, String TypeFlight) {
         try {
@@ -197,6 +200,26 @@ public class FlightServiceImplement implements FlightService{
         }
     }
 
+    @Override
+    public BigDecimal FindMinPriceDeparture(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight, int totalPeople) {
+        try {
+            return flightRepository.FindMinPriceDeparture(departureAirport,arrivalAirport,departureTime,TypeFlight,totalPeople);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public BigDecimal FindMaxPriceDeparture(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight, int totalPeople) {
+        try {
+            return flightRepository.FindMaxPriceDeparture(departureAirport,arrivalAirport,departureTime,TypeFlight,totalPeople);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     private List<Seat> createSeatsForClass(int startSeatIndex, int endSeatIndex, String seatClass, int flightId, BigDecimal price,int status) {
         List<Seat> seats = new ArrayList<>();
         int seatsPerRow = 6;
@@ -216,10 +239,7 @@ public class FlightServiceImplement implements FlightService{
         }
         return seats;
     }
-    @Override
-    public Flight getFlight(int id) {
-        return flightRepository.findById(id).get();
-    }
+
 
     @Override
     public BookingListFly getResultPaymentFlight(int id) {
@@ -242,9 +262,19 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
-    public List<ResultFlightDTO> FindArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight) {
+    public List<ResultFlightDTO> FindArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight,int totalPeople) {
         try {
-        return flightRepository.FindArrivalTimeFlights(departureAirport, arrivalAirport, arrivalTime, TypeFlight);
+        return flightRepository.FindArrivalTimeFlights(departureAirport, arrivalAirport, arrivalTime, TypeFlight,totalPeople);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public BigDecimal FindMinPriceArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight, int totalPeople) {
+        try {
+            return flightRepository.MinArrivalTime(departureAirport,arrivalAirport,arrivalTime,TypeFlight,totalPeople);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -258,6 +288,16 @@ public class FlightServiceImplement implements FlightService{
         }catch (Exception ex){
             ex.printStackTrace();
             return 0;
+        }
+    }
+
+    @Override
+    public BigDecimal FindMaxPriceArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight, int totalPeople) {
+        try {
+            return flightRepository.MaxArrivalTime(departureAirport,arrivalAirport,arrivalTime,TypeFlight,totalPeople);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
         }
     }
 

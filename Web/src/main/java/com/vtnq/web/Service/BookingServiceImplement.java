@@ -29,6 +29,7 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class BookingServiceImplement implements BookingService {
@@ -57,7 +58,15 @@ public class BookingServiceImplement implements BookingService {
     private BookingHotelDetailRepository hotelDetailRepository;
     @Autowired
     private ModelMapper modelMapper;
-
+    private String generateRandomAlphanumericCode(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder code = new StringBuilder(length);
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            code.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return code.toString();
+    }
     @Override
     public int addBooking(BookingFlightDTO bookingFlightDTO, String bookings) {
         try {
@@ -84,6 +93,10 @@ public class BookingServiceImplement implements BookingService {
                         .orElseThrow(() -> new RuntimeException("Booking Flight not found"));
                 Flight flight = flightRepository.findById(bookingFlightDetail.getFlightId())
                         .orElseThrow(() -> new RuntimeException("Flight not Round"));
+                if(bookingFlightDetail.getBaggage()!=0){
+                    bookingFlightDetailEntity.setBaggage(bookingFlightDetail.getBaggage());
+                }
+
                 bookingFlightDetailEntity.setFlight(flight);
                 bookingFlightDetailEntity.setBookingFlight(bookingFlight);
                 bookingFlightDetailEntity.setTotalPrice(bookingFlightDetail.getTotalPrice());
@@ -102,6 +115,7 @@ public class BookingServiceImplement implements BookingService {
             bookingFlight.setCreatedAt(Instant.now());
             bookingFlight.setUserId(bookingFlightDTO.getUserId());
             bookingFlight.setTotalPrice(bookingFlightDTO.getTotalPrice());
+            bookingFlight.setBookingCode(generateRandomAlphanumericCode(5));
           Booking insertBooking=  bookingRepository.save(bookingFlight);
 
             List<Booking> userBookings = bookingRepository.FindBookingByUserId(account.getId());
@@ -190,7 +204,9 @@ public class BookingServiceImplement implements BookingService {
                 bookingFlightDetailEntity.setTotalPrice(bookingFlightDetail.getTotalPrice());
                 Seat seat = seatRepository.findById(bookingFlightDetail.getId())
                         .orElseThrow(() -> new RuntimeException("Seat Not Found"));
-
+                if(bookingFlightDetail.getBaggage()!=0){
+                    bookingFlightDetailEntity.setBaggage(bookingFlightDetail.getBaggage());
+                }
                 seat.setStatus(1);
                 seatRepository.save(seat);
                 bookingFlightDetailEntity.setSeat(seat);
@@ -202,6 +218,7 @@ public class BookingServiceImplement implements BookingService {
             bookingFlight.setBookingFlight(bookingFlightEntity);
             bookingFlight.setBookingRoom(insertBooking);
             bookingFlight.setCreatedAt(Instant.now());
+            bookingFlight.setBookingCode(generateRandomAlphanumericCode(5));
             bookingRepository.save(bookingFlight);
             return true;
         } catch (Exception e) {
@@ -271,9 +288,12 @@ public class BookingServiceImplement implements BookingService {
     }
 
     @Override
-    public List<HistoryOrderFlight> FindHistoryOrderFlights(int id) {
+    public List<HistoryOrderFlight> FindHistoryOrderFlights(int id,int page,int size,String flightCode,LocalDate departureTime,LocalDate arrivalTime) {
         try {
-            return bookingFlightRepository.FindFlightByUser(id);
+            int offset=page*size;
+            List<Object[]>results=bookingFlightRepository.FindFlightByUser(id,size,offset,flightCode,departureTime,arrivalTime);
+            return HistoryOrderFlight.mapHistoryOrderFlight(results);
+
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -281,18 +301,22 @@ public class BookingServiceImplement implements BookingService {
     }
 
     @Override
-    public List<HistoryOrderHotel> FindHistoryOrderHotels(int id) {
+    public List<HistoryOrderHotel> FindHistoryOrderHotels(int id,int page,int size,String hotelName,LocalDate checkInDate,LocalDate checkOutDate) {
         try {
-           List<HistoryOrderHotel> historyOrderHotel= bookingRoomRepository.FindHotelById(id);
-           for (HistoryOrderHotel h : historyOrderHotel) {
-               h.setTotalRoom(bookingRoomRepository.CountBookingRoomByRoomId(h.getId()));
-           }
-           return historyOrderHotel;
+            int offset = page * size;
+            List<Object[]>results=bookingRoomRepository.FindHotelById(id,size,offset,hotelName,checkInDate,checkOutDate);
+
+            List<HistoryOrderHotel>historyOrderHotels=HistoryOrderHotel.mapHistoryOrderHotel(results);
+            for (HistoryOrderHotel historyOrderHotel : historyOrderHotels) {
+                int total=bookingRoomRepository.CountBookingRoomByRoomId(historyOrderHotel.getId());
+                historyOrderHotel.setTotalRoom(total);
+            }
+            return historyOrderHotels;
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
         }
-    }
+        }
 
 
 }

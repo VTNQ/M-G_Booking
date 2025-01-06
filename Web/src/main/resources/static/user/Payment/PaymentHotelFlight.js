@@ -2,6 +2,7 @@
 let selectedPassenger = null;
 let selectedSeat = null;
 let selectedSeatName=null;
+let totalPriceBuggage=0;
 let totalPrice=0;
 const selectedSeats = new Map();
 function addSeat(seatId,SeatName){
@@ -85,36 +86,57 @@ function createSeatDiv(seat) {
         seatDiv.addEventListener('click', () => {
 
             const hiddenInput = document.getElementById('bookings');
+            let amountValue = document.getElementById('amount').value;
+
+// Chuyển đổi giá trị sang số
+            let numericAmount = parseFloat(amountValue);
+
+
+
+// Kiểm tra nếu giá trị không hợp lệ
+            if (isNaN(numericAmount)) {
+                console.log("Invalid input: The value is not a number.");
+                numericAmount = 0; // Hoặc bạn có thể để giá trị mặc định khác
+            }
+
+
+
             const exists = bookings.some(booking => booking.id === seat.id);
-            if(exists){
+
+            if (exists) {
+                numericAmount-=seat.price;
                 const index = bookings.findIndex(booking => booking.id === seat.id);
 
                 if (index !== -1) {
                     bookings.splice(index, 1);
-                    hiddenInput.value=JSON.stringify(bookings);
+                    hiddenInput.value = JSON.stringify(bookings);
 
                 }
+            }else{
+                numericAmount+=seat.price;
             }
+            document.getElementById('amount').value = numericAmount.toFixed(0);
+            document.getElementById('totalPriceBooking').textContent='$  '+numericAmount.toFixed(0);
             const seatName = seatDiv.dataset.seatName;
             if (seatDiv.classList.contains('isSelected')) {
                 // Deselect the seat
-                totalPrice=totalPrice-seat.price;
+                totalPrice = totalPrice - seat.price;
                 if (totalPrice < 0) {
                     totalPrice = 0;
                 }
-                document.getElementById('totalPrice').textContent=totalPrice+' USD';
+                document.getElementById('totalPrice').textContent = totalPrice + ' USD';
                 seatDiv.classList.remove('isSelected');
 
-                document.getElementById('totalPrice').textContent=totalPrice+' USD';
+                document.getElementById('totalPrice').textContent = totalPrice + ' USD';
                 seatDiv.querySelector('.fa-user')?.remove();
-                const PassagerInfo=document.querySelectorAll('.passenger-info');
+                const PassagerInfo = document.querySelectorAll('.passenger-info');
                 console.log(PassagerInfo)
-                PassagerInfo.forEach(pass=>{
+                PassagerInfo.forEach(pass => {
                     console.log(pass.dataset.seat1Id);
-                    if(pass.dataset.seat1Id===seat.id.toString()){
+                    if (pass.dataset.seat1Id === seat.id.toString()) {
                         pass.classList.add('selected')
-                        pass.querySelector('.passenger-block .seat-info .seat-price').textContent='0 USD'
-                    }else{
+                        pass.querySelector('.passenger-block .seat-info .seat-price').textContent = '0 USD'
+                    } else {
                         pass.classList.remove('selected')
                     }
                 })
@@ -127,11 +149,17 @@ function createSeatDiv(seat) {
                 seatIdElements.forEach(seatElement => {
                     // Check if this seat element has a matching seat ID
 
-                    if (seatElement.dataset.seatId=== seat.id.toString() ) {
-                        seatElement.textContent='';
+                    if (seatElement.dataset.seatId === seat.id.toString()) {
+                        seatElement.textContent = '';
 
                         delete seatElement.dataset.seatId;
-                        removeSeat(seat.id)
+                        removeSeat(seat.id);
+                        const checkedInputs = document.querySelectorAll(`input[name="baggage-${seat.idFlight}"]:checked`);
+
+                        checkedInputs.forEach(input => {
+                            input.checked = false; // Hủy trạng thái checked
+                        });
+                        document.getElementById(`baggage-info-${seat.idFlight}`).style.display='none'
                         seatElement.classList.remove('IsSelected')
                         seatElement.classList.add('selected')
 
@@ -141,7 +169,21 @@ function createSeatDiv(seat) {
                 });
 
             } else {
-                addSeat(seat.idFlight,seat.index);
+                const existflight = bookings.some(booking => booking.flightId === seat.idFlight);
+                console.log(bookings)
+                if (existflight) {
+                    bookings = bookings.map(booking =>
+                        booking.flightId === seat.idFlight
+                            ? {...booking, id:seat.id,totalPrice:seat.price}
+                            : booking
+                    );
+                    hiddenInput.value=JSON.stringify(bookings);
+                }else{
+                    addSeat(seat.idFlight,seat.index);
+                }
+
+
+
                 const selectedSeatsCount = document.querySelectorAll(`.seat-grid${seat.idFlight} .isSelected`).length;
                 console.log(selectedSeatsCount)
                 if (selectedSeatsCount >= maxSeats) {
@@ -150,7 +192,7 @@ function createSeatDiv(seat) {
                 }
                 const exists = bookings.some(booking => booking.id === seat.id);
                 if(!exists){
-                    bookings.push({id:seat.id,totalPrice:seat.price,flightId:seat.idFlight});
+                    bookings.push({id:seat.id,totalPrice:seat.price,flightId:seat.idFlight,baggage:0});
                     hiddenInput.value=JSON.stringify(bookings);
                 }
 
@@ -418,3 +460,56 @@ if (firstPassenger) {
 
 
 }
+document.querySelectorAll('.action-button').forEach((action,index)=>{
+    action.addEventListener('click',()=>{
+        const airline=action.getAttribute('data-flight-id');
+        const bookings=document.getElementById('bookings');
+
+        const popupOverplay=document.querySelector(`#popup-${airline}`);
+        popupOverplay.style.display='flex';
+        popupOverplay.style.zIndex='1000';
+    })
+})
+document.querySelectorAll('.confirm-btn').forEach((button) => {
+    button.addEventListener('click', function (event) {
+        const airline=button.getAttribute('data-flight-id');
+        const flightIndex=button.getAttribute('data-flight-index');
+        const numericAirline=Number(airline);
+        const popup = event.target.closest(`#popup-${airline}`);
+        console.log(popup)
+        const hiddenInput = document.getElementById('bookings');
+        const selectedOption = popup.querySelector(`input[name="baggage-${airline}"]:checked`);
+        const baggageValue = selectedOption ? selectedOption.value : null;
+        const priceElement = selectedOption ? selectedOption.closest('li').querySelector('.price-input').value : null;
+        const numericPrice = priceElement ? Number(priceElement) : 0;
+        totalPriceBuggage+=numericPrice;
+        console.log(totalPriceBuggage)
+        const exists = bookings.some(booking => booking.flightId === numericAirline);
+        if(!exists){
+
+            bookings.push({id:0,totalPrice:0,flightId:numericAirline,baggage:baggageValue});
+            hiddenInput.value=JSON.stringify(bookings);
+            document.getElementById(`baggage-info-${numericAirline}`).style.display='block';
+            document.getElementById(`carry-on-${numericAirline}`).textContent=`Hành khách ${flightIndex}: Ký gửi ${baggageValue} kg`;
+        }else{
+
+            bookings = bookings.map(booking =>
+                booking.flightId === numericAirline
+                    ? { ...booking, baggage: baggageValue }
+                    : booking
+            );
+            hiddenInput.value=JSON.stringify(bookings);
+            document.getElementById(`baggage-info-${numericAirline}`).style.display='block';
+            document.getElementById(`carry-on-${numericAirline}`).textContent=`Hành khách ${flightIndex}: Ký gửi ${baggageValue} kg`;
+        }
+
+        document.getElementById('BaggagePrice').textContent='$  '+totalPriceBuggage;
+        let valueAmount=document.getElementById('amount');
+        let currentAmount = Number(valueAmount.value);
+        let totalAmount = currentAmount + totalPriceBuggage;
+        valueAmount.value = totalAmount;
+        document.getElementById('totalPriceBooking').textContent='$ '+valueAmount.value;
+        popup.style.display='none';
+
+    });
+});

@@ -290,6 +290,8 @@ a{
     display: none; /* Ẩn mặc định */
     z-index: 10;
     padding: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 /* Gợi ý gần đây */

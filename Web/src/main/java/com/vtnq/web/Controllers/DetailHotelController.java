@@ -33,6 +33,7 @@ public class DetailHotelController {
     @GetMapping({"DetailHotel/{id}"})
     public String DetailController(ModelMap modelMap, @PathVariable int id, HttpServletRequest request) {
         try {
+
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
             SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("HotelSearch");
             modelMap.put("Hotel",hotelService.FindDetailHotel(id));

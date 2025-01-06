@@ -351,3 +351,38 @@ async function SearchById( id){
         console.log(error)
     }
 }
+document.addEventListener("DOMContentLoaded",function (){
+    var priceRange=document.getElementById('price-range');
+    var priceRangeText = document.getElementById('price-range-text');
+    var minPrice=parseFloat(document.getElementById('MinPrice').value || 0)
+    var MinPriceInput=document.getElementById('minPriceInput');
+    var maxPriceInput=document.getElementById('maxPriceInput');
+    var maxPrice=parseFloat(document.getElementById('MaxPrice').value ||0);
+    noUiSlider.create(priceRange, {
+        start: [minPrice, maxPrice], // Set the default values for the range
+        connect: true, // Connect the handles
+        range: {
+            'min': minPrice,    // Minimum value of the slider
+            'max': maxPrice   // Maximum value of the slider
+        },
+        step: 10,  // Step size for the slider
+        tooltips: true, // Show the current value when the user drags the handle
+        format: {
+            to: function (value) {
+                return '£' + Math.round(value); // Format values as currency
+            },
+            from: function (value) {
+                return value.replace('£', ''); // Convert from the formatted string
+            }
+        }
+    });
+    priceRange.noUiSlider.on('update', function (values, handle) {
+        const minPrice = parseFloat(values[0].replace('£', '').replace(',', ''));
+        const maxPrice = parseFloat(values[1].replace('£', '').replace(',', ''));
+
+        priceRangeText.textContent =  values[0]+' - '+values[1];
+        console.log(minPrice)
+      MinPriceInput.value=minPrice;
+      maxPriceInput.value=maxPrice;
+    });
+})

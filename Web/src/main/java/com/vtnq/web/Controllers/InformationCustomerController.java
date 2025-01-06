@@ -1,11 +1,13 @@
 package com.vtnq.web.Controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.vtnq.web.DTOs.Booking.*;
 import com.vtnq.web.DTOs.Booking.BookingFlightDetail;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.vtnq.web.DTOs.Flight.SearchFlightDTO;
 import com.vtnq.web.Entities.*;
 import com.vtnq.web.Repositories.BookingRepository;
@@ -66,6 +68,26 @@ public class InformationCustomerController {
            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
            LocalDate CheckInDate = LocalDate.parse(resultFlightDTO.getCheckInTime(), formatter);
            LocalDate CheckOutDate = LocalDate.parse(resultFlightDTO.getCheckOutTime(), formatter);
+           if(bookingsJson.isEmpty()){
+               return new RedirectView(request.getHeader("Referer"));
+           }
+           ObjectMapper objectMapper = new ObjectMapper();
+           List<Map<String, Object>> bookings = objectMapper.readValue(bookingsJson, new TypeReference<List<Map<String, Object>>>() {});
+           boolean hasInvalidBooking = bookings.stream()
+                   .anyMatch(booking -> booking.containsKey("id") && (Integer) booking.get("id") == 0);
+
+           if (hasInvalidBooking) {
+               return new RedirectView(request.getHeader("Referer"));
+           }
+           if(resultFlightDTO.isRoundTrip()==true){
+               if(bookings.size()!=resultFlightDTO.getNumberPeopleRight()*2){
+                   return new RedirectView(request.getHeader("Referer"));
+               }
+           }else{
+               if(bookings.size()!=resultFlightDTO.getNumberPeopleRight()){
+                   return new RedirectView(request.getHeader("Referer"));
+               }
+           }
            bookingHotelDTO.setCheckInDate(CheckInDate);
            bookingHotelDTO.setCheckOutDate(CheckOutDate);
            bookingFlightDTO.setUserId(currentAccount.getId());
@@ -91,7 +113,12 @@ public class InformationCustomerController {
        try {
            SearchFlightDTO resultFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
            List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
+           Integer idRoom=(Integer) request.getSession().getAttribute("idRoom");
 
+            boolean existFlightBooking=idFlight.stream().anyMatch(flight->flight==id);
+            if(!existFlightBooking){
+                idFlight.add(id);
+            }
            List<BookingListFly>FlightBooking=new ArrayList<>();
            List<Flight>flights=new ArrayList<>();
            if(idFlight!=null){
@@ -114,8 +141,8 @@ public class InformationCustomerController {
                }
                modelMap.put("idFlight",idFlight);
            }
-           BookingHotel bookingHotel=hotelService.FindBookingHotel(id);
-           modelMap.put("hotel",hotelService.FindBookingHotel(id));
+           BookingHotel bookingHotel=hotelService.FindBookingHotel(idRoom);
+           modelMap.put("hotel",hotelService.FindBookingHotel(idRoom));
            BigDecimal total = bookingHotel.getPrice()
                    .multiply(BigDecimal.valueOf(resultFlightDTO.getNumberPeopleRight()));
            modelMap.put("flight",FlightBooking);
@@ -143,13 +170,37 @@ public class InformationCustomerController {
    }
     @GetMapping("payFlight")
     public RedirectView payment(@RequestParam(required = true) double amount,
-                                @RequestParam(defaultValue = "JPY") String currency, @ModelAttribute BookingFlightDTO bookingFlightDTO, @RequestParam("bookings") String bookingsJson, HttpSession session, HttpServletRequest request) {
+                                @RequestParam(defaultValue = "JPY") String currency, @ModelAttribute BookingFlightDTO bookingFlightDTO, @RequestParam("bookings") String bookingsJson, HttpSession session, HttpServletRequest request) throws JsonProcessingException {
         try {
+            SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
+
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+            if(bookingsJson.isEmpty()){
+                return new RedirectView(request.getHeader("Referer"));
+            }
             bookingFlightDTO.setUserId(currentAccount.getId());
             bookingFlightDTO.setTotalPrice(BigDecimal.valueOf(amount));
             session.setAttribute("booking", bookingFlightDTO);
             session.setAttribute("bookings", bookingsJson);
+            Integer NumberPeople = (Integer) request.getSession().getAttribute("NumberPeople");
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> bookings = objectMapper.readValue(bookingsJson, new TypeReference<List<Map<String, Object>>>() {});
+            boolean hasInvalidBooking = bookings.stream()
+                    .anyMatch(booking -> booking.containsKey("id") && (Integer) booking.get("id") == 0);
+
+            if (hasInvalidBooking) {
+                return new RedirectView(request.getHeader("Referer"));
+            }
+            if(searchFlightDTO.isRoundTrip()==true){
+                if(bookings.size()!=NumberPeople*2){
+                    return new RedirectView(request.getHeader("Referer"));
+                }
+            }else{
+                if(bookings.size()!=NumberPeople){
+                    return new RedirectView(request.getHeader("Referer"));
+                }
+            }
+
             Payment payment = payPalService.createPayment(amount, currency, "paypal",
                     "sale", "Test payment", "http://localhost:8686/" + CANCEL_URL,
                     "http://localhost:8686/" + SUCCESS_URL);
@@ -262,13 +313,16 @@ public class InformationCustomerController {
     public String InformationFly(@PathVariable int id, ModelMap modelMap,HttpServletRequest request) {
         try {
             List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
+
             List<BookingListFly>FlightBooking=new ArrayList<>();
             List<Flight>flights=new ArrayList<>();
+            BigDecimal total=BigDecimal.ZERO;
             if(idFlight!=null){
                 for (Integer i:idFlight) {
                     boolean existsFlightTab=flights.stream().anyMatch(flight->flight.getId()==i);
                     if(!existsFlightTab){
                         Flight flight=flightRepository.findById(i).get();
+                        total=total.add(flight.getPrice());
                         flights.add(flight);
                     }
                     boolean existBookingListFly=FlightBooking.stream().anyMatch(booking->booking.
@@ -307,6 +361,7 @@ public class InformationCustomerController {
             modelMap.put("number",NumberPeople);
             int paymentTimeOut=20*60;
             modelMap.put("timeout",paymentTimeOut);
+            modelMap.put("total",total);
             return "/User/InformationCustomer/InformationFly";
         }catch (Exception e) {
             e.printStackTrace();

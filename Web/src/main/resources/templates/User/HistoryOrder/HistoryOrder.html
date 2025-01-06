@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{/User/layout/layout :: mainContent('Detail Hotel',~{this::#content})}">
+      th:replace="~{/User/layout/layout :: mainContent('History Order',~{this::#content})}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,11 +10,30 @@
  <div class="container my-5">
      <h1 class="text-center mb-4">Order List</h1>
      <div class="tabs">
-         <div class="tab active">Hotel</div>
-         <div class="tab">Flight</div>
+         <div class="tab active"  onclick="showTab('hotel')">Hotel</div>
+         <div class="tab" onclick="showTab('flight')">Flight</div>
      </div>
      <div class="tab-content active" id="hotel">
          <h3>Hotel Booking Details</h3>
+         <form th:action="@{/HistoryOrder}" method="get">
+             <div class="form-row">
+                 <div class="col">
+                     <input type="text" name="hotelName" th:value="${hotelName}" class="form-control" placeholder="Hotel Name">
+                 </div>
+
+                 <div class="col">
+                     <input type="date" name="checkInDate" th:value="${checkInDate}" class="form-control" placeholder="Check-in Date">
+                 </div>
+                 <div class="col">
+                     <input type="date" name="checkOutDate" th:value="${checkOutDate}" class="form-control" placeholder="Check-out Date">
+                 </div>
+
+
+             </div>
+             <div class="col mb-3 mt-3">
+                 <button type="submit" class="btn btn-primary">Search</button>
+             </div>
+         </form>
          <table>
              <thead>
              <tr>
@@ -38,9 +57,43 @@
                 </th:block>
              </tbody>
          </table>
+         <div class="pagination">
+             <!-- Nút "Previous" -->
+             <a th:href="@{/HistoryOrder(hotelPage=${currentHotelPage - 1},flightPage=${currentFlightPage})}"
+                th:classappend="${currentHotelPage > 0 ? '' : 'disabled'}" class="btn btn-primary"
+               >Previous</a>
+
+             <!-- Hiển thị số trang hiện tại -->
+             <span>Page <strong th:text="${currentHotelPage + 1}"></strong></span>
+
+             <!-- Nút "Next" -->
+             <a th:href="@{/HistoryOrder(hotelPage=${currentHotelPage + 1},flightPage=${currentFlightPage})}"
+                 class="btn btn-primary">Next</a>
+         </div>
+
+
      </div>
      <div class="tab-content " id="flight">
          <h3>Flight Booking Details</h3>
+         <form th:action="@{/HistoryOrder}" method="get">
+             <div class="form-row">
+                 <div class="col">
+                     <input type="text" name="flightCode" th:value="${flightCode}" class="form-control" placeholder="Hotel Name">
+                 </div>
+
+                 <div class="col">
+                     <input type="date" name="departureTime" th:value="${departureTime}" class="form-control" placeholder="Departure Date">
+                 </div>
+                 <div class="col">
+                     <input type="date" name="ArrivalTime" th:value="${arrivalTime}" class="form-control" placeholder="Arrival Date">
+                 </div>
+
+
+             </div>
+             <div class="col mb-3 mt-3">
+                 <button type="submit" class="btn btn-primary">Search</button>
+             </div>
+         </form>
          <table>
              <thead>
              <tr>
@@ -65,9 +118,24 @@
 
              </tbody>
          </table>
+         <div class="pagination">
+             <!-- Nút "Previous" -->
+             <a th:href="@{/HistoryOrder(flightPage=${currentFlightPage - 1}, hotelPage=${currentHotelPage})}"
+                th:classappend="${currentFlightPage > 0 ? '' : 'disabled'}" class="btn btn-primary"
+             >Previous</a>
+
+             <!-- Hiển thị số trang hiện tại -->
+             <span>Page <strong th:text="${currentFlightPage + 1}"></strong></span>
+
+             <!-- Nút "Next" -->
+             <a th:href="@{/HistoryOrder(flightPage=${currentFlightPage + 1}, hotelPage=${currentHotelPage})}"
+                class="btn btn-primary">Next</a>
+         </div>
      </div>
  </div>
-</main>
+    <script th:fragment="customScripts" th:src="@{/user/HistoryOrder/HistoryOrder.js}"></script>
+
+        </main>
 
 </body>
 </html>

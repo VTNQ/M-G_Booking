@@ -56,14 +56,15 @@ document.querySelectorAll('.airline-checkbox').forEach(function(checkbox) {
 document.addEventListener("DOMContentLoaded", function() {
     var priceRange = document.getElementById('price-range');
     var priceRangeText = document.getElementById('price-range-text');
-
+    var minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+    var maxPrice = parseFloat(document.getElementById('maxPrice').value) || 0;
     // Initialize the noUiSlider
     noUiSlider.create(priceRange, {
-        start: [200, 120000], // Set the default values for the range
+        start: [minPrice, maxPrice], // Set the default values for the range
         connect: true, // Connect the handles
         range: {
-            'min': 200,    // Minimum value of the slider
-            'max': 120000   // Maximum value of the slider
+            'min': minPrice,    // Minimum value of the slider
+            'max': maxPrice   // Maximum value of the slider
         },
         step: 10,  // Step size for the slider
         tooltips: true, // Show the current value when the user drags the handle
@@ -550,6 +551,20 @@ document.addEventListener('DOMContentLoaded',()=>{
     const closeButton = document.getElementById('close-popup');
     flightDetailsLinks.forEach(link=>{
         link.addEventListener('click',(event)=>{
+            const flightId = link.getAttribute('data-idFlight');
+            fetch(`http://localhost:8686/api/Flight/detail/${flightId}`)
+                .then(response=>response.json())
+                .then(data=>{
+
+                    document.getElementById('durationString').textContent=data.durationString;
+                    document.getElementById("img-popup").src="http://localhost:8686/images/flight/"+data.imageUrl;
+                    document.getElementById('nameAirline').textContent=data.nameAirline;
+                    document.getElementById('dateArrival').textContent=data.dateArrival;
+                    document.getElementById('dateDepart').textContent=data.dateDepart;
+                    document.getElementById('TimeArrival').textContent=data.timeArrival;
+                    document.getElementById('DepartureTime').textContent=data.timeDepart;
+                })
+                .catch(error => console.error('Error fetching seat details:', error));
             event.preventDefault();
             popup.style.setProperty('display', 'block', 'important');
             popup.style.zIndex='1000';

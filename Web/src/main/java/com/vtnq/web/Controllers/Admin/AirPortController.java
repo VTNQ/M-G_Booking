@@ -32,6 +32,11 @@ public class AirPortController {
                 redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/Admin/AirPort/add";
             }
+            if(airportService.existAirportInCity(airportDto.getIdCity())){
+                redirectAttributes.addFlashAttribute("message","This city has an airport.");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Admin/AirPort/add";
+            }
             if(airportService.existByName(airportDto.getName())) {
                 redirectAttributes.addFlashAttribute("message", "Airport already exists");
                 redirectAttributes.addFlashAttribute("messageType", "error");

@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryOrderHotel {
     private int id;
@@ -24,7 +26,20 @@ public class HistoryOrderHotel {
         CheckInDate = formatDate(checkInDate);
         CheckOutDate = formatDate(checkOutDate);
     }
-
+    public static List<HistoryOrderHotel>mapHistoryOrderHotel(List<Object[]>results){
+        List<HistoryOrderHotel>list = new ArrayList<>();
+        for (Object[]row : results) {
+            HistoryOrderHotel hotel=new HistoryOrderHotel(
+                    (Integer) row[0], // id
+                    (String) row[1],  // hotelName
+                    (String) row[2],  // roomType
+                    (LocalDate) row[3],    // checkInDate
+                    (LocalDate) row[4]
+            );
+            list.add(hotel);
+        }
+        return list;
+    }
     public int getTotalRoom() {
         return totalRoom;
     }

@@ -64,4 +64,14 @@ public class CountryServiceImplement implements CountryService{
             return false;
         }
     }
+
+    @Override
+    public boolean existCountry(String name) {
+        try {
+        return countryRepository.existsByCountry(name);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

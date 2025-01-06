@@ -11,4 +11,5 @@ public interface CountryService {
     public Country findCountryById(int id);
     public boolean UpdateCountry(Country country);
     public boolean deleteCountry(int id);
+    public boolean existCountry(String name);
 }
