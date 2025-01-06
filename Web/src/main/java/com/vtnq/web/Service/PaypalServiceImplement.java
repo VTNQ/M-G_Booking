@@ -21,21 +21,27 @@ public class PaypalServiceImplement implements PayPalService {
         // Format the total amount
         String formattedTotal;
         if (currency.equalsIgnoreCase("JPY") || currency.equalsIgnoreCase("HUF")) {
-            formattedTotal = String.format("%.0f", total); // No decimals for certain currencies
+            formattedTotal = String.format("%.0f", total); // Không có chữ số thập phân cho JPY và HUF
         } else {
-            formattedTotal = String.format("%.2f", total); // Two decimals for most currencies
+            formattedTotal = String.format("%.2f", total); // Hai chữ số thập phân
+        }
+
+        // Check for PayPal limits and round down if needed
+        if (formattedTotal.length() > 10) { // 7 chữ số trước dấu thập phân và 2 chữ số thập phân
+            formattedTotal = formattedTotal.substring(0, 10); // Cắt bớt để phù hợp giới hạn
         }
 
         // Construct Amount object
         Amount amount = new Amount();
         amount.setCurrency(currency);
         amount.setTotal(formattedTotal);
+
+        // Setup Details (ensure consistency between subtotal and total)
         Details details = new Details();
-        details.setSubtotal(formattedTotal);
+        details.setSubtotal(formattedTotal); // Subtotal phải khớp với tổng
         details.setShipping("0.00");
         details.setTax("0.00");
         amount.setDetails(details);
-
 
         // Create a Transaction
         Transaction transaction = new Transaction();
@@ -64,6 +70,7 @@ public class PaypalServiceImplement implements PayPalService {
         // Create Payment
         return payment.create(apiContext);
     }
+
 
     @Override
     public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {

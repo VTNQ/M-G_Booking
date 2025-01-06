@@ -3,6 +3,7 @@ package com.vtnq.web.Repositories;
 import com.vtnq.web.Entities.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -17,4 +18,5 @@ public interface CityRepository extends JpaRepository<City, Integer> {
     List<City> SearchCityOrCountry(String name);
     @Query("select count(a) from City a where a.country.id = :id")
     public int CountCity(int id);
+
 }

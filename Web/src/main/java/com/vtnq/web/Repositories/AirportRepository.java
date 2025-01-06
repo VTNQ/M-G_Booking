@@ -13,6 +13,8 @@ public interface AirportRepository extends JpaRepository<Airport, Integer> {
     List<Airport> findByCountry(@Param("id") int id);
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END FROM Airport a WHERE a.name = :name")
     boolean existsByName(@Param("name") String name);
+    @Query("SELECT CASE WHEN COUNT(a)>0 THEN TRUE ELSE FALSE END FROM Airport a where a.city.id= :id")
+    boolean existsAirportInCity(@Param("id")int id);
     @Query("SELECT new com.vtnq.web.DTOs.Airport.SearchAiportDTO(t.id,t.name,t.city,t.city.country.name) from  Airport t where t.name like %:SearchName% or  t.city.name like %:SearchName%")
     List<SearchAiportDTO>SearchAirPort(@Param("SearchName") String SearchName);
     @Query("select count(a) from Airport a where a.city.country.id= :id")

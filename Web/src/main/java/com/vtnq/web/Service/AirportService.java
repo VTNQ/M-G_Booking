@@ -14,4 +14,5 @@ public interface AirportService {
     List<Airport>findAll();
     public List<CountryAiportDTO>SearchAirport(String SearchName);
     public int CountAirport(int id);
+    public boolean existAirportInCity(int id);
 }

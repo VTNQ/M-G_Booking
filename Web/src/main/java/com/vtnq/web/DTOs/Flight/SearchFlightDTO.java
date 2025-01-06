@@ -11,6 +11,9 @@ public class SearchFlightDTO {
 
     public void setCheckInTime(String checkInTime) {
         this.checkInTime = checkInTime;
+        if(selectedHotel && checkInTime.isEmpty()) {
+            throw new IllegalArgumentException("Check In Required");
+        }
     }
 
     public String getCheckOutTime() {
@@ -19,6 +22,9 @@ public class SearchFlightDTO {
 
     public void setCheckOutTime(String checkOutTime) {
         this.checkOutTime = checkOutTime;
+        if (selectedHotel && (checkOutTime == null || checkOutTime.isEmpty())) {
+            throw new IllegalArgumentException("Check Out Required");
+        }
     }
 
     private String TypeFlight;
@@ -80,7 +86,9 @@ public class SearchFlightDTO {
 
     public void setSelectedHotel(boolean selectedHotel) {
         this.selectedHotel = selectedHotel;
-
+        if (selectedHotel && (checkOutTime == null || checkOutTime.isEmpty())) {
+            throw new IllegalArgumentException("Check Out Required");
+        }
     }
 
     public void setArrivalTime(String arrivalTime) {

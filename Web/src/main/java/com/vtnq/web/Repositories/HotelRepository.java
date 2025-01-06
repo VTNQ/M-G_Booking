@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface HotelRepository extends JpaRepository<Hotel, Integer> {
@@ -27,9 +28,26 @@ public interface HotelRepository extends JpaRepository<Hotel, Integer> {
             "join Room d on d.hotel.id = a.id " +
             "where a.cityId = :id and d.status=false " +
             "group by a.id, a.name, c.name, c.country.name, b.imageUrl " +
-            "having count(d.id) >= :quantityRoom")
-    List<HotelSearchDTO> SearchHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom);
-
+            "having count(d.id) >= :quantityRoom and min(d.price) between  :minPrice and :maxPrice")
+    List<HotelSearchDTO> SearchHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom,@Param("minPrice")BigDecimal minPrice,@Param("maxPrice")BigDecimal maxPrice);
+    @Query("SELECT min(d.price) " +
+            "FROM Hotel a " +
+            "JOIN Picture b ON a.id = b.hotelId " +
+            "JOIN City c ON a.cityId = c.id " +
+            "JOIN Room d ON d.hotel.id = a.id " +
+            "WHERE a.cityId = :id AND d.status = false " +
+            "GROUP BY a.id " +
+            "HAVING count(d.id) >= :quantityRoom")
+    BigDecimal FindMinHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom);
+    @Query("SELECT max(d.price) " +
+            "FROM Hotel a " +
+            "JOIN Picture b ON a.id = b.hotelId " +
+            "JOIN City c ON a.cityId = c.id " +
+            "JOIN Room d ON d.hotel.id = a.id " +
+            "WHERE a.cityId = :id AND d.status = false " +
+            "GROUP BY a.id " +
+            "HAVING count(d.id) >= :quantityRoom")
+    BigDecimal FindMaxHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom);
     @Query("select new com.vtnq.web.DTOs.Hotel.ShowDetailHotel(a.id,a.name,a.address,b.name,a.decription,b.country.name,c.price) from Hotel a join City b on a.cityId=b.id join Room c on a.id=c.hotel.id  where a.id = :id order by c.price desc")
     ShowDetailHotel showDetailHotel(@Param("id") int id);
 

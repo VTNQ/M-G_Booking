@@ -36,7 +36,7 @@ public class SercurityConfiguration {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/LoginAdmin","/registerUser","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**",
                                     "/ForgotPassword","/images/flight/**","/images/hotels/**","/images/**","/Home","/SearchFlight","/Admin/SignatureContract/{id}",
-                                    "/DetailHotel/{id}","/InformationCustomer/{id}","/rating","/Payment","/Success","/payFlight/**","/RoundTrip/{id}","/SearchHotel/{id}","/RoundTripHotel/{id}","/HistoryOrder").permitAll()
+                                    "/DetailHotel/{id}","/InformationCustomer/{id}","/rating","/Payment","/Success","/payFlight/**","/RoundTrip/{id}","/SearchHotelFlight/{id}","/RoundTripHotel/{id}","/HistoryOrder","/Error").permitAll()
                             .requestMatchers("SuperAdmin/Home","/SuperAdmin/Country/add","/SuperAdmin/Country"
                             ,"/SuperAdmin/Country/update","/SuperAdmin/Country/delete/{id}","/SuperAdmin/AccountAdmin/add"
                             ,"/SuperAdmin/Airline/add","/SuperAdmin/Airline","/SuperAdmin/Airline/edit/{id}",
@@ -71,24 +71,52 @@ public class SercurityConfiguration {
                                 urls.put("ROLE_USER", "/Home");
                                 urls.put("ROLE_OWNER", "/Owner");
 
-                                String redirectUrl = "/Error";
+                                String redirectUrl = "/Error";  // Default redirect to error page
                                 String email = authentication.getName();
                                 Account account = authService.GetAccountByEmail(email);
 
-                                // Lưu tài khoản hiện tại vào session
+                                // Store the current account in the session
                                 request.getSession().setAttribute("currentAccount", account);
 
-                                // Xác định URL chuyển hướng dựa trên vai trò
-                                for (GrantedAuthority authority : authorities) {
-                                    String role = authority.getAuthority();
-                                    if (urls.containsKey(role)) {
-                                        redirectUrl = urls.get(role);
-                                        break;
+                                // Retrieve the previous page URL from the Referer header
+                                String previousPage = request.getHeader("Referer");
+
+                                if (previousPage != null && previousPage.contains("/LoginAdmin")) {
+                                    // Check if the user has ROLE_ADMIN or ROLE_SUPERADMIN
+                                    boolean hasValidRole = authorities.stream()
+                                            .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN") || authority.getAuthority().equals("ROLE_SUPERADMIN"));
+
+                                    if (hasValidRole) {
+                                        // If the previous page is /LoginAdmin and the user has the correct role, redirect to the previous page
+                                        for (GrantedAuthority authority : authorities) {
+                                            String role = authority.getAuthority();
+                                            if (urls.containsKey(role)) {
+                                                redirectUrl = urls.get(role);
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        // If not valid, redirect to error page
+                                        redirectUrl = "/Error";
+                                    }
+                                } else if(previousPage != null && previousPage.contains("/Login")) {
+                                    boolean hasValidRole = authorities.stream()
+                                            .anyMatch(authority -> authority.getAuthority().equals("ROLE_USER") || authority.getAuthority().equals("ROLE_OWNER"));
+                                    if (hasValidRole) {
+                                        for (GrantedAuthority authority : authorities) {
+                                            String role = authority.getAuthority();
+                                            if (urls.containsKey(role)) {
+                                                redirectUrl = urls.get(role);
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
 
+                                // Redirect to the final URL (either previous page or based on role)
                                 response.sendRedirect(redirectUrl);
                             }
+
                         })
                 )
             .logout(logout -> logout
@@ -119,10 +147,13 @@ public class SercurityConfiguration {
                     .clearAuthentication(true)
                     .deleteCookies("JSESSIONID")
             )
-                .exceptionHandling(ex -> ex
-                        .accessDeniedPage("/account/access-denied")
-                )
-                .build();
+            .exceptionHandling(ex -> ex
+                    .authenticationEntryPoint((request, response, authException) -> {
+                     response.sendRedirect("/Error");
+                    })
+            )
+
+            .build();
     }
 
 

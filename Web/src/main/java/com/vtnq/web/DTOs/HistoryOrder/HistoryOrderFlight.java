@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryOrderFlight {
     private int id;
@@ -65,6 +67,21 @@ public class HistoryOrderFlight {
         this.DepartAirport=DepartAirport;
         this.ArrivalAirport=ArrivalAirport;
 
+    }
+    public static List<HistoryOrderFlight>mapHistoryOrderFlight(List<Object[]>results) {
+        List<HistoryOrderFlight> historyOrderFlightList = new ArrayList<>();
+        for (Object[]row : results) {
+            HistoryOrderFlight historyOrderFlight=new HistoryOrderFlight(
+                    (Integer)row[0],
+                    (String) row[1],
+                    (Instant) row[2],
+                    (Instant) row[3],
+                    (String) row[4],
+                    (String) row[5]
+            );
+            historyOrderFlightList.add(historyOrderFlight);
+        }
+        return historyOrderFlightList;
     }
 
     public int getId() {

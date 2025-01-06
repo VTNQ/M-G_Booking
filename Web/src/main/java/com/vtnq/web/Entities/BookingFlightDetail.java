@@ -37,6 +37,9 @@ public class BookingFlightDetail {
     @Column(name = "status", length = 20)
     private String status;
 
+    @Column(name = "baggage")
+    private Integer baggage;
+
     public Integer getId() {
         return id;
     }
@@ -83,6 +86,14 @@ public class BookingFlightDetail {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getBaggage() {
+        return baggage;
+    }
+
+    public void setBaggage(Integer baggage) {
+        this.baggage = baggage;
     }
 
 }

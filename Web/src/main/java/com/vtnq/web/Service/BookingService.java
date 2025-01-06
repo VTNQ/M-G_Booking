@@ -10,6 +10,7 @@ import com.vtnq.web.Entities.BookingRoomDetail;
 import com.vtnq.web.Entities.Seat;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingService {
@@ -22,6 +23,6 @@ public interface BookingService {
    public List<BookingRoomDetail>getBookingRooms(int id);
    public BigDecimal GetTotalPriceHotel(int id);
    public int CountBookings(int id);
-   public List<HistoryOrderFlight>FindHistoryOrderFlights(int id);
-   public List<HistoryOrderHotel>FindHistoryOrderHotels(int id);
+   public List<HistoryOrderFlight>FindHistoryOrderFlights(int id,int page,int size,String flightCode,LocalDate departureTime,LocalDate arrivalTime);
+   public List<HistoryOrderHotel>FindHistoryOrderHotels(int id, int page, int size, String hotelName, LocalDate checkInDate, LocalDate checkOutDate);
 }

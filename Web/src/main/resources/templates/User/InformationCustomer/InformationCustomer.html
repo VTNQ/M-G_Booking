@@ -133,7 +133,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="width: 155%">
                         <div class="col-lg-8 col-xl-8">
                             <div class="mb-5 shadow-soft"
                                  style="background-color: white;border-radius: 0.25rem!important;box-shadow: 0 3px 6px 0 rgba(140, 152, 164, 0.25) !important">
@@ -167,6 +167,28 @@
                                     </div>
 
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="width: 155%;">
+                        <div class="col-lg-8 col-xl-8">
+                            <div class="baggage-container mb-4">
+                                <div class="baggage-header">Hành lý</div>
+
+                                <!-- Hà Nội (HAN) -> Hồ Chí Minh (SGN) -->
+                                <th:block th:each="flights,index : ${flight}">
+                                    <div class="route">
+                                        <div class="route-info">
+                                            <div class="route-header" th:text="${flights.departureAirport}+' ->  '+${flights.arrivalAirport}">Hà Nội (HAN) → Hồ Chí Minh (SGN)</div>
+                                            <div class="baggage-info" >Mỗi hành khách đã bao gồm: <span
+                                                    class="carry-on" >Xách tay 7 kg</span></div>
+                                            <div class="baggage-info" th:id="'baggage-info-'+${flights.id}" style="display: none">Đã thêm: <span
+                                                    class="added-baggage" th:id="'carry-on-'+${flights.id}">Hành khách 1: Ký gửi 15 kg</span></div>
+                                        </div>
+                                        <button type="button" class="action-button" th:data-flight-id="${flights.id}">Chỉnh sửa hành lý</button>
+                                    </div>
+                                </th:block>
+
                             </div>
                         </div>
                     </div>
@@ -368,16 +390,18 @@ font-family: 'Rubik', Helvetica, Arial, sans-serif">
                                                 <span style="color: #77838f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 400;line-height: 1.5">€580,00</span>
                                             </li>
                                             <li class="d-flex justify-content-between py-2">
-                                                <span style="font-weight: 500 !important;font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">Extra Price</span>
-                                                <span style="color: #77838f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 400;line-height: 1.5">€0,00</span>
+                                                <span style="font-weight: 500 !important;font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">Hotel</span>
+                                                <span style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 500;line-height: 1.5" th:text="'$'+${total}" >€580,00</span>
                                             </li>
-                                            <li class="d-flex justify-content-between py-2">
-                                                <span style="font-weight: 500 !important;font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">Tax</span>
-                                                <span style="color: #77838f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 400;line-height: 1.5">0%</span>
-                                            </li>
+
                                             <li class="d-flex justify-content-between py-2">
                                                 <span style="font-weight: 500 !important;font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">Pay Amount</span>
-                                                <span style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 500;line-height: 1.5" th:text="'$'+${total}">€580,00</span>
+                                                <span style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 500;line-height: 1.5" th:text="'$'+${total}" id="totalPriceBooking">€580,00</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between py-2">
+                                                <span style="font-weight: 500 !important;font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">Baggage Price</span>
+                                                <span style="color: #77838f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 400;line-height: 1.5"
+                                                      id="BaggagePrice">$0</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -547,13 +571,92 @@ font-family: 'Rubik', Helvetica, Arial, sans-serif">
 
             <div class="footer-popup" style="display: flex; justify-content: space-between">
                 <div class="total-price">
-                    Tổng số phụ: <span id="totalPrice">442.523 ₫</span>
+                    Tổng số phụ: <span id="totalPricePopUp">442.523 ₫</span>
                 </div>
 
                 <button class="confirm-button">Xong</button>
             </div>
         </div>
     </div>
+    <th:block th:each="flights,index : ${flight}">
+        <div class="popup-overlay" th:id="'popup-'+${flights.id}" style="display: none">
+            <div class="popup-buggage">
+                <div class="popup-header" style="position: relative">
+                    <h3>Thêm hành lý</h3>
+                    <span class="close-button" style="top: 14px">&times;</span>
+                </div>
+                <div class="popup-body" style="padding: 20px">
+                    <div class="route-info" style="font-size: 14px;color: #555;margin-bottom: 20px">Hồ Chí Minh (SGN) - Hà
+                        Nội (HAN)
+                    </div>
+                    <ul class="baggage-options">
+                        <li>
+                            <label>
+                                <input type="radio"  value="0" th:name="'baggage-'+${flights.id}">
+                                Không có hành lý ký gửi
+                            </label>
+                            <span class="price">0 đ</span>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" th:name="'baggage-'+${flights.id}" value="20">
+                                20 kg
+                            </label>
+                            <span class="price">381.134 đ</span>
+                            <input type="hidden" value="381134" class="price-input">
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" th:name="'baggage-'+${flights.id}" value="30">
+                                30 kg
+                            </label>
+                            <span class="price">566.234 đ</span>
+                            <input type="hidden" value="566234" class="price-input">
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" th:name="'baggage-'+${flights.id}" value="40">
+                                40 kg
+                            </label>
+                            <span class="price">756.929 đ</span>
+                            <input type="hidden" value="756929" class="price-input">
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" th:name="'baggage-'+${flights.id}" value="50">
+                                50 kg
+                            </label>
+                            <span class="price">941.775 đ</span>
+                            <input type="hidden" value="941775" class="price-input">
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" th:name="'baggage-'+${flights.id}" value="60">
+                                60 kg
+                            </label>
+                            <span class="price">1.132.469 đ</span>
+                            <input type="hidden" value="1132469" class="price-input">
+                        </li>
+                        <li>
+                            <label>
+                                <input type="radio" th:name="'baggage-'+${flights.id}" value="70">
+                                70 kg
+                            </label>
+                            <span class="price">1.323.163 đ</span>
+                            <input type="hidden" value="1323163" class="price-input">
+                        </li>
+                    </ul>
+                    <div class="popup-footer">
+                        <button class="cancel-button">
+                            Cancel
+                        </button>
+                        <button class="confirm-btn" th:data-flight-id="${flights.id}" th:data-flight-index="${index.index+1}">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </th:block>
     <script th:fragment="customScripts" th:src="@{/user/Payment/PaymentHotelFlight.js}"></script>
 </main>
 

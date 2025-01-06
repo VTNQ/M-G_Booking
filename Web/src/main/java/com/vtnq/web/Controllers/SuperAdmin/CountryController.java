@@ -54,6 +54,11 @@ public class CountryController {
                 redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/SuperAdmin/Country/"+country.getId();
             }
+            if(countryService.existCountry(country.getName())){
+                redirectAttributes.addFlashAttribute("message", "Name Country already exist");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/SuperAdmin/Country/"+country.getId();
+            }
             if(countryService.UpdateCountry(country)){
                 redirectAttributes.addFlashAttribute("message","Update Country successful");
                 redirectAttributes.addFlashAttribute("messageType", "success");
@@ -109,7 +114,11 @@ public class CountryController {
             redirectAttributes.addFlashAttribute("messageType", "error");
             return "redirect:/SuperAdmin/Country/add";
         }
-
+            if(countryService.existCountry(country.getName())){
+                redirectAttributes.addFlashAttribute("message", "Name Country already exist");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/SuperAdmin/Country/add";
+            }
         if (countryService.addCountry(country)) {
             redirectAttributes.addFlashAttribute("message", "Country Added Successfully");
 

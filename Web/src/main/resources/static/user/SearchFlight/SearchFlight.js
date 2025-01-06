@@ -1,4 +1,4 @@
-
+let currentPage=1;
 function convertTimeToDecimal(time) {
     const [hours, minutes] = time.split(':').map(Number);
     return hours + (minutes / 60);
@@ -9,17 +9,31 @@ function convertTimeToDecimal(time) {
 
 let selectedAirlines=[];
 function updateFlightVisibility(){
-    document.querySelectorAll('.flight-item').forEach(function(flightItem) {
+    const flights = document.querySelectorAll('#flight-item');
+
+    // Iterate over each flight item to hide/show it
+    flights.forEach(function (flightItem) {
         const airlineId = flightItem.getAttribute('data-airline-id');
-
-
-        if (selectedAirlines.length === 0 || selectedAirlines.includes(airlineId)) {
+        const page = parseInt(flightItem.getAttribute('data-page'));
+        console.log(airlineId)
+        // Check if flight is on the current page and if it matches the selected airlines
+        if ((selectedAirlines.length === 0 || selectedAirlines.includes(airlineId)) && (page === currentPage || !page)) {
             flightItem.style.display = 'block'; // Show flight
         } else {
             flightItem.style.display = 'none'; // Hide flight
         }
     });
 }
+document.querySelectorAll('.pagination .page-item').forEach(function(pageItem) {
+    pageItem.addEventListener('click', function() {
+        // Get the page number from the clicked page link
+        let page = parseInt(pageItem.querySelector('.page-link').textContent);
+        currentPage = page;
+
+        // Call the update function to show the correct flights
+        updateFlightVisibility();
+    });
+});
 document.getElementById('selectAllToggle').addEventListener('change',function (){
     const isChecked=this.checked;
     if(isChecked){
@@ -56,14 +70,16 @@ document.querySelectorAll('.airline-checkbox').forEach(function(checkbox) {
 document.addEventListener("DOMContentLoaded", function() {
     var priceRange = document.getElementById('price-range');
     var priceRangeText = document.getElementById('price-range-text');
+    var minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+    var maxPrice = parseFloat(document.getElementById('maxPrice').value) || 0;
 
     // Initialize the noUiSlider
     noUiSlider.create(priceRange, {
-        start: [200, 120000], // Set the default values for the range
+        start: [minPrice, maxPrice], // Set the default values for the range
         connect: true, // Connect the handles
         range: {
-            'min': 200,    // Minimum value of the slider
-            'max': 120000   // Maximum value of the slider
+            'min': minPrice,    // Minimum value of the slider
+            'max': maxPrice   // Maximum value of the slider
         },
         step: 10,  // Step size for the slider
         tooltips: true, // Show the current value when the user drags the handle

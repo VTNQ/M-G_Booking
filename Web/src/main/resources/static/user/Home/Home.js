@@ -38,7 +38,7 @@ document.getElementById("from-input").addEventListener('input',async (event)=>{
 
                     // Add click event listener specifically to the 'airport-item' div
                     airportItem.addEventListener("click", () => {
-                        document.getElementById("from-input").value = `${airportdto.name} (${airportdto.code})`;
+                        document.getElementById("from-input").value = `${airportdto.city.name}`;
 
                         // Store the actual airport.id in the hidden input
                         document.getElementById("from-input-id").value = airportdto.id;
@@ -156,13 +156,13 @@ document.getElementById("to-input").addEventListener('input', async (event) => {
                     airportItem.innerHTML = `
                         <div class="airport-info">
                             <span class="airport-name"><i class="fa fa-plane icon" style="margin-right: 8px; color: #2a2a2a;"></i>Sân bay ${airportdto.name}</span>
-                            <span class="airport-code">${airportdto.code}</span>
+                            <span class="airport-code">${airportdto.city.name}</span>
                         </div>
                     `;
 
                     // Add click event listener specifically to the 'airport-item' div
                     airportItem.addEventListener("click", () => {
-                        document.getElementById("to-input").value = `${airportdto.name} (${airportdto.code})`;
+                        document.getElementById("to-input").value = `${airportdto.city.name}`;
                         document.getElementById("to-input-id").value = airportdto.id;
                         const FromInputValue = document.getElementById("from-input").value;
                         if(FromInputValue===document.getElementById("to-input").value){
@@ -177,6 +177,7 @@ document.getElementById("to-input").addEventListener('input', async (event) => {
                         dropdown.style.display = "none"; // Hide dropdown after selection
                     });
 
+
                     li.appendChild(airportItem);
                 });
 
@@ -184,6 +185,7 @@ document.getElementById("to-input").addEventListener('input', async (event) => {
             });
 
             dropdown.style.display = "block";
+
         }
     } catch (error) {
         console.error("Error fetching airport data:", error);
