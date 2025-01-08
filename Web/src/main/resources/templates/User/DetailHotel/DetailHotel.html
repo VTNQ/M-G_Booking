@@ -206,7 +206,7 @@ font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 22px;font-weight: 
                                                 </div>
                                                 <a class="text-decoration-underline d-block"
                                                    id="openModal"
-                                                   style="font-size: 1.2rem;color: #297cbb;font-family: 'Rubik', Helvetica, Arial, sans-serif;">
+                                                   style="font-size: 1.2rem;color: #297cbb;font-family: 'Rubik', Helvetica, Arial, sans-serif;" th:data-idHotel="${detailRooms.id}" th:data-price="${detailRooms.price}" th:data-type="${detailRooms.type}">
                                                     Room Photos and Details
                                                 </a>
                                             </div>
@@ -294,68 +294,71 @@ min-width: 12.5rem;line-height: 1.9">Book Now</a>
                     <h5 class="mb-4" style="font-size: 1.313rem;color: #3b444f !important">
                         Showing 16 verified guest comments
                     </h5>
-                    <div class="media flex-column flex-md-row align-items-center align-items-md-start mb-4">
-                        <div class="mr-md-3">
-                            <a class="d-block">
-                                <img class="img-fluid mb-3 mb-md-0 rounded-circle"
-                                     src="https://transvelo.github.io/mytravel-html/assets/img/85x85/img1.jpg"/>
-                            </a>
-                        </div>
-                        <div class="media-body  text-md-start">
-                            <div class="mb-4">
-                                <h6 style="font-weight: 500!important;color: #3b444f !important;font-size: 1rem">
-                                    <a style="color: #3b444f;text-decoration: none;background-color: transparent;font-family: 'Rubik', Helvetica, Arial, sans-serif;
-                                    font-size: 22px">Helena</a>
-                                </h6>
-                                <div class="font-weight-normal mb-2"
-                                     style="font-size: 1rem;color: #9fa9b8 !important;font-weight: 400 !important">
-                                    April 25, 2019 at 10:46 am
-                                </div>
-                                <div class="d-flex align-items-center flex-column flex-md-row mb-2">
-                                    <button type="button"
-                                            class="btn btn-xs btn-primary rounded-xs py-1 px-2 mr-2 mb-2 mb-md-0"
-                                            style="font-size: 1.2rem;background-color: #297cbb;border-color: #297cbb">
-                                        4.6 /5
-                                    </button>
-                                    <span class=""
-                                          style="font-weight: 500!important;font-style: italic!important;color: #3b444f !important;font-size: 21px">The worst hotel ever ”</span>
-                                </div>
-                                <p class="mb-0 "
-                                   style="line-height: 1.6;padding-right: 2rem;color: #77838f;font-size: 25px">
-                                    Morbi velit eros, sagittis in facilisis non, rhoncus et erat. Nam posuere ultricies
-                                    tortor imperdiet vitae. Curabitur lacinia neque non metus
-                                </p>
+                    <th:block th:each="rating,inex : ${RatingList}">
+                        <div class="media flex-column flex-md-row align-items-center align-items-md-start mb-4">
+                            <div class="mr-md-3">
+                                <a class="d-block">
+                                    <img class="mb-3 mb-md-0 rounded-circle" style="width: 85px;height: 85px;object-fit: cover"
+                                         th:src="'http://localhost:8686/images/users/'+${rating.avatar}"/>
+                                </a>
                             </div>
-                            <div class="review">
-                                <div class="row no-gutters justify-content-between align-items-center border border-color-8 border-width-2 rounded-xs p-3 px-md-3 px-md-2 "
-                                     style="padding-right: 2rem !important;">
-                                    <div class="col">
-                                        <div class="font-weight-normal mx-lg-1 my-lg-1 mb-3 mb-md-0"
-                                             style="font-size: 0.875rem;color: #67747c !important">
-                                            Was This Review...?
-                                        </div>
+                            <div class="media-body  text-md-start">
+                                <div class="mb-4">
+                                    <h6 style="font-weight: 500!important;color: #3b444f !important;font-size: 1rem">
+                                        <a style="color: #3b444f;text-decoration: none;background-color: transparent;font-family: 'Rubik', Helvetica, Arial, sans-serif;
+                                    font-size: 22px" th:text="${rating.name}"></a>
+                                    </h6>
+                                    <div class="font-weight-normal mb-2"
+                                         style="font-size: 1rem;color: #9fa9b8 !important;font-weight: 400 !important" th:text="${rating.getFormattedCreateRating()}">
+
                                     </div>
-                                    <div class="col-md-6 col-lg-7 col-xl-4">
-                                        <div class="d-flex justify-content-between my-lg-1">
-                                            <a style="color: #080e7b !important;text-decoration: none;background-color: transparent">
-                                                <i class="fa-regular fa-thumbs-up mr-1" style="font-size: 0.938rem"></i>
+                                    <div class="d-flex align-items-center flex-column flex-md-row mb-2">
+                                        <button type="button"
+                                                class="btn btn-xs btn-primary rounded-xs py-1 px-2 mr-2 mb-2 mb-md-0"
+                                                style="font-size: 1.2rem;background-color: #297cbb;border-color: #297cbb" th:text="${rating.rating}+'  /5'">
+                                            4.6 /5
+                                        </button>
+                                        <span class=""
+                                              style="font-weight: 500!important;font-style: italic!important;color: #3b444f !important;font-size: 21px">The worst hotel ever ”</span>
+                                    </div>
+                                    <p class="mb-0 "
+                                       style="line-height: 1.6;padding-right: 2rem;color: #77838f;font-size: 25px" th:text="${rating.description}">
+                                        Morbi velit eros, sagittis in facilisis non, rhoncus et erat. Nam posuere ultricies
+                                        tortor imperdiet vitae. Curabitur lacinia neque non metus
+                                    </p>
+                                </div>
+                                <div class="review">
+                                    <div class="row no-gutters justify-content-between align-items-center border border-color-8 border-width-2 rounded-xs p-3 px-md-3 px-md-2 "
+                                         style="padding-right: 2rem !important;">
+                                        <div class="col">
+                                            <div class="font-weight-normal mx-lg-1 my-lg-1 mb-3 mb-md-0"
+                                                 style="font-size: 0.875rem;color: #67747c !important">
+                                                Was This Review...?
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-7 col-xl-4">
+                                            <div class="d-flex justify-content-between my-lg-1">
+                                                <a style="color: #080e7b !important;text-decoration: none;background-color: transparent">
+                                                    <i class="fa-regular fa-thumbs-up mr-1" style="font-size: 0.938rem"></i>
+                                                    <span class="font-weight-normal" style="font-size: 0.875rem">Like</span>
+                                                </a> <a
+                                                    style="color: #5c6770 !important;text-decoration: none;background-color: transparent">
+
+                                                <i class="fa-regular fa-thumbs-down mr-1" style="font-size: 0.938rem"></i>
                                                 <span class="font-weight-normal" style="font-size: 0.875rem">Like</span>
-                                            </a> <a
-                                                style="color: #5c6770 !important;text-decoration: none;background-color: transparent">
+                                            </a><a style="color: #ff3c4e !important;text-decoration: none;background-color: transparent">
 
-                                            <i class="fa-regular fa-thumbs-down mr-1" style="font-size: 0.938rem"></i>
-                                            <span class="font-weight-normal" style="font-size: 0.875rem">Like</span>
-                                        </a><a style="color: #ff3c4e !important;text-decoration: none;background-color: transparent">
-
-                                            <i class="fa-regular fa-heart mr-1" style="font-size: 0.938rem"></i>
-                                            <span class="font-weight-normal" style="font-size: 0.875rem">Like</span>
-                                        </a>
+                                                <i class="fa-regular fa-heart mr-1" style="font-size: 0.938rem"></i>
+                                                <span class="font-weight-normal" style="font-size: 0.875rem">Like</span>
+                                            </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </th:block>
+
                 </div>
                 <div class="py-4">
                     <h5 class="mb-4" style="font-size: 1.313rem;color: #3b444f !important">
@@ -586,9 +589,9 @@ min-width: 12.5rem;line-height: 1.9">Book Now</a>
         </div>
     </div>
     <div class="custombox-overlay custombox-fadein custombox-open"
-         style="background-color: rgb(0,0,0);z-index: 10000"></div>
+         style="background-color: rgb(0,0,0);z-index: 0;display: none"></div>
     <div class="custombox-content custombox-x-center custombox-y-center custombox-fadein custombox-fadein"
-         style="animation-duration: 300ms;animation-delay: 150ms;opacity: 1;z-index: 1000000">
+         style="animation-duration: 300ms;animation-delay: 150ms;display: none;z-index: 0;">
         <div id="ontargetModal" class="js-modal-window u-modal-window u-modal-window-custom container"
              data-modal-type="ontarget" data-open-effect="fadeIn" data-close-effect="fadeOut" data-speed="500"
              style="max-width: 1320px">
@@ -602,12 +605,12 @@ position: absolute;top: 0;right: 0">
                     <div class="col-xl-3 mb-4 mb-xl-0 order-1 order-xl-0">
                         <div class="border-bottom">
                             <div class="px-4 py-4">
-                                <div class="" style="font-weight: 500 !important;font-size: 1.188rem">Deluxe Gold King
+                                <div class="" id="typeRoom" style="font-weight: 500 !important;font-size: 1.188rem">Deluxe Gold King
                                     Room
                                 </div>
                                 <div class="mt-2">
                                     <span class="mr-1" style="font-size: 0.975rem;color: #67747c !important">From</span>
-                                    <span class=""
+                                    <span id="pricePopup" class=""
                                           style="font-weight: 500!important;font-size: 1.7rem;font-family: 'Rubik', Helvetica, Arial, sans-serif">£350.00</span>
                                     <span class="" style="font-size: 0.975rem;color: #67747c !important"> / night</span>
                                 </div>
@@ -625,103 +628,7 @@ position: absolute;top: 0;right: 0">
                                      tabindex="0" style="max-height: none">
                                     <div id="mCSB_1_container" class="mCSB_container"
                                          style="position: relative;top: 0px;left: 0px;" dir="ltr">
-                                        <ul class="d-block list-unstyled">
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
-                                            <li class="mb-3">
-                                                <i class="fa-solid fa-wifi"
-                                                   style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
-                                                Wifi
-                                                <i></i>
-                                            </li>
+                                        <ul class="d-block list-unstyled" id="Amenities">
                                             <li class="mb-3">
                                                 <i class="fa-solid fa-wifi"
                                                    style="margin-right: 1rem;color: #297cbb !important;font-size: 1.5rem"></i>
@@ -764,9 +671,7 @@ position: absolute;top: 0;right: 0">
 
                             <!-- Chỉ báo (dots) -->
                             <div class="dots">
-                                <span class="dot" onclick="currentSlideIndex(0)"></span>
-                                <span class="dot" onclick="currentSlideIndex(1)"></span>
-                                <span class="dot" onclick="currentSlideIndex(2)"></span>
+
                             </div>
                         </div>
 
@@ -777,206 +682,8 @@ position: absolute;top: 0;right: 0">
         </div>
     </div>
 
-    <script th:fragment="customScripts">
-        let CurrentIndextText = 0; // Dùng 'let' thay vì 'const'
+    <script th:fragment="customScripts" th:src="@{/user/DetailHotel/DetailHotel.js}">
 
-        const prevnext = document.querySelector('#prevprev1');
-        const nextnext = document.querySelector('#nextnext1');
-
-        prevnext.addEventListener('click', () => {
-            CurrentIndextText--; // Giảm chỉ số slide
-            showSlide(CurrentIndextText);
-        });
-
-        nextnext.addEventListener('click', () => {
-            CurrentIndextText++; // Tăng chỉ số slide
-            showSlide(CurrentIndextText);
-        });
-
-
-        function currentSlideIndex(index) {
-            showSlide(index);
-        }
-
-        function showSlide(index) {
-            let currentIndex = 0;
-            const slides = document.querySelector('#slides');
-            const totalSlides = document.querySelectorAll('#slide').length;
-            const dots = document.querySelectorAll('.dot');
-            const allSlides = document.querySelectorAll('.slide');
-            const captions = document.querySelectorAll('.caption');
-            if (index < 0) {
-                currentIndex = totalSlides - 1;
-            } else if (index >= totalSlides) {
-                currentIndex = 0;
-            } else {
-                currentIndex = index;
-            }
-            const offset = -currentIndex * 100;
-            slides.style.transform = `translateX(${offset}%)`;
-
-            // Cập nhật trạng thái dot active
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIndex);
-            });
-
-            // Chỉ hiển thị caption của slide đang hiển thị
-            captions.forEach((caption, i) => {
-                caption.style.display = i === currentIndex ? 'block' : 'none';
-            });
-
-        }
-
-        showSlide(0)
-        let currentSlide = 0;
-        const slidesItem = document.querySelector('.slides');
-        const prevBtn = document.querySelector('#prev');
-        const nextBtn = document.querySelector('#next');
-
-        const totalSlidesItem = document.querySelectorAll('.slide').length;
-
-        let currentIndex = 0;
-
-        // Function to go to a specific slide
-        function goToSlideItem(index) {
-            currentIndex = index;
-            const offset = -100 * currentIndex; // Each slide takes 100% width
-            slidesItem.style.transform = `translateX(${offset}%)`;
-        }
-
-        // Event Listeners
-        prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + totalSlidesItem) % totalSlidesItem;
-            goToSlideItem(currentIndex);
-        });
-
-        nextBtn.addEventListener('click', () => {
-            console.log(currentIndex)
-            currentIndex = (currentIndex + 1) % totalSlidesItem;
-            goToSlideItem(currentIndex);
-        });
-
-
-        let viewMoreLink = document.getElementById('viewLink');
-        const viewMoreIcon = document.getElementById('ViewIcon');
-        const collapseContent = document.getElementById('collapseLinkExample');
-
-        viewMoreLink.addEventListener('click', function () {
-            const isExpanded = collapseContent.classList.contains('show');
-
-            if (isExpanded) {
-                console.log(isExpanded)
-                viewMoreLink.setAttribute('aria-expanded', 'false');
-                viewMoreIcon.classList.remove('fa-arrow-up-long');
-                viewMoreIcon.classList.add('fa-arrow-down-long');
-                collapseContent.style.transition = "max-height 0.5s ease-out";
-                collapseContent.style.transition = "5s ease-out";
-                collapseContent.classList.remove('show');
-            } else {
-                viewMoreLink.setAttribute('aria-expanded', 'true');
-                viewMoreIcon.classList.remove('fa-arrow-down-long');
-                viewMoreIcon.classList.add('fa-arrow-up-long');
-                collapseContent.style.transition = "5s ease-out";
-                collapseContent.classList.add('show');
-            }
-        });
-
-
-        const slides = document.querySelectorAll('.my-carousel-item');
-        const totalSlides = slides.length;
-
-        function moveSlide(direction) {
-            currentSlide += direction;
-            if (currentSlide < 0) {
-                currentSlide = totalSlides - 1;
-            } else if (currentSlide >= totalSlides) {
-                currentSlide = 0;
-            }
-            updateCarousel();
-        }
-
-        function updateCarousel() {
-            const carousel = document.querySelector('.my-carousel');
-            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
-            updateThumbnails();
-        }
-
-        function goToSlide(index) {
-            currentSlide = index;
-            updateCarousel();
-        }
-
-        function updateThumbnails() {
-            const thumbnails = document.querySelectorAll('.my-thumbnails img');
-            thumbnails.forEach((thumb, index) => {
-                if (index === currentSlide) {
-                    thumb.classList.add('selected');
-                } else {
-                    thumb.classList.remove('selected');
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const stars = document.querySelectorAll('.rating-container .fa-star');
-            let selectedRating = 0;
-            stars.forEach(star => {
-                star.addEventListener('mouseenter', (e) => {
-                    const ratingValue = parseInt(e.target.dataset.value);
-                    hightlightStars(ratingValue)
-                });
-
-                star.addEventListener('mouseleave', () => {
-                    hightlightStars(selectedRating);
-                })
-                star.addEventListener('click', (e) => {
-                    selectedRating = parseInt(e.target.dataset.value);
-                    document.getElementById('ViewRating').value = selectedRating;
-                    hightlightStars(selectedRating);
-                })
-            });
-
-            function hightlightStars(ratingValue) {
-                stars.forEach(star => {
-                    if (parseInt(star.dataset.value) <= ratingValue) {
-                        star.classList.add('hovered');
-                    } else {
-                        star.classList.remove('hovered')
-                    }
-                })
-            }
-        })
-        const openButton = document.querySelectorAll('#openModal');
-        const modalBackground = document.querySelector('.custombox-overlay');
-        const modalMap = document.querySelector('.custombox-content');
-        const modal = document.getElementById('ontargetModal');
-        const closeButton = document.querySelector(".fa-xmark");
-
-        function openModal() {
-
-            modalMap.style.setProperty('display', 'flex', 'important');
-            modalBackground.style.setProperty('display', 'block', 'important');
-            modal.style.setProperty('display', 'block', 'important');
-            modal.classList.remove("fade-out");
-            modal.classList.add("fade-in");
-        }
-
-        function closeModal() {
-
-            modal.classList.remove("fade-in");
-            modal.classList.add("fade-out");
-            setTimeout(() => {
-                modalMap.style.setProperty('display', 'none', 'important');
-                modalBackground.style.setProperty('display', 'none', 'important');
-                modal.style.setProperty('display', 'none', 'important');
-            })
-        }
-
-        document.querySelector('#openModal').addEventListener('click', (e) => {
-            e.preventDefault(); // Ngăn chặn hành vi mặc định
-            openModal();
-        });
-        closeButton.addEventListener('click', closeModal);
     </script>
 </main>
 

@@ -10,6 +10,8 @@ $(document).ready(function () {
     $("#verifyOtpButton").click(function (){
         let otp = "";
         var submitButton = $(this).find('.button-text');
+        var originalText = "<span class='button-text'>Verify OTP</span>";
+
         submitButton.html('<span class="spinner" style="display: flex"></span>');
         $(".otp-box").each(function () {
             otp += $(this).val();
@@ -33,8 +35,13 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 // Log and display any errors that occurred during the request
-                console.error(error);
-                alert("An error occurred. Please try again.");
+                Swal.fire({
+                    icon:'error',
+                    title:'OTP is valid',
+                })
+                submitButton.html(originalText);
+                submitButton.prop('disabled', false);
+
             }
         })
     })
@@ -90,14 +97,23 @@ $(document).ready(function () {
                     document.getElementById("otpPopup").style.display = 'flex';
                      StartCountDown(120)
                 } else {
+                    submitButton.html(originalText);
+                    submitButton.prop('disabled', false);
                     // Handle unexpected responses
-                    alert(response.message || "Unexpected error occurred.");
+                   Swal.fire({
+                       icon:'error',
+                       title:'Account does not exist',
+                   })
                 }
             },
             error: function (xhr, status, error) {
                 // Log and display any errors that occurred during the request
-                console.error(error);
-                alert("An error occurred. Please try again.");
+                Swal.fire({
+                    icon:'error',
+                    title:'Account does not exist',
+                })
+                submitButton.html(originalText);
+                submitButton.prop('disabled', false);
             },
 
         });
@@ -152,7 +168,7 @@ $(document).ready(function () {
             }),
             success:function (response){
                 if(response.status===200){
-                    window.location.href = "/login";
+                    window.location.href = "http://localhost:8686/Login";
                 }
             }
         })

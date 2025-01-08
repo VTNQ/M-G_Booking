@@ -195,40 +195,70 @@ document.addEventListener("click", (event) => {
         toDropdown.style.display = "none";
     }
 });
-//Dropdown select
 
 
+function initFlatpickr(selector, options) {
+    // Khởi tạo flatpickr với selector và các tùy chọn
+    flatpickr(selector, options);
+}
+function initArrivalTime() {
+    const departTimeInput = document.getElementById("datePickerInput");
+    let departDateValue = departTimeInput.value;
 
+    // Nếu departtime chưa được chọn, sử dụng ngày mai
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
 
-// Close dropdown if clicked outside
+    // Nếu departtime đã được chọn, tính minDate từ giá trị này
+    if (departDateValue) {
+        const departDate = new Date(departDateValue);
+        departDate.setDate(departDate.getDate() + 1); // Phải lớn hơn departtime 1 ngày
+        departDateValue = departDate.toISOString().split('T')[0];
+    } else {
+        departDateValue = tomorrow.toISOString().split('T')[0];
+    }
 
-function initFlatpickr() {
-    flatpickr("#datePickerInput", {
+    initFlatpickr("#arrivalTime", {
         mode: "range", // Enable date range selection
         dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
-        defaultDate: [new Date()], // Set default dates in LocalDate format
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
         onReady: function (selectedDates, dateStr, instance) {
             if (selectedDates.length) {
-                // Display only the first date in the range
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date
             }
         },
-        onChange: function (selectedDates, dateStr, instance) {
-            if (selectedDates.length) {
-                // Update the input value to show only the first selected date
-                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
-                instance.element.value = firstDate;
-            }
-        }
     });
 }
+document.getElementById("arrivalTime").addEventListener("focus", function () {
+    if (!this.classList.contains("flatpickr-initialized")) {
+        initArrivalTime();
+        this.classList.add("flatpickr-initialized");
+    }
+});
 
+// Close dropdown if clicked outside
+function initDepartTime() {
+    initFlatpickr("#datePickerInput", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
+        onReady: function (selectedDates, dateStr, instance) {
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
 
 document.getElementById("datePickerInput").addEventListener("focus", function () {
     // Initialize flatpickr only if not already initialized
     if (!this.classList.contains("flatpickr-input-active")) {
-        initFlatpickr();
+        initDepartTime();
         this.classList.add("flatpickr-input-active");
     }
 });
@@ -250,16 +280,7 @@ document.getElementById('closeBtn').addEventListener('click',function (event){
 
 // Close dropdown if clicked outside
 
-function initFlatpickr() {
-    flatpickr("#datePickerInput", {
-        mode: "range",  // Enable date range selection
-        dateFormat: "M j / Y",  // Format for displayed dates
-        defaultDate: ["Jul 7 / 2020", "Aug 25 / 2020"],  // Set default dates
-        onReady: function (selectedDates, dateStr, instance) {
-            instance.element.value = dateStr;
-        }
-    });
-}
+
 document.getElementById('flexSwitchCheckDefault').addEventListener('change',function (){
     const AtHotel=document.getElementById('AtHotel');
     const TimeHotel=document.getElementById('TimeHotel');
@@ -282,13 +303,6 @@ document.getElementById('flexSwitchCheckDefault').addEventListener('change',func
 
 
 
-document.getElementById("datePickerInput").addEventListener("focus", function () {
-    // Initialize flatpickr only if not already initialized
-    if (!this.classList.contains("flatpickr-input-active")) {
-        initFlatpickr();
-        this.classList.add("flatpickr-input-active");
-    }
-});
 
 document.addEventListener('click', function (event) {
     const isClickInside = document.getElementById('basicDropdownClickInvoker').contains(event.target) ||

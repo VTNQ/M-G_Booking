@@ -40,7 +40,11 @@ public class CityController {
     public String City(ModelMap model, HttpServletRequest request, @RequestParam(defaultValue = "1") int page,
                        @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String name) {
         try {
+
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+            if(currentAccount==null){
+                return "redirect:/LoginAdmin";
+            }
             List<City> cities = cityService.findCityAll(currentAccount.getCountryId());
             List<City> filteredCities = cities.stream().filter(city -> city.getName().contains(name)).collect(Collectors.toList());
             int start = (page - 1) * size;
@@ -74,8 +78,12 @@ public class CityController {
     }
     @PostMapping("City/UpdateCity")
     public String UpdateCity(@ModelAttribute("City")@Valid CityDto cityDto, ModelMap model,BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             if(bindingResult.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 bindingResult.getFieldErrors().forEach(error ->
@@ -105,8 +113,12 @@ public class CityController {
         }
     }
     @GetMapping("City/edit/{id}")
-    public String editCity(ModelMap model, @PathVariable int id) {
+    public String editCity(ModelMap model, @PathVariable int id,HttpServletRequest request,RedirectAttributes redirectAttributes) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             model.put("City", cityService.findCityById(id));
             return "Admin/City/Detail";
         }catch (Exception e) {
@@ -115,8 +127,12 @@ public class CityController {
         }
     }
     @PostMapping("City/add")
-    public String addCity(@ModelAttribute("city") @Valid CityDto cityDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addCity(@ModelAttribute("city") @Valid CityDto cityDto, BindingResult bindingResult, RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             if (bindingResult.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 bindingResult.getFieldErrors().forEach(error ->

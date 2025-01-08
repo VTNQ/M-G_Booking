@@ -1,8 +1,10 @@
 package com.vtnq.web.Controllers.Owner;
 
 import com.vtnq.web.DTOs.AmenityDto;
+import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Entities.Amenity;
 import com.vtnq.web.Service.AmenitiesService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,13 @@ public class AmenityController {
     @Autowired
     private AmenitiesService amenitiesService;
     @GetMapping("Amenities/{id}")
-    public String Amenities(@PathVariable int id, ModelMap model, HttpSession session,@RequestParam(defaultValue = "1") int page,
-                            @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name) {
+    public String Amenities(@PathVariable int id, ModelMap model, HttpSession session, @RequestParam(defaultValue = "1") int page,
+                            @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "")String name, HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             session.setAttribute("id", id);
             List<Amenity>amenities=amenitiesService.findAll(id);
                 List<Amenity>filteredAmenities=amenities.stream().filter(hotels->
@@ -42,8 +48,12 @@ public class AmenityController {
         }
     }
     @GetMapping("Amenities/delete/{id}")
-    public String delete(@PathVariable int id, ModelMap model,RedirectAttributes redirectAttributes,HttpSession session) {
+    public String delete(@PathVariable int id, ModelMap model,RedirectAttributes redirectAttributes,HttpSession session,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             Integer idHotel=(Integer)session.getAttribute("id");
             if(amenitiesService.delete(id)){
                 redirectAttributes.addFlashAttribute("message","Amenity deleted successfully");
@@ -60,8 +70,12 @@ public class AmenityController {
         }
     }
     @PostMapping("Amenities/update")
-    public String update(@ModelAttribute("amenity") @Valid AmenityDto amenityDto,BindingResult result, RedirectAttributes redirectAttributes) {
+    public String update(@ModelAttribute("amenity") @Valid AmenityDto amenityDto,BindingResult result, RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if (result.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 result.getFieldErrors().forEach(error ->
@@ -86,8 +100,12 @@ public class AmenityController {
         }
     }
     @GetMapping("Amenities/edit/{id}")
-    public String edit(@PathVariable int id, ModelMap model, HttpSession session) {
+    public String edit(@PathVariable int id, ModelMap model, HttpSession session,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             Integer idHotel = (Integer) session.getAttribute("id");
             model.put("amenity",amenitiesService.findById(id));
             model.put("idHotel",idHotel);
@@ -98,8 +116,13 @@ public class AmenityController {
         }
     }
     @PostMapping("Amenities/add")
-    public String add(@ModelAttribute("amenity")@Valid AmenityDto amenity, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes) {
+    public String add(@ModelAttribute("amenity")@Valid AmenityDto amenity, BindingResult result, ModelMap model, RedirectAttributes redirectAttributes,
+                      HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if (result.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 result.getFieldErrors().forEach(error ->
@@ -124,8 +147,12 @@ public class AmenityController {
         }
     }
     @GetMapping("Amenities/add")
-    public String AmenitiesAdd(ModelMap model, HttpSession session) {
+    public String AmenitiesAdd(ModelMap model, HttpSession session,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             Integer id = (Integer) session.getAttribute("id");
             AmenityDto amenityDto = new AmenityDto();
             amenityDto.setRoom_id(id);

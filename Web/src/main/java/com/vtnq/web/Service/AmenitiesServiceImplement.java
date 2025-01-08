@@ -1,7 +1,9 @@
 package com.vtnq.web.Service;
 
+import com.vtnq.web.DTOs.Amenities.AmenitiesList;
 import com.vtnq.web.DTOs.AmenityDto;
 import com.vtnq.web.Entities.Amenity;
+import com.vtnq.web.Entities.Picture;
 import com.vtnq.web.Entities.Room;
 import com.vtnq.web.Entities.RoomAmenity;
 import com.vtnq.web.Repositories.AmenityRepository;
@@ -91,6 +93,26 @@ public class AmenitiesServiceImplement implements AmenitiesService{
     public List<Amenity> FindAmenitiesByHotel(int hotel_id) {
         try {
             return amenityRepository.findAmenitiesByHotelId(hotel_id);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<AmenitiesList> FindAmenitiesByRoom(int room_id) {
+        try {
+            return amenityRepository.FindAmenitiesByRoomId(room_id);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Picture> FindPictureByRoom(int id) {
+        try {
+            return amenityRepository.FindPictureRoom(id);
         }catch (Exception e) {
             e.printStackTrace();
             return null;

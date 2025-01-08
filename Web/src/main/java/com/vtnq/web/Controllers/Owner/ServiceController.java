@@ -1,8 +1,10 @@
 package com.vtnq.web.Controllers.Owner;
 
 import com.vtnq.web.DTOs.Service.ServiceDTO;
+import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Entities.Service;
 import com.vtnq.web.Service.ServiceService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,13 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
     @PostMapping("service/add")
-    public String add(@ModelAttribute("service") @Valid ServiceDTO serviceDTO, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String add(@ModelAttribute("service") @Valid ServiceDTO serviceDTO, BindingResult result, RedirectAttributes redirectAttributes,
+                      HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if (result.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 result.getFieldErrors().forEach(error ->
@@ -47,8 +54,12 @@ public class ServiceController {
         }
     }
     @GetMapping("service/delete/{id}")
-    public String delete(@PathVariable("id") int id, RedirectAttributes redirectAttributes,HttpSession session) {
+    public String delete(@PathVariable("id") int id, RedirectAttributes redirectAttributes,HttpSession session,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             Integer idHotel = (Integer) session.getAttribute("id");
             if(serviceService.deleteService(id)) {
                 redirectAttributes.addFlashAttribute("message", "Delete Service Success");
@@ -65,8 +76,13 @@ public class ServiceController {
         }
     }
     @PostMapping("service/update")
-    public String update(@ModelAttribute("service") @Valid ServiceDTO serviceDTO,BindingResult result, RedirectAttributes redirectAttributes) {
+    public String update(@ModelAttribute("service") @Valid ServiceDTO serviceDTO,BindingResult result, RedirectAttributes redirectAttributes,
+                         HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if (result.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 result.getFieldErrors().forEach(error ->
@@ -91,8 +107,12 @@ public class ServiceController {
         }
     }
     @GetMapping("service/edit/{id}")
-    public String edit(@PathVariable("id")int id, ModelMap model) {
+    public String edit(@PathVariable("id")int id, ModelMap model,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             model.put("service", serviceService.findById(id));
             return "Owner/Service/edit";
         }catch (Exception e) {
@@ -101,8 +121,12 @@ public class ServiceController {
         }
     }
     @GetMapping("service/add")
-    public String add(ModelMap model,HttpSession session) {
+    public String add(ModelMap model,HttpSession session,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             Integer id = (Integer) session.getAttribute("id");
             ServiceDTO serviceDTO = new ServiceDTO();
             if(id!=null){
@@ -116,10 +140,14 @@ public class ServiceController {
         }
     }
     @GetMapping("service/{id}")
-    public String service(ModelMap model, @PathVariable int id, HttpSession session,
+    public String service(ModelMap model,HttpServletRequest request, @PathVariable int id, HttpSession session,
                           @RequestParam(defaultValue = "1") int page,
                           @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             session.setAttribute("id",id);
             List<Service>services=serviceService.findAll(id);
             List<Service>filteredServices=services.stream().filter(service ->

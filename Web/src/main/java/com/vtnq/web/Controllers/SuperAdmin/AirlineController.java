@@ -3,8 +3,10 @@ package com.vtnq.web.Controllers.SuperAdmin;
 import com.vtnq.web.DTOs.Airline.AirlineDto;
 import com.vtnq.web.DTOs.Airline.ListAirlineDto;
 import com.vtnq.web.DTOs.Airline.UpdateAirlineDTO;
+import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Service.AirlineService;
 import com.vtnq.web.Service.CountryService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,8 +27,13 @@ public class AirlineController {
     @Autowired
     private CountryService countryService;
     @PostMapping("/Airline/UpdateAirline")
-    public String UpdateAirline(@ModelAttribute("Airline")UpdateAirlineDTO updateAirlineDTO, @RequestParam("imageForm")MultipartFile multipartFile,BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String UpdateAirline(@ModelAttribute("Airline")UpdateAirlineDTO updateAirlineDTO, @RequestParam("imageForm")MultipartFile multipartFile, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                                HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             if(bindingResult.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors:\n");
                 bindingResult.getFieldErrors().forEach(error ->
@@ -58,8 +65,12 @@ public class AirlineController {
     }
     @GetMapping("Airline")
     public String Airline(ModelMap model,@RequestParam(defaultValue = "1") int page,
-                          @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name) {
+                          @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             List<ListAirlineDto> airlines=airlineService.findAll();
             List<ListAirlineDto>filteredAirlines=airlines.stream().filter(airline->
                     airline.getName().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
@@ -77,8 +88,12 @@ public class AirlineController {
         }
     }
     @GetMapping("Airline/edit/{id}")
-    public String edit(@PathVariable int id, ModelMap model) {
+    public String edit(@PathVariable int id, ModelMap model,HttpServletRequest request) {
     try {
+        Account account = (Account) request.getSession().getAttribute("currentAccount");
+        if(account==null){
+            return "redirect:/LoginAdmin";
+        }
         model.put("Airline",airlineService.findAirlineById(id));
         model.put("Country",countryService.findAll());
         return "SuperAdmin/Airline/UpdateAirline";
@@ -89,8 +104,12 @@ public class AirlineController {
     }
     @PostMapping("Airline/add")
     public String addAirline(@ModelAttribute("airline") @Valid AirlineDto airlineDto, BindingResult bindingResult, ModelMap model,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes,HttpServletRequest request) {
       try {
+          Account account = (Account) request.getSession().getAttribute("currentAccount");
+          if(account==null){
+              return "redirect:/LoginAdmin";
+          }
           if(bindingResult.hasErrors()) {
               StringBuilder errorMessages = new StringBuilder("Validation errors:\n");
               bindingResult.getFieldErrors().forEach(error ->
@@ -121,8 +140,12 @@ public class AirlineController {
       }
     }
     @GetMapping("Airline/add")
-    public String addAirline(ModelMap model) {
+    public String addAirline(ModelMap model,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             model.put("Airline",new AirlineDto());
             model.put("Country",countryService.findAll());
             return "SuperAdmin/Airline/add";

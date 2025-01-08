@@ -21,8 +21,12 @@ public class ContractOwnerController {
     @Autowired
     private ContractOwnerService contractOwnerService;
     @GetMapping(value = "SignatureContract/{id}")
-    public String SignatureContract(@PathVariable int id) {
+    public String SignatureContract(@PathVariable int id,HttpServletRequest request,ModelMap model) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             return "SignContract/SignContract";
         }catch (Exception e) {
             e.printStackTrace();
@@ -33,6 +37,10 @@ public class ContractOwnerController {
     public String Contract(ModelMap model, HttpServletRequest request,@RequestParam(defaultValue = "1") int page,
                            @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
             List<ContractOwnerDto> Contracts = contractOwnerService.findAll(currentAccount.getCityId());
             List<ContractOwnerDto> filteredContracts = Contracts.stream().filter(city -> city.getOwnerName().contains(name)).collect(Collectors.toList());

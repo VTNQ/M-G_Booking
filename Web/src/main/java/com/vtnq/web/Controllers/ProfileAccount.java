@@ -24,6 +24,10 @@ public class ProfileAccount {
     public String profile(ModelMap model, HttpServletRequest request) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+
+            if(currentAccount==null){
+                return "redirect:/Login";
+            }
             model.put("Account",authService.GetAccountUser(currentAccount.getId()));
             model.put("Country",countryService.findAll());
             return "/User/Profile/Profile";
@@ -33,8 +37,12 @@ public class ProfileAccount {
         }
     }
     @PostMapping("Profile")
-    public String Profile(@ModelAttribute("Account")UserAccountDTO userAccountDTO, RedirectAttributes redirectAttributes) {
+    public String Profile(@ModelAttribute("Account")UserAccountDTO userAccountDTO, RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if(authService.UpdateProfileUser(userAccountDTO)) {
                 redirectAttributes.addFlashAttribute("message", "Profile updated successfully");
                 redirectAttributes.addFlashAttribute("messageType", "success");

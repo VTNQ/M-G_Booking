@@ -59,12 +59,15 @@ function removeSeat(seatId){
 function createSeatDiv(seat) {
 
     const seatDiv = document.createElement('div');
+    seatDiv.id=seat.idFlight;
+
+    seatDiv.setAttribute('data-flight-id',seat.idFlight)
     seatDiv.style.width = '50px';
     seatDiv.style.height = '50px';
     seatDiv.style.borderRadius = '4px';
 
     if(seat.status===1){
-        console.log('test')
+
         seatDiv.style.backgroundColor='rgb(233, 235, 238)';
         seatDiv.style.cursor='not-allowed';
         const closeIcon = document.createElement('i');
@@ -146,7 +149,7 @@ function createSeatDiv(seat) {
 
                 const flightIdArray = JSON.parse(flightId);
 
-                const seatIdElements = document.querySelectorAll(`.passenger-block .passenger-type .selected-seat`);
+                const seatIdElements = document.querySelectorAll(`.passenger-block .passenger-type .selected-seat.seat-tabs${seatDiv.dataset.flightId}`);
                 seatIdElements.forEach(seatElement => {
                     // Check if this seat element has a matching seat ID
 
@@ -224,7 +227,7 @@ function createSeatDiv(seat) {
                 if (seatExists===false) {
 
 
-                    const query = document.querySelector('.passenger-block .passenger-type .selected-seat.selected');
+                    const query = document.querySelector(`.passenger-block .passenger-type .selected-seat.seat-tabs${seatDiv.dataset.flightId}.selected`);
                     const queryText = document.querySelectorAll('.passenger-block .passenger-type .selected-seat ');
                     const passagerInfo = document.querySelectorAll('.passenger-info');
                     const PassageQuery=document.querySelector('.passenger-info.selected');

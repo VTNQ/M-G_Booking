@@ -122,7 +122,7 @@ public class AuthServiceImplement implements AuthService {
             account.setCityId(accountDto.getCityId());
             account.setPassword(BCrypt.hashpw(account.getPassword(), BCrypt.gensalt()));
             account.setUsername(GeneateUsername(accountDto.getEmail()));
-            Level level = levelRepository.findById(1).orElseThrow(() -> new RuntimeException("Level not found"));
+            Level level = levelRepository.findById(3).orElseThrow(() -> new RuntimeException("Level not found"));
             SendConfirmationEmail(accountDto.getEmail(), String.format("Username: %s \n Password: %s", account.getUsername(), accountDto.getPassword()));
             account.setLevel(level);
             accountRepository.save(account);

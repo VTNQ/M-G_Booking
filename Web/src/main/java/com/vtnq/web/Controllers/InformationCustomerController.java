@@ -14,6 +14,7 @@ import com.vtnq.web.Repositories.BookingRepository;
 import com.vtnq.web.Repositories.FlightRepository;
 import com.vtnq.web.Repositories.SeatRepository;
 import com.vtnq.web.Service.*;
+import com.vtnq.web.WebSocket.RoomUpdateWebSocketHandler;
 import com.vtnq.web.WebSocket.SeatUpdateWebSocketHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -39,6 +40,8 @@ public class InformationCustomerController {
     private PayPalService payPalService;
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private RoomUpdateWebSocketHandler roomUpdateWebSocketHandler;
     @Autowired
     private BookingRepository bookingRepository;
     @Autowired
@@ -111,6 +114,10 @@ public class InformationCustomerController {
    @GetMapping("InformationFlightHotel/{id}")
    public String InformationFlightHotel(ModelMap modelMap,@PathVariable int id,HttpServletRequest request) {
        try {
+           Account account=(Account)request.getSession().getAttribute("currentAccount");
+           if(account==null){
+               return "redirect:/Login";
+           }
            SearchFlightDTO resultFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
            List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
            Integer idRoom=(Integer) request.getSession().getAttribute("idRoom");
@@ -153,7 +160,7 @@ public class InformationCustomerController {
            modelMap.put("flight",FlightBooking);
            modelMap.put("total",total);
            BookingHotelDTO hotelDTO=new BookingHotelDTO();
-           hotelDTO.setTypeId(id);
+           hotelDTO.setTypeId(idRoom);
            hotelDTO.setPrice(bookingHotel.getPrice());
            hotelDTO.setTotalPrice(total);
            hotelDTO.setQuantity(resultFlightDTO.getQuantityRoom());
@@ -161,7 +168,9 @@ public class InformationCustomerController {
            Integer NumberPeople = (Integer) request.getSession().getAttribute("NumberPeople");
            modelMap.put("number",NumberPeople);
            BookingFlightDTO bookingDto=new BookingFlightDTO();
+
            modelMap.put("payment",bookingDto);
+           modelMap.put("DaysCheckIn",SearchFlightDTO.calculateDaysBetween(resultFlightDTO.getCheckInTime(),resultFlightDTO.getCheckOutTime()));
            return "/User/InformationCustomer/InformationCustomer";
        }catch (Exception e) {
            e.printStackTrace();
@@ -172,6 +181,7 @@ public class InformationCustomerController {
     public RedirectView payment(@RequestParam(required = true) double amount,
                                 @RequestParam(defaultValue = "JPY") String currency, @ModelAttribute BookingFlightDTO bookingFlightDTO, @RequestParam("bookings") String bookingsJson, HttpSession session, HttpServletRequest request) throws JsonProcessingException {
         try {
+
             SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
 
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
@@ -215,16 +225,26 @@ public class InformationCustomerController {
         return new RedirectView("/");
     }
     @GetMapping(SuccessHotel)
-    public String SuccessHotel(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, HttpServletRequest request){
+    public String SuccessHotel(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, HttpServletRequest request,
+                               HttpSession session){
        try {
            Payment payment = payPalService.executePayment(paymentId, payerId);
            BookingHotelDTO bookingHotelDTO=(BookingHotelDTO)request.getSession().getAttribute("Hotel");
            BookingFlightDTO bookingFlightDto = (BookingFlightDTO) request.getSession().getAttribute("booking");
            String bookings = (String) request.getSession().getAttribute("bookings");
             BigDecimal amount=(BigDecimal) request.getSession().getAttribute("amount");
-           if(payment.getState().equals("approved") && bookingService.addBookingHotel(bookingHotelDTO,bookingHotelDTO.getQuantity(),bookingFlightDto,bookings,amount)){
+            int Bookings=bookingService.addBookingHotel(bookingHotelDTO,bookingHotelDTO.getQuantity(),bookingFlightDto,bookings,amount);
+           if(payment.getState().equals("approved") && Bookings!=0){
+               session.setAttribute("idBooking",Bookings);
                 return "redirect:/Success";
             }
+           try {
+               Seat bookedSeat = bookingService.getBookedSeatFromBookings(bookings);
+               seatUpdateWebSocketHandler.notifySeatStatus(bookedSeat, false);
+               roomUpdateWebSocketHandler.NotifyRoomStatus(bookingHotelDTO.getTypeId(),false);
+           } catch (IOException e) {
+               e.printStackTrace();  // Log the error or handle it as needed
+           }
        }catch (Exception e){
            e.printStackTrace();
 
@@ -255,63 +275,67 @@ public class InformationCustomerController {
         }
         return "redirect:/";
     }
-
-    @GetMapping("InformationCustomer/{id}")
-    public String InformationCustomer(ModelMap modelMap,@PathVariable int id,HttpServletRequest request) {
-        try {
-            SearchFlightDTO resultFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
-            List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
-            List<BookingListFly>FlightBooking=new ArrayList<>();
-            List<Flight>flights=new ArrayList<>();
-            if(idFlight!=null){
-                for (Integer i:idFlight) {
-                    boolean existsFlightTab=flights.stream().anyMatch(flight->flight.getId()==i);
-                    if(!existsFlightTab){
-                        Flight flight=flightRepository.findById(i).orElse(null);
-                        if(flight!=null){
-                            flights.add(flight);
-                        }
-
-                    }
-                    boolean existBookingListFly=FlightBooking.stream().anyMatch(booking->booking.
-                            getId()==i);
-                    if(!existBookingListFly){
-                        BookingListFly bookingListFly=flightService.getResultPaymentFlight(i);
-                        FlightBooking.add(bookingListFly);
-                    }
-                }
-                modelMap.put("idFlight",idFlight);
-            }
-            BookingHotel bookingHotel=hotelService.FindBookingHotel(id);
-            modelMap.put("hotel",hotelService.FindBookingHotel(id));
-            BigDecimal total = bookingHotel.getPrice()
-                    .multiply(BigDecimal.valueOf(resultFlightDTO.getNumberPeopleRight()));
-            modelMap.put("flight",FlightBooking);
-            modelMap.put("searchFlightDTO",resultFlightDTO);
-            int paymentTimeOut=20*60;
-            modelMap.put("flightTab",flights);
-            modelMap.put("timeout",paymentTimeOut);
-            modelMap.put("flight",FlightBooking);
-            modelMap.put("total",total);
-            BookingHotelDTO hotelDTO=new BookingHotelDTO();
-            hotelDTO.setTypeId(id);
-            hotelDTO.setPrice(bookingHotel.getPrice());
-            hotelDTO.setTotalPrice(total);
-            hotelDTO.setQuantity(resultFlightDTO.getQuantityRoom());
-            modelMap.put("hotelDTO",hotelDTO);
-            Integer NumberPeople = (Integer) request.getSession().getAttribute("NumberPeople");
-            modelMap.put("number",NumberPeople);
-            BookingFlightDTO bookingDto=new BookingFlightDTO();
-            modelMap.put("payment",bookingDto);
-        return "/User/InformationCustomer/InformationCustomer";
-        }catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//
+//    @GetMapping("InformationCustomer/{id}")
+//    public String InformationCustomer(ModelMap modelMap,@PathVariable int id,HttpServletRequest request) {
+//        try {
+//            SearchFlightDTO resultFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
+//            List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
+//            List<BookingListFly>FlightBooking=new ArrayList<>();
+//            List<Flight>flights=new ArrayList<>();
+//            if(idFlight!=null){
+//                for (Integer i:idFlight) {
+//                    boolean existsFlightTab=flights.stream().anyMatch(flight->flight.getId()==i);
+//                    if(!existsFlightTab){
+//                        Flight flight=flightRepository.findById(i).orElse(null);
+//                        if(flight!=null){
+//                            flights.add(flight);
+//                        }
+//
+//                    }
+//                    boolean existBookingListFly=FlightBooking.stream().anyMatch(booking->booking.
+//                            getId()==i);
+//                    if(!existBookingListFly){
+//                        BookingListFly bookingListFly=flightService.getResultPaymentFlight(i);
+//                        FlightBooking.add(bookingListFly);
+//                    }
+//                }
+//                modelMap.put("idFlight",idFlight);
+//            }
+//            BookingHotel bookingHotel=hotelService.FindBookingHotel(id);
+//            modelMap.put("hotel",hotelService.FindBookingHotel(id));
+//            BigDecimal total = bookingHotel.getPrice()
+//                    .multiply(BigDecimal.valueOf(resultFlightDTO.getNumberPeopleRight()));
+//            modelMap.put("flight",FlightBooking);
+//            modelMap.put("searchFlightDTO",resultFlightDTO);
+//            int paymentTimeOut=20*60;
+//            modelMap.put("flightTab",flights);
+//            modelMap.put("timeout",paymentTimeOut);
+//            modelMap.put("flight",FlightBooking);
+//            modelMap.put("total",total);
+//            BookingHotelDTO hotelDTO=new BookingHotelDTO();
+//            hotelDTO.setTypeId();
+//            hotelDTO.setPrice(bookingHotel.getPrice());
+//            hotelDTO.setTotalPrice(total);
+//            hotelDTO.setQuantity(resultFlightDTO.getQuantityRoom());
+//            modelMap.put("hotelDTO",hotelDTO);
+//            Integer NumberPeople = (Integer) request.getSession().getAttribute("NumberPeople");
+//            modelMap.put("number",NumberPeople);
+//            BookingFlightDTO bookingDto=new BookingFlightDTO();
+//            modelMap.put("payment",bookingDto);
+//        return "/User/InformationCustomer/InformationCustomer";
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
     @GetMapping("InformationFly/{id}")
     public String InformationFly(@PathVariable int id, ModelMap modelMap,HttpServletRequest request) {
         try {
+            Account account=(Account)request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
 
             List<BookingListFly>FlightBooking=new ArrayList<>();
@@ -380,7 +404,12 @@ public class InformationCustomerController {
     @GetMapping("Success")
     public String Success(HttpServletRequest request,ModelMap modelMap) {
         try {
+            Account account=(Account)request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             Integer idBooking=(Integer)request.getSession().getAttribute("idBooking");
+
             Booking booking=bookingRepository.findById(idBooking).
                     orElseThrow(()->new RuntimeException("Booking not found"));
 

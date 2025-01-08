@@ -34,7 +34,7 @@ public class SercurityConfiguration {
                 .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/LoginAdmin","/registerUser","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**",
+                    auth.requestMatchers("/LoginAdmin","/registerUser","/registerOwner","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**",
                                     "/ForgotPassword","/images/flight/**","/images/hotels/**","/images/**","/Home","/SearchFlight","/Admin/SignatureContract/{id}",
                                     "/DetailHotel/{id}","/InformationCustomer/{id}","/rating","/Payment","/Success","/payFlight/**","/RoundTrip/{id}","/SearchHotelFlight/{id}","/RoundTripHotel/{id}","/HistoryOrder","/Error").permitAll()
                             .requestMatchers("SuperAdmin/Home","/SuperAdmin/Country/add","/SuperAdmin/Country"
@@ -132,6 +132,14 @@ public class SercurityConfiguration {
                                     if ("ROLE_ADMIN".equals(currentAccount.getAccountType()) || "ROLE_SUPERADMIN".equals(currentAccount.getAccountType())) {
                                         // Redirect to /LoginAdmin
                                         response.sendRedirect("/LoginAdmin");
+                                        session.invalidate();
+                                        return;
+                                    }else if("ROLE_USER".equals(currentAccount.getAccountType()) ) {
+                                        response.sendRedirect("/Home");
+                                        session.invalidate();
+                                        return;
+                                    }else{
+                                        response.sendRedirect("/Login");
                                         session.invalidate();
                                         return;
                                     }
