@@ -1,10 +1,29 @@
 package com.vtnq.web.DTOs.Flight;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+
 public class SearchFlightDTO {
     private int departureAirport;
     private int arrivalAirport;
     private String departureTime;
+    private List<String>validationErrors=new ArrayList<>();
+    public String getValidationErrors(){
+        StringBuilder errorMessages = new StringBuilder("Validation errors:\n");
 
+        // Assuming validationErrors is a list of error messages
+        validationErrors.forEach(error ->
+                errorMessages.append(String.format(" %s\n", error))
+        );
+
+        return errorMessages.toString();
+    }
+    public boolean hasErrors(){
+        return !validationErrors.isEmpty();
+    }
     public String getCheckInTime() {
         return checkInTime;
     }
@@ -12,7 +31,7 @@ public class SearchFlightDTO {
     public void setCheckInTime(String checkInTime) {
         this.checkInTime = checkInTime;
         if(selectedHotel && checkInTime.isEmpty()) {
-            throw new IllegalArgumentException("Check In Required");
+           validationErrors.add("Check In Required");
         }
     }
 
@@ -23,10 +42,15 @@ public class SearchFlightDTO {
     public void setCheckOutTime(String checkOutTime) {
         this.checkOutTime = checkOutTime;
         if (selectedHotel && (checkOutTime == null || checkOutTime.isEmpty())) {
-            throw new IllegalArgumentException("Check Out Required");
+            validationErrors.add("Check Out Required");
         }
     }
-
+    public static Long calculateDaysBetween(String checkInTime, String checkOutTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate checkInDate= LocalDate.parse(checkInTime, formatter);
+        LocalDate checkOutDate= LocalDate.parse(checkOutTime, formatter);
+        return ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+    }
     private String TypeFlight;
     private boolean selectedHotel;
     private String checkInTime;
@@ -39,7 +63,7 @@ public class SearchFlightDTO {
     public void setRoundTrip(boolean roundTrip) {
         IsRoundTrip = roundTrip;
         if(IsRoundTrip && (this.arrivalTime==null || this.arrivalTime.isEmpty())){
-            throw new IllegalArgumentException("Arrival time Required");
+            validationErrors.add("Arrival time Required");
         }
     }
 
@@ -70,14 +94,16 @@ public class SearchFlightDTO {
     }
 
     public void setIdCity(int idCity) {
-        if(selectedHotel && idCity>0){
-            throw new IllegalArgumentException("city Required");
-        }
         this.idCity = idCity;
+        if(selectedHotel && idCity==0){
+            validationErrors.add("city Required");
+        }
+
     }
 
     public String getArrivalTime() {
         return arrivalTime;
+
     }
 
     public boolean isSelectedHotel() {
@@ -87,13 +113,19 @@ public class SearchFlightDTO {
     public void setSelectedHotel(boolean selectedHotel) {
         this.selectedHotel = selectedHotel;
         if (selectedHotel && (checkOutTime == null || checkOutTime.isEmpty())) {
-            throw new IllegalArgumentException("Check Out Required");
+            validationErrors.add("Check Out Required");
+        }
+        if(selectedHotel && (checkInTime == null || checkInTime.isEmpty())){
+            validationErrors.add("Check In Required");
+        }
+        if(selectedHotel && idCity==0){
+            validationErrors.add("City Required");
         }
     }
 
     public void setArrivalTime(String arrivalTime) {
         if(IsRoundTrip &&(arrivalTime==null || arrivalTime.isEmpty())){
-            throw new IllegalArgumentException("Arrival time Required");
+            validationErrors.add("Arrival time Required");
         }
         this.arrivalTime = arrivalTime;
     }
@@ -113,6 +145,9 @@ public class SearchFlightDTO {
 
     public void setArrivalAirport(int arrivalAirport) {
         this.arrivalAirport = arrivalAirport;
+        if(arrivalAirport==0){
+            validationErrors.add("Arrival Airport Required");
+        }
     }
 
     public String getDepartureTime() {
@@ -121,6 +156,9 @@ public class SearchFlightDTO {
 
     public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
+        if(departureTime.isEmpty() || departureTime==null){
+            validationErrors.add("Departure Time Required");
+        }
     }
 
     public int getDepartureAirport() {
@@ -129,5 +167,8 @@ public class SearchFlightDTO {
 
     public void setDepartureAirport(int departureAirport) {
         this.departureAirport = departureAirport;
+        if(departureAirport==0){
+            validationErrors.add("Departure Airport Required");
+        }
     }
 }

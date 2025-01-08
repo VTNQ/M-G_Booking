@@ -25,8 +25,11 @@ public class BookingController {
                           @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String code,
                           HttpServletRequest request) {
         try {
-            Account currentAccount=(Account)request.getSession().getAttribute("currentAccount");
-            List<Booking>bookings=bookingService.FindBookings(currentAccount.getCountryId());
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
+            List<Booking>bookings=bookingService.FindBookings(account.getCountryId());
             List<Booking>FilterBooking=bookings.stream().filter(booking->booking.getBookingCode().contains(code)).collect(Collectors.toList());
             int start = (page - 1) * size;
             int end = Math.min(start + size, FilterBooking.size());
@@ -42,8 +45,12 @@ public class BookingController {
         }
     }
     @GetMapping("Booking/detail/{id}")
-    public String detailBooking(ModelMap modelMap,@PathVariable int id) {
+    public String detailBooking(ModelMap modelMap,@PathVariable int id,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             modelMap.put("flight",bookingService.findBookingFlights(id));
             modelMap.put("totalPriceFlight",bookingService.getTotalPrice(id));
             modelMap.put("Hotel",bookingService.getBookingRooms(id));

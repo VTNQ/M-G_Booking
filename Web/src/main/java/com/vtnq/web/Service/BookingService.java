@@ -16,7 +16,7 @@ import java.util.List;
 public interface BookingService {
     public int addBooking(BookingFlightDTO bookingFlightDTO,String bookings);
    public Seat getBookedSeatFromBookings(String bookings);
-   public boolean addBookingHotel(BookingHotelDTO bookingHotelDTO, int QuantityRoom, BookingFlightDTO bookingFlightDTO, String bookings, BigDecimal amount);
+   public int addBookingHotel(BookingHotelDTO bookingHotelDTO, int QuantityRoom, BookingFlightDTO bookingFlightDTO, String bookings, BigDecimal amount);
    public List<Booking>FindBookings(int id);
    public List<BookingFlightDetail>findBookingFlights(int id);
    public BigDecimal getTotalPrice(int id);

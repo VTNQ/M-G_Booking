@@ -33,7 +33,12 @@ public class FlightController {
     @GetMapping("Flight/add")
     public String addFlight(ModelMap model, HttpServletRequest request) {
         try {
+
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+
+            if(currentAccount==null){
+                return "redirect:/LoginAdmin";
+            }
             model.put("DepartureAirPort", airportService.findAll(currentAccount.getCountryId()));
             model.put("ArrivalAirPort", airportService.findAll());
             model.put("Airline", airlineService.findAll());
@@ -51,6 +56,10 @@ public class FlightController {
     public String editFlight(ModelMap model, @PathVariable int id, HttpServletRequest request) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+
+            if(currentAccount==null){
+                return "redirect:/LoginAdmin";
+            }
             model.put("flight", flightService.findById(id));
 
             model.put("DepartureAirPort", airportService.findAll(currentAccount.getCountryId()));
@@ -68,6 +77,9 @@ public class FlightController {
                          @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String name) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+            if(currentAccount==null){
+                return "redirect:/LoginAdmin";
+            }
             List<FlightListDTO> flights = flightService.findAllByCountry(currentAccount.getCountryId());
             List<FlightListDTO> filterFlights = flights.stream().filter(flight ->
                     flight.getNameAirline().contains(name)).collect(Collectors.toList());
@@ -86,8 +98,12 @@ public class FlightController {
         }
     }
     @PostMapping("Flight/UpdateFlight")
-    public String UpdateFlight(@ModelAttribute("flight") @Valid FlightDto flightDto,BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String UpdateFlight(@ModelAttribute("flight") @Valid FlightDto flightDto,BindingResult bindingResult,HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             if (bindingResult.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 bindingResult.getFieldErrors().forEach(error ->
@@ -117,8 +133,13 @@ public class FlightController {
         }
     }
     @PostMapping("Flight/addSeat")
-    public String addSeat(@ModelAttribute("Seat")SeatDTO seatDTO,RedirectAttributes redirectAttributes){
+    public String addSeat(@ModelAttribute("Seat")SeatDTO seatDTO,RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
+
             if(flightService.CreateSeat(seatDTO)) {
                 redirectAttributes.addFlashAttribute("messageType", "success");
                 redirectAttributes.addFlashAttribute("message", "Seat added successfully");
@@ -135,9 +156,14 @@ public class FlightController {
         }
 
     @PostMapping("Flight/add")
-    public String addFlight(@ModelAttribute("flight") @Valid FlightDto flightDto,BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes
+    public String addFlight(@ModelAttribute("flight") @Valid FlightDto flightDto,BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes,
+                            HttpServletRequest request
             ) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             if (bindingResult.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 bindingResult.getFieldErrors().forEach(error ->

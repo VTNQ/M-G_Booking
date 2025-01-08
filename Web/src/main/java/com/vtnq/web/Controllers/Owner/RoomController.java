@@ -1,10 +1,12 @@
 package com.vtnq.web.Controllers.Owner;
 
 import com.vtnq.web.DTOs.Room.RoomDTO;
+import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Entities.Room;
 import com.vtnq.web.Entities.Type;
 import com.vtnq.web.Service.RoomService;
 import com.vtnq.web.Service.TypeService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +33,13 @@ public class RoomController {
     @GetMapping("Room/{id}")
     public String Room(@PathVariable int id, ModelMap model, HttpSession session,
                        @RequestParam(defaultValue = "1") int page,
-                       @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name) {
+                       @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name,
+                       HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             session.setAttribute("id", id);
             List<Room>rooms=roomService.findAll(id);
             List<Room>filteredRooms=rooms.stream().filter(room ->
@@ -53,8 +60,12 @@ public class RoomController {
     }
     @PostMapping("Room/add")
     public String add(@RequestParam List<Integer>roomTypes, @RequestParam List<BigDecimal>roomPrices, @RequestParam List<Integer>roomCapacities, @RequestParam int IdHotel,
-                      @RequestParam(value = "roomImages", required = false) List<MultipartFile> roomImages , RedirectAttributes redirectAttributes) {
+                      @RequestParam(value = "roomImages", required = false) List<MultipartFile> roomImages , RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if (roomImages != null && !roomImages.isEmpty()) {
                 // You can further process images if needed
                 List<List<MultipartFile>> imagePaths = new ArrayList<>();
@@ -83,8 +94,12 @@ public class RoomController {
         }
     }
     @GetMapping("Room/delete/{id}")
-    public String delete(@PathVariable int id, RedirectAttributes redirectAttributes,HttpSession session) {
+    public String delete(@PathVariable int id, RedirectAttributes redirectAttributes,HttpSession session,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             Integer idHotel=(Integer) session.getAttribute("id");
             if(roomService.delete(id)){
                 redirectAttributes.addFlashAttribute("message", "Room deleted successfully");
@@ -101,8 +116,12 @@ public class RoomController {
         }
     }
     @PostMapping("Room/update")
-    public String update(@ModelAttribute("room")@Valid RoomDTO roomDTO, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String update(@ModelAttribute("room")@Valid RoomDTO roomDTO, BindingResult result, RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if (result.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                result.getFieldErrors().forEach(error ->
@@ -127,8 +146,12 @@ public class RoomController {
         }
     }
     @GetMapping("Room/edit/{id}")
-    public String edit(@PathVariable int id, ModelMap model, HttpSession session) {
+    public String edit(@PathVariable int id, ModelMap model, HttpSession session,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             Integer idHotel=(Integer) session.getAttribute("id");
             model.put("typeRoom",typeService.findByHotel(idHotel));
             model.put("room",roomService.findById(id));
@@ -140,8 +163,12 @@ public class RoomController {
         }
     }
     @PostMapping("Room/addType")
-    public String addType(@ModelAttribute("type") Type type, RedirectAttributes redirectAttributes) {
+    public String addType(@ModelAttribute("type") Type type, RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if(typeService.addType(type)){
                 redirectAttributes.addFlashAttribute("message", "Type added successfully");
                 redirectAttributes.addFlashAttribute("messageType", "success");
@@ -157,8 +184,12 @@ public class RoomController {
         }
     }
     @GetMapping("Room/add")
-    public String add(ModelMap modelMap,HttpSession session){
+    public String add(ModelMap modelMap,HttpSession session,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             Integer id=(Integer) session.getAttribute("id");
             Type type=new Type();
             type.setHotelId(id);

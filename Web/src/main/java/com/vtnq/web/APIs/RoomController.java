@@ -1,5 +1,7 @@
 package com.vtnq.web.APIs;
 
+import com.vtnq.web.Entities.Picture;
+import com.vtnq.web.Service.AmenitiesService;
 import com.vtnq.web.Service.RoomService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,17 @@ import java.util.Map;
 public class RoomController {
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private AmenitiesService amenitiesService;
+    @GetMapping("picture/{id}")
+    public ResponseEntity<List<Picture>>getPicture(@PathVariable int id){
+        try {
+            return new ResponseEntity<List<Picture>>(amenitiesService.FindPictureByRoom(id), HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<List<Picture>>(HttpStatus.BAD_REQUEST);
+        }
+    }
     @PostMapping("UpdateMultipleImage/{id}")
     public ResponseEntity<Object> updateMultipleImage(@PathVariable int id, @RequestParam(value = "MultiImage", required = false) List<MultipartFile> MultiImage, ModelMap model, HttpServletRequest request,
                                                       RedirectAttributes redirectAttributes) {

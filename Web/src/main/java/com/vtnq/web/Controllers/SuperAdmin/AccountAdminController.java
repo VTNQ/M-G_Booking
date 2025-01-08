@@ -2,8 +2,10 @@ package com.vtnq.web.Controllers.SuperAdmin;
 
 import com.vtnq.web.DTOs.Account.AccountDto;
 import com.vtnq.web.DTOs.Account.AdminAccountList;
+import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Service.AuthService;
 import com.vtnq.web.Service.CountryService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +25,12 @@ public class AccountAdminController {
     @Autowired
     private AuthService authService;
     @GetMapping("AccountAdmin/add")
-    public String addAccountAdmin(ModelMap model) {
+    public String addAccountAdmin(ModelMap model, HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             model.put("Country",countryService.findAll());
             model.put("Admin", new AccountDto());
             return "SuperAdmin/AccountAdmin/add";
@@ -35,8 +41,12 @@ public class AccountAdminController {
     }
     @GetMapping("AccountAdmin")
     public String AccountAdmin(ModelMap model,@RequestParam(defaultValue = "1") int page,
-                               @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name) {
+                               @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             List<AdminAccountList>admin=authService.getAdmin();
             List<AdminAccountList>filteredAdmin=admin.stream().
                     filter(admins->admins.getFullName().toLowerCase().contains(name.toLowerCase()))
@@ -56,9 +66,13 @@ public class AccountAdminController {
     @PostMapping("AccountAdmin/add")
     public String addAccountAdmin(@ModelAttribute("Admin") @Valid AccountDto admin,
                                   BindingResult result,
-                                  RedirectAttributes redirectAttributes) {
+                                  RedirectAttributes redirectAttributes,HttpServletRequest request) {
 
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/LoginAdmin";
+            }
             if(result.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors:\n");
                 result.getFieldErrors().forEach(error ->

@@ -29,6 +29,9 @@ public class HistoryOrder {
                                @RequestParam(required = false)String flightCode,@RequestParam(required = false)String departureTime,@RequestParam(required = false)String ArrivalTime) {
         try {
             Account account=(Account)request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             int pageSize=5;
 
             model.put("currentFlightPage",flightPage);
