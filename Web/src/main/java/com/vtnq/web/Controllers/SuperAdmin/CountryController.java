@@ -37,27 +37,7 @@ public class CountryController {
         }
     }
 
-    @GetMapping("Country/delete/{id}")
-    public String DeleteCountry(@PathVariable int id, RedirectAttributes redirectAttributes,HttpServletRequest request) {
-        try {
-            Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
-                return "redirect:/LoginAdmin";
-            }
-            if (countryService.deleteCountry(id)) {
-                redirectAttributes.addFlashAttribute("message", "Delete Country successful");
-                redirectAttributes.addFlashAttribute("messageType", "success");
-                return "redirect:/SuperAdmin/Country";
-            } else {
-                redirectAttributes.addFlashAttribute("message", "Delete Country failed");
-                redirectAttributes.addFlashAttribute("messageType", "error");
-                return "redirect:/SuperAdmin/Country";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
 
     @PostMapping("Country/update")
     public String update(@ModelAttribute("Country") Country country, RedirectAttributes redirectAttributes, HttpServletRequest request) {

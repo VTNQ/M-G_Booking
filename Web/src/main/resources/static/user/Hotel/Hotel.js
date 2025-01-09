@@ -1,3 +1,17 @@
+document.addEventListener('DOMContentLoaded',function (){
+    let flexBoxInputCheck = document.getElementById('flexSwitchCheckDefault');
+    if (flexBoxInputCheck.checked) {
+        document.getElementById('AtHotel').style.display = 'block';
+        document.getElementById('TimeHotel').style.display='block';
+        document.getElementById('RoomNumber').style.display='block';
+        document.getElementById('btn-Submit').style.top='43vh';
+    }else{
+        document.getElementById('AtHotel').style.display = 'none';
+        document.getElementById('TimeHotel').style.display='none';
+        document.getElementById('RoomNumber').style.display='none';
+        document.getElementById('btn-Submit').style.top='28vh';
+    }
+})
 document.getElementById("from-input").addEventListener('input',async (event)=>{
     const search = event.target.value;
     const dropdown = document.getElementById("from-dropdown");
@@ -205,12 +219,12 @@ function initArrivalTime() {
     const departTimeInput = document.getElementById("datePickerInput");
     let departDateValue = departTimeInput.value;
 
-    // Nếu departtime chưa được chọn, sử dụng ngày mai
+
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
-    // Nếu departtime đã được chọn, tính minDate từ giá trị này
+
     if (departDateValue) {
         const departDate = new Date(departDateValue);
         departDate.setDate(departDate.getDate() + 1); // Phải lớn hơn departtime 1 ngày
@@ -304,14 +318,14 @@ document.getElementById('flexSwitchCheckDefault').addEventListener('change',func
 
 
 
-document.addEventListener('click', function (event) {
-    const isClickInside = document.getElementById('basicDropdownClickInvoker').contains(event.target) ||
-        document.querySelector('#basicDropdownClick').contains(event.target);
-
-    if (!isClickInside) {
-        document.querySelector('#basicDropdownClick').classList.remove('show');
-    }
-})
+// document.addEventListener('click', function (event) {
+//     const isClickInside = document.getElementById('basicDropdownClickInvoker').contains(event.target) ||
+//         document.querySelector('#basicDropdownClick').contains(event.target);
+//
+//     if (!isClickInside) {
+//         document.querySelector('#basicDropdownClick').classList.remove('show');
+//     }
+// })
 document.addEventListener('DOMContentLoaded',async function (){
     const FromInputDropDown=document.querySelector('#from-input');
     const At=document.querySelector('#At-input');

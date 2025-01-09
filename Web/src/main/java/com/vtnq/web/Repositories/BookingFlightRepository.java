@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface BookingFlightRepository extends JpaRepository<BookingFlight, Integer> {
     @Query("select distinct a.id,a.flight.flightCode,a.flight.arrivalTime,a.flight.departureTime,a.flight.departureAirport.name,a.flight.arrivalAirport.name from BookingFlightDetail a " +
-            "where a.bookingFlight.user.id = :id and (:flightCode IS null or a.flight.flightCode like %:flightCode%) " +
+            "where a.bookingFlight.id = :id and (:flightCode IS null or a.flight.flightCode like %:flightCode%) " +
             "and (:departureTime IS NULL or Date(a.flight.departureTime) =:departureTime) " +
             "and (:ArrivalTime IS NULL or Date(a.flight.arrivalTime) =:ArrivalTime)" +
             "order by a.id ASC limit :size offset :offset ")

@@ -8,6 +8,59 @@ function convertTimeToDecimal(time) {
 
 
 let selectedAirlines=[];
+document.addEventListener('DOMContentLoaded',async function (){
+    const FromInputDropDown=document.querySelector('#from-input');
+    const At=document.querySelector('#At-input');
+    const City=document.querySelector('#idCity');
+    const FromInput=document.querySelector('#from-input-id');
+    const ArrivalInputDropDown=document.querySelector('#to-input');
+    const ToInput=document.querySelector('#to-input-id');
+    try {
+        let fromAirports=await SearchById(FromInput.value);
+        let ArrivalAirports=await SearchById(ToInput.value);
+        let Cities=await SearchCityById(City.value);
+        console.log(City.value)
+        if(Cities!=null){
+            At.value=Cities.name;
+        }
+        if(fromAirports!=null){
+            FromInputDropDown.value=fromAirports.name;
+
+        }
+        if(ArrivalAirports!=null){
+            ArrivalInputDropDown.value=ArrivalAirports.name;
+        }
+    }catch (error) {
+        console.log(error);
+    }
+})
+async function SearchCityById(id){
+    try {
+        const response=await fetch(`http://localhost:8686/api/city/FindById/${encodeURIComponent(id)}`);
+        let cities=null;
+        if(response.ok){
+            cities=await response.json();
+        }
+        return cities;
+    }catch (error){
+        console.log(error)
+    }
+}
+async function SearchById( id){
+    try {
+        const response=await fetch(`http://localhost:8686/api/AirPort/FindById/${encodeURIComponent(id)}`);
+        let airports=null;
+        if(response.ok){
+            airports=await response.json();
+
+        }else {
+            console.error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        return airports;
+    }catch (error){
+        console.log(error)
+    }
+}
 function updateFlightVisibility(){
     const flights = document.querySelectorAll('#flight-item');
 
@@ -378,7 +431,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     loadingText.textContent = "Loading, please wait...";
     loadingOverlay.appendChild(loadingText);
 
-    // Add overlay to the body
+
     document.body.appendChild(loadingOverlay);
 
     // Create skeleton elements

@@ -5,6 +5,7 @@ import com.vtnq.web.Entities.BookingFlightDetail;
 import com.vtnq.web.Entities.BookingRoomDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,4 +30,6 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     public BigDecimal getBookingHotelPrice(int id);
     @Query("select a from Booking a where a.userId = :id")
     public List<Booking>FindBookingByUserId(int id);
+    @Query("select a.bookingFlight.id as idFlight,a.bookingRoom.id as idHotel,a.createdAt as CreateAt,a.totalPrice as totalPrice,a.bookingCode as bookingCode from Booking a where a.userId= :id and (:booking IS NULL or a.bookingCode like %:booking%) order by a.id asc limit :size offset :offset")
+    List<Object[]>FindBookingByAccount(@Param("id") int id, @Param("size")int size, @Param("offset")int offset,@Param("booking") String booking);
     }

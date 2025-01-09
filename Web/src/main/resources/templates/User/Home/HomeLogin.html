@@ -18,75 +18,7 @@
                 </div>
             </div>
             <div style="margin-bottom: -8rem !important">
-                <ul class="nav tab-nav-rounded flex-nowrap pb-2 pb-md-4 tab-nav">
-                    <li class="nav-item" style="margin-right: 0.25rem">
-                        <a class="nav-link active" style="font-weight: 500;padding-left: 2rem">
-                            <div class="d-flex flex-column flex-md-row relative text-white align-items-center">
-                                <figure class="ie-height-40 d-md-block mr-md-3">
-                                    <i class="fa-solid fa-hotel icon" style="font-size: 2rem"></i>
-                                </figure>
-                                <span class="tabtext mt-2 mt-md-0 "
-                                      style="font-weight: 500;font-size: 19px;margin-top: -0.5rem">Hotel</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item" style="margin-right: 0.25rem">
-                        <a class="nav-link active" style="font-weight: 500;padding-left: 2rem">
-                            <div class="d-flex flex-column flex-md-row relative text-white align-items-center">
-                                <figure class="ie-height-40 d-md-block mr-md-3">
-                                    <i class="fa-solid fa-globe icon" style="font-size: 2rem"></i>
-                                </figure>
-                                <span class="tabtext mt-2 mt-md-0 "
-                                      style="font-weight: 500;font-size: 19px;margin-top: -0.5rem">Tours</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item" style="margin-right: 0.25rem">
-                        <a class="nav-link active" style="font-weight: 500;padding-left: 2rem">
-                            <div class="d-flex flex-column flex-md-row relative text-white align-items-center">
-                                <figure class="ie-height-40 d-md-block mr-md-3">
-                                    <i class="fas fa-running fa-globe icon" style="font-size: 2rem"></i>
-                                </figure>
-                                <span class="tabtext mt-2 mt-md-0 "
-                                      style="font-weight: 500;font-size: 19px;margin-top: -0.5rem">Activity</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item" style="margin-right: 0.25rem">
-                        <a class="nav-link active" style="font-weight: 500;padding-left: 2rem">
-                            <div class="d-flex flex-column flex-md-row relative text-white align-items-center">
-                                <figure class="ie-height-40 d-md-block mr-md-3">
-                                    <i class="icon fa-solid fa-building-user" style="font-size: 2rem"></i>
-                                </figure>
-                                <span class="tabtext mt-2 mt-md-0 "
-                                      style="font-weight: 500;font-size: 19px;margin-top: -0.5rem">Rental</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item" style="margin-right: 0.25rem">
-                        <a class="nav-link active" style="font-weight: 500;padding-left: 2rem">
-                            <div class="d-flex flex-column flex-md-row relative text-white align-items-center">
-                                <figure class="ie-height-40 d-md-block mr-md-3">
-                                    <i class="fa-solid fa-sailboat icon" style="font-size: 2rem"></i>
 
-                                </figure>
-                                <span class="tabtext mt-2 mt-md-0 "
-                                      style="font-weight: 500;font-size: 19px;margin-top: -0.5rem">Yacht</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item" style="margin-right: 0.25rem">
-                        <a class="nav-link active" style="font-weight: 500;padding-left: 2rem">
-                            <div class="d-flex flex-column flex-md-row relative text-white align-items-center">
-                                <figure class="ie-height-40 d-md-block mr-md-3">
-                                    <i class="fa fa-plane icon" style="font-size: 2rem"></i>
-                                </figure>
-                                <span class="tabtext mt-2 mt-md-0 "
-                                      style="font-weight: 500;font-size: 19px;margin-top: -0.5rem">Flights</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
                 <div class="tab-content hero-tab-pane">
                     <div class="tab-pane fade active show">
                         <div class="card border-0 tab-shadow">
@@ -94,13 +26,17 @@
                                 <form th:action="@{/SearchFlight}" method="get">
                                     <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
                                         <div class="col-sm-1 mr-2">
-                                            <button type="button" style="min-height: 36px;font-family: inherit;color: #2067da;padding-bottom: 4px;padding-top: 4px;padding-left: 16px;padding-right: 16px;fill: #2067da;background-color: #e5efff;border-color: #2067da;border-style: solid;border-radius: 999px;
-                                            border-width: 2px;white-space: nowrap" id="OneWay"  value="false">One way</button>
+                                            <button type="button"  th:style="'min-height: 36px; font-family: inherit; padding-bottom: 4px; padding-top: 4px; padding-left: 16px; padding-right: 16px; fill: #2067da; background-color: '
+              + (${Search.roundTrip==false} ? '#e5efff' : 'rgb(255, 255, 255)') + '; border-style: solid; border-radius: 999px; border-width: 2px; white-space: nowrap; border-color: '
+              + (${Search.roundTrip==false} ? '#2067da' : 'rgba(94, 107, 130, 0.32)')+
+                ';color: '+(${Search.roundTrip==false}?'#2067da':'rgb(36, 38, 44)')" id="OneWay"  value="false">One way</button>
                                             <input type="hidden" th:field="${Search.roundTrip}" id="TripTypeValue">
                                         </div>
                                         <div class="col-sm-1">
-                                            <button type="button" style="min-height: 36px;font-family: inherit;color: #24262c;padding-bottom: 4px;padding-top: 4px;padding-left: 16px;padding-right: 16px;fill: #2067da;background-color: #fff;border-color: rgba(94,107,130,.32);border-style: solid;border-radius: 999px;
-                                            border-width: 2px;white-space: nowrap" id="RoundTrip" th:field="${Search.roundTrip}" value="True">Round-trip</button>
+                                            <button type="button"    th:style="'min-height: 36px; font-family: inherit; padding-bottom: 4px; padding-top: 4px; padding-left: 16px; padding-right: 16px; fill: #2067da; background-color: '
+              + (${Search.roundTrip==true} ? '#e5efff' : 'rgb(255, 255, 255)') + '; border-style: solid; border-radius: 999px; border-width: 2px; white-space: nowrap; border-color: '
+              + (${Search.roundTrip} ? '#2067da' : 'rgba(94, 107, 130, 0.32)')+
+                ';color: '+(${Search.roundTrip==true}?'#2067da':'rgb(36, 38, 44)')"  id="RoundTrip" th:field="${Search.roundTrip}" value="True">Round-trip</button>
                                         </div>
                                     </div>
                                     <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">

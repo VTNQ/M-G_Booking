@@ -2367,7 +2367,24 @@ table th {
 .airport-info {
     font-size: 14px;
 }
+.detail-buttons {
+    display: flex;
+    gap: 10px;
+}
 
+.detail-buttons a {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.detail-buttons a:hover{
+    color: white;
+    text-decoration: none;
+}
 .airport-info {
     display: flex
 ;

@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Query(value = "FROM Account a WHERE a.email = :email")
     Optional<Account> findByEmail(@Param("email") String email);
+    @Query("SELECT a from Account a where a.email = :email and a.accountType= 'ROLE_ADMIN'")
+    Account findByEmailRoleAdmin(String email);
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END FROM Account a WHERE a.email = :email")
     boolean existsByEmail(@Param("email") String email);
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END FROM Account a WHERE a.phone = :phone")

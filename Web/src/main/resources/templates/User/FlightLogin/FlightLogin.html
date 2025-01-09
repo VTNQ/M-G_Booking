@@ -566,9 +566,9 @@
                                                                         £4,177
                                                                     </span>
                                                                 </div>
-                                                                <a th:if="${searchFlightDTO.roundTrip==false and searchFlightDTO.selectedHotel==false}" th:href="'/InformationFly/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
+                                                                <a th:if="${(searchFlightDTO.roundTrip==false or searchFlightDTO.arrivalTime.isEmpty()) and searchFlightDTO.selectedHotel==false}" th:href="'/InformationFly/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
                                                                 style="min-height: 3.125rem">Book Now</a>
-                                                                <a th:if="${searchFlightDTO.roundTrip==true && searchFlightDTO.selectedHotel==false}" th:href="'/RoundTrip/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
+                                                                <a th:if="${(searchFlightDTO.roundTrip==true or !searchFlightDTO.arrivalTime.isEmpty()) && searchFlightDTO.selectedHotel==false}" th:href="'/RoundTrip/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
                                                                 style="min-height: 3.125rem">Choose</a>
                                                                 <a th:if="${searchFlightDTO.selectedHotel==true and searchFlightDTO.roundTrip==false}" th:href="'/SearchHotel/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
                                                                 style="min-height: 3.125rem">Choose</a>

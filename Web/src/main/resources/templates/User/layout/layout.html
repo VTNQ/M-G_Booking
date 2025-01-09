@@ -89,18 +89,18 @@
             <div id="navBar" class="d-flex p-xl-0 pt-4 position-relative navbar-collapse order-xl-0 order-2" style="flex-basis: auto;justify-content: center">
                 <ul class="navbar-nav align-items-center pt-0 pb-0 flex-row">
                     <li class="nav-item hs-has-sub-menu">
-                        <a class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle" style="padding-top: 1.5rem;margin-right: 21px;padding-bottom: 1.5rem;padding-right: 1rem;color: #3b444f;font-weight: 500;font-size: 19px">
+                        <a th:href="@{/Home}" class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle" style="padding-top: 1.5rem;margin-right: 21px;padding-bottom: 1.5rem;padding-right: 1rem;color: #3b444f;font-weight: 500;font-size: 19px">
                             Home
                         </a>
                     </li>
 
 
                     <li class="nav-item hs-has-sub-menu">
-                        <a class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle" style="margin-right: 21px;padding-top: 1.5rem;padding-bottom: 1.5rem;padding-right: 1rem;color: #3b444f;font-weight: 500;font-size: 19px">
+                        <a th:href="@{/About}" class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle" style="margin-right: 21px;padding-top: 1.5rem;padding-bottom: 1.5rem;padding-right: 1rem;color: #3b444f;font-weight: 500;font-size: 19px">
                           About
                         </a>
                     </li><li class="nav-item hs-has-sub-menu">
-                        <a class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle" style="margin-right: 21px;padding-top: 1.5rem;padding-bottom: 1.5rem;padding-right: 1rem;color: #3b444f;font-weight: 500;font-size: 19px">
+                        <a th:href="@{/Contact}" class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle" style="margin-right: 21px;padding-top: 1.5rem;padding-bottom: 1.5rem;padding-right: 1rem;color: #3b444f;font-weight: 500;font-size: 19px">
                           Contact
                         </a>
                     </li>
@@ -335,7 +335,6 @@
 <div th:if="${title=='Payment'}" th:insert="~{'/User/InformationCustomer/InformationFly':: customScripts}"></div>
 <div th:if="${title=='Round Trip'}" th:insert="~{'/User/Flight/RoundTripFlight':: customScripts}"></div>
 <div th:if="${title=='Payment Hotel'}" th:insert="~{'/User/InformationCustomer/InformationCustomer':: customScripts}"></div>
-<div th:if="${title=='History Order'}" th:insert="~{'/User/HistoryOrder/HistoryOrder':: customScripts}"></div>
 <div th:if="${title=='Detail Hotel'}" th:insert="~{'/User/DetailHotel/DetailHotel':: customScripts}"></div>
 
 
