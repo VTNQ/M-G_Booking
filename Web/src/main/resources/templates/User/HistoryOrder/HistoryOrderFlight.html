@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/User/layout/layoutLogin :: mainContent('History Order',~{this::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<main id="content" class="relative block" style="padding-top: 4rem">
+ <div class="container my-5">
+     <h1 class="text-center mb-4">Order List</h1>
+
+
+     <div class="tab-content active" id="flight">
+         <h3>Flight Booking Details</h3>
+         <form th:action="@{'HistoryOrderFlight/'+${id}}" method="get">
+             <div class="form-row">
+                 <div class="col">
+                     <input type="text" name="flightCode" th:value="${flightCode}" class="form-control" placeholder="Hotel Name">
+                 </div>
+
+                 <div class="col">
+                     <input type="date" name="departureTime" th:value="${departureTime}" class="form-control" placeholder="Departure Date">
+                 </div>
+                 <div class="col">
+                     <input type="date" name="ArrivalTime" th:value="${arrivalTime}" class="form-control" placeholder="Arrival Date">
+                 </div>
+
+
+             </div>
+             <div class="col mb-3 mt-3">
+                 <button type="submit" class="btn btn-primary">Search</button>
+             </div>
+         </form>
+         <table>
+             <thead>
+             <tr>
+                 <th>Flight Number</th>
+                 <th>Departure Airport</th>
+                 <th>Arrival Airport</th>
+                 <th>Departure Date</th>
+                 <th>Arrival Date</th>
+
+             </tr>
+             </thead>
+             <tbody>
+             <th:block th:each="flight,index:${Flight}">
+                 <tr>
+                     <td th:text="${flight.flightNo}"></td>
+                     <td th:text="${flight.departAirport}"></td>
+                     <td th:text="${flight.arrivalAirport}"></td>
+                     <td th:text="${flight.departureTime}"></td>
+                     <td th:text="${flight.arrivalTime}"></td>
+                 </tr>
+             </th:block>
+
+             </tbody>
+         </table>
+         <div class="pagination">
+             <!-- Nút "Previous" -->
+             <a th:href="@{/HistoryOrder(flightPage=${currentFlightPage - 1}, hotelPage=${currentHotelPage})}"
+                th:classappend="${currentFlightPage > 0 ? '' : 'disabled'}" class="btn btn-primary"
+             >Previous</a>
+
+             <!-- Hiển thị số trang hiện tại -->
+             <span>Page <strong th:text="${currentFlightPage + 1}"></strong></span>
+
+             <!-- Nút "Next" -->
+             <a th:href="@{/HistoryOrder(flightPage=${currentFlightPage + 1}, hotelPage=${currentHotelPage})}"
+                class="btn btn-primary">Next</a>
+         </div>
+     </div>
+ </div>
+    <script th:fragment="customScripts" th:src="@{/user/HistoryOrder/HistoryOrder.js}"></script>
+
+        </main>
+
+</body>
+</html>
