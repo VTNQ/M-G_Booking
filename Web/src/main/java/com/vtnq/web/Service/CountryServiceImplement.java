@@ -54,16 +54,7 @@ public class CountryServiceImplement implements CountryService{
         }
     }
 
-    @Override
-    public boolean deleteCountry(int id) {
-        try {
-        countryRepository.deleteById(id);
-        return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
+
 
     @Override
     public boolean existCountry(String name) {

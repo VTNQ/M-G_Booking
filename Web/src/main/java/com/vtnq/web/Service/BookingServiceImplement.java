@@ -9,6 +9,7 @@ import com.vtnq.web.DTOs.Booking.BookingFlightDTO;
 import com.vtnq.web.DTOs.Booking.BookingFlightDetail;
 import com.vtnq.web.DTOs.Booking.BookingHotelDTO;
 import com.vtnq.web.DTOs.BookingFlightDto;
+import com.vtnq.web.DTOs.HistoryOrder.HistoryBooking;
 import com.vtnq.web.DTOs.HistoryOrder.HistoryOrderFlight;
 import com.vtnq.web.DTOs.HistoryOrder.HistoryOrderHotel;
 import com.vtnq.web.Entities.*;
@@ -314,10 +315,9 @@ public class BookingServiceImplement implements BookingService {
     }
 
     @Override
-    public List<HistoryOrderHotel> FindHistoryOrderHotels(int id,int page,int size,String hotelName,LocalDate checkInDate,LocalDate checkOutDate) {
+    public List<HistoryOrderHotel> FindHistoryOrderHotels(int id) {
         try {
-            int offset = page * size;
-            List<Object[]>results=bookingRoomRepository.FindHotelById(id,size,offset,hotelName,checkInDate,checkOutDate);
+            List<Object[]>results=bookingRoomRepository.FindHotelById(id);
 
             List<HistoryOrderHotel>historyOrderHotels=HistoryOrderHotel.mapHistoryOrderHotel(results);
             for (HistoryOrderHotel historyOrderHotel : historyOrderHotels) {
@@ -330,6 +330,18 @@ public class BookingServiceImplement implements BookingService {
             return null;
         }
         }
+
+    @Override
+    public List<HistoryBooking> FindHistoryBookings(int id, int page, int size,String booking) {
+        try {
+            int offset = page * size;
+            List<Object[]>results=bookingRepository.FindBookingByAccount(id,size,offset,booking);
+            return HistoryBooking.getHistoryBookings(results);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
 
 
 }

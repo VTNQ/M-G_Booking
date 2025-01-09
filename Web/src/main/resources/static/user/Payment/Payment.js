@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded',function (){
         CountDownElement.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
         if(remainingTime<=0){
             setTimeout(()=>{
-                window.location.reload();
+                window.location.href='http://localhost:8686/Home';
             },100)
         }else{
             remainingTime -= 1;

@@ -45,11 +45,24 @@ public class HomeController {
        try {
 
            Account account = (Account) request.getSession().getAttribute("currentAccount");
+           SearchFlightDTO searchFlightDTO=(SearchFlightDTO)request.getSession().getAttribute("searchFlightDTO");
+           SearchFlightDTO HotelSearch=(SearchFlightDTO)request.getSession().getAttribute("HotelSearch");
+
+           SearchFlightDTO searchFlightDTO1;
+           if(HotelSearch != null) {
+               searchFlightDTO1=HotelSearch;
+           }else if(searchFlightDTO != null) {
+               searchFlightDTO1=searchFlightDTO;
+           }else{
+               searchFlightDTO1=new SearchFlightDTO();
+           }
+
            if(account == null) {
-               model.put("Search",new SearchFlightDTO());
+               model.put("Search",searchFlightDTO1);
+
                return "User/Home/Home";
            }else{
-               model.put("Search",new SearchFlightDTO());
+               model.put("Search",searchFlightDTO1);
                return "User/Home/HomeLogin";
            }
 
@@ -72,6 +85,9 @@ public class HomeController {
                               @RequestParam(value = "size", defaultValue = "10") int size,@RequestParam(value="minPrice",defaultValue = "0")BigDecimal minPrice,@RequestParam(value = "maxPrice",defaultValue = "10000")BigDecimal maxPrice) {
       try {
           Account account=(Account) session.getAttribute("currentAccount");
+          if(account==null){
+              return "redirect:/Login";
+          }
           if(account == null) {
               session.setAttribute("idRoom",id);
               SearchFlightDTO searchFlightDTO = (SearchFlightDTO) request.getSession().getAttribute("HotelSearch");
@@ -390,7 +406,8 @@ public class HomeController {
         if(searchFlightDTO.hasErrors()){
             redirectAttributes.addFlashAttribute("message",searchFlightDTO.getValidationErrors());
             redirectAttributes.addFlashAttribute("messageType","error");
-            return "redirect:/Home";
+            String referer = request.getHeader("Referer");
+            return "redirect:" + (referer != null ? referer : "/Home");
         }
       if(searchFlightDTO.isSelectedHotel()==false){
           return SearchFlight(model,searchFlightDTO,session,request);
@@ -402,6 +419,9 @@ public class HomeController {
     public String RoundTrip(@PathVariable("id") int id, ModelMap model, HttpServletRequest request,HttpSession session) {
         try {
             Account account=(Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if(account==null){
                 List<Integer>idFlight=new ArrayList<>();
                 idFlight.add(id);

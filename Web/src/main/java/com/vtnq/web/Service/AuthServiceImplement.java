@@ -357,4 +357,23 @@ public class AuthServiceImplement implements AuthService {
             return false;
         }
     }
+
+    @Override
+    public boolean ResetPassword(String email) {
+        try {
+            Account account=accountRepository.findByEmailRoleAdmin(email);
+            String password=generateRandomPassword(8);
+            if(account!=null){
+                account.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+                accountRepository.save(account);
+                SendConfirmationEmail(email, String.format("Username: %s \n Password: %s", account.getUsername(), password));
+            }else {
+                return false;
+            }
+            return true;
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return false;
+        }
+    }
 }

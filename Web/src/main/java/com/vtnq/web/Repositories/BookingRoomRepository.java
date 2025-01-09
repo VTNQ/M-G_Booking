@@ -14,14 +14,10 @@ public interface BookingRoomRepository extends JpaRepository<BookingRoom, Intege
             "b.checkInDate AS checkInDate, b.checkOutDate AS checkOutDate " +
             "FROM BookingRoom a " +
             "JOIN BookingRoomDetail b ON a.id = b.bookingRoom.id " +
-            "WHERE a.user.id = :id " +
-            "And (:hotelName IS NULL OR b.room.hotel.name like %:hotelName%) " +
-            "and (:checkInDate IS NULL or b.checkInDate >= :checkInDate) " +
-            "and (:checkOutDate IS NULL or b.checkOutDate <= :checkOutDate)" +
-            "ORDER BY a.id ASC " +
-            "LIMIT  :size OFFSET :offset")
-    List<Object[]> FindHotelById(@Param("id") int id,@Param("size")int size,@Param("offset")int offset,@Param("hotelName")String hotelName,
-                                 @Param("checkInDate")LocalDate checkInDate,@Param("checkOutDate") LocalDate checkOutDate);
+            "WHERE a.id = :id " +
+            "ORDER BY a.id ASC " )
+    List<Object[]> FindHotelById(@Param("id") int id);
+
     @Query("select count(a) from BookingRoomDetail a where a.bookingRoom.id = :bookingRoomId")
     int CountBookingRoomByRoomId(@Param("bookingRoomId") int bookingRoomId);
 }

@@ -82,7 +82,7 @@
                             <div class="dropdown-menu" id="loginDropdownMenu" style="top: 45px;width: 23vh;left: -16vh">
                                 <a class="dropdown-item" style="color: black!important;text-decoration: none" th:href="@{/Profile}" > Account</a>
                                 <a class="dropdown-item" style="color: black!important;text-decoration: none" th:href="@{/account/logout}"> Logout</a>
-                                <a class="dropdown-item" style="color: black!important;text-decoration: none" th:href="@{/HistoryOrder}">Booking</a>
+                                <a class="dropdown-item" style="color: black!important;text-decoration: none" th:href="@{/HistoryBooking}">Booking</a>
                             </div>
                         </div>
                     </div>
@@ -112,13 +112,13 @@
                         </li>
 
                         <li class="nav-item hs-has-sub-menu">
-                            <a id="AboutMenu" class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle"
+                            <a th:href="@{/About}" id="AboutMenu" class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle"
                                style="margin-right: 21px;padding-top: 1.5rem;padding-bottom: 1.5rem;padding-right: 1rem;color: #3b444f;font-weight: 500;font-size: 19px">
                                 About
                             </a>
                         </li>
                         <li class="nav-item hs-has-sub-menu">
-                            <a id="ContactMenu" class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle"
+                            <a th:href="@{/Contact}" id="ContactMenu" class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle"
                                style="margin-right: 21px;padding-top: 1.5rem;padding-bottom: 1.5rem;padding-right: 1rem;color: #3b444f;font-weight: 500;font-size: 19px">
                                 Contact
                             </a>

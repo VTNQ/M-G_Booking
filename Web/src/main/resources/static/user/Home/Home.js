@@ -1,3 +1,21 @@
+document.addEventListener('DOMContentLoaded',function (){
+    const TripTypeValue=document.getElementById('TripTypeValue').value;
+    if(TripTypeValue==='true'){
+        document.getElementById('ArrivalDate').style.display='block';
+    }else{
+        document.getElementById('ArrivalDate').style.display='none'
+    }
+    const flexSwitchCheckDefault=document.getElementById('flexSwitchCheckDefault');
+    if(flexSwitchCheckDefault.checked){
+        document.getElementById('RoomNumber').style.display='block';
+        document.getElementById('TimeHotel').style.display='block';
+        document.getElementById('AtHotel').style.display='block'
+    }else{
+        document.getElementById('RoomNumber').style.display='none';
+        document.getElementById('TimeHotel').style.display='none';
+        document.getElementById('AtHotel').style.display='none'
+    }
+})
 document.getElementById("from-input").addEventListener('input',async (event)=>{
     const search = event.target.value;
     const dropdown = document.getElementById("from-dropdown");
@@ -74,7 +92,82 @@ document.addEventListener('click', (event) => {
         dropdown.style.display = "none";
     }
 });
+document.addEventListener('DOMContentLoaded',async function (){
+    const FromInputDropDown=document.querySelector('#from-input');
+    const At=document.querySelector('#At-input');
+    const City=document.querySelector('#idCity');
+    const FromInput=document.querySelector('#from-input-id');
+    const ArrivalInputDropDown=document.querySelector('#to-input');
+    const ToInput=document.querySelector('#to-input-id');
+    const loadingOverlay = document.createElement("div");
+    console.log(FromInput.value)
+    if (FromInput.value !== "0" && ToInput.value !== "0"){
 
+        loadingOverlay.className = "loading-overlay";
+
+        // Spinner element
+        const spinner = document.createElement("div");
+        spinner.className = "spinner";
+        loadingOverlay.appendChild(spinner);
+
+        // Optional loading text
+        const loadingText = document.createElement("div");
+        loadingText.className = "loading-text";
+        loadingText.textContent = "Loading, please wait...";
+        loadingOverlay.appendChild(loadingText);
+
+
+        document.body.appendChild(loadingOverlay);
+    }
+
+    try {
+        let fromAirports=await SearchById(FromInput.value);
+
+        let ArrivalAirports=await SearchById(ToInput.value);
+        let Cities=await SearchCityById(City.value);
+        if(Cities!=null){
+            At.value=Cities.name;
+        }
+        if(fromAirports!=null){
+            FromInputDropDown.value=fromAirports.name;
+
+        }
+        if(ArrivalAirports!=null){
+            ArrivalInputDropDown.value=ArrivalAirports.name;
+        }
+    }catch (error) {
+        console.log(error);
+    }finally {
+        document.body.removeChild(loadingOverlay);
+    }
+})
+async function SearchCityById(id){
+    try {
+        const response=await fetch(`http://localhost:8686/api/city/FindById/${encodeURIComponent(id)}`);
+        let cities=null;
+        if(response.ok){
+            cities=await response.json();
+        }
+        return cities;
+    }catch (error){
+        console.log(error)
+    }
+}
+async function SearchById( id){
+    try {
+        const response=await fetch(`http://localhost:8686/api/AirPort/FindById/${encodeURIComponent(id)}`);
+        let airports=null;
+        if(response.ok){
+            airports=await response.json();
+
+        }else {
+            console.error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        return airports;
+    }catch (error){
+        console.log(error)
+    }
+}
 // Ngăn việc click bên trong dropdown bị đóng
 document.getElementById('At-dropdown').addEventListener('click', (event) => {
     event.stopPropagation();

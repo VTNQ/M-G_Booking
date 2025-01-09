@@ -60,6 +60,7 @@ document.getElementById("from-input").addEventListener('input',async (event)=>{
         console.log(error)
     }
 });
+
 document.addEventListener('DOMContentLoaded',async function (){
     const FromInputDropDown=document.querySelector('#from-input');
     const At=document.querySelector('#At-input');
@@ -71,7 +72,6 @@ document.addEventListener('DOMContentLoaded',async function (){
         let fromAirports=await SearchById(FromInput.value);
         let ArrivalAirports=await SearchById(ToInput.value);
         let Cities=await SearchCityById(City.value);
-        console.log(City.value)
         if(Cities!=null){
             At.value=Cities.name;
         }
@@ -124,6 +124,7 @@ async function SearchCityById(id){
         console.log(error)
     }
 }
+
 document.getElementById('flexSwitchCheckDefault').addEventListener('change',function (){
     const AtHotel=document.getElementById('AtHotel');
     const TimeHotel=document.getElementById('TimeHotel');
