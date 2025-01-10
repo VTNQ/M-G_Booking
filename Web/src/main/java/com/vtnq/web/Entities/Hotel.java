@@ -36,9 +36,6 @@ public class Hotel {
     @JoinColumn(name = "district_id", nullable = false)
     private District district;
 
-    @Column(name = "rating_id")
-    private Integer ratingId;
-
     public Integer getId() {
         return id;
     }
@@ -85,14 +82,6 @@ public class Hotel {
 
     public void setDistrict(District district) {
         this.district = district;
-    }
-
-    public Integer getRatingId() {
-        return ratingId;
-    }
-
-    public void setRatingId(Integer ratingId) {
-        this.ratingId = ratingId;
     }
 
 }
