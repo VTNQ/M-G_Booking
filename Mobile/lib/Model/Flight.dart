@@ -1,3 +1,5 @@
+import 'package:mobile/Model/HotelBooking.dart';
+
 class Flight {
   String? id;
   String? from;
@@ -5,6 +7,9 @@ class Flight {
   String? departureTime;
   String? arrivalTime;
   double? price;
+  int?  ticketCount;
+  String? seatClass;
+
 
   Flight({
     this.id,
@@ -13,6 +18,8 @@ class Flight {
     this.departureTime,
     this.arrivalTime,
     this.price,
+    this.ticketCount,
+    this.seatClass,
   });
 
   factory Flight.fromJson(Map<String, dynamic> json) {
@@ -23,6 +30,8 @@ class Flight {
       departureTime: json['departureTime'],
       arrivalTime: json['arrivalTime'],
       price: json['price'].toDouble(),
+      ticketCount: json['ticketCount'],
+      seatClass: json['seatClass'],
     );
   }
   Flight.fromMap(Map<String, dynamic> map) {
@@ -32,6 +41,8 @@ class Flight {
     departureTime= map["departureTime"];
     arrivalTime= map["arrivalTime"];
     price= map["price"];
+    ticketCount= map["ticketCount"];
+    seatClass= map["seatClass"];
   }
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -41,6 +52,8 @@ class Flight {
       "departureTime": departureTime,
       "arrivalTime": arrivalTime,
       "price": price,
+      "ticketCount": ticketCount,
+      "seatClass": seatClass,
     };
   }
 }

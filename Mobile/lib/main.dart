@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/Views/Auth/ForgotPassword.dart';
-import 'package:mobile/Views/Auth/Login.dart';
-import 'package:mobile/Views/Auth/LoginSuccess.dart';
-
-import 'package:mobile/Views/Auth/OtpVerificationScreen.dart';
-import 'package:mobile/Views/Auth/Register.dart';
 import 'package:mobile/Views/Home.dart';
-import 'package:mobile/Views/List%20Flight.dart';
+import 'package:mobile/Views/ListFlight.dart';
+import 'package:mobile/Views/ListHotel.dart';
+import 'package:mobile/Views/User/ChangeInformation.dart';
+import 'package:mobile/Views/User/ChangePassword.dart';
+import 'package:mobile/Views/User/ChooseRoom.dart';
+import 'package:mobile/Views/User/HistoryBooking.dart';
+import 'package:mobile/Views/User/InformationUser.dart';
+import 'package:mobile/Views/User/SeatFlight.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:FlightPage(),
+      home: SeatSelectionPage(),
     );
   }
 }

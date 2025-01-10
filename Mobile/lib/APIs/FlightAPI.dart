@@ -4,8 +4,8 @@ import 'package:mobile/APIs/BaseUrl.dart';
 import 'package:mobile/Model/Flight.dart';
 import 'package:http/http.dart' as http;
 
-class FlightAPI{
-  static String FlightUrl=BaseUrl.baseUrl+"/Flight/";
+class FlightAPI {
+  static String FlightUrl = BaseUrl.baseUrl + "/Flight/";
 
   Future<List<Flight>> getFlights() async {
     var response = await http.get(Uri.parse(FlightUrl + "All"));
