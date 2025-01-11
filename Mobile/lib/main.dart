@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/Views/Home.dart';
 import 'package:mobile/Views/ListFlight.dart';
 import 'package:mobile/Views/ListHotel.dart';
+import 'package:mobile/Views/PaymentScreen.dart';
 import 'package:mobile/Views/User/ChangeInformation.dart';
 import 'package:mobile/Views/User/ChangePassword.dart';
 import 'package:mobile/Views/User/ChooseRoom.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: SeatSelectionPage(),
+      home: PaymentScreen(),
     );
   }
 }
