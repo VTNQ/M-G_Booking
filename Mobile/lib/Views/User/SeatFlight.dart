@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+// Enum để định nghĩa các loại ghế
+enum SeatClass {
+  business,
+  firstClass,
+  economy
+}
+
 class SeatSelectionPage extends StatefulWidget {
   @override
   State<SeatSelectionPage> createState() => SeatFlight();
@@ -7,26 +14,61 @@ class SeatSelectionPage extends StatefulWidget {
 
 class SeatFlight extends State<SeatSelectionPage> {
   List<String> selectedSeats = [];
-
-  final Map<String, bool> occupiedSeats = {
-    'A1': true, 'B3': true, 'C4': true, 'D2': true, 'E3': true, 'F2': true
-  };
+  int SeatSelect = 0;
 
   final double seatSize = 40.0;
   final List<String> rows = ['A', 'B', 'C', 'D', 'E', 'F'];
   final int totalRows = 13;
 
+  // Mock database của các ghế và loại của chúng
+  // Trong thực tế, bạn sẽ lấy dữ liệu này từ API hoặc database thực
+  final Map<String, SeatClass> seatClassDB = {
+    // Business Class (2 hàng đầu)
+    'A1': SeatClass.business, 'B1': SeatClass.business, 'C1': SeatClass.business,
+    'D1': SeatClass.business, 'E1': SeatClass.business, 'F1': SeatClass.business,
+    'A2': SeatClass.business, 'B2': SeatClass.business, 'C2': SeatClass.business,
+    'D2': SeatClass.business, 'E2': SeatClass.business, 'F2': SeatClass.business,
+
+    // First Class (3 hàng tiếp theo)
+    'A3': SeatClass.firstClass, 'B3': SeatClass.firstClass, 'C3': SeatClass.firstClass,
+    'D3': SeatClass.firstClass, 'E3': SeatClass.firstClass, 'F3': SeatClass.firstClass,
+    'A4': SeatClass.firstClass, 'B4': SeatClass.firstClass, 'C4': SeatClass.firstClass,
+    'D4': SeatClass.firstClass, 'E4': SeatClass.firstClass, 'F4': SeatClass.firstClass,
+    'A5': SeatClass.firstClass, 'B5': SeatClass.firstClass, 'C5': SeatClass.firstClass,
+    'D5': SeatClass.firstClass, 'E5': SeatClass.firstClass, 'F5': SeatClass.firstClass,
+  };
+
+  // Màu sắc cho từng loại ghế
+  final Map<SeatClass, Color> classColors = {
+    SeatClass.business: Colors.purple[100]!,
+    SeatClass.firstClass: Colors.amber[100]!,
+    SeatClass.economy: Colors.blue[100]!,
+  };
+
   Widget buildSeatLegend() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
         children: [
-          _legendItem(Colors.grey[300]!, 'Ghế trống'),
-          SizedBox(width: 16),
-          _legendItem(Colors.red[100]!, 'Đã đặt'),
-          SizedBox(width: 16),
-          _legendItem(Colors.blue[400]!, 'Đang chọn'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _legendItem(classColors[SeatClass.business]!, 'Business Class'),
+              SizedBox(width: 16),
+              _legendItem(classColors[SeatClass.firstClass]!, 'First Class'),
+            ],
+          ),
+          SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _legendItem(classColors[SeatClass.economy]!, 'Economy Class'),
+              SizedBox(width: 16),
+              _legendItem(Colors.blue[400]!, 'Selected'),
+              SizedBox(width: 16),
+              _legendItem(Colors.red[400]!, 'Booked'),
+            ],
+          ),
         ],
       ),
     );
@@ -49,36 +91,36 @@ class SeatFlight extends State<SeatSelectionPage> {
     );
   }
 
+  SeatClass getSeatClass(String seatNumber) {
+    // Kiểm tra trong database, nếu không có thì mặc định là economy
+    return seatClassDB[seatNumber] ?? SeatClass.economy;
+  }
+
   Widget buildSeat(String seatNumber) {
-    bool isOccupied = occupiedSeats[seatNumber] ?? false;
     bool isSelected = selectedSeats.contains(seatNumber);
+    SeatClass seatClass = getSeatClass(seatNumber);
+    Color baseColor = classColors[seatClass]!;
 
     return GestureDetector(
       onTap: () {
-        if (!isOccupied) {
-          setState(() {
-            if (isSelected) {
-              selectedSeats.remove(seatNumber);
-            } else if (selectedSeats.length < 4) {
-              selectedSeats.add(seatNumber);
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Bạn chỉ có thể chọn tối đa 4 ghế')),
-              );
-            }
-          });
-        }
+        setState(() {
+          if (isSelected) {
+            selectedSeats.remove(seatNumber);
+          } else if (selectedSeats.length < 4) {
+            selectedSeats.add(seatNumber);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('You can only select up to'+'seats')),
+            );
+          }
+        });
       },
       child: Container(
         margin: EdgeInsets.all(2),
         width: seatSize,
         height: seatSize,
         decoration: BoxDecoration(
-          color: isOccupied
-              ? Colors.red[100]
-              : isSelected
-              ? Colors.blue[400]
-              : Colors.grey[300],
+          color: isSelected ? Colors.blue[400] : baseColor,
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             color: isSelected ? Colors.blue : Colors.grey[400]!,
@@ -102,7 +144,7 @@ class SeatFlight extends State<SeatSelectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chọn ghế'),
+        title: Text('Select Seat'),
         elevation: 0,
       ),
       body: Column(
@@ -117,13 +159,13 @@ class SeatFlight extends State<SeatSelectionPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(width: 50, child: Text('Cửa sổ', style: TextStyle(fontSize: 12))),
+                        Container(width: 50, child: Text('Window', style: TextStyle(fontSize: 12))),
                         Expanded(
                           child: Center(
-                            child: Text('Lối đi', style: TextStyle(fontSize: 12)),
+                            child: Text('Aisle', style: TextStyle(fontSize: 12)),
                           ),
                         ),
-                        Container(width: 50, child: Text('Cửa sổ', style: TextStyle(fontSize: 12))),
+                        Container(width: 50, child: Text('Window', style: TextStyle(fontSize: 12))),
                       ],
                     ),
                   ),
@@ -131,13 +173,10 @@ class SeatFlight extends State<SeatSelectionPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Left window seats
                         buildSeat('${rows[0]}$i'),
                         buildSeat('${rows[1]}$i'),
                         buildSeat('${rows[2]}$i'),
-                        // Aisle
                         SizedBox(width: 20),
-                        // Right window seats
                         buildSeat('${rows[3]}$i'),
                         buildSeat('${rows[4]}$i'),
                         buildSeat('${rows[5]}$i'),
@@ -147,7 +186,6 @@ class SeatFlight extends State<SeatSelectionPage> {
               ),
             ),
           ),
-          // Selected seats summary
           Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -164,7 +202,7 @@ class SeatFlight extends State<SeatSelectionPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Ghế đã chọn: ${selectedSeats.join(", ")}',
+                  'Selected Seats: ${selectedSeats.join(", ")}',
                   style: TextStyle(fontSize: 14),
                 ),
                 SizedBox(height: 16),
@@ -174,7 +212,7 @@ class SeatFlight extends State<SeatSelectionPage> {
                     // Handle seat confirmation
                   }
                       : null,
-                  child: Text('Xác nhận (${selectedSeats.length}/4)'),
+                  child: Text('Confirm (${selectedSeats.length}/4)'),
                 ),
               ],
             ),
