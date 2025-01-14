@@ -26,4 +26,13 @@ public class SeatController {
         return new ResponseEntity<List<SeatDTO>>(HttpStatus.BAD_REQUEST);
     }
     }
+    @GetMapping("existBySeat/{id}")
+    public ResponseEntity<Boolean>existBySeat(@PathVariable int id){
+        try {
+            return new ResponseEntity<Boolean>(seatService.existSeatByFlight(id), HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

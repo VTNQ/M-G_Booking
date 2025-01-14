@@ -122,7 +122,7 @@ public class AuthServiceImplement implements AuthService {
             account.setCityId(accountDto.getCityId());
             account.setPassword(BCrypt.hashpw(account.getPassword(), BCrypt.gensalt()));
             account.setUsername(GeneateUsername(accountDto.getEmail()));
-            Level level = levelRepository.findById(1).orElseThrow(() -> new RuntimeException("Level not found"));
+            Level level = levelRepository.findById(3).orElseThrow(() -> new RuntimeException("Level not found"));
             SendConfirmationEmail(accountDto.getEmail(), String.format("Username: %s \n Password: %s", account.getUsername(), accountDto.getPassword()));
             account.setLevel(level);
             accountRepository.save(account);
@@ -352,6 +352,35 @@ public class AuthServiceImplement implements AuthService {
             accountRepository.save(account);
             return true;
 
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean ResetPassword(String email) {
+        try {
+            Account account=accountRepository.findByEmailRoleAdmin(email);
+            String password=generateRandomPassword(8);
+            if(account!=null){
+                account.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+                accountRepository.save(account);
+                SendConfirmationEmail(email, String.format("Username: %s \n Password: %s", account.getUsername(), password));
+            }else {
+                return false;
+            }
+            return true;
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean existAccountCountry(int countryId) {
+        try {
+            return accountRepository.existsAccountByCountryId(countryId);
         }catch (Exception ex){
             ex.printStackTrace();
             return false;

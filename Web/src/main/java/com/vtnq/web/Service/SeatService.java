@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SeatService {
     public List<SeatDTO>FindSeatByFlight(int idFlight);
+    public boolean existSeatByFlight(int idFlight);
 }

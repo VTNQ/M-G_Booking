@@ -153,4 +153,24 @@ public class AirlineServiceImplement implements AirlineService {
     public List<Airline> searchAirline(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight) {
         return modelMapper.map(airlineRepository.SearchAirline(departureAirport,arrivalAirport,departureTime,TypeFlight),new TypeToken<List<Airline>>(){}.getType());
     }
+
+    @Override
+    public List<Airline> SearchAirlineArrival(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight) {
+        try {
+        return airlineRepository.SearchAirlineArrival(departureAirport,arrivalAirport,arrivalTime,TypeFlight);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Airline> FindByCountryId(int countryId) {
+        try {
+            return airlineRepository.FindAirlineByCountryId(countryId);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

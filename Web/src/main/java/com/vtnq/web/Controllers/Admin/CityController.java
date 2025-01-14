@@ -26,6 +26,10 @@ public class CityController {
     public String addCity(ModelMap model, HttpServletRequest request) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+            if(currentAccount==null || !"ROLE_ADMIN".equals(currentAccount.getAccountType())){
+                return "redirect:/LoginAdmin";
+            }
+
             CityDto cityDto = new CityDto();
             cityDto.setCountryId(currentAccount.getCountryId());
             model.put("city", cityDto);
@@ -40,7 +44,11 @@ public class CityController {
     public String City(ModelMap model, HttpServletRequest request, @RequestParam(defaultValue = "1") int page,
                        @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String name) {
         try {
+
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+            if(currentAccount==null || !"ROLE_ADMIN".equals(currentAccount.getAccountType())){
+                return "redirect:/LoginAdmin";
+            }
             List<City> cities = cityService.findCityAll(currentAccount.getCountryId());
             List<City> filteredCities = cities.stream().filter(city -> city.getName().contains(name)).collect(Collectors.toList());
             int start = (page - 1) * size;
@@ -55,27 +63,15 @@ public class CityController {
             return null;
         }
     }
-    @GetMapping("City/delete/{id}")
-    public String deleteCity(@PathVariable int id, ModelMap model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
-        try {
-            if(cityService.deleteCity(id)) {
-                redirectAttributes.addFlashAttribute("message", "City deleted successfully");
-                redirectAttributes.addFlashAttribute("messageType", "success");
-                return "redirect:/Admin/City";
-            }else{
-                redirectAttributes.addFlashAttribute("message", "City delete failed");
-                redirectAttributes.addFlashAttribute("messageType", "error");
-                return "redirect:/Admin/City";
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
     @PostMapping("City/UpdateCity")
     public String UpdateCity(@ModelAttribute("City")@Valid CityDto cityDto, ModelMap model,BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
+                return "redirect:/LoginAdmin";
+            }
             if(bindingResult.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 bindingResult.getFieldErrors().forEach(error ->
@@ -105,8 +101,12 @@ public class CityController {
         }
     }
     @GetMapping("City/edit/{id}")
-    public String editCity(ModelMap model, @PathVariable int id) {
+    public String editCity(ModelMap model, @PathVariable int id,HttpServletRequest request,RedirectAttributes redirectAttributes) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
+                return "redirect:/LoginAdmin";
+            }
             model.put("City", cityService.findCityById(id));
             return "Admin/City/Detail";
         }catch (Exception e) {
@@ -115,8 +115,12 @@ public class CityController {
         }
     }
     @PostMapping("City/add")
-    public String addCity(@ModelAttribute("city") @Valid CityDto cityDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addCity(@ModelAttribute("city") @Valid CityDto cityDto, BindingResult bindingResult, RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
+                return "redirect:/LoginAdmin";
+            }
             if (bindingResult.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 bindingResult.getFieldErrors().forEach(error ->

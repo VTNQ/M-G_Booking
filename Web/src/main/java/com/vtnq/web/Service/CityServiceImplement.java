@@ -60,16 +60,7 @@ public class CityServiceImplement implements CityService{
         return cityRepository.existsByName(name);
     }
 
-    @Override
-    public boolean deleteCity(int id) {
-        try {
-            cityRepository.deleteById(id);
-            return true;
-        }catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+
 
     @Override
     public List<City> SearchCityOrCountry(String name) {
@@ -78,6 +69,16 @@ public class CityServiceImplement implements CityService{
         }catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public int CountCity(int id) {
+        try {
+            return cityRepository.CountCity(id);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 }

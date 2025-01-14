@@ -12,33 +12,8 @@
         <div class="container-fluid">
             <div class="border-0">
                 <div class="card-body">
-                    <ul class="nav tab-nav tab-nav-1-inner flex-nowrap pb-2 mb-md-1">
-                        <li class="nav-item flex-shrink-0 flex-shrink-md-1">
-                            <a class="nav-link active" style="font-weight: 500 !important;">
-                                <div class="d-flex flex-column flex-md-row position-relative text-black align-items-center">
-                                    <span class="tabtext "
-                                          style="font-weight: 500 !important;color: #fff !important;font-size: 0.75rem">ROUND-TRIP</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item flex-shrink-0 flex-shrink-md-1">
-                            <a class="nav-link " style="font-weight: 500 !important;">
-                                <div class="d-flex flex-column flex-md-row position-relative text-black align-items-center">
-                                    <span class="tabtext "
-                                          style="font-weight: 500 !important;color: #3b444f !important;font-size: 0.75rem">ONE-WAY</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="nav-item flex-shrink-0 flex-shrink-md-1">
-                            <a class="nav-link " style="font-weight: 500 !important;">
-                                <div class="d-flex flex-column flex-md-row position-relative text-black align-items-center">
-                                    <span class="tabtext "
-                                          style="font-weight: 500 !important;color: #3b444f !important;font-size: 0.75rem">Multi-City</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content hero-tab-pane">
+
+                    <div class="tab-content hero-tab-pane" style="display:block;border: none;background-color: transparent">
                         <div class="tab-pane fade active show">
                             <form th:action="@{/SearchFlight}" method="get" class="js-validate">
                                 <div class="row nav-select nav-select-1 d-block d-lg-flex mb-lg-2 px-lg-3 px-2 align-items-end">
@@ -143,7 +118,7 @@
                                                     <div class="dropdown-container">
 
                                                         <div class="dropdown">
-                                                            <select id="classSelect" th:field="${Search.typeFlight}" class="form-select " style="margin-top: 2vh;background-color: transparent;outline: none;border: none">
+                                                            <select id="classSelect" th:field="${searchFlightDTO.typeFlight}" class="form-select " style="margin-top: 2vh;background-color: transparent;outline: none;border: none">
                                                                 <option value="First Class" >First Class</option>
                                                                 <option value="Business Class">Business Class</option>
                                                                 <option value="Merchant" >Merchant</option>
@@ -187,7 +162,7 @@
                                                    <span class="row align-items-center">
                                                        <span class="col-2">
                                                            <span class="text-dark mb-3"
-                                                                 style="font-size: 1.063rem;font-weight: 500">Stops</span>
+                                                                 style="font-size: 1.063rem;font-weight: 500">Airline</span>
                                                        </span>
                                                        <span class="col-10 text-right">
                                                            <span class="card-btn-arrow">
@@ -202,8 +177,7 @@
 
                                             <div class="card-body pt-0 mt-1 px-5 pb-4">
                                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                                    <label class="form-check-label" for="selectAllToggle">Chọn tất cả
-                                                        các hãng</label>
+                                                    <label class="form-check-label" for="selectAllToggle">Select all brands</label>
                                                     <div class="form-check form-switch ms-3">
                                                         <input class="form-check-input" type="checkbox"
                                                                id="selectAllToggle" style="font-size: 24px">
@@ -277,7 +251,7 @@
                                                 <span class="row align-items-center">
                                                     <span class="col-5">
                                                         <span class="d-block"
-                                                              style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Price Range ($)</span>
+                                                              style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Schedule</span>
                                                     </span>
                                                     <span class="col-7 text-right">
                                                         <span class="card-btn-arrow">
@@ -318,7 +292,7 @@
                                                 <span class="row align-items-center">
                                                     <span class="col-5">
                                                         <span class="d-block"
-                                                              style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Price Range ($)</span>
+                                                              style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Time</span>
                                                     </span>
                                                     <span class="col-7 text-right">
                                                         <span class="card-btn-arrow">
@@ -343,114 +317,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="shopCategoryAccordi" class="accordion rounded-0 shadow-none">
-                                    <div class="border-0">
-                                        <div class="card-collapse" id="shopCategoryHeadingOne">
-                                            <h3 class="mb-0">
-                                                <button class="btn btn-link btn-block card-btn py-2 px-5 collapsed"
-                                                        style="line-height: 3">
-                                                   <span class="row align-items-center">
-                                                       <span class="col-2">
-                                                           <span class="text-dark mb-3"
-                                                                 style="font-size: 1.063rem;font-weight: 500">Stops</span>
-                                                       </span>
-                                                       <span class="col-10 text-right">
-                                                           <span class="card-btn-arrow">
-                                                               <i class="fas fa-chevron-down small"></i>
-                                                           </span>
-                                                       </span>
-                                                   </span>
-                                                </button>
-                                            </h3>
-                                        </div>
-                                        <div id="shopCategoryOne" class="collapse show border-bottom">
-                                            <div class="card-body pt-0 mt-1 px-5 pb-4">
-                                                <div class="form-group mb-3"
-                                                     style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <label class="cus-control-label">
-                                                            Non Stop
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mb-3"
-                                                     style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <label class="cus-control-label">
-                                                            Non Stop
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mb-3"
-                                                     style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <label class="cus-control-label">
-                                                            Non Stop
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                    </div>
-                                </div>
-                                <div id="shopCategoryAccordi" class="accordion rounded-0 shadow-none">
-                                    <div class="border-0">
-                                        <div class="card-collapse" id="shopCategoryHeadingOne">
-                                            <h3 class="mb-0">
-                                                <button class="btn btn-link btn-block card-btn py-2 px-5 collapsed"
-                                                        style="line-height: 3">
-                                                   <span class="row align-items-center">
-                                                       <span class="col-2">
-                                                           <span class="text-dark mb-3"
-                                                                 style="font-size: 1.063rem;font-weight: 500">Stops</span>
-                                                       </span>
-                                                       <span class="col-10 text-right">
-                                                           <span class="card-btn-arrow">
-                                                               <i class="fas fa-chevron-down small"></i>
-                                                           </span>
-                                                       </span>
-                                                   </span>
-                                                </button>
-                                            </h3>
-                                        </div>
-                                        <div id="shopCategoryOne" class="collapse show border-bottom">
-                                            <div class="card-body pt-0 mt-1 px-5 pb-4">
-                                                <div class="form-group mb-3"
-                                                     style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <label class="cus-control-label">
-                                                            Non Stop
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mb-3"
-                                                     style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <label class="cus-control-label">
-                                                            Non Stop
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mb-3"
-                                                     style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <label class="cus-control-label">
-                                                            Non Stop
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -474,14 +341,18 @@
                 </ul>
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 pb-1">
                     <h3 class="mb-4 mb-md-0 text-center"
-                        style="font-size: 1.313rem;font-weight: 500;line-height: 1;text-align: left">1984 results
-                        found.</h3>
+                        style="font-size: 1.313rem;font-weight: 500;line-height: 1;text-align: left" th:text="${flightCount}+' results found.'"></h3>
                     <div class="d-flex align-items-center justify-content-between justify-content-md-start">
                         <div class="position-relative">
                             <a id="basicDropdownClickInvoker" class="dropdown-nav-link dropdown-toggle"
                                style="border: none">
                                 <span style="font-weight: 500 !important;color: #3b444f !important;font-size: 0.875rem;"> Sorted By</span>
                             </a>
+                            <ul class="dropdown-menu" aria-labelledby="basicDropdownClickInvoker">
+                                <li><a class="dropdown-item" href="#" >Price: Low to High</a></li>
+                                <li><a class="dropdown-item" href="#" >Price: High to Low</a></li>
+
+                            </ul>
                         </div>
                         <ul class="nav tab-nav-shop flex-nowrap">
                             <li class="nav-item">
@@ -501,18 +372,18 @@
                         </ul>
                     </div>
                 </div>
-                <div class="tab-content">
-                    <th:block th:each="item, iterStat: ${dateList}">
-                        <div class="tab-pane fade TabShow" th:id="'TabPanel' + ${iterStat.index}">
+                <div class="tab-content" style="display: flex;border: none">
+
+                        <div >
                             <div class="row">
-                                <th:block th:with="currentFlights=${#vars['Flight' + iterStat.index]}">
-                                    <th:block th:each="item: ${currentFlights}">
+
+                                    <th:block th:each="item, iterStat : ${Flight}">
                                         <div id="flight-item"
                                              class="hover-bg-gray-1 border rounded-xs py-4 px-4 px-xl-5 mb-5"
                                              style="border-radius: 0.188rem" th:data-airline-id="${item.idFlight}"
                                              th:data-price="${item.price}" th:data-TimeDepart="${item.timeDepart}"
                                              th:data-timeArrival="${item.timeArrival}"
-                                             th:data-duration="${item.durationString}">
+                                             th:data-duration="${item.durationString}" th:data-page="${iterStat.index / 5 + 1}">
                                             <div class="row align-items-center text-center">
                                                 <div class="col-md mb-4 mb-md-0">
                                                     <img class="img-fluid"
@@ -566,14 +437,16 @@
                                                                         £4,177
                                                                     </span>
                                                                 </div>
-                                                                <a th:if="${searchFlightDTO.roundTrip==false}" th:href="'/InformationFly/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
+                                                                <a th:if="${searchFlightDTO.arrivalTime.isEmpty() and searchFlightDTO.selectedHotel==false}" th:href="'/InformationFly/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
                                                                 style="min-height: 3.125rem">Book Now</a>
-                                                                <a th:if="${searchFlightDTO.roundTrip==true}" th:href="'/RoundTrip/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
+                                                                <a th:if="${!searchFlightDTO.arrivalTime.isEmpty() && searchFlightDTO.selectedHotel==false}" th:href="'/RoundTrip/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
+                                                                style="min-height: 3.125rem">Choose</a>
+                                                                <a th:if="${searchFlightDTO.selectedHotel==true and searchFlightDTO.arrivalTime.isEmpty()}" th:href="'/SearchHotel/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
+                                                                style="min-height: 3.125rem">Choose</a>
+                                                                <a th:if="${searchFlightDTO.selectedHotel==true and !searchFlightDTO.arrivalTime.isEmpty()}" th:href="'/RoundTripHotel/'+${item.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
                                                                 style="min-height: 3.125rem">Choose</a>
 
-                                                                <a class="flight-details-link mt-1" th:data-idFlight="${item.id}" style="font-size: 1rem;color: #67747c !important;display: block;text-decoration: none;background-color: transparent;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                                                                    Flight Details
-                                                                </a>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -581,11 +454,12 @@
                                                 </div>
                                             </div>
                                     </th:block>
-                                </th:block>
                                         </div>
+
                         </div>
-                                    </th:block>
-                                </th:block>
+<input type="hidden" id="minPrice" th:value="${MinPrice}">
+<input type="hidden" id="maxPrice" th:value="${MaxPrice}">
+
 
 
                             </div>

@@ -6,6 +6,8 @@ public class BookingFlightDetail {
     private int id;
     private int flightId;
 
+
+
     public int getFlightId() {
         return flightId;
     }

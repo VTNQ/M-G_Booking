@@ -25,10 +25,24 @@ public class AirPortController {
     private AirportService airportService;
     @PostMapping("AirPort/add")
     public String add(@ModelAttribute("AirPort") AirportDto airportDto, RedirectAttributes redirectAttributes
-    , BindingResult bindingResult) {
+    , BindingResult bindingResult,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
+                return "redirect:/LoginAdmin";
+            }
             if(airportDto.getName()==null || airportDto.getName().isEmpty()){
                 redirectAttributes.addFlashAttribute("message", "Name is required");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Admin/AirPort/add";
+            }
+            if(airportDto.getIdCity()==0 ){
+                redirectAttributes.addFlashAttribute("message", "City is required");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Admin/AirPort/add";
+            }
+            if(airportService.existAirportInCity(airportDto.getIdCity())){
+                redirectAttributes.addFlashAttribute("message","This city has an airport.");
                 redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/Admin/AirPort/add";
             }
@@ -55,6 +69,10 @@ public class AirPortController {
     public String update(HttpServletRequest request,ModelMap model,@ModelAttribute("AirPort")AirportDto airportDto,
                          RedirectAttributes redirectAttributes,BindingResult bindingResult) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null && !"ROLE_ADMIN".equals(account.getAccountType())){
+                return "redirect:/LoginAdmin";
+            }
             if(airportDto.getName()==null || airportDto.getName().isEmpty()){
                 redirectAttributes.addFlashAttribute("message", "Name is required");
                 redirectAttributes.addFlashAttribute("messageType", "error");
@@ -82,8 +100,11 @@ public class AirPortController {
     @GetMapping("AirPort/add")
     public String add(HttpServletRequest request, ModelMap model) {
         try {
-            Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
-            model.put("City",cityService.findCityAll(currentAccount.getCountryId()));
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null && !"ROLE_ADMIN".equals(account.getAccountType())){
+                return "redirect:/LoginAdmin";
+            }
+            model.put("City",cityService.findCityAll(account.getCountryId()));
             model.put("AirPort",new AirportDto());
             return "Admin/AirPort/add";
         }catch (Exception e) {
@@ -95,6 +116,10 @@ public class AirPortController {
     public String edit(@PathVariable int id,ModelMap model,HttpServletRequest request) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+
+            if(currentAccount==null && !"ROLE_ADMIN".equals(currentAccount.getAccountType())){
+                return "redirect:/LoginAdmin";
+            }
             model.put("AirPort",airportService.findById(id));
             model.put("City",cityService.findCityAll(currentAccount.getCountryId()));
             return "Admin/AirPort/Edit";
@@ -108,6 +133,10 @@ public class AirPortController {
                           @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String name) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+
+            if(currentAccount==null && !"ROLE_ADMIN".equals(currentAccount.getAccountType())){
+                return "redirect:/LoginAdmin";
+            }
             List<Airport>Airports=airportService.findAll(currentAccount.getCountryId());
             List<Airport>filteredAirports=Airports.stream().filter(airport -> airport.getName().contains(name)).collect(Collectors.toList());
             int start = (page - 1) * size;

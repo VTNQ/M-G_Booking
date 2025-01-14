@@ -47,4 +47,5 @@ public class SeatUpdateWebSocketHandler extends TextWebSocketHandler {
             }
         }
     }
+
 }

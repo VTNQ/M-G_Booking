@@ -4,40 +4,105 @@ const closeModalBtn = document.getElementById('btnClose');
 const CloseBtn=document.getElementById('closeModalBtn');
 const cancelModalBtn = document.getElementById('cancelModalBtn');
 const DetailSeat=document.querySelectorAll('#DetailSeat');
+document.getElementById('seatForm').addEventListener('submit',function (event){
+    const firstClassSeat=document.getElementById('FirstSeat');
+    const BusinessSeat=document.getElementById('BusinessSeat');
+    const EconomySeat=document.getElementById('EconomySeat');
+    if (firstClassSeat.value.trim() === "") {
+        firstClassSeat.value = 0; // Gán giá trị mặc định là 0
+    }
+    if (BusinessSeat.value.trim() === "") {
+        BusinessSeat.value = 0; // Gán giá trị mặc định là 0
+    }
+    if (EconomySeat.value.trim() === "") {
+        EconomySeat.value = 0; // Gán giá trị mặc định là 0
+    }
+})
+
+
+
 openModalBtns.forEach((btn) => {
     btn.addEventListener('click', function(event) {
         event.preventDefault(); // Ngừng việc chuyển hướng trang
-        modal.style.display = 'flex'; // Hiển thị modal
-
-        // Lấy id chuyến bay từ data-idFlight và truyền vào form nếu cần
         const flightId = this.getAttribute('data-idFlight');
-        document.getElementById('idFlight').value=flightId;
+
+
+        fetch(`http://localhost:8686/api/seat/existBySeat/${flightId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Render and display seat data
+                if(!data){
+                    modal.style.display = 'flex';
+                    modal.style.zIndex='10000';
+                    document.getElementById('idFlight').value=flightId;
+                }else{
+                    Swal.fire({
+                        title:"Flight has created seats",
+                        icon:'error',
+                        
+                    })
+                }
+
+
+
+            })
+            .catch(error => console.error('Error fetching seat details:', error));
+        // Lấy id chuyến bay từ data-idFlight và truyền vào form nếu cần
+
     });
 });
 CloseBtn.addEventListener('click',function (event){
     event.preventDefault();
+    const seatGrid=document.querySelector('.seat-grid');
+    if(seatGrid){
+        seatGrid.innerHTML='';
+    }
+    document.getElementById('FirstSeat').value=0;
+    document.getElementById('BusinessSeat').value=0;
+    document.getElementById('EconomySeat').value=0;
     modal.style.display='none';
 })
 DetailSeat.forEach((btn) => {
     btn.addEventListener('click', function (event) {
         const idFlight = this.getAttribute('data-idFlight');
+        const DepartAirPort=this.getAttribute('data-departAirport');
+        const ArrivalAirPort=this.getAttribute('data-arrivalAirport');
+        document.getElementById('location').textContent=`${DepartAirPort} -${ArrivalAirPort}`;
 
-
-        fetch(`http://localhost:8686/api/seat/${idFlight}`)
+        fetch(`http://localhost:8686/api/seat/existBySeat/${idFlight}`)
             .then(response => response.json())
             .then(data => {
                 // Render and display seat data
-                renderSeatDetails(data);
+                if(data){
+                    fetch(`http://localhost:8686/api/seat/${idFlight}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Render and display seat data
+                            renderSeatDetails(data);
 
-                // Show the modal (ensure you implement modal logic here if needed)
-                document.getElementById('seatDetail').style.display = 'flex';
+                            // Show the modal (ensure you implement modal logic here if needed)
+                            document.getElementById('seatDetail').style.display = 'flex';
+                        })
+                        .catch(error => console.error('Error fetching seat details:', error));
+                }else{
+                    Swal.fire({
+                        title:"flight not available",
+                        icon:'error',
+
+                    })
+                }
+
+
+
             })
             .catch(error => console.error('Error fetching seat details:', error));
+
     });
 });
 closeModalBtn.addEventListener('click',function (event){
 
     event.preventDefault();
+
     document.getElementById('seatDetail').style.display = 'none';
 })
 // Function to render seat details dynamically
@@ -119,10 +184,15 @@ function createSeatDiv(seat) {
     seatDiv.style.width = '50px';
     seatDiv.style.height = '50px';
     seatDiv.style.borderRadius = '4px';
-    seatDiv.style.backgroundColor =
-        seat.type === 'First Class' ? '#a7d2ff' :
-            seat.type === 'Business Class' ? '#7199ff' :
-                seat.type === 'Economy Class' ? '#2c4aff' : '#dcdcdc';
+    if(seat.status==1){
+        seatDiv.style.backgroundColor='#2ecc71'
+    }else{
+        seatDiv.style.backgroundColor =
+            seat.type === 'First Class' ? '#a7d2ff' :
+                seat.type === 'Business Class' ? '#7199ff' :
+                    seat.type === 'Economy Class' ? '#2c4aff' : '#dcdcdc';
+    }
+
     seatDiv.title = `Seat ID: ${seat.id}`;
     seatDiv.dataset.seatId = seat.id;
     return seatDiv;

@@ -13,4 +13,6 @@ public interface AirportService {
     public AirportDto findById(int id);
     List<Airport>findAll();
     public List<CountryAiportDTO>SearchAirport(String SearchName);
+    public int CountAirport(int id);
+    public boolean existAirportInCity(int id);
 }

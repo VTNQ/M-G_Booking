@@ -31,8 +31,12 @@ public class HotelController {
     @Autowired
     private DistrictService districtService;
     @GetMapping("Hotel/Detail/{id}")
-    public String DetailHotel(@PathVariable("id")int id, ModelMap model) {
+    public String DetailHotel(@PathVariable("id")int id, ModelMap model,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             model.put("Image",hotelService.findImage(id));
             return "Owner/Hotel/detail";
         }catch (Exception e) {
@@ -44,6 +48,9 @@ public class HotelController {
     public String add(ModelMap model, HttpServletRequest request) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+            if(currentAccount==null){
+                return "redirect:/Login";
+            }
             List<District> districts = districtService.findDistrict(currentAccount.getCityId());
             HotelDto hotelDto = new HotelDto();
             hotelDto.setOwnerId(currentAccount.getId());
@@ -61,8 +68,12 @@ public class HotelController {
 
     @PostMapping("Hotel/update")
     public String update(@ModelAttribute("hotel") @Valid HotelUpdateDTO hotelUpdateDTO,BindingResult bindingResult, @RequestParam(value = "imageForm", required = false) MultipartFile imageForm,
-                          RedirectAttributes redirectAttributes) {
+                          RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if (bindingResult.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 bindingResult.getFieldErrors().forEach(error ->
@@ -91,6 +102,10 @@ public class HotelController {
     public String edit(@PathVariable("id") int id, ModelMap model, HttpServletRequest request) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+
+            if(currentAccount==null){
+                return "redirect:/Login";
+            }
             List<District> districts = districtService.findDistrict(currentAccount.getCityId());
             model.put("hotel", hotelService.findHotels(id));
             model.put("ImageList", hotelService.findImage(id));
@@ -107,6 +122,10 @@ public class HotelController {
                         @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+
+            if(currentAccount==null){
+                return "redirect:/Login";
+            }
             List<HotelListDto>hotel=hotelService.FindHotelsByOwner(currentAccount.getId());
             List<HotelListDto>filteredHotel=hotel.stream().filter(hotels->
                     hotels.getName().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
@@ -125,8 +144,12 @@ public class HotelController {
 
     @PostMapping("Hotel/add")
     public String add(@ModelAttribute("hotel") @Valid HotelDto hotel, BindingResult result, ModelMap model,
-                      RedirectAttributes redirectAttributes) {
+                      RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
+            if(account==null){
+                return "redirect:/Login";
+            }
             if (result.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 result.getFieldErrors().forEach(error ->

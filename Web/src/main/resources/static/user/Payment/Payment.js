@@ -3,19 +3,36 @@ let selectedPassenger = null;
 let selectedSeat = null;
 let selectedSeatName=null;
 let totalPrice=0;
+let totalPriceBuggage=0;
+let Amount=document.getElementById('amount');
 const selectedSeats = new Map();
-function addSeat(seatId,SeatName){
-    if (selectedSeats.has(seatId)) {
-        // Nếu Map đã có seatId, kiểm tra xem seatName đã tồn tại chưa
-        if (!selectedSeats.get(seatId).includes(SeatName)) {
-            selectedSeats.get(seatId).push(SeatName); // Thêm seatName vào mảng nếu chưa có
-        }
-    } else {
-        // Nếu Map chưa có seatId, khởi tạo mảng với seatName
-        selectedSeats.set(seatId, [SeatName]);
+const firstPassenger = document.querySelector('.passenger-info');
+const spanFirstPassenger = document.querySelector('.selected-seat span ');
+
+document.addEventListener('DOMContentLoaded',function (){
+    let flightId = document.getElementById('idFlight').value;
+    const flightIdArray = JSON.parse(flightId);
+    for (let i = 0; i < flightIdArray.length; i++) {
+        document.querySelector(`.passenger-info.tab-passage${flightIdArray[i]}`).classList.add('selected');
+        document.querySelector(`.passenger-info.tab-passage${flightIdArray[i]} .passenger-block .passenger-type .selected-seat`).classList.add('selected');
+        document.querySelector(`.passenger-info.tab-passage${flightIdArray[i]} .passenger-block .passenger-type .selected-seat span`).classList.add('selected')
     }
 
+})
+
+function addSeat(seatId, SeatName, price) {
+    price = parseFloat(price) || 0; // Đảm bảo price là số, mặc định 0 nếu không hợp lệ
+    if (selectedSeats.has(seatId)) {
+        const seatList = selectedSeats.get(seatId);
+        const existingSeat = seatList.find(seat => seat.name === SeatName);
+        if (!existingSeat) {
+            seatList.push({ name: SeatName, price: price });
+        }
+    } else {
+        selectedSeats.set(seatId, [{ name: SeatName, price: price }]);
+    }
 }
+
 function openTab(event,tabId){
     const tabs = document.querySelectorAll(".tab-content");
     tabs.forEach(tab => tab.style.display = "none");
@@ -38,7 +55,7 @@ document.addEventListener('DOMContentLoaded',function (){
         CountDownElement.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
         if(remainingTime<=0){
             setTimeout(()=>{
-                window.location.reload();
+                window.location.href='http://localhost:8686/Home';
             },100)
         }else{
             remainingTime -= 1;
@@ -48,21 +65,35 @@ document.addEventListener('DOMContentLoaded',function (){
     updateCountDown();
 })
 let bookings=[];
-const maxSeats = 2;
-function removeSeat(seatId){
-    if(selectedSeats.has(seatId)){
-        selectedSeats.delete(seatId);
+
+const maxSeats = document.getElementById('numberPeople').value;
+function removeSeat(seatId, SeatName) {
+    if (selectedSeats.has(seatId)) {
+        const seatList = selectedSeats.get(seatId);
+        // Tìm vị trí của ghế có tên khớp với SeatName
+        const seatIndex = seatList.findIndex(seat => seat.name === SeatName);
+        if (seatIndex !== -1) {
+            seatList.splice(seatIndex, 1); // Xóa ghế nếu tìm thấy
+            // Nếu không còn ghế nào, đặt seatList thành mảng rỗng
+            if (seatList.length === 0) {
+                selectedSeats.set(seatId, []); // Đặt danh sách ghế rỗng, giữ lại seatId
+            }
+        }
     }
 }
+
 function createSeatDiv(seat) {
 
     const seatDiv = document.createElement('div');
+    seatDiv.id=seat.idFlight;
+
+    seatDiv.setAttribute('data-flight-id',seat.idFlight)
     seatDiv.style.width = '50px';
     seatDiv.style.height = '50px';
     seatDiv.style.borderRadius = '4px';
 
     if(seat.status===1){
-        console.log('test')
+
         seatDiv.style.backgroundColor='rgb(233, 235, 238)';
         seatDiv.style.cursor='not-allowed';
         const closeIcon = document.createElement('i');
@@ -85,53 +116,90 @@ function createSeatDiv(seat) {
         seatDiv.addEventListener('click', () => {
 
             const hiddenInput = document.getElementById('bookings');
-            const exists = bookings.some(booking => booking.id === seat.id);
-            if(exists){
-                const index = bookings.findIndex(booking => booking.id === seat.id);
+            let amountValue = document.getElementById('amount').value;
 
-                if (index !== -1) {
-                    bookings.splice(index, 1);
-                    hiddenInput.value=JSON.stringify(bookings);
+// Chuyển đổi giá trị sang số
+            let numericAmount = parseFloat(amountValue);
+
+
+
+// Kiểm tra nếu giá trị không hợp lệ
+            if (isNaN(numericAmount)) {
+                console.log("Invalid input: The value is not a number.");
+                numericAmount = 0; // Hoặc bạn có thể để giá trị mặc định khác
+            }
+
+
+
+            const exists = bookings.some(booking => booking.id === seat.id);
+
+            if (exists) {
+                numericAmount-=seat.price;
+                const existflight = bookings.some(booking => booking.flightId === seat.idFlight && booking.id===seat.id);
+
+                if (existflight) {
+                    const index = bookings.findIndex(booking => booking.id === seat.id);
+
+                    if (index !== -1) {
+                        bookings.splice(index, 1);
+                        hiddenInput.value = JSON.stringify(bookings);
+
+                    }
 
                 }
+            }else{
+                numericAmount+=seat.price;
             }
+            document.getElementById('amount').value = numericAmount.toFixed(0);
+
             const seatName = seatDiv.dataset.seatName;
             if (seatDiv.classList.contains('isSelected')) {
                 // Deselect the seat
-                totalPrice=totalPrice-seat.price;
+                totalPrice = totalPrice - seat.price;
                 if (totalPrice < 0) {
                     totalPrice = 0;
                 }
-                document.getElementById('totalPrice').textContent=totalPrice+' USD';
+                document.getElementById('totalPrice').textContent = totalPrice + ' USD';
                 seatDiv.classList.remove('isSelected');
 
-                document.getElementById('totalPrice').textContent=totalPrice+' USD';
+                document.getElementById('totalPrice').textContent = totalPrice + ' USD';
                 seatDiv.querySelector('.fa-user')?.remove();
-                const PassagerInfo=document.querySelectorAll('.passenger-info');
-                console.log(PassagerInfo)
-                PassagerInfo.forEach(pass=>{
-                    console.log(pass.dataset.seat1Id);
-                    if(pass.dataset.seat1Id===seat.id.toString()){
-                        pass.classList.add('selected')
-                        pass.querySelector('.passenger-block .seat-info .seat-price').textContent='0 USD'
-                    }else{
-                        pass.classList.remove('selected')
-                    }
-                })
                 const flightId = document.getElementById('idFlight').value;
 
 
                 const flightIdArray = JSON.parse(flightId);
+                for(let i=0;i<flightIdArray.length;i++){
+                    const PassagerInfo = document.querySelectorAll(`.passenger-info.tab-passage${flightIdArray[i]}`);
+                    PassagerInfo.forEach(pass => {
+                        console.log(pass.dataset.seat1Id);
+                        if (pass.dataset.seat1Id === seat.id.toString()) {
+                            pass.classList.add('selected')
+                            pass.querySelector('.passenger-block .seat-info .seat-price').textContent = '0 USD'
+                        } else {
+                            pass.classList.remove('selected')
+                        }
+                    })
+                }
 
-                const seatIdElements = document.querySelectorAll(`.passenger-block .passenger-type .selected-seat`);
+
+
+
+                const seatIdElements = document.querySelectorAll(`.passenger-block .passenger-type .selected-seat.seat-tabs${seatDiv.dataset.flightId}`);
                 seatIdElements.forEach(seatElement => {
                     // Check if this seat element has a matching seat ID
 
-                    if (seatElement.dataset.seatId=== seat.id.toString() ) {
-                        seatElement.textContent='';
+                    if (seatElement.dataset.seatId === seat.id.toString()) {
+                        seatElement.textContent = '';
 
                         delete seatElement.dataset.seatId;
-                        removeSeat(seat.id)
+                        removeSeat(seat.idFlight,seat.index);
+
+                        const checkedInputs = document.querySelectorAll(`input[name="baggage-${seat.idFlight}"]:checked`);
+
+                        checkedInputs.forEach(input => {
+                            input.checked = false; // Hủy trạng thái checked
+                        });
+
                         seatElement.classList.remove('IsSelected')
                         seatElement.classList.add('selected')
 
@@ -141,13 +209,29 @@ function createSeatDiv(seat) {
                 });
 
             } else {
-                addSeat(seat.idFlight,seat.index);
-                const selectedSeatsCount = document.querySelectorAll(`.seat-grid${seat.idFlight} .isSelected`).length;
-                console.log(selectedSeatsCount)
-                if (selectedSeatsCount >= maxSeats) {
-                    alert("Bạn chỉ có thể chọn tối đa " + maxSeats + " ghế.");
-                    return;  // Nếu số ghế đã chọn đủ, không cho phép chọn thêm ghế mới
+                console.log(bookings)
+                const existflight = bookings.some(booking => booking.flightId === seat.idFlight && booking.id===seat.id);
+
+                console.log(bookings)
+                if (existflight) {
+                    bookings = bookings.map(booking =>
+                        booking.flightId === seat.idFlight
+                            ? {...booking, id:seat.id,totalPrice:seat.price}
+                            : booking
+                    );
+                    hiddenInput.value=JSON.stringify(bookings);
+                }else{
+                    const selectedSeatsCount = document.querySelectorAll(`.seat-grid${seat.idFlight} .isSelected`).length;
+                    if (selectedSeatsCount >= maxSeats) {
+                        alert("Bạn chỉ có thể chọn tối đa " + maxSeats + " ghế.");
+                        return;  // Nếu số ghế đã chọn đủ, không cho phép chọn thêm ghế mới
+                    }
+                    addSeat(seat.idFlight,seat.index,seat.price);
                 }
+
+
+
+
                 const exists = bookings.some(booking => booking.id === seat.id);
                 if(!exists){
                     bookings.push({id:seat.id,totalPrice:seat.price,flightId:seat.idFlight});
@@ -181,17 +265,19 @@ function createSeatDiv(seat) {
                 if (seatExists===false) {
 
 
-                    const query = document.querySelector('.passenger-block .passenger-type .selected-seat.selected');
-                    const queryText = document.querySelectorAll('.passenger-block .passenger-type .selected-seat ');
-                    const passagerInfo = document.querySelectorAll('.passenger-info');
-                    const PassageQuery=document.querySelector('.passenger-info.selected');
+                    const query = document.querySelector(`.passenger-block .passenger-type .selected-seat.seat-tabs${seatDiv.dataset.flightId}.selected`);
+                    const queryText = document.querySelectorAll(`.passenger-info.tab-passage${seatDiv.dataset.flightId} .passenger-block .passenger-type .selected-seat`);
+                    const passagerInfo = document.querySelectorAll(`.passenger-info.tab-passage${seatDiv.dataset.flightId}`);
+
+                    const PassageQuery=document.querySelector(`.passenger-info.tab-passage${seat.idFlight}.selected`);
+
                     PassageQuery.setAttribute('data-seat1-id', seat.id);
 // Tìm index của phần tử có class 'selected' trong passagerInfo
                     const Passager = Array.from(passagerInfo).findIndex(span => span.classList.contains('selected'));
 
 // Tìm index của phần tử có class 'selected' trong queryText
                     const indexOfSelected = Array.from(queryText).findIndex(span => span.classList.contains('selected'));
-
+                console.log(queryText)
 // Kiểm tra điều kiện tồn tại và tránh lỗi
                     if (
                         Passager !== -1 && // Kiểm tra có phần tử selected trong passagerInfo
@@ -201,23 +287,25 @@ function createSeatDiv(seat) {
                     ) {
 
                         // Thêm class 'selected' vào phần tử kế tiếp
+                        console.log(passagerInfo)
                         passagerInfo[Passager + 1].classList.add('selected');
                         queryText[indexOfSelected + 1].classList.add('selected');
                     } else {
 
 
                     }
+
                     const isLast = Passager === passagerInfo.length - 1;
                     if(isLast){
+
                         passagerInfo[Passager].classList.remove('selected')
                         passagerInfo[0].classList.add('selected');
                     }else{
 
-                        document.querySelector('.passenger-info.selected').classList.remove('selected');
+                        document.querySelector(`.passenger-info.tab-passage${seat.idFlight}.selected`).classList.remove('selected');
 
                     }
                     passagerInfo[Passager].querySelector('.seat-price').textContent=seat.price+' USD';
-
                     query.textContent= seatName;
                     query.setAttribute('data-seat-id', seat.id);
                     query.classList.add('IsSelected');
@@ -334,8 +422,7 @@ function renderSeatDetails(data) {
         seatGrid.appendChild(rowDiv);
     }}
 
-let socketMap = {};
-let isConnected = false;
+
 
 
 
@@ -367,30 +454,56 @@ document.querySelector('.edit-button').addEventListener('click',function (event)
 let popup=document.querySelector('.popup');
 popup.classList.add('show');
 });
-document.querySelector('.confirm-button').addEventListener('click',function (event){
-    let popup=document.querySelector('.popup');
+document.querySelector('.confirm-button').addEventListener('click', function (event) {
+    let popup = document.querySelector('.popup');
+
     document.querySelectorAll('.flight-info').forEach(function(element) {
         element.style.display = 'flex';
-    })
-    const seatNames=Array.from(selectedSeats.values());
-    console.log(selectedSeats)
-    document.querySelector('.passengers').textContent=seatNames.join(', ');
-    for (let [key, value] of selectedSeats) {
-        // Giả sử `value` là giá trị bạn muốn hiển thị cho hành khách
-        const seatNames = Array.from(selectedSeats.entries())
-            .filter(([seatKey, _]) => seatKey === key)  // Lọc các entries theo key
-            .map(([_, seatName]) => seatName);
+    });
 
-        document.querySelector(`#passagers${key}`).textContent = seatNames.join(',');
+    const seatNames = Array.from(selectedSeats.values())
+        .flat() // Gộp các mảng con thành một mảng duy nhất
+        .map(seat => seat.name);
+    console.log(seatNames)
+
+
+    const amount=document.getElementById('amount');
+    document.getElementById('totalPriceBooking').textContent='$  '+amount.value;
+    let totalPriceDisplay = 0; // Đặt tổng giá tiền ban đầu là 0
+    for (let [key, value] of selectedSeats) {
+
+        value.forEach(seat => {
+            totalPriceDisplay += seat.price; // Cộng giá từng ghế vào tổng
+        });
+
+        const seatNamesForPassenger = value.map(seat => seat.name);
+        document.querySelector(`#passagers${key}`).textContent = seatNamesForPassenger.join(',');
     }
-    document.querySelector('.note').style.display='flex';
-    document.querySelector('.price').style.display='flex'
-    document.querySelector('.price').textContent='+ '+totalPrice+' USD';
-    document.getElementById('amount').value+=totalPrice;
+
+    console.log(totalPriceDisplay); // Kiểm tra giá trị tổng
+    document.querySelector('.note').style.display = 'flex';
+    document.querySelector('.price').style.display = 'flex';
+    document.querySelector('.price').textContent = '+ ' + totalPriceDisplay + ' USD';
+
+    document.getElementById('SeatPrice').textContent = '$ ' + totalPriceDisplay;
+
     popup.classList.remove('show');
+});
+
+document.querySelectorAll('.action-button').forEach((action,index)=>{
+    action.addEventListener('click',()=>{
+        const airline=action.getAttribute('data-flight-id');
+        const bookings=document.getElementById('bookings');
+
+        const popupOverplay=document.querySelector(`#popup-${airline}`);
+        popupOverplay.style.display='flex';
+        popupOverplay.style.zIndex='1000';
+    })
 })
+
 document.querySelectorAll('.passenger-info').forEach((passenger, index) => {
     passenger.addEventListener('click', () => {
+
         const flightId = document.getElementById('idFlight').value;
         // Deselect any previously selected passengers and their spans
         document.querySelectorAll(`.tab-passage`).forEach(p => p.classList.remove('selected'));
@@ -407,13 +520,25 @@ document.querySelectorAll('.passenger-info').forEach((passenger, index) => {
     });
 });
 
-const firstPassenger = document.querySelector('.passenger-info');
-const spanFirstPassenger = document.querySelector('.selected-seat span');
+document.querySelectorAll('.close-button').forEach((btn,index)=>{
+    btn.addEventListener('click',()=>{
+        const flight=btn.getAttribute('data-flight-id');
+        const popup = document.getElementById(`popup-${flight}`);
+        const exists = bookings.find((booking) => booking.flightId === Number(flight));
+        const radios = popup.querySelectorAll(`input[name="baggage-${flight}"]`);
+        radios.forEach((radio) => {
+            if (exists && exists.baggage === radio.value) {
+                // Nếu tồn tại và baggage khớp với radio.value
+                radio.checked = true; // Giữ radio được chọn
+            } else {
+                // Nếu không khớp hoặc radio.value là "0"
+                radio.checked = radio.value === "0";
+            }
+        });
+        popup.style.display = 'none';
+    })
+})
 
-if (firstPassenger) {
-    firstPassenger.querySelector('.passenger-block .passenger-type .selected-seat').classList.add('selected');
-    firstPassenger.classList.add('selected');
-    spanFirstPassenger.classList.add('selected');
-
-
-}
+document.querySelector('.close-button').addEventListener('click',function (){
+    document.querySelector('.popup').classList.remove('show')
+})

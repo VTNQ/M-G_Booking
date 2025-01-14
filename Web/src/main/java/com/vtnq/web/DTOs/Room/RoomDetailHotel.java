@@ -9,12 +9,22 @@ public class RoomDetailHotel {
     public int id;
     private String type;
     private BigDecimal price;
+    private String ImageUrl;
 
-    public RoomDetailHotel(int id, String type, BigDecimal price, int occupancy) {
+    public String getImageUrl() {
+        return ImageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        ImageUrl = imageUrl;
+    }
+
+    public RoomDetailHotel(int id, String type, BigDecimal price, int occupancy,String ImageUrl) {
         this.id = id;
         this.type = type;
         this.price = price;
         this.occupancy = occupancy;
+        this.ImageUrl = ImageUrl;
     }
 
     public int getId() {

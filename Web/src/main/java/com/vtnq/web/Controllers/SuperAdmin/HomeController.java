@@ -1,5 +1,6 @@
 package com.vtnq.web.Controllers.SuperAdmin;
 
+import com.vtnq.web.Entities.Account;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,11 @@ import java.util.Map;
 public class HomeController {
 
     @GetMapping("Home")
-    public String Home(){
+    public String Home(HttpServletRequest request){
+        Account account = (Account) request.getSession().getAttribute("currentAccount");
+        if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
+            return "redirect:/LoginAdmin";
+        }
         return "SuperAdmin/Home/index";
     }
 

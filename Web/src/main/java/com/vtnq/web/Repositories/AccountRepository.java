@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Query(value = "FROM Account a WHERE a.email = :email")
     Optional<Account> findByEmail(@Param("email") String email);
+    @Query("SELECT a from Account a where a.email = :email and a.accountType= 'ROLE_ADMIN'")
+    Account findByEmailRoleAdmin(String email);
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END FROM Account a WHERE a.email = :email")
     boolean existsByEmail(@Param("email") String email);
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END FROM Account a WHERE a.phone = :phone")
@@ -29,4 +31,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
             "COALESCE(a.accountType, ''), COALESCE(a.countryId, 0),COALESCE(a.phone, ''),a.level.id,a.password) " +
             "from Account a where a.id = :id and a.accountType = 'ROLE_USER'")
     UserAccountDTO GetUser(@Param("id") int id);
+    @Query("select CASE  When count(a)>0 then true else false end from Account a where a.accountType='ROLE_ADMIN' AND a.countryId= :countryId")
+    boolean existsAccountByCountryId(int countryId);
 }

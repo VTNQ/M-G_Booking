@@ -1,3 +1,28 @@
+document.addEventListener("DOMContentLoaded", function() {
+const CountryId=document.getElementById('country-select').value
+    const CitySelect=document.getElementById('city-select');
+    CitySelect.innerHTML='<option value="">Select a city</option>';
+    if(CountryId){
+        fetch(`http://localhost:8686/api/city/FindCityByCountry/${CountryId}`)
+            .then(response=>{
+                if(!response.ok){
+                    throw new Error('Failed to fetch cities');
+                }
+                return response.json();
+            })
+            .then(data=>{
+                data.forEach(city=>{
+                    const option=document.createElement('option');
+                    option.value=city.id;
+                    option.textContent=city.name;
+                    CitySelect.appendChild(option);
+                });
+            })
+            .catch(error=>{
+                console.error('Error fetching cities:', error);
+            })
+    }
+})
 document.getElementById('country-select').addEventListener('change',function (){
     const countryId=this.value;
     const CitySelect=document.getElementById('city-select');

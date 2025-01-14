@@ -83,4 +83,24 @@ public class AirportServiceImplement implements AirportService {
         return groupedByCountry.entrySet().stream().map(entry->new
                 CountryAiportDTO(entry.getKey(),entry.getValue())).collect(Collectors.toList());
     }
+
+    @Override
+    public int CountAirport(int id) {
+        try {
+            return airportRepository.CountAirPort(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public boolean existAirportInCity(int id) {
+        try {
+            return airportRepository.existsAirportInCity(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

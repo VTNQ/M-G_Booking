@@ -49,6 +49,7 @@ public class RoomServiceImplement implements RoomService{
                 room.setPrice(roomPrices.get(i));
                 room.setOccupancy(roomCapacities.get(i));
                 room.setHotel(hotel);
+                room.setStatus(false);
                 Room saveRoom=roomRepository.save(room);
 
                 String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "static", "images", "rooms").toString();

@@ -48,9 +48,7 @@
                                 <td th:text="${country.name}"></td>
                                 <td>
                                     <a th:href="@{'/SuperAdmin/Country/'+${country.id}}" style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i class="ti ti-edit"></i></a>
-                                    <a th:href="@{'/SuperAdmin/Country/delete/'+${country.id}}"  class="btn btn-danger">
-                                        <i style="color: white" class="ti ti-trash-x"></i>
-                                    </a>
+
                                 </td>
                             </tr>
                         </th:block>

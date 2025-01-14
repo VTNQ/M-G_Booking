@@ -1,5 +1,6 @@
 package com.vtnq.web.Service;
 
+import com.vtnq.web.DTOs.Booking.BookingHotel;
 import com.vtnq.web.DTOs.Hotel.*;
 import com.vtnq.web.Entities.*;
 import com.vtnq.web.Helper.FileHelper;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -237,9 +239,9 @@ public class HotelServiceImplement implements HotelService{
     }
 
     @Override
-    public List<HotelSearchDTO> SearchHotels(int id,int quantityRoom) {
+    public List<HotelSearchDTO> SearchHotels(int id,int quantityRoom,BigDecimal minPrice,BigDecimal maxPrice) {
         try {
-            return hotelRepository.SearchHotel(id,quantityRoom);
+            return hotelRepository.SearchHotel(id,quantityRoom,minPrice,maxPrice);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -260,6 +262,46 @@ public class HotelServiceImplement implements HotelService{
     public List<Picture> FindImageInDetailHotel(int id) {
         try {
             return pictureRepository.FindImageInDetailHotel(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public BookingHotel FindBookingHotel(int id) {
+        try {
+            return hotelRepository.FindBookingHotel(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<HotelList> ShowHotelsAll(int id) {
+        try {
+            return hotelRepository.showHotelList(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public BigDecimal FindMinPriceHotel(int id, int quantityRoom) {
+        try {
+            return hotelRepository.FindMinHotel(id, quantityRoom);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public BigDecimal FindMaxPriceHotel(int id, int quantityRoom) {
+        try {
+            return hotelRepository.FindMaxHotel(id, quantityRoom);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;

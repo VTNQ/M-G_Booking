@@ -1,25 +1,130 @@
-
+let currentPage=1;
 function convertTimeToDecimal(time) {
     const [hours, minutes] = time.split(':').map(Number);
     return hours + (minutes / 60);
 }
-
+function initFlatpickr(selector, options) {
+    // Khởi tạo flatpickr với selector và các tùy chọn
+    flatpickr(selector, options);
+}
 // Thêm sự kiện click cho nút dropdown
 
+document.getElementById('basicDropdownClickInvoker').addEventListener('click',function (){
+    const dropdownMenu=document.getElementById('dropdownMenu');
+    if(dropdownMenu.style.display==='none'){
+        dropdownMenu.style.display='block';
+    }else{
+        dropdownMenu.style.display='none';
+    }
+});
+window.addEventListener('click',function (event){
+    if (!event.target.matches('.dropdown-nav-link')) {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        if (dropdownMenu.style.display === "block") {
+            dropdownMenu.style.display = "none";
+        }
+    }
+})
+function sortFlights(sortType){
+    const flightItems=document.querySelectorAll('#flight-item');
+    const FlightArray=Array.from(flightItems);
+    FlightArray.sort(function (a,b){
+        const priceA=parseFloat(a.getAttribute('data-price'));
+        const priceB=parseFloat(b.getAttribute('data-price'));
+        if (sortType === 'lowToHigh') {
+            return priceA - priceB;
+        } else if (sortType === 'highToLow') {
+            return priceB - priceA;
+        }
+        const parentContainer = document.querySelector('#flight-list'); // Assuming flight items are inside #flight-list
+        parentContainer.innerHTML = ''; // Clear current list
 
+        // Append sorted flights back into the container
+        flightArray.forEach(function(item) {
+            parentContainer.appendChild(item);
+        });
+    })
+}
 let selectedAirlines=[];
+document.addEventListener('DOMContentLoaded',async function (){
+    const FromInputDropDown=document.querySelector('#from-input');
+    const At=document.querySelector('#At-input');
+    const City=document.querySelector('#idCity');
+    const FromInput=document.querySelector('#from-input-id');
+    const ArrivalInputDropDown=document.querySelector('#to-input');
+    const ToInput=document.querySelector('#to-input-id');
+    try {
+        let fromAirports=await SearchById(FromInput.value);
+        let ArrivalAirports=await SearchById(ToInput.value);
+        let Cities=await SearchCityById(City.value);
+        console.log(City.value)
+        if(Cities!=null){
+            At.value=Cities.name;
+        }
+        if(fromAirports!=null){
+            FromInputDropDown.value=fromAirports.name;
+
+        }
+        if(ArrivalAirports!=null){
+            ArrivalInputDropDown.value=ArrivalAirports.name;
+        }
+    }catch (error) {
+        console.log(error);
+    }
+})
+async function SearchCityById(id){
+    try {
+        const response=await fetch(`http://localhost:8686/api/city/FindById/${encodeURIComponent(id)}`);
+        let cities=null;
+        if(response.ok){
+            cities=await response.json();
+        }
+        return cities;
+    }catch (error){
+        console.log(error)
+    }
+}
+async function SearchById( id){
+    try {
+        const response=await fetch(`http://localhost:8686/api/AirPort/FindById/${encodeURIComponent(id)}`);
+        let airports=null;
+        if(response.ok){
+            airports=await response.json();
+
+        }else {
+            console.error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        return airports;
+    }catch (error){
+        console.log(error)
+    }
+}
 function updateFlightVisibility(){
-    document.querySelectorAll('.flight-item').forEach(function(flightItem) {
+    const flights = document.querySelectorAll('#flight-item');
+
+    // Iterate over each flight item to hide/show it
+    flights.forEach(function (flightItem) {
         const airlineId = flightItem.getAttribute('data-airline-id');
-
-
-        if (selectedAirlines.length === 0 || selectedAirlines.includes(airlineId)) {
+        const page = parseInt(flightItem.getAttribute('data-page'));
+        console.log(airlineId)
+        // Check if flight is on the current page and if it matches the selected airlines
+        if ((selectedAirlines.length === 0 || selectedAirlines.includes(airlineId)) && (page === currentPage || !page)) {
             flightItem.style.display = 'block'; // Show flight
         } else {
             flightItem.style.display = 'none'; // Hide flight
         }
     });
 }
+document.querySelectorAll('.pagination .page-item').forEach(function(pageItem) {
+    pageItem.addEventListener('click', function() {
+        // Get the page number from the clicked page link
+        let page = parseInt(pageItem.querySelector('.page-link').textContent);
+        currentPage = page;
+
+        // Call the update function to show the correct flights
+        updateFlightVisibility();
+    });
+});
 document.getElementById('selectAllToggle').addEventListener('change',function (){
     const isChecked=this.checked;
     if(isChecked){
@@ -56,14 +161,16 @@ document.querySelectorAll('.airline-checkbox').forEach(function(checkbox) {
 document.addEventListener("DOMContentLoaded", function() {
     var priceRange = document.getElementById('price-range');
     var priceRangeText = document.getElementById('price-range-text');
+    var minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+    var maxPrice = parseFloat(document.getElementById('maxPrice').value) || 0;
 
     // Initialize the noUiSlider
     noUiSlider.create(priceRange, {
-        start: [200, 120000], // Set the default values for the range
+        start: [minPrice, maxPrice], // Set the default values for the range
         connect: true, // Connect the handles
         range: {
-            'min': 200,    // Minimum value of the slider
-            'max': 120000   // Maximum value of the slider
+            'min': minPrice,    // Minimum value of the slider
+            'max': maxPrice   // Maximum value of the slider
         },
         step: 10,  // Step size for the slider
         tooltips: true, // Show the current value when the user drags the handle
@@ -254,62 +361,100 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
-function initFlatPickrOutPut(){
-    flatpickr("#datePickerOutput", {
+function initDepartTime() {
+    initFlatpickr("#datePickerInput", {
         mode: "range", // Enable date range selection
         dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
-        defaultDate: [new Date()], // Set default dates in LocalDate format
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
         onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
             if (selectedDates.length) {
-                // Display only the first date in the range
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date
             }
         },
-        onChange: function (selectedDates, dateStr, instance) {
-            if (selectedDates.length) {
-                // Update the input value to show only the first selected date
-                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
-                instance.element.value = firstDate;
-            }
-        }
     });
 }
-function initFlatpickr() {
-    flatpickr("#datePickerInput", {
+function initArrivalTime() {
+    const departTimeInput = document.getElementById("datePickerInput");
+    let departDateValue = departTimeInput.value;
+
+    // Nếu departtime chưa được chọn, sử dụng ngày mai
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    // Nếu departtime đã được chọn, tính minDate từ giá trị này
+    if (departDateValue) {
+        const departDate = new Date(departDateValue);
+        departDate.setDate(departDate.getDate() + 1); // Phải lớn hơn departtime 1 ngày
+        departDateValue = departDate.toISOString().split('T')[0];
+    } else {
+        departDateValue = tomorrow.toISOString().split('T')[0];
+    }
+
+    initFlatpickr("#datePickerOutput", {
         mode: "range", // Enable date range selection
         dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
-        defaultDate: [new Date()], // Set default dates in LocalDate format
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
         onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
             if (selectedDates.length) {
-                // Display only the first date in the range
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date
             }
         },
-        onChange: function (selectedDates, dateStr, instance) {
-            if (selectedDates.length) {
-                // Update the input value to show only the first selected date
-                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
-                instance.element.value = firstDate;
-            }
-        }
     });
-
 }
 
 
 document.getElementById("datePickerInput").addEventListener("focus", function () {
     // Initialize flatpickr only if not already initialized
     if (!this.classList.contains("flatpickr-input-active")) {
-        initFlatpickr();
+        initDepartTime();
         this.classList.add("flatpickr-input-active");
     }
 });
 document.getElementById("datePickerOutput").addEventListener("focus", function () {
     // Initialize flatpickr only if not already initialized
     if (!this.classList.contains("flatpickr-input-active")) {
-        initFlatPickrOutPut();
+        initArrivalTime();
         this.classList.add("flatpickr-input-active");
     }
 });
@@ -362,7 +507,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     loadingText.textContent = "Loading, please wait...";
     loadingOverlay.appendChild(loadingText);
 
-    // Add overlay to the body
+
     document.body.appendChild(loadingOverlay);
 
     // Create skeleton elements
