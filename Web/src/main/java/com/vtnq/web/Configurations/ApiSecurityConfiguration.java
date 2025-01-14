@@ -20,12 +20,30 @@ public class ApiSecurityConfiguration {
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> auth.
-                        requestMatchers("/api/ForgetPassword","/api/CheckOTP","/api/ChangePassword","/api/District/{id}",
-                                "/api/hotel/DeletePictureImage/{id}","/api/hotel/UpdateMultipleImage/{id}",
-                                "/api/AirPort/SearchAirPort","/api/ContractOwner/AcceptContract","/api/city/SearchHotelByCityOrHotel",
-                                "/api/room/UpdateMultipleImage/{id}","/api/room/DeletePictureImage/{id}","/api/type/FindTypeByHotel/{id}","/api/seat/{id}","/api/Country/All",
-                                "/api/city/FindCityByCountry/{id}","/api/AirPort/FindById/{id}","/api/account/register/user",
-                                "/api/Flight/detail/{id}","/api/seat/existBySeat/{id}","/api/city/FindById/{id}","/api/Amenity/{id}","/api/room/picture/{id}").permitAll()
+                        requestMatchers("/api/ForgetPassword",
+                                "/api/CheckOTP",
+                                "/api/ChangePassword",
+                                "/api/District/{id}",
+                                "/api/hotel/DeletePictureImage/{id}",
+                                "/api/hotel/UpdateMultipleImage/{id}",
+                                "/api/AirPort/SearchAirPort",
+                                "/api/ContractOwner/AcceptContract",
+                                "/api/city/SearchHotelByCityOrHotel",
+                                "/api/room/UpdateMultipleImage/{id}",
+                                "/api/room/DeletePictureImage/{id}",
+                                "/api/type/FindTypeByHotel/{id}",
+                                "/api/seat/{id}",
+                                "/api/Country/All",
+                                "/api/city/FindCityByCountry/{id}",
+                                "/api/AirPort/FindById/{id}",
+                                "/api/account/register/user",
+                                "/api/Flight/detail/{id}",
+                                "/api/seat/existBySeat/{id}",
+                                "/api/city/FindById/{id}",
+                                "/api/Amenity/{id}",
+                                "/api/room/picture/{id}",
+                                "/api/Flight/getFlight"
+                                ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()) // This is still supported for versions below 6.1
