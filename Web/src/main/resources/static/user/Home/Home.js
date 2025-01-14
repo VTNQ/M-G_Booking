@@ -36,6 +36,7 @@ document.getElementById("from-input").addEventListener('input',async (event)=>{
         return;
     }
     try {
+        ///asda
         const response=await fetch(`http://localhost:8686/api/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
         console.log(response)
         if (response.ok) {
