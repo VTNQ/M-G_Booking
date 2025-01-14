@@ -23,4 +23,5 @@ public interface AuthService extends UserDetailsService {
     public UserAccountDTO GetAccountUser(int id);
     public boolean UpdateProfileUser(UserAccountDTO userAccountDTO);
     public boolean ResetPassword(String email);
+    public boolean existAccountCountry(int countryId);
 }

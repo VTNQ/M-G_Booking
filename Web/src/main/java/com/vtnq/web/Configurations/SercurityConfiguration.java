@@ -14,10 +14,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -44,7 +47,7 @@ public class SercurityConfiguration {
                             ,"/SuperAdmin/Airline/add","/SuperAdmin/Airline","/SuperAdmin/Airline/edit/{id}",
                                     "/SuperAdmin/Airline/UpdateAirline").hasAnyRole("SUPERADMIN")
                             .requestMatchers("/Admin/Home","/Admin/City/add","/Admin/City","/Admin/City/edit/{id}",
-                                    "Admin/City/UpdateCity","/Admin/City/delete/{id}","Admin/District/{id}",
+                                    "Admin/City/UpdateCity","Admin/District/{id}",
                                     "Admin/District/add","/Admin/District/edit/{id}","/Admin/District/update","/Admin/District/delete/{id}",
                                     "Admin/AirPort/add","Admin/AirPort","/Admin/AirPort/edit/{id}","/Admin/Flight/add","/Admin/Flight/edit/{id}","/Admin/Flight/UpdateFlight","/Admin/Flight/addSeat","/Admin/Contract", "/Admin/Booking","/Admin/Booking/detail/{id}").hasAnyRole("ADMIN")
                             .requestMatchers("/Owner","/Owner/Hotel/add","/Owner/Hotel","/Owner/Hotel/edit/{id}","/Owner/Hotel/update","/Owner/Hotel/Detail/{id}"
@@ -62,7 +65,23 @@ public class SercurityConfiguration {
                         .loginProcessingUrl("/account/process-login")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .failureUrl("/account/login?error")
+                        .failureHandler(new AuthenticationFailureHandler() {
+                            @Override
+                            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                                String referer = request.getHeader("referer");
+                                if(referer.contains("/LoginAdmin")){
+                                    HttpSession session = request.getSession();
+                                    session.setAttribute("Message", "Login Failed");
+                                    session.setAttribute("MessageType", "error");
+                                response.sendRedirect(referer);
+                                }else if(referer.contains("/Login")){
+                                    HttpSession session = request.getSession();
+                                    session.setAttribute("Message", "Login Failed");
+                                    session.setAttribute("MessageType", "error");
+                                    response.sendRedirect(referer);
+                                }
+                            }
+                        })
                         .successHandler(new AuthenticationSuccessHandler() {
                             @Override
                             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -73,7 +92,7 @@ public class SercurityConfiguration {
                                 urls.put("ROLE_USER", "/Home");
                                 urls.put("ROLE_OWNER", "/Owner");
 
-                                String redirectUrl = "/Error";  // Default redirect to error page
+                                  // Default redirect to error page
                                 String email = authentication.getName();
                                 Account account = authService.GetAccountByEmail(email);
 
@@ -82,7 +101,7 @@ public class SercurityConfiguration {
 
                                 // Retrieve the previous page URL from the Referer header
                                 String previousPage = request.getHeader("Referer");
-
+                                String redirectUrl = previousPage;
                                 if (previousPage != null && previousPage.contains("/LoginAdmin")) {
                                     // Check if the user has ROLE_ADMIN or ROLE_SUPERADMIN
                                     boolean hasValidRole = authorities.stream()
@@ -99,7 +118,10 @@ public class SercurityConfiguration {
                                         }
                                     } else {
                                         // If not valid, redirect to error page
-                                        redirectUrl = "/Error";
+                                        HttpSession session = request.getSession();
+                                        session.setAttribute("Message", "Login Failed");
+                                        session.setAttribute("MessageType", "error");
+                                        redirectUrl = "/LoginAdmin";
                                     }
                                 } else if(previousPage != null && previousPage.contains("/Login")) {
                                     boolean hasValidRole = authorities.stream()
@@ -112,11 +134,20 @@ public class SercurityConfiguration {
                                                 break;
                                             }
                                         }
+                                    }else{
+                                        HttpSession session = request.getSession();
+                                        session.setAttribute("Message", "Login Failed");
+                                        session.setAttribute("MessageType", "error");
+                                        redirectUrl = "/Login";
                                     }
                                 }
 
                                 // Redirect to the final URL (either previous page or based on role)
+                                HttpSession session = request.getSession();
+                                session.setAttribute("Message", "Login Failed");
+                                session.setAttribute("MessageType", "error");
                                 response.sendRedirect(redirectUrl);
+
                             }
 
                         })
@@ -159,7 +190,12 @@ public class SercurityConfiguration {
             )
             .exceptionHandling(ex -> ex
                     .authenticationEntryPoint((request, response, authException) -> {
-                     response.sendRedirect("/Error");
+                        // Handle unauthenticated access (401 error)
+                        response.sendRedirect("/Error");
+                    })
+                    .accessDeniedHandler((request, response, accessDeniedException) -> {
+                        // Handle access denied (403 error)
+                        response.sendRedirect("/Error");
                     })
             )
 

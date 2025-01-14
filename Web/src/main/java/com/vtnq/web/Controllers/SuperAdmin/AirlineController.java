@@ -31,7 +31,7 @@ public class AirlineController {
                                 HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null && !"ROLE_SUPERADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             if(bindingResult.hasErrors()) {
@@ -68,7 +68,7 @@ public class AirlineController {
                           @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null && !"ROLE_SUPERADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             List<ListAirlineDto> airlines=airlineService.findAll();
@@ -91,7 +91,7 @@ public class AirlineController {
     public String edit(@PathVariable int id, ModelMap model,HttpServletRequest request) {
     try {
         Account account = (Account) request.getSession().getAttribute("currentAccount");
-        if(account==null){
+        if(account==null && !"ROLE_SUPERADMIN".equals(account.getAccountType())){
             return "redirect:/LoginAdmin";
         }
         model.put("Airline",airlineService.findAirlineById(id));
@@ -107,7 +107,7 @@ public class AirlineController {
                              RedirectAttributes redirectAttributes,HttpServletRequest request) {
       try {
           Account account = (Account) request.getSession().getAttribute("currentAccount");
-          if(account==null){
+          if(account==null && !"ROLE_SUPERADMIN".equals(account.getAccountType())){
               return "redirect:/LoginAdmin";
           }
           if(bindingResult.hasErrors()) {
@@ -143,7 +143,7 @@ public class AirlineController {
     public String addAirline(ModelMap model,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             model.put("Airline",new AirlineDto());

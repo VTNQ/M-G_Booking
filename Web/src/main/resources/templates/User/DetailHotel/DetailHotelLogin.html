@@ -127,6 +127,45 @@ font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 22px;font-weight: 
 
                 </div>
                 <div class="border-bottom py-4">
+
+                    <h5 id="scroll-amenities" class="mb-4"
+                        style="font-size: 1.313rem;font-weight: bold;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                       Service
+                    </h5>
+                    <ul class="list-group list-group-borderless list-group-horizontal list-group-flush no-gutters row">
+                        <th:block th:if="${Service != null}">
+                            <th:block th:each="service, index : ${Service}">
+                                <li class="col-md-4 list-group-item" style="font-size: 1.2rem">
+                                    <i class="fa-solid fa-check mr-3"
+                                       style="font-size: 1.063rem; color: #297cbb !important; font-style: normal"></i>
+                                    <span th:text="${service.name}"></span>
+                                </li>
+                            </th:block>
+                        </th:block>
+
+
+
+                    </ul>
+                </div>
+                <div class="border-bottom py-4">
+
+                    <h5 id="scroll-amenities" class="mb-4"
+                        style="font-size: 1.313rem;font-weight: bold;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                        Amenities
+                    </h5>
+                    <ul class="list-group list-group-borderless list-group-horizontal list-group-flush no-gutters row">
+                        <th:block th:each="Amenty,index :${Amenities}">
+                            <li class="col-md-4 list-group-item" style="font-size: 1.2rem">
+                                <i class="fa-solid fa-check mr-3"
+                                   style="font-size: 1.063rem;color: #297cbb !important;font-style: normal"></i>
+                                <span th:text="${Amenty.name}"></span>
+                            </li>
+                        </th:block>
+
+
+                    </ul>
+                </div>
+                <div class="border-bottom py-4">
                     <h5 id="scroll-amenities" class="mb-4"
                         style="font-size: 1.313rem;font-weight: bold;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
                         Select your Room
@@ -233,16 +272,19 @@ color: #3b444f">
                                                     <span style="font-size: 22px;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 400;line-height: 1.5;
 color: #3b444f"> / night</span>
                                                 </div>
-                                                <a th:if="${search.selectedHotel==false}"
-                                                   th:href="@{'/InformationCustomer/'+${detailRooms.id}}"
-                                                   class="btn btn-outline-primary border-radius-3 border-width-2 px-4 py-2 "
-                                                   style="border-radius: 3px !important;font-weight: 500!important;
+                                                <th:block th:if="${search!=null}">
+                                                    <a th:if="${search.selectedHotel==false and search.selectedHotel!=null}"
+                                                       th:href="@{'/InformationCustomer/'+${detailRooms.id}}"
+                                                       class="btn btn-outline-primary border-radius-3 border-width-2 px-4 py-2 "
+                                                       style="border-radius: 3px !important;font-weight: 500!important;
 min-width: 12.5rem;line-height: 1.9">Book Now</a>
-                                                <a th:if="${search.selectedHotel==true}"
-                                                   th:href="@{'/SearchHotelFlight/'+${detailRooms.id}}"
-                                                   class="btn btn-outline-primary border-radius-3 border-width-2 px-4 py-2 "
-                                                   style="border-radius: 3px !important;font-weight: 500!important;
+                                                    <a th:if="${search.selectedHotel==true and search.selectedHotel!=null}"
+                                                       th:href="@{'/SearchHotelFlight/'+${detailRooms.id}}"
+                                                       class="btn btn-outline-primary border-radius-3 border-width-2 px-4 py-2 "
+                                                       style="border-radius: 3px !important;font-weight: 500!important;
 min-width: 12.5rem;line-height: 1.9">Book Now</a>
+                                                </th:block>
+
                                             </div>
                                         </div>
                                     </div>
@@ -252,21 +294,7 @@ min-width: 12.5rem;line-height: 1.9">Book Now</a>
                     </th:block>
 
 
-                    <h5 id="scroll-amenities" class="mb-4"
-                        style="font-size: 1.313rem;font-weight: bold;color: #3b444f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                        Amenities
-                    </h5>
-                    <ul class="list-group list-group-borderless list-group-horizontal list-group-flush no-gutters row">
-                        <th:block th:each="Amenty,index :${Amenities}">
-                            <li class="col-md-4 list-group-item" style="font-size: 1.2rem">
-                                <i class="fa-solid fa-check mr-3"
-                                   style="font-size: 1.063rem;color: #297cbb !important;font-style: normal"></i>
-                                <span th:text="${Amenty.name}"></span>
-                            </li>
-                        </th:block>
 
-
-                    </ul>
                 </div>
                 <div class="border-bottom py-4">
                     <h5 id="scroll-specifications" class="mb-4" style="font-size: 1.313rem;color: #3b444f !important">
@@ -539,12 +567,12 @@ min-width: 12.5rem;line-height: 1.9">Book Now</a>
                                     <div class="mb-2">
                                         <div class="d-inline-flex align-items-center font-size-13 text-lh-1 text-primary letter-spacing-3">
                                             <div class="green-lighter">
-                                                <small class="fas fa-star"></small>
-                                                <small class="fas fa-star"></small>
-                                                <small class="fas fa-star"></small>
-                                                <small class="fas fa-star"></small>
-                                                <small class="fas fa-star"></small>
-                                                <small class="fas fa-star"></small>
+                                                <small class="fas fa-star" th:classappend="${hotel.rating>=1 ? 'active' : ''}"></small>
+                                                <small class="fas fa-star" th:classappend="${hotel.rating>=2?'active':''}"></small>
+                                                <small class="fas fa-star" th:classappend="${hotel.rating>=3 ? 'active' : ''}"></small>
+                                                <small class="fas fa-star" th:classappend="${hotel.rating>=4 ? 'active':''}"></small>
+                                                <small class="fas fa-star" th:classappend="${hotel.rating>=5?'active':''}"></small>
+
                                             </div>
                                         </div>
                                     </div>

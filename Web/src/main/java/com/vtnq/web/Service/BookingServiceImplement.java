@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @Service
@@ -71,67 +72,95 @@ public class BookingServiceImplement implements BookingService {
         }
         return code.toString();
     }
-    @Override
-    public int addBooking(BookingFlightDTO bookingFlightDTO, String bookings) {
+    private Account getAccount(int userId){
+    return accountRepository.findById(userId).orElseThrow(()->
+            new RuntimeException("Account not found"));
+    }
+    private List<BookingFlightDetail> parseBookingDetails(String bookings) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(bookings, objectMapper.getTypeFactory()
+                .constructCollectionType(List.class, BookingFlightDetail.class));
+    }
+    private void validateSeats(List<BookingFlightDetail> bookingDetails) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            BookingFlight booking = new BookingFlight();
-            List<BookingFlightDetail> bookingsDetail = objectMapper.readValue(bookings, objectMapper.getTypeFactory().constructCollectionType(List.class, BookingFlightDetail.class));
-            for (BookingFlightDetail bookingFlightDetail : bookingsDetail) {
-                Seat seat = seatRepository.findById(bookingFlightDetail.getId())
+            for (BookingFlightDetail detail : bookingDetails) {
+                Seat seat = seatRepository.findById(detail.getId())
                         .orElseThrow(() -> new RuntimeException("Seat Not Found"));
                 if (seat.getStatus() != null && seat.getStatus() == 1) {
                     seatUpdateWebSocketHandler.notifySeatStatus(seat, false);
-                    return 0;
+                    throw new RuntimeException("Seat is already booked");
                 }
             }
-            Account account = accountRepository.findById(bookingFlightDTO.getUserId()).orElseThrow(() -> new RuntimeException("Account Not Found"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-            booking.setUser(account);
+    }
+    private BookingFlight saveBookingFlight(Account account,BigDecimal totalPrice){
+        BookingFlight bookingFlight=new BookingFlight();
+        bookingFlight.setTotalPrice(totalPrice);
+        bookingFlight.setUser(account);
+        return bookingFlightRepository.save(bookingFlight);
+    }
+    private void saveBookingDetails(BookingFlight bookingFlight,List<BookingFlightDetail>bookingFlightDetails){
+        for (BookingFlightDetail bookingFlightDetail : bookingFlightDetails) {
+            Flight flight=flightRepository.findById(bookingFlightDetail.getFlightId())
+                    .orElseThrow(()->new RuntimeException("Flight not found"));
+            Seat seat=seatRepository.findById(bookingFlightDetail.getId())
+                    .orElseThrow(()->new RuntimeException("Seat not found"));
+            seat.setStatus(1);
+            seatRepository.save(seat);
+            com.vtnq.web.Entities.BookingFlightDetail bookingFlightDetailEntity=new com.vtnq.web.Entities.BookingFlightDetail();
+            bookingFlightDetailEntity.setFlight(flight);
+            bookingFlightDetailEntity.setBookingFlight(bookingFlight);
+            bookingFlightDetailEntity.setTotalPrice(bookingFlightDetail.getTotalPrice());
 
-            booking.setTotalPrice(bookingFlightDTO.getTotalPrice());
-            BookingFlight saveBookingFlight = bookingFlightRepository.save(booking);
-            for (BookingFlightDetail bookingFlightDetail : bookingsDetail) {
-                com.vtnq.web.Entities.BookingFlightDetail bookingFlightDetailEntity = new com.vtnq.web.Entities.BookingFlightDetail();
-                BookingFlight bookingFlight = bookingFlightRepository.findById(saveBookingFlight.getId())
-                        .orElseThrow(() -> new RuntimeException("Booking Flight not found"));
-                Flight flight = flightRepository.findById(bookingFlightDetail.getFlightId())
-                        .orElseThrow(() -> new RuntimeException("Flight not Round"));
-                if(bookingFlightDetail.getBaggage()!=0){
-                    bookingFlightDetailEntity.setBaggage(bookingFlightDetail.getBaggage());
-                }
+            bookingFlightDetailEntity.setSeat(seat);
+            bookingFlightDetailRepository.save(bookingFlightDetailEntity);
+        }
+    }
+    private Booking CreateAndSaveBooking(BookingFlight saveBookingFlight,BookingFlightDTO bookingFlightDTO, Account account){
+        Booking booking=new Booking();
+        booking.setBookingFlight(saveBookingFlight);
+        booking.setCreatedAt(Instant.now());
+        booking.setUserId(bookingFlightDTO.getUserId());
+        booking.setTotalPrice(bookingFlightDTO.getTotalPrice());
+        booking.setBookingCode(generateRandomAlphanumericCode(5));
+        return bookingRepository.save(booking);
+    }
+    private void updateAccountLevel(Account account){
+        List<Booking>userBookings=bookingRepository.FindBookingByUserId(account.getId());
+        BigDecimal totalSpent = userBookings.stream()
+                .map(Booking::getTotalPrice)
+                .filter(Objects::nonNull) // Loại bỏ các giá trị null
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-                bookingFlightDetailEntity.setFlight(flight);
-                bookingFlightDetailEntity.setBookingFlight(bookingFlight);
-                bookingFlightDetailEntity.setTotalPrice(bookingFlightDetail.getTotalPrice());
-                Seat seat = seatRepository.findById(bookingFlightDetail.getId())
-                        .orElseThrow(() -> new RuntimeException("Seat Not Found"));
+        if (totalSpent.compareTo(new BigDecimal("20000000")) > 0) {
+            Level level = levelRepository.findById(1)
+                    .orElseThrow(() -> new RuntimeException("Level Not Found"));
+            account.setLevel(level);
+            accountRepository.save(account);
+        } else if (totalSpent.compareTo(new BigDecimal("10000000")) >= 0) {
+            Level level = levelRepository.findById(2)
+                    .orElseThrow(() -> new RuntimeException("Level Not Found"));
+            account.setLevel(level);
+            accountRepository.save(account);
+        }
 
-                seat.setStatus(1);
-                seatRepository.save(seat);
-                bookingFlightDetailEntity.setSeat(seat);
-                bookingFlightDetailRepository.save(bookingFlightDetailEntity);
-            }
-            Booking bookingFlight = new Booking();
-            BookingFlight bookingFlightEntity = bookingFlightRepository.findById(saveBookingFlight.getId())
-                    .orElseThrow(() -> new RuntimeException("Booking Flight not found"));
-            bookingFlight.setBookingFlight(bookingFlightEntity);
-            bookingFlight.setCreatedAt(Instant.now());
-            bookingFlight.setUserId(bookingFlightDTO.getUserId());
-            bookingFlight.setTotalPrice(bookingFlightDTO.getTotalPrice());
-            bookingFlight.setBookingCode(generateRandomAlphanumericCode(5));
-          Booking insertBooking=  bookingRepository.save(bookingFlight);
+    }
+     @Override
+    public int addBooking(BookingFlightDTO bookingFlightDTO, String bookings) {
+        try {
 
-            List<Booking> userBookings = bookingRepository.FindBookingByUserId(account.getId());
-            BigDecimal totalPrice = userBookings.stream()
-                    .map(Booking::getTotalPrice)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-            if (totalPrice.compareTo(new BigDecimal("10000000")) >= 0) {
-                Level level = levelRepository.findById(2).orElseThrow(() -> new RuntimeException("Level Not Found"));
-                account.setLevel(level);
-                accountRepository.save(account);
-            }
-            return insertBooking.getId();
+            List<BookingFlightDetail> bookingsDetail =parseBookingDetails(bookings);
+            validateSeats(bookingsDetail);
+
+            Account account = getAccount(bookingFlightDTO.getUserId());
+            BookingFlight saveBookingFlight=saveBookingFlight(account,bookingFlightDTO.getTotalPrice());
+            saveBookingDetails(saveBookingFlight,bookingsDetail);
+            Booking booking=CreateAndSaveBooking(saveBookingFlight,bookingFlightDTO,account);
+            updateAccountLevel(account);
+          return booking.getId();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,86 +184,106 @@ public class BookingServiceImplement implements BookingService {
         }
         return null;
     }
+    private void validateRoomAvailability(int typeId,int quantityRoom){
+        try {
+            List<Room>rooms=roomRepository.FindRoomType(typeId);
+            if(rooms==null||rooms.size()<quantityRoom){
+                roomUpdateWebSocketHandler.NotifyRoomStatus(typeId,false);
+                throw new RuntimeException("Insufficient rooms available");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
+    }
+    private void validateSeatsBooking(String bookings) throws Exception{
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<BookingFlightDetail> bookingDetails = objectMapper.readValue(bookings, objectMapper.getTypeFactory()
+                .constructCollectionType(List.class, BookingFlightDetail.class));
+
+        for (BookingFlightDetail detail : bookingDetails) {
+            Seat seat = seatRepository.findById(detail.getId())
+                    .orElseThrow(() -> new RuntimeException("Seat Not Found"));
+            if (seat.getStatus() != null && seat.getStatus() == 1) {
+                seatUpdateWebSocketHandler.notifySeatStatus(seat, false);
+                throw new RuntimeException("Seat is already booked");
+            }
+        }
+    }
+    private BookingRoom createBookingRoom(Account account,BigDecimal totalPrice){
+        BookingRoom bookingRoom = new BookingRoom();
+        bookingRoom.setUser(account);
+        bookingRoom.setTotalPrice(totalPrice);
+        return bookingRoomRepository.save(bookingRoom);
+    }
+    private void saveBookingRoomDetails(BookingRoom bookingRoom, BookingHotelDTO bookingHotelDTO, int quantityRoom) {
+        for (int i = 0; i < quantityRoom; i++) {
+            Room room = roomRepository.findByTypeId(bookingHotelDTO.getTypeId());
+            if (room == null) {
+                throw new RuntimeException("Room Not Found");
+            }
+            room.setStatus(true);
+            roomRepository.save(room);
+
+            BookingRoomDetail bookingRoomDetail = new BookingRoomDetail();
+            bookingRoomDetail.setBookingRoom(bookingRoom);
+            bookingRoomDetail.setRoom(room);
+            bookingRoomDetail.setTotalPrice(bookingHotelDTO.getPrice());
+            bookingRoomDetail.setCheckInDate(bookingHotelDTO.getCheckInDate());
+            bookingRoomDetail.setCheckOutDate(bookingHotelDTO.getCheckOutDate());
+            hotelDetailRepository.save(bookingRoomDetail);
+        }
+    }
+    private BookingFlight createBookingFlight(BookingFlightDTO flightDTO, String bookings) throws Exception {
+        Account account = getAccount(flightDTO.getUserId());
+        BookingFlight bookingFlight = new BookingFlight();
+        bookingFlight.setUser(account);
+        bookingFlight.setTotalPrice(flightDTO.getTotalPrice());
+        BookingFlight savedBookingFlight = bookingFlightRepository.save(bookingFlight);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<BookingFlightDetail> bookingDetails = objectMapper.readValue(bookings, objectMapper.getTypeFactory()
+                .constructCollectionType(List.class, BookingFlightDetail.class));
+
+        for (BookingFlightDetail detail : bookingDetails) {
+            Flight flight = flightRepository.findById(detail.getFlightId())
+                    .orElseThrow(() -> new RuntimeException("Flight Not Found"));
+            Seat seat = seatRepository.findById(detail.getId())
+                    .orElseThrow(() -> new RuntimeException("Seat Not Found"));
+
+            seat.setStatus(1);
+            seatRepository.save(seat);
+
+            com.vtnq.web.Entities.BookingFlightDetail bookingFlightDetail = new com.vtnq.web.Entities.BookingFlightDetail();
+            bookingFlightDetail.setFlight(flight);
+            bookingFlightDetail.setBookingFlight(savedBookingFlight);
+            bookingFlightDetail.setTotalPrice(detail.getTotalPrice());
+
+            bookingFlightDetail.setSeat(seat);
+            bookingFlightDetailRepository.save(bookingFlightDetail);
+        }
+        return savedBookingFlight;
+    }
+    private Booking createAndSaveFinalBooking(BookingRoom bookingRoom, BookingFlight bookingFlight, BigDecimal amount) {
+        Booking finalBooking = new Booking();
+        finalBooking.setBookingRoom(bookingRoom);
+        finalBooking.setBookingFlight(bookingFlight);
+        finalBooking.setCreatedAt(Instant.now());
+        finalBooking.setBookingCode(generateRandomAlphanumericCode(5));
+        finalBooking.setTotalPrice(amount);
+        return bookingRepository.save(finalBooking);
+    }
     @Override
     public int addBookingHotel(BookingHotelDTO bookingHotelDTO, int QuantityRoom, BookingFlightDTO flightDTO, String bookings, BigDecimal amount) {
         try {
-            Account account = accountRepository.findById(bookingHotelDTO.getUserId()).orElse(null);
-            BookingRoom bookingRoom = new BookingRoom();
-            bookingRoom.setUser(account);
-            bookingRoom.setTotalPrice(bookingHotelDTO.getTotalPrice());
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<BookingFlightDetail> bookingsDetail = objectMapper.readValue(bookings, objectMapper.getTypeFactory().constructCollectionType(List.class, BookingFlightDetail.class));
-            for (BookingFlightDetail bookingFlightDetail : bookingsDetail) {
-                Seat seat = seatRepository.findById(bookingFlightDetail.getId())
-                        .orElseThrow(() -> new RuntimeException("Seat Not Found"));
-                if (seat.getStatus() != null && seat.getStatus() == 1) {
-                    seatUpdateWebSocketHandler.notifySeatStatus(seat, false);
-                    return 0;
-                }
-            }
-            Room roomType = roomRepository.findByTypeId(bookingHotelDTO.getTypeId());
-            if(roomType==null){
-                roomUpdateWebSocketHandler.NotifyRoomStatus(bookingHotelDTO.getTypeId(),false);
-                return 0;
-            }
-            BookingRoom insertBooking = bookingRoomRepository.save(bookingRoom);
-            for (int i = 0; i < QuantityRoom; i++) {
-                BookingRoomDetail bookingRoomDetail = new BookingRoomDetail();
-                bookingRoomDetail.setBookingRoom(insertBooking);
-                Room room = roomRepository.findByTypeId(bookingHotelDTO.getTypeId());
-                if (room != null) {
-                    room.setStatus(true);
-                    roomRepository.save(room);
-                }else{
-                    return 0;
-                }
-                bookingRoomDetail.setRoom(room);
-                bookingRoomDetail.setTotalPrice(bookingHotelDTO.getPrice());
-
-                bookingRoomDetail.setCheckInDate(bookingHotelDTO.getCheckInDate());
-                bookingRoomDetail.setCheckOutDate(bookingHotelDTO.getCheckOutDate());
-                hotelDetailRepository.save(bookingRoomDetail);
-
-            }
-
-            BookingFlight booking = new BookingFlight();
-
-            Account accountDto = accountRepository.findById(flightDTO.getUserId()).orElseThrow(() -> new RuntimeException("Account Not Found"));
-
-            booking.setUser(accountDto);
-
-            booking.setTotalPrice(flightDTO.getTotalPrice());
-            BookingFlight saveBookingFlight = bookingFlightRepository.save(booking);
-            for (BookingFlightDetail bookingFlightDetail : bookingsDetail) {
-                com.vtnq.web.Entities.BookingFlightDetail bookingFlightDetailEntity = new com.vtnq.web.Entities.BookingFlightDetail();
-                BookingFlight bookingFlight = bookingFlightRepository.findById(saveBookingFlight.getId())
-                        .orElseThrow(() -> new RuntimeException("Booking Flight not found"));
-                Flight flight = flightRepository.findById(bookingFlightDetail.getFlightId())
-                        .orElseThrow(() -> new RuntimeException("Flight not Round"));
-                bookingFlightDetailEntity.setFlight(flight);
-                bookingFlightDetailEntity.setBookingFlight(bookingFlight);
-                bookingFlightDetailEntity.setTotalPrice(bookingFlightDetail.getTotalPrice());
-                Seat seat = seatRepository.findById(bookingFlightDetail.getId())
-                        .orElseThrow(() -> new RuntimeException("Seat Not Found"));
-                if(bookingFlightDetail.getBaggage()!=0){
-                    bookingFlightDetailEntity.setBaggage(bookingFlightDetail.getBaggage());
-                }
-                seat.setStatus(1);
-                seatRepository.save(seat);
-                bookingFlightDetailEntity.setSeat(seat);
-                bookingFlightDetailRepository.save(bookingFlightDetailEntity);
-            }
-            Booking bookingFlight = new Booking();
-            BookingFlight bookingFlightEntity = bookingFlightRepository.findById(saveBookingFlight.getId())
-                    .orElseThrow(() -> new RuntimeException("Booking Flight not found"));
-            bookingFlight.setBookingFlight(bookingFlightEntity);
-            bookingFlight.setBookingRoom(insertBooking);
-            bookingFlight.setCreatedAt(Instant.now());
-            bookingFlight.setBookingCode(generateRandomAlphanumericCode(5));
-            bookingFlight.setTotalPrice(amount);
-            Booking bookingEntities= bookingRepository.save(bookingFlight);
-            return bookingEntities.getId();
+            Account account = getAccount(bookingHotelDTO.getUserId());
+            validateRoomAvailability(bookingHotelDTO.getTypeId(),QuantityRoom);
+            validateSeatsBooking(bookings);
+            BookingRoom bookingRoom=createBookingRoom(account,bookingHotelDTO.getTotalPrice());
+            saveBookingRoomDetails(bookingRoom,bookingHotelDTO,QuantityRoom);
+            BookingFlight bookingFlight = createBookingFlight(flightDTO, bookings);
+            Booking finalBooking = createAndSaveFinalBooking(bookingRoom, bookingFlight, amount);
+            return finalBooking.getId();
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

@@ -4,6 +4,108 @@ function convertTimeToDecimal(time) {
     return hours + (minutes / 60);
 }
 
+const ModalHeader=document.querySelector('#ModalHeader');
+document.addEventListener('DOMContentLoaded',async function (){
+    const FromInputDropDown=document.querySelector('#from-input');
+    const At=document.querySelector('#At-input');
+    const City=document.querySelector('#idCity');
+    console.log(City.value)
+    if(City.value!=='0'){
+        let Cities=await SearchCityById(City.value);
+        console.log(City.value)
+        if(Cities!=null){
+            At.value=Cities.name;
+        }
+    }
+    const FromInput=document.querySelector('#from-input-id');
+    const ArrivalInputDropDown=document.querySelector('#to-input');
+    const ToInput=document.querySelector('#to-input-id');
+    try {
+        let fromAirports=await SearchById(FromInput.value);
+        let ArrivalAirports=await SearchById(ToInput.value);
+
+
+        if(fromAirports!=null){
+            FromInputDropDown.value=fromAirports.name;
+
+        }
+        if(ArrivalAirports!=null){
+            ArrivalInputDropDown.value=ArrivalAirports.name;
+        }
+    }catch (error) {
+        console.log(error);
+    }
+})
+async function SearchCityById(id){
+    try {
+        const response=await fetch(`http://localhost:8686/api/city/FindById/${encodeURIComponent(id)}`);
+        let cities=null;
+        if(response.ok){
+            cities=await response.json();
+        }
+        return cities;
+    }catch (error){
+        console.log(error)
+    }
+}
+async function SearchById( id){
+    try {
+        const response=await fetch(`http://localhost:8686/api/AirPort/FindById/${encodeURIComponent(id)}`);
+        let airports=null;
+        if(response.ok){
+            airports=await response.json();
+
+        }else {
+            console.error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        return airports;
+    }catch (error){
+        console.log(error)
+    }
+}
+document.addEventListener('DOMContentLoaded',function (){
+    let flexBoxInputCheck = document.getElementById('flexSwitchCheckDefault');
+    if (flexBoxInputCheck.checked) {
+        document.getElementById('AtHotel').style.display = 'block';
+        document.getElementById('TimeHotel').style.display='block';
+        document.getElementById('RoomNumber').style.display='block';
+        document.getElementById('btn-Submit').style.top='43vh';
+    }else{
+        document.getElementById('AtHotel').style.display = 'none';
+        document.getElementById('TimeHotel').style.display='none';
+        document.getElementById('RoomNumber').style.display='none';
+        document.getElementById('btn-Submit').style.top='28vh';
+    }
+})
+document.getElementById('flexSwitchCheckDefault').addEventListener('change',function (){
+    const AtHotel=document.getElementById('AtHotel');
+    const TimeHotel=document.getElementById('TimeHotel');
+    const RoomNumber=document.getElementById('RoomNumber');
+    if(this.checked){
+        AtHotel.style.display='block';
+        TimeHotel.style.display='block';
+        RoomNumber.style.display='block';
+        document.getElementById('btn-Submit').style.top='43vh'
+    }else{
+        AtHotel.style.display='none';
+        TimeHotel.style.display='none';
+        RoomNumber.style.display='none';
+
+        document.getElementById('btn-Submit').style.top='28vh'
+    }
+})
+document.getElementById('SearchBtn').addEventListener('click',function (event){
+
+    ModalHeader.style.opacity='1';
+    ModalBody.style.opacity='1';
+    ModalContainer.style.display="block"
+})
+document.getElementById('closeBtn').addEventListener('click',function (event){
+    event.preventDefault();
+    ModalHeader.style.opacity='0';
+    ModalBody.style.opacity='0';
+    ModalContainer.style.display="none"
+})
 // Thêm sự kiện click cho nút dropdown
 
 
@@ -184,7 +286,7 @@ document.addEventListener("DOMContentLoaded",function (){
     ScheduleRange.noUiSlider.on('update', function (values, handle) {
         const start = parseFloat(values[0]);
         const end = parseFloat(values[1]);
-        ScheduleStart.textContent="Đi "+values[0]+" - "+values[1];
+        ScheduleStart.textContent="Go "+values[0]+" - "+values[1];
         document.querySelectorAll('#flight-itemArrival').forEach(function (flightItem) {
             const flightTime = flightItem.getAttribute('data-TimeDepart');
             const flightHour = convertTimeToDecimal(flightTime);
@@ -212,7 +314,7 @@ document.addEventListener("DOMContentLoaded",function (){
     ScheduleEnd.noUiSlider.on('update', function (values, handle) {
         const start = parseFloat(values[0]);
         const end = parseFloat(values[1]);
-        ScheduleEndText.textContent="Đến "+values[0]+" - "+values[1];
+        ScheduleEndText.textContent="Arrive "+values[0]+" - "+values[1];
         document.querySelectorAll('#flight-itemArrival').forEach(function (flightItem) {
             const flightTime = flightItem.getAttribute('data-timeArrival');
 
@@ -286,41 +388,198 @@ function initFlatPickrOutPut(){
         }
     });
 }
-function initFlatpickr() {
-    flatpickr("#datePickerInput", {
+function initFlatpickr(selector, options) {
+    // Khởi tạo flatpickr với selector và các tùy chọn
+    flatpickr(selector, options);
+}
+function initDepartTime() {
+    initFlatpickr("#datePickerInput", {
         mode: "range", // Enable date range selection
         dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
-        defaultDate: [new Date()], // Set default dates in LocalDate format
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
         onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
             if (selectedDates.length) {
-                // Display only the first date in the range
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date
             }
         },
-        onChange: function (selectedDates, dateStr, instance) {
-            if (selectedDates.length) {
-                // Update the input value to show only the first selected date
-                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
-                instance.element.value = firstDate;
-            }
-        }
     });
+}
+function initArrivalTime() {
+    const departTimeInput = document.getElementById("datePickerInput");
+    let departDateValue = departTimeInput.value;
 
+    // Nếu departtime chưa được chọn, sử dụng ngày mai
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    // Nếu departtime đã được chọn, tính minDate từ giá trị này
+    if (departDateValue) {
+        const departDate = new Date(departDateValue);
+        departDate.setDate(departDate.getDate() + 1); // Phải lớn hơn departtime 1 ngày
+        departDateValue = departDate.toISOString().split('T')[0];
+    } else {
+        departDateValue = tomorrow.toISOString().split('T')[0];
+    }
+
+    initFlatpickr("#datePickerOutput", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
+        onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
 }
 
+function InitCheckInTime(){
+    initFlatpickr("#CheckInDate", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
+        onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
 
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
+document.getElementById("CheckInDate").addEventListener("focus", function () {
+    // Initialize flatpickr only if not already initialized
+    if (!this.classList.contains("flatpickr-input-active")) {
+        InitCheckInTime();
+        this.classList.add("flatpickr-input-active");
+    }
+});
+function InitCheckOutTime(){
+    const departTimeInput = document.getElementById("CheckInDate");
+    let departDateValue = departTimeInput.value;
+
+    // Nếu departtime chưa được chọn, sử dụng ngày mai
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    // Nếu departtime đã được chọn, tính minDate từ giá trị này
+    if (departDateValue) {
+        const departDate = new Date(departDateValue);
+        departDate.setDate(departDate.getDate() + 1); // Phải lớn hơn departtime 1 ngày
+        departDateValue = departDate.toISOString().split('T')[0];
+    } else {
+        departDateValue = tomorrow.toISOString().split('T')[0];
+    }
+
+    initFlatpickr("#CheckOut", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
+        onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
+document.getElementById("CheckOut").addEventListener("focus", function () {
+    // Initialize flatpickr only if not already initialized
+    if (!this.classList.contains("flatpickr-input-active")) {
+        InitCheckOutTime();
+        this.classList.add("flatpickr-input-active");
+    }
+});
 document.getElementById("datePickerInput").addEventListener("focus", function () {
     // Initialize flatpickr only if not already initialized
     if (!this.classList.contains("flatpickr-input-active")) {
-        initFlatpickr();
+        initDepartTime();
         this.classList.add("flatpickr-input-active");
     }
 });
 document.getElementById("datePickerOutput").addEventListener("focus", function () {
     // Initialize flatpickr only if not already initialized
     if (!this.classList.contains("flatpickr-input-active")) {
-        initFlatPickrOutPut();
+        initArrivalTime();
         this.classList.add("flatpickr-input-active");
     }
 });

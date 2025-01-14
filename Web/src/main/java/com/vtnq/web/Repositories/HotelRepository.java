@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface HotelRepository extends JpaRepository<Hotel, Integer> {
+    @Query("SELECT case when count(a)>0 THEN TRUE ELSE FALSE END from BookingRoomDetail a where a.room.hotel.id= :id and a.bookingRoom.user.id = :idAccount")
+    boolean existBooking(@Param("id") int id,@Param("idAccount")int idAccount);
     @Query("select new com.vtnq.web.DTOs.Hotel.HotelListDto(a.id,a.name,a.district.name,c.imageUrl) from Hotel a join HotelsOwner b on a.id=b.hotel.id " +
             "JOIN Picture c on c.hotelId=a.id " +
             "where b.owner.id = :id and c.isMain=true")
@@ -19,17 +21,20 @@ public interface HotelRepository extends JpaRepository<Hotel, Integer> {
     @Query("select new com.vtnq.web.DTOs.Hotel.HotelUpdateDTO(a.id,a.name,a.address,a.cityId,a.decription,b.owner.id,a.district.id,c.imageUrl) from Hotel a join HotelsOwner b on a.id=b.hotel.id " +
             "join Picture c on c.hotelId=a.id where a.id = :id and c.isMain=true")
     HotelUpdateDTO findHotelById(int id);
-
     @Query("select new com.vtnq.web.DTOs.Hotel.HotelSearchDTO" +
-            "(a.id, a.name, c.name, c.country.name, b.imageUrl) " +
+            "(a.id, a.name, c.name, c.country.name, b.imageUrl, min(d.price)) " +  // Thêm min(d.price) vào đây
             "from Hotel a " +
             "join Picture b on a.id = b.hotelId " +
             "join City c on a.cityId = c.id " +
             "join Room d on d.hotel.id = a.id " +
             "where a.cityId = :id and d.status=false " +
             "group by a.id, a.name, c.name, c.country.name, b.imageUrl " +
-            "having count(d.id) >= :quantityRoom and min(d.price) between  :minPrice and :maxPrice")
-    List<HotelSearchDTO> SearchHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom,@Param("minPrice")BigDecimal minPrice,@Param("maxPrice")BigDecimal maxPrice);
+            "having count(d.id) >= :quantityRoom and min(d.price) between :minPrice and :maxPrice")
+    List<HotelSearchDTO> SearchHotel(@Param("id") int id,
+                                     @Param("quantityRoom") int quantityRoom,
+                                     @Param("minPrice") BigDecimal minPrice,
+                                     @Param("maxPrice") BigDecimal maxPrice);
+
     @Query("SELECT min(d.price) " +
             "FROM Hotel a " +
             "JOIN Picture b ON a.id = b.hotelId " +

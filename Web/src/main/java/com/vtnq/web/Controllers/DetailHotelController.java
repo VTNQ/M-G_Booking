@@ -7,11 +7,9 @@ import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Entities.Airport;
 import com.vtnq.web.Entities.Hotel;
 import com.vtnq.web.Entities.Rating;
+import com.vtnq.web.Repositories.AirportRepository;
 import com.vtnq.web.Repositories.HotelRepository;
-import com.vtnq.web.Service.AmenitiesService;
-import com.vtnq.web.Service.HotelService;
-import com.vtnq.web.Service.RatingService;
-import com.vtnq.web.Service.RoomService;
+import com.vtnq.web.Service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +29,11 @@ public class DetailHotelController {
     @Autowired
     private HotelRepository hotelRepository;
     @Autowired
+    private ServiceService serviceService;
+    @Autowired
     private AmenitiesService amenitiesService;
+    @Autowired
+    private AirportRepository airportRepository;
     @Autowired
     private RatingService ratingService;
     @Autowired
@@ -55,6 +57,8 @@ public class DetailHotelController {
             rating.setUserId(currentAccount.getId());
         }
         modelMap.put("search",searchFlightDTO);
+        modelMap.put("Service",serviceService.findAll(id));
+
         List<RatingDTO>ratingDtoList=ratingService.FindRatingByHotelId(id);
         int start = (page - 1) * size;
         int end = Math.min(start + size, ratingDtoList.size());
@@ -71,7 +75,7 @@ public class DetailHotelController {
         try {
 
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
-            if(currentAccount == null) {
+            if(currentAccount == null || !"ROLE_USER".equals(currentAccount.getAccountType())) {
                 DetailSearch(request, modelMap, id,page,size);
                 return "User/DetailHotel/DetailHotel";
             }else{

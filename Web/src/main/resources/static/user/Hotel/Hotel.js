@@ -215,6 +215,59 @@ function initFlatpickr(selector, options) {
     // Khởi tạo flatpickr với selector và các tùy chọn
     flatpickr(selector, options);
 }
+function InitCheckOutTime(){
+    const departTimeInput = document.getElementById("CheckIn");
+    let departDateValue = departTimeInput.value;
+
+
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+
+    if (departDateValue) {
+        const departDate = new Date(departDateValue);
+        departDate.setDate(departDate.getDate() + 1); // Phải lớn hơn departtime 1 ngày
+        departDateValue = departDate.toISOString().split('T')[0];
+    } else {
+        departDateValue = tomorrow.toISOString().split('T')[0];
+    }
+
+    initFlatpickr("#CheckOut", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
+        onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
+document.getElementById("CheckOut").addEventListener("focus", function () {
+    if (!this.classList.contains("flatpickr-initialized")) {
+        InitCheckOutTime();
+        this.classList.add("flatpickr-initialized");
+    }
+});
 function initArrivalTime() {
     const departTimeInput = document.getElementById("datePickerInput");
     let departDateValue = departTimeInput.value;
@@ -239,6 +292,22 @@ function initArrivalTime() {
         defaultDate: [new Date()], // Set default dates to today
         minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
         onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
             if (selectedDates.length) {
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date
@@ -252,7 +321,43 @@ document.getElementById("arrivalTime").addEventListener("focus", function () {
         this.classList.add("flatpickr-initialized");
     }
 });
+function InitCheckInTime(){
+    initFlatpickr("#CheckIn", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
+        onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
 
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
+document.getElementById("CheckIn").addEventListener("focus", function () {
+    // Initialize flatpickr only if not already initialized
+    if (!this.classList.contains("flatpickr-input-active")) {
+        InitCheckInTime();
+        this.classList.add("flatpickr-input-active");
+    }
+});
 // Close dropdown if clicked outside
 function initDepartTime() {
     initFlatpickr("#datePickerInput", {
@@ -261,6 +366,22 @@ function initDepartTime() {
         defaultDate: [new Date()], // Set default dates to today
         minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
         onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
             if (selectedDates.length) {
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date

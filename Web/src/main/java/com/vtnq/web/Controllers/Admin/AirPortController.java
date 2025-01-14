@@ -28,11 +28,16 @@ public class AirPortController {
     , BindingResult bindingResult,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             if(airportDto.getName()==null || airportDto.getName().isEmpty()){
                 redirectAttributes.addFlashAttribute("message", "Name is required");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Admin/AirPort/add";
+            }
+            if(airportDto.getIdCity()==0 ){
+                redirectAttributes.addFlashAttribute("message", "City is required");
                 redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/Admin/AirPort/add";
             }
@@ -65,7 +70,7 @@ public class AirPortController {
                          RedirectAttributes redirectAttributes,BindingResult bindingResult) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null && !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             if(airportDto.getName()==null || airportDto.getName().isEmpty()){
@@ -96,7 +101,7 @@ public class AirPortController {
     public String add(HttpServletRequest request, ModelMap model) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null && !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             model.put("City",cityService.findCityAll(account.getCountryId()));
@@ -112,7 +117,7 @@ public class AirPortController {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
 
-            if(currentAccount==null){
+            if(currentAccount==null && !"ROLE_ADMIN".equals(currentAccount.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             model.put("AirPort",airportService.findById(id));
@@ -129,7 +134,7 @@ public class AirPortController {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
 
-            if(currentAccount==null){
+            if(currentAccount==null && !"ROLE_ADMIN".equals(currentAccount.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             List<Airport>Airports=airportService.findAll(currentAccount.getCountryId());

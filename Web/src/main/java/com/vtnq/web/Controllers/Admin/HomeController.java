@@ -26,7 +26,7 @@ public class HomeController {
     @GetMapping("Home")
     public String Home(ModelMap model, HttpServletRequest request) {
         Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
-        if(currentAccount==null){
+        if(currentAccount==null || !"ROLE_ADMIN".equals(currentAccount.getAccountType())){
             return "redirect:/LoginAdmin";
         }
         model.put("City",cityService.CountCity(currentAccount.getCountryId()));

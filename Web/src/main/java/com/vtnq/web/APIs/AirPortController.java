@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("AirPortHomeController")
+@RestController()
 @RequestMapping("api/AirPort")
 public class AirPortController {
     @Autowired

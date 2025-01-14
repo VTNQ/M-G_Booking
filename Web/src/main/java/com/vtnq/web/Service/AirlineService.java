@@ -16,4 +16,6 @@ public interface AirlineService {
     public UpdateAirlineDTO findAirlineById(int id);
     public boolean updateArline(UpdateAirlineDTO updateAirlineDTO, MultipartFile file);
     public List<Airline>searchAirline(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight);
+    public List<Airline>SearchAirlineArrival(int departureAirport, int arrivalAirport,LocalDate arrivalTime, String TypeFlight);
+    public List<Airline>FindByCountryId(int countryId);
 }

@@ -28,7 +28,7 @@ public class AccountAdminController {
     public String addAccountAdmin(ModelMap model, HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             model.put("Country",countryService.findAll());
@@ -44,7 +44,7 @@ public class AccountAdminController {
                                @RequestParam(defaultValue = "10") int size,@RequestParam(defaultValue = "")String name,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             List<AdminAccountList>admin=authService.getAdmin();
@@ -70,7 +70,7 @@ public class AccountAdminController {
 
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             if(result.hasErrors()) {
@@ -95,6 +95,11 @@ public class AccountAdminController {
             }
             if(authService.existPhone(admin.getPhone())) {
                 redirectAttributes.addFlashAttribute("message", "Phone Number Already Exists");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/SuperAdmin/AccountAdmin/add";
+            }
+            if(authService.existAccountCountry(admin.getCountryId())){
+                redirectAttributes.addFlashAttribute("message","This country is already managed");
                 redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/SuperAdmin/AccountAdmin/add";
             }

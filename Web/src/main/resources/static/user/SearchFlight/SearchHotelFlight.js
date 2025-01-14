@@ -60,7 +60,217 @@ document.getElementById("from-input").addEventListener('input',async (event)=>{
         console.log(error)
     }
 });
+document.addEventListener('DOMContentLoaded',function (){
+    let flexBoxInputCheck = document.getElementById('flexSwitchCheckDefault');
+    if (flexBoxInputCheck.checked) {
+        document.getElementById('AtHotel').style.display = 'block';
+        document.getElementById('TimeHotel').style.display='block';
+        document.getElementById('RoomNumber').style.display='block';
+        document.getElementById('btn-Submit').style.top='43vh';
+    }else{
+        document.getElementById('AtHotel').style.display = 'none';
+        document.getElementById('TimeHotel').style.display='none';
+        document.getElementById('RoomNumber').style.display='none';
+        document.getElementById('btn-Submit').style.top='28vh';
+    }
+})
+document.getElementById('closeBtn').addEventListener('click',function (event){
+    event.preventDefault();
+    ModalHeader.style.opacity='0';
+    ModalBody.style.opacity='0';
+    ModalContainer.style.display="none"
+})
+function initFlatpickr(selector, options) {
+    // Khởi tạo flatpickr với selector và các tùy chọn
+    flatpickr(selector, options);
+}
+function initDepartTime() {
+    initFlatpickr("#datePickerInput", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
+        onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
 
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
+function initArrivalTime() {
+    const departTimeInput = document.getElementById("datePickerInput");
+    let departDateValue = departTimeInput.value;
+
+    // Nếu departtime chưa được chọn, sử dụng ngày mai
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    // Nếu departtime đã được chọn, tính minDate từ giá trị này
+    if (departDateValue) {
+        const departDate = new Date(departDateValue);
+        departDate.setDate(departDate.getDate() + 1); // Phải lớn hơn departtime 1 ngày
+        departDateValue = departDate.toISOString().split('T')[0];
+    } else {
+        departDateValue = tomorrow.toISOString().split('T')[0];
+    }
+
+    initFlatpickr("#datePickerOutput", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
+        onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
+
+
+document.getElementById("datePickerInput").addEventListener("focus", function () {
+    // Initialize flatpickr only if not already initialized
+    if (!this.classList.contains("flatpickr-input-active")) {
+        initDepartTime();
+        this.classList.add("flatpickr-input-active");
+    }
+});
+document.getElementById("datePickerOutput").addEventListener("focus", function () {
+    // Initialize flatpickr only if not already initialized
+    if (!this.classList.contains("flatpickr-input-active")) {
+        initArrivalTime();
+        this.classList.add("flatpickr-input-active");
+    }
+});
+function InitCheckOutTime(){
+    const departTimeInput = document.getElementById("CheckIn");
+    let departDateValue = departTimeInput.value;
+
+
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+
+    if (departDateValue) {
+        const departDate = new Date(departDateValue);
+        departDate.setDate(departDate.getDate() + 1); // Phải lớn hơn departtime 1 ngày
+        departDateValue = departDate.toISOString().split('T')[0];
+    } else {
+        departDateValue = tomorrow.toISOString().split('T')[0];
+    }
+
+    initFlatpickr("#CheckOut", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
+        onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
+document.getElementById("CheckOut").addEventListener("focus", function () {
+    if (!this.classList.contains("flatpickr-initialized")) {
+        InitCheckOutTime();
+        this.classList.add("flatpickr-initialized");
+    }
+});
+function InitCheckInTime(){
+    initFlatpickr("#CheckIn", {
+        mode: "range", // Enable date range selection
+        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
+        defaultDate: [new Date()], // Set default dates to today
+        minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
+        onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+            if (selectedDates.length) {
+                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                instance.element.value = firstDate; // Set the input value to the first date
+            }
+        },
+    });
+}
+document.getElementById("CheckIn").addEventListener("focus", function () {
+    // Initialize flatpickr only if not already initialized
+    if (!this.classList.contains("flatpickr-input-active")) {
+        InitCheckInTime();
+        this.classList.add("flatpickr-input-active");
+    }
+});
 document.addEventListener('DOMContentLoaded',async function (){
     const FromInputDropDown=document.querySelector('#from-input');
     const At=document.querySelector('#At-input');
@@ -630,64 +840,9 @@ document.addEventListener("DOMContentLoaded",function (){
         });
     });
 })
-function initFlatPickrOutPut(){
-    flatpickr("#datePickerOutput", {
-        mode: "range", // Enable date range selection
-        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
-        defaultDate: [new Date()], // Set default dates in LocalDate format
-        onReady: function (selectedDates, dateStr, instance) {
-            if (selectedDates.length) {
-                // Display only the first date in the range
-                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
-                instance.element.value = firstDate; // Set the input value to the first date
-            }
-        },
-        onChange: function (selectedDates, dateStr, instance) {
-            if (selectedDates.length) {
-                // Update the input value to show only the first selected date
-                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
-                instance.element.value = firstDate;
-            }
-        }
-    });
-}
-function initFlatpickr() {
-    flatpickr("#datePickerInput", {
-        mode: "range", // Enable date range selection
-        dateFormat: "Y-m-d", // Format to match LocalDate (yyyy-MM-dd)
-        defaultDate: [new Date()], // Set default dates in LocalDate format
-        onReady: function (selectedDates, dateStr, instance) {
-            if (selectedDates.length) {
-                // Display only the first date in the range
-                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
-                instance.element.value = firstDate; // Set the input value to the first date
-            }
-        },
-        onChange: function (selectedDates, dateStr, instance) {
-            if (selectedDates.length) {
-                // Update the input value to show only the first selected date
-                const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
-                instance.element.value = firstDate;
-            }
-        }
-    });
 
-}
 
-document.getElementById("datePickerInput").addEventListener("focus", function () {
-    // Initialize flatpickr only if not already initialized
-    if (!this.classList.contains("flatpickr-input-active")) {
-        initFlatpickr();
-        this.classList.add("flatpickr-input-active");
-    }
-});
-document.getElementById("datePickerOutput").addEventListener("focus", function () {
-    // Initialize flatpickr only if not already initialized
-    if (!this.classList.contains("flatpickr-input-active")) {
-        initFlatPickrOutPut();
-        this.classList.add("flatpickr-input-active");
-    }
-});
+
 document.querySelectorAll('.dropdown-item').forEach(item => {
     item.addEventListener('click', function(e) {
         // Get the selected item text

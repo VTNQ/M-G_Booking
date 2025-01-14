@@ -15,7 +15,8 @@
 background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 100%;min-width: 980px;box-sizing: border-box;display: flex;align-items: center;flex-wrap: nowrap">
                     <div style="margin: auto;width: 1100px;box-sizing: border-box;display: flex;align-items: center;flex-wrap: nowrap">
                         <div style="max-width: calc(100% - 180px);box-sizing: border-box;margin: 0px;display: block;flex-basis: 100%;flex-grow: 0">
-                            <span style="font-size: 20px;font-weight: 500;color: #fff;line-height: 20px">Chuyến đi từ Hồ Chí Minh (SGN) tới Hà Nội (HAN)</span>
+                            <span style="font-size: 20px;font-weight: 500;color: #fff;line-height: 20px"
+                                  th:text="'Trip from '+${DepartAirport}+' to '+${ArrivalAirPort}">Chuyến đi từ Hồ Chí Minh (SGN) tới Hà Nội (HAN)</span>
                             <div style="box-sizing: border-box;display: flex;width: 100%;align-items: flex-start;flex-wrap: nowrap">
                                 <div style="box-sizing: border-box;margin: 0px">
                                     <span style="background-color: rgb(37, 181, 124);border-radius: 2px;display: block;padding: 0px 8px;margin-top: 4px;font-size: 14px;line-height: 32px;font-weight: 400">
@@ -28,8 +29,11 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                     </span>
                                 </div>
                                 <div style="padding: 0px 8px">
-                                    <span style="display: block;padding: 2px 0px;margin-top: 4px"
-                                          th:text="${DepartureDate}+'   -   '+${ArrivalDate}">t2, 23 tháng 12 2024</span>
+             <span style="display: block; padding: 2px 0px; margin-top: 4px"
+                   th:text="${ArrivalDate == null ? DepartureDate : DepartureDate + '   -   ' + ArrivalDate}">
+    t2, 23 tháng 12 2024
+</span>
+
                                     <span style="display: block;padding: 2px 0px;margin-top: 4px"
                                           th:text="${CheckIn}+'   -   '+${CheckOut}">t2, 23 tháng 12 2024</span>
                                 </div>
@@ -63,7 +67,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
         <div class="row mb-5 mb-lg-8 mt-xl-1">
             <h5>
                 <i class="fa-solid fa-hotel" style="font-size: 24px; margin-right: 10px;"></i>
-                Khởi đầu bằng việc chọn khách sạn
+                Start by choosing a hotel
             </h5>
             <div class="col-lg-4 col-xl-3 order-lg-1 width-md-50">
                 <div class="navbar-expand-lg navbar-expand-lg-collapse-block">
@@ -72,24 +76,21 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                         <div class="mb-6 w-100">
 
                             <div class="pb-4 mb-2">
-                                <a class="d-block border rounded">
-                                    <img width="100%"
-                                         src="https://transvelo.github.io/mytravel-html/assets/img/map-markers/map.jpg">
-                                </a>
+
                             </div>
                             <div class="flight-card">
                                 <div class="flight-card-header">
                                     <div class="flight-type-container">
-                                        <span class="flight-type" style="color: #ffffff">Chuyến bay bán chung</span>
+                                        <span class="flight-type" style="color: #ffffff">Shared Flights</span>
                                     </div>
 
                                 </div>
-                                <button class="btn-cheapest" style="margin-left: 2vh">Chuyến bay rẻ nhất</button>
+                                <button class="btn-cheapest" style="margin-left: 2vh">Cheapest Flights</button>
                                 <div class="flight-details">
 
                                     <div class="flight-info">
                                         <div class="date" th:if="${Flight!=null and Flight.dateDepart !=null}"
-                                             th:text="'Đi ' + ${Flight.dateDepart}">
+                                             th:text="'Go ' + ${Flight.dateDepart}">
                                         </div>
 
                                         <div class="time-location">
@@ -126,74 +127,16 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                         </div>
 
                                     </div>
-                                    <button class="btn-details">Xem chi tiết</button>
+
                                 </div>
                                 <div class="flight-card-footer">
-                                    <p>Chuyến bay rẻ nhất, ưu đãi tốt nhất dành cho bạn!</p>
+                                    <p>Cheapest flights, best deals for you!</p>
                                 </div>
                             </div>
                             <div class="navbar-expand-xl navbar-expand-xl-collapse-block">
                                 <div id="sidebar" class="collapse navbar-collapse">
                                     <div class="mb-6 w-100">
                                         <div class="sidenav border border-color-8 rounded-xs">
-                                            <div id="shopCategoryAccordion" class="accordion rounded-0 shadow-none">
-                                                <div class="border-0">
-                                                    <div class="card-collapse" id="shopCategoryHeadingOne">
-                                                        <h3 class="mb-0">
-                                                            <button class="btn btn-link btn-block card-btn py-2 px-5 collapsed"
-                                                                    style="line-height: 3">
-                                                   <span class="row align-items-center">
-                                                       <span class="col-2">
-                                                           <span class="text-dark mb-3"
-                                                                 style="font-size: 1.063rem;font-weight: 500">Stops</span>
-                                                       </span>
-                                                       <span class="col-10 text-right">
-                                                           <span class="card-btn-arrow">
-                                                               <i class="fas fa-chevron-down small"></i>
-                                                           </span>
-                                                       </span>
-                                                   </span>
-                                                            </button>
-                                                        </h3>
-                                                    </div>
-                                                    <div id="shopCategoryOne" class="collapse show border-bottom">
-
-                                                        <div class="card-body pt-0 mt-1 px-5 pb-4">
-                                                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                                                <label class="form-check-label" for="selectAllToggle">Chọn
-                                                                    tất cả
-                                                                    các hãng</label>
-                                                                <div class="form-check form-switch ms-3">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                           id="selectAllToggle" style="font-size: 24px">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group mb-3"
-                                                                 style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-
-
-                                                                <th:block th:each="item: ${Airline}">
-                                                                    <div class="custom-control custom-checkbox">
-                                                                        <input type="checkbox"
-                                                                               class="form-check-input airline-checkbox flight-select"
-
-                                                                               th:id="'checkbox-' + ${item.id}"
-                                                                               style="font-size: 25px">
-                                                                        <label class="cus-control-label mt-2 ml-3"
-                                                                               th:for="'checkbox-'+${item.name}"
-                                                                               th:text="${item.name}">
-
-                                                                        </label>
-                                                                    </div>
-                                                                </th:block>
-
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
                                             <div id="shopCartAccordion"
                                                  class="accordion rounded shadow-none border-bottom">
                                                 <div class="border-0">
@@ -235,194 +178,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="shopCartAccordion"
-                                                 class="accordion rounded shadow-none border-bottom">
-                                                <div class="border-0">
-                                                    <div class="card-collapse" id="shopCardHeadingOne">
-                                                        <h3 class="mb-0">
-                                                            <button type="button"
-                                                                    class="btn btn-link btn-block card-btn "
-                                                                    style="line-height: 3">
-                                                <span class="row align-items-center">
-                                                    <span class="col-5">
-                                                        <span class="d-block"
-                                                              style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Price Range ($)</span>
-                                                    </span>
-                                                    <span class="col-7 text-right">
-                                                        <span class="card-btn-arrow">
-                                                            <i class="fas fa-chevron-down small"></i>
-                                                        </span>
-                                                    </span>
-                                                </span>
-                                                            </button>
-                                                        </h3>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <!-- Range Slider -->
-                                                        <div class="price-range-slider">
-                                                            <div class="price-range-display">
-                                                                <span id="ScheduleStart">£200 - £3456</span>
-                                                            </div>
-                                                            <div class="slider-container">
-                                                                <div id="Schedule-range" class="slider"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="price-range-slider pt-5">
-                                                            <div class="price-range-display">
-                                                                <span id="ScheduleEnd">£200 - £3456</span>
-                                                            </div>
 
-                                                            <div class="slider-container">
-                                                                <div id="Schedule-range-end" class="slider"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="shopCartAccordion"
-                                                 class="accordion rounded shadow-none border-bottom">
-                                                <div class="border-0">
-                                                    <div class="card-collapse" id="shopCardHeadingOne">
-                                                        <h3 class="mb-0">
-                                                            <button type="button"
-                                                                    class="btn btn-link btn-block card-btn "
-                                                                    style="line-height: 3">
-                                                <span class="row align-items-center">
-                                                    <span class="col-5">
-                                                        <span class="d-block"
-                                                              style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Price Range ($)</span>
-                                                    </span>
-                                                    <span class="col-7 text-right">
-                                                        <span class="card-btn-arrow">
-                                                            <i class="fas fa-chevron-down small"></i>
-                                                        </span>
-                                                    </span>
-                                                </span>
-                                                            </button>
-                                                        </h3>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <!-- Range Slider -->
-                                                        <div class="price-range-slider">
-                                                            <div class="price-range-display">
-                                                                <span id="TimeRange">£200 - £3456</span>
-                                                            </div>
-                                                            <div class="slider-container">
-                                                                <div id="Time-range" class="slider"></div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="shopCategoryAccordi" class="accordion rounded-0 shadow-none">
-                                                <div class="border-0">
-                                                    <div class="card-collapse" id="shopCategoryHeadingOne">
-                                                        <h3 class="mb-0">
-                                                            <button class="btn btn-link btn-block card-btn py-2 px-5 collapsed"
-                                                                    style="line-height: 3">
-                                                   <span class="row align-items-center">
-                                                       <span class="col-2">
-                                                           <span class="text-dark mb-3"
-                                                                 style="font-size: 1.063rem;font-weight: 500">Stops</span>
-                                                       </span>
-                                                       <span class="col-10 text-right">
-                                                           <span class="card-btn-arrow">
-                                                               <i class="fas fa-chevron-down small"></i>
-                                                           </span>
-                                                       </span>
-                                                   </span>
-                                                            </button>
-                                                        </h3>
-                                                    </div>
-                                                    <div id="shopCategoryOne" class="collapse show border-bottom">
-                                                        <div class="card-body pt-0 mt-1 px-5 pb-4">
-                                                            <div class="form-group mb-3"
-                                                                 style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input">
-                                                                    <label class="cus-control-label">
-                                                                        Non Stop
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group mb-3"
-                                                                 style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input">
-                                                                    <label class="cus-control-label">
-                                                                        Non Stop
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group mb-3"
-                                                                 style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input">
-                                                                    <label class="cus-control-label">
-                                                                        Non Stop
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div id="shopCategoryAccordi" class="accordion rounded-0 shadow-none">
-                                                <div class="border-0">
-                                                    <div class="card-collapse" id="shopCategoryHeadingOne">
-                                                        <h3 class="mb-0">
-                                                            <button class="btn btn-link btn-block card-btn py-2 px-5 collapsed"
-                                                                    style="line-height: 3">
-                                                   <span class="row align-items-center">
-                                                       <span class="col-2">
-                                                           <span class="text-dark mb-3"
-                                                                 style="font-size: 1.063rem;font-weight: 500">Stops</span>
-                                                       </span>
-                                                       <span class="col-10 text-right">
-                                                           <span class="card-btn-arrow">
-                                                               <i class="fas fa-chevron-down small"></i>
-                                                           </span>
-                                                       </span>
-                                                   </span>
-                                                            </button>
-                                                        </h3>
-                                                    </div>
-                                                    <div id="shopCategoryOne" class="collapse show border-bottom">
-                                                        <div class="card-body pt-0 mt-1 px-5 pb-4">
-                                                            <div class="form-group mb-3"
-                                                                 style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input">
-                                                                    <label class="cus-control-label">
-                                                                        Non Stop
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group mb-3"
-                                                                 style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input">
-                                                                    <label class="cus-control-label">
-                                                                        Non Stop
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group mb-3"
-                                                                 style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input">
-                                                                    <label class="cus-control-label">
-                                                                        Non Stop
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -437,7 +193,8 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
             <div class="col-lg-8 col-xl-9 order-md-1 order-lg-2 pb-5 pb-lg-0">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="mb-0"
-                        style="font-size: 1.313rem;font-weight: bold!important;line-height: 1;color: #3b444f">London:
+                        style="font-size: 1.313rem;font-weight: bold!important;line-height: 1;color: #3b444f"
+                        th:text="${City.getName()}+': '+${Hotel.size()}+' hotels found'">London:
                         3292 hotels found</h3>
                     <ul class="nav tab-nav-shop flex-nowrap" id="pills-tab">
                         <li class="nav-item" style="margin-right: 1rem">
@@ -514,7 +271,8 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                 <div class="mb-0">
                                                     <span class="mr-1 text-gray-1"
                                                           style="font-size: 0.875rem;">From</span>
-                                                    <span style="font-weight: 500 !important;">£350.00</span>
+                                                    <span style="font-weight: 500 !important;"
+                                                          th:text="'£ '+${hotel.price}">£350.00</span>
                                                     <span class="text-gray-1"
                                                           style="font-size: 0.875rem;"> / night</span>
                                                 </div>
@@ -598,12 +356,12 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                 <i class="fa-solid fa-pen-fancy" style="font-size: 24px"></i>
                                 <span class="edit-text">Edit</span>
                             </div>
-                            <button class="close-btn" id="closeBtn">Close</button>
+                            <button type="button" class="close-btn" id="closeBtn">Close</button>
                         </div>
                         <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
                             <div class="col-sm-5 ">
                                             <span class="d-block text-gray mb-0"
-                                                  style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Destination or Hotel Name</span>
+                                                  style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">City or airport name</span>
                                 <div class="search-container">
                                     <div class="search-item" id="search-from">
                                         <i class="fa-solid fa-plane-departure"></i>
@@ -695,24 +453,23 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
 
                             </div>
                             <div class="col-sm-5" id="TimeHotel" style="display:none;">
-  <span class="d-block text-gray mb-2"
-        style="color: #67747c !important;font-weight: 400;text-align: left;font-size: 1.2rem">Destination or Hotel Name</span>
+
                                 <div class="search-container">
                                     <div class="date-picker-container">
                                         <div>
-                                            <label for="datePickerInputFrom" class="label">Nhận phòng</label>
+                                                <label  class="label">Check In</label>
                                             <div class="date-picker">
                                                 <i class="fa-solid fa-calendar"></i>
-                                                <input type="date" id="datePickerInputFrom"
-                                                       th:field="${Search.departureTime}"/>
+                                                <input type="date" id="CheckIn"
+                                                       th:field="${Search.checkInTime}"/>
                                             </div>
                                         </div>
                                         <div>
-                                            <label for="datePickerInputTo" class="label">Trả phòng</label>
+                                            <label  class="label">Check Out</label>
                                             <div class="date-picker">
                                                 <i class="fa-solid fa-calendar"></i>
-                                                <input type="date" id="datePickerInputTo"
-                                                       th:field="${Search.arrivalTime}"/>
+                                                <input type="date" id="CheckOut"
+                                                       th:field="${Search.checkOutTime}"/>
                                             </div>
                                         </div>
                                     </div>

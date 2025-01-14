@@ -1,17 +1,29 @@
 package com.vtnq.web.DTOs.Hotel;
 
+import java.math.BigDecimal;
+
 public class HotelSearchDTO {
 private int id;
 private String name;
 private String City;
 private String Country;
 
-    public HotelSearchDTO(int id, String name, String city, String country, String image_url) {
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    private BigDecimal price;
+    public HotelSearchDTO(int id, String name, String city, String country, String image_url,BigDecimal price) {
         this.id = id;
         this.name = name;
         City = city;
         Country = country;
         this.image_url = image_url;
+        this.price = price;
     }
 
     public int getId() {

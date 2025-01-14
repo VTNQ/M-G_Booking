@@ -34,4 +34,13 @@ public interface AirlineRepository extends JpaRepository<Airline, Integer> {
                                 @Param("arrivalAirport") int arrivalAirport,
                                 @Param("departureTime") LocalDate departureTime,
                                 @Param("TypeFlight") String TypeFlight);
+    @Query("select a from Airline a join Flight b on a.id=b.airline.id " +
+            "join Seat c on c.idFlight.id=b.id where b.departureAirport.id = :arrivalAirport and " +
+            "b.arrivalAirport.id = :departureAirport and Date(b.departureTime) = :arrivalTime")
+    List<Airline>SearchAirlineArrival(@Param("departureAirport")int departureAirport,
+                                      @Param("arrivalAirport")int arrivalAirport,
+                                      @Param("arrivalTime")LocalDate arrivalTime,
+                                      @Param("TypeFlight")String TypeFlight);
+    @Query("SELECT a from Airline a where a.countryId= :countryId")
+    List<Airline>FindAirlineByCountryId(int countryId);
 }

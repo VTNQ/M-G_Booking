@@ -23,7 +23,7 @@ public class DistrictController {
     public String edit(@PathVariable int id, ModelMap model, HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             model.put("district", districtService.findDistrictById(id));
@@ -38,7 +38,7 @@ public class DistrictController {
     public String add(ModelMap model, HttpSession session,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             Integer id = (Integer) session.getAttribute("id");
@@ -57,7 +57,7 @@ public class DistrictController {
     public String delete(@PathVariable int id,RedirectAttributes redirectAttributes,HttpSession session,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             if(districtService.delete(id)){
@@ -79,7 +79,7 @@ public class DistrictController {
     public String update(@ModelAttribute("district") @Valid DistrictDto districtDto, BindingResult result, RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             if(result.hasErrors()) {
@@ -111,7 +111,7 @@ public class DistrictController {
             , RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             if (bindingResult.hasErrors()) {
@@ -147,7 +147,7 @@ public class DistrictController {
     public String add(ModelMap model, @PathVariable int id, HttpSession session,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             session.setAttribute("id", id);

@@ -114,6 +114,7 @@ public class InformationCustomerController {
    @GetMapping("InformationFlightHotel/{id}")
    public String InformationFlightHotel(ModelMap modelMap,@PathVariable int id,HttpServletRequest request) {
        try {
+           BookingFlightDTO bookingDto=new BookingFlightDTO();
            Account account=(Account)request.getSession().getAttribute("currentAccount");
            if(account==null){
                return "redirect:/Login";
@@ -121,11 +122,18 @@ public class InformationCustomerController {
            SearchFlightDTO resultFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
            List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
            Integer idRoom=(Integer) request.getSession().getAttribute("idRoom");
+           BookingHotel bookingHotel=hotelService.FindBookingHotel(idRoom);
+           BigDecimal totalFlight=BigDecimal.ZERO;
+           BigDecimal total = bookingHotel.getPrice()
+                   .multiply(BigDecimal.valueOf(resultFlightDTO.getNumberPeopleRight()));
+           BigDecimal totalAmount=bookingHotel.getPrice().multiply(BigDecimal.valueOf(resultFlightDTO.getNumberPeopleRight()));
+           if(idFlight!=null){
+               boolean existFlightBooking=idFlight.stream().anyMatch(flight->flight==id);
+               if(!existFlightBooking){
+                   idFlight.add(id);
+               }
+           }
 
-            boolean existFlightBooking=idFlight.stream().anyMatch(flight->flight==id);
-            if(!existFlightBooking){
-                idFlight.add(id);
-            }
            List<BookingListFly>FlightBooking=new ArrayList<>();
            List<Flight>flights=new ArrayList<>();
            if(idFlight!=null){
@@ -134,8 +142,14 @@ public class InformationCustomerController {
                    boolean existsFlightTab=flights.stream().anyMatch(flight->flight.getId()==i);
                    if(!existsFlightTab){
                        Flight flight=flightRepository.findById(i).orElse(null);
+
                        if(flight!=null){
                            flights.add(flight);
+                        totalAmount=totalAmount.add(flight.getPrice());
+                           BigDecimal currentTotalPrice = bookingDto.getTotalPrice() != null ? bookingDto.getTotalPrice() : BigDecimal.ZERO;
+                           bookingDto.setTotalPrice(currentTotalPrice.add(flight.getPrice()));
+                        totalFlight=totalFlight.add(flight.getPrice());
+
                        }
 
                    }
@@ -144,14 +158,41 @@ public class InformationCustomerController {
                    if(!existBookingListFly){
                        BookingListFly bookingListFly=flightService.getResultPaymentFlight(i);
                        FlightBooking.add(bookingListFly);
+
+                   }
+               }
+               modelMap.put("idFlight",idFlight);
+           }else{
+               idFlight=new ArrayList<>();
+               idFlight.add(id);
+               for (Integer i:idFlight) {
+                   boolean existsFlightTab=flights.stream().anyMatch(flight->flight.getId()==i);
+                   if(!existsFlightTab){
+                       Flight flight=flightRepository.findById(i).orElse(null);
+                       if(flight!=null){
+                           flights.add(flight);
+                           totalAmount=totalAmount.add(flight.getPrice());
+                           BigDecimal currentTotalPrice = bookingDto.getTotalPrice() != null ? bookingDto.getTotalPrice() : BigDecimal.ZERO;
+                           bookingDto.setTotalPrice(currentTotalPrice.add(flight.getPrice()));
+                           totalFlight=totalFlight.add(flight.getPrice());
+
+                       }
+                   }
+
+                   boolean existBookingListFly=FlightBooking.stream().anyMatch(booking->booking.
+                           getId()==i);
+                   if(!existBookingListFly){
+                       BookingListFly bookingListFly=flightService.getResultPaymentFlight(i);
+                       FlightBooking.add(bookingListFly);
+
                    }
                }
                modelMap.put("idFlight",idFlight);
            }
-           BookingHotel bookingHotel=hotelService.FindBookingHotel(idRoom);
+
            modelMap.put("hotel",hotelService.FindBookingHotel(idRoom));
-           BigDecimal total = bookingHotel.getPrice()
-                   .multiply(BigDecimal.valueOf(resultFlightDTO.getNumberPeopleRight()));
+
+
            modelMap.put("flight",FlightBooking);
            modelMap.put("searchFlightDTO",resultFlightDTO);
            int paymentTimeOut=20*60;
@@ -159,6 +200,7 @@ public class InformationCustomerController {
            modelMap.put("timeout",paymentTimeOut);
            modelMap.put("flight",FlightBooking);
            modelMap.put("total",total);
+           modelMap.put("totalAmount",totalAmount);
            BookingHotelDTO hotelDTO=new BookingHotelDTO();
            hotelDTO.setTypeId(idRoom);
            hotelDTO.setPrice(bookingHotel.getPrice());
@@ -167,9 +209,10 @@ public class InformationCustomerController {
            modelMap.put("hotelDTO",hotelDTO);
            Integer NumberPeople = (Integer) request.getSession().getAttribute("NumberPeople");
            modelMap.put("number",NumberPeople);
-           BookingFlightDTO bookingDto=new BookingFlightDTO();
+
 
            modelMap.put("payment",bookingDto);
+           modelMap.put("totalFlight",totalFlight);
            modelMap.put("DaysCheckIn",SearchFlightDTO.calculateDaysBetween(resultFlightDTO.getCheckInTime(),resultFlightDTO.getCheckOutTime()));
            return "/User/InformationCustomer/InformationCustomer";
        }catch (Exception e) {
@@ -333,6 +376,7 @@ public class InformationCustomerController {
     public String InformationFly(@PathVariable int id, ModelMap modelMap,HttpServletRequest request) {
         try {
             Account account=(Account)request.getSession().getAttribute("currentAccount");
+            BigDecimal totalFlight=BigDecimal.ZERO;
             if(account==null){
                 return "redirect:/Login";
             }
@@ -342,11 +386,16 @@ public class InformationCustomerController {
             List<Flight>flights=new ArrayList<>();
             BigDecimal total=BigDecimal.ZERO;
             if(idFlight!=null){
+                boolean existFlight=idFlight.stream().anyMatch(flight->flight.equals(id));
+                if(!existFlight){
+                    idFlight.add(id);
+                }
                 for (Integer i:idFlight) {
                     boolean existsFlightTab=flights.stream().anyMatch(flight->flight.getId()==i);
                     if(!existsFlightTab){
                         Flight flight=flightRepository.findById(i).get();
-                        total=total.add(flight.getPrice());
+                        total = total.add(flight.getPrice());
+                        totalFlight=totalFlight.add(flight.getPrice());
                         flights.add(flight);
                     }
                     boolean existBookingListFly=FlightBooking.stream().anyMatch(booking->booking.
@@ -357,24 +406,21 @@ public class InformationCustomerController {
                     }
 
                 }
-                boolean existFlight=idFlight.stream().anyMatch(flight->flight.equals(id));
-                if(!existFlight){
-                    idFlight.add(id);
-                }
 
-                modelMap.put("idFlight",idFlight);
 
-            }
-            boolean existsFlightTab=flights.stream().anyMatch(flight->flight.getId()==id);
-            if(!existsFlightTab){
-                Flight flight=flightRepository.findById(id).get();
+
+
+            }else {
+                idFlight=new ArrayList<>();
+                idFlight.add(id);
+                Flight flight=flightRepository.findById(id).orElseThrow(()->new RuntimeException("Flight not found"));
+                total = total.add(flight.getPrice());
+                totalFlight=totalFlight.add(flight.getPrice());
                 flights.add(flight);
-            }
-            boolean existBookingListFly=FlightBooking.stream().anyMatch(booking->booking.
-                    getId()==id);
-            if(!existBookingListFly){
                 FlightBooking.add(flightService.getResultPaymentFlight(id));
             }
+            modelMap.put("idFlight",idFlight);
+
 
 
             Integer NumberPeople = (Integer) request.getSession().getAttribute("NumberPeople");
@@ -382,6 +428,7 @@ public class InformationCustomerController {
             modelMap.put("flightTab",flights);
             BookingFlightDTO bookingDto=new BookingFlightDTO();
             modelMap.put("payment",bookingDto);
+            modelMap.put("FlightPrice",totalFlight);
             modelMap.put("number",NumberPeople);
             int paymentTimeOut=20*60;
             modelMap.put("timeout",paymentTimeOut);
