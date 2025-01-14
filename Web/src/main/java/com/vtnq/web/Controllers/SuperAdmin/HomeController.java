@@ -17,7 +17,7 @@ public class HomeController {
     @GetMapping("Home")
     public String Home(HttpServletRequest request){
         Account account = (Account) request.getSession().getAttribute("currentAccount");
-        if(account==null){
+        if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
             return "redirect:/LoginAdmin";
         }
         return "SuperAdmin/Home/index";

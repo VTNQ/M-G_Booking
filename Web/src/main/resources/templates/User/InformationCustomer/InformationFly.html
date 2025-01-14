@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{/User/layout/layout :: mainContent('Payment Flight',~{this::#content})}">
+      th:replace="~{/User/layout/layoutLogin :: mainContent('Payment Flight',~{this::#content})}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -15,118 +15,30 @@
                     <div class="mb-5 shadow-soft"
                          style="background-color: white;border-radius: 0.25rem!important;box-shadow: 0 3px 6px 0 rgba(140, 152, 164, 0.25) !important">
                         <div class="py-3 px-4 px-xl-12 border-bottom">
+                            <h2 style="text-align: center">Information Payment</h2>
 
-                            <ul class="list-group flex-nowrap  list-group-horizontal list-group-borderless flex-center-between pt-1">
-                                <li class="list-group-item text-center flex-shrink-0 flex-xl-shrink-1">
-                                    <div class="mr-auto ml-auto border mb-2"
-                                         style="display: flex;align-items: center;justify-content: center;border-width: 2px;color: white;border-color: #297cbb !important;border-radius: 50% !important;width: 2.5rem;height: 2.5rem;border: 1px solid #e7eaf3 !important;background-color: #297cbb !important">
-                                        1
-                                    </div>
-                                    <div style="color: #297cbb !important;font-size: 1rem;font-weight: 400;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5">
-                                        Customer information
-                                    </div>
-                                </li>
-                                <li class="list-group-item text-center flex-shrink-0 flex-xl-shrink-1">
-                                    <div class="mr-auto ml-auto border mb-2"
-                                         style="display: flex;align-items: center;justify-content: center;border-width: 2px;color: #3b444f;border-color: #297cbb !important;border-radius: 50% !important;width: 2.5rem;height: 2.5rem;border: 1px solid #e7eaf3 !important;">
-                                        2
-                                    </div>
-                                    <div style="color: #297cbb !important;font-size: 1rem;font-weight: 400;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5">
-                                        Payment information
-                                    </div>
-                                </li>
-                                <li class="list-group-item text-center flex-shrink-0 flex-xl-shrink-1">
-                                    <div class="mr-auto ml-auto border mb-2"
-                                         style="display: flex;align-items: center;justify-content: center;border-width: 2px;color: #3b444f;border-color: #297cbb !important;border-radius: 50% !important;width: 2.5rem;height: 2.5rem;border: 1px solid #e7eaf3 !important;">
-                                        2
-                                    </div>
-                                    <div style="color: #297cbb !important;font-size: 1rem;font-weight: 400;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5">
-                                        Payment information
-                                    </div>
-                                </li>
-                            </ul>
                             <div class="reservation-bar">
-                                <span>Chúng tôi đang giữ giá cho quý khách...</span>
+                                <span>We are holding the price for you...</span>
                                 <div class="icon">🕒</div>
                                 <div class="timer" id="countdown">00:01:02</div>
                             </div>
                             <input type="hidden" th:value="${timeout}" id="timeout">
                         </div>
                         <div class="pt-4 pb-5 px-5">
-                            <h5 id="scroll-description" class="text-dark mb-4"
-                                style="font-size: 1.313rem;font-weight: 500 !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;text-align: left">
-                                Let Us Know Who You Are
-                            </h5>
+
 
                             <div class="row">
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label"
-                                               style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1.2rem;font-weight: 400;line-height: 1.5;color: #3b444f">
-                                            First Name
-                                        </label>
-                                        <input type="text" class="form-control"
-                                               placeholder="First Name"
-                                               style="padding: 0.9rem 1rem;height: calc(1.5em + 1.8rem + 4px);border: 3px solid #ebf0f7;color: #3b444f">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label"
-                                               style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1.2rem;font-weight: 400;line-height: 1.5;color: #3b444f">
-                                            Last Name
-                                        </label>
-                                        <input type="text" class="form-control" placeholder="Last Name"
-                                               style="padding: 0.9rem 1rem;height: calc(1.5em + 1.8rem + 4px);border: 3px solid #ebf0f7;color: #3b444f">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label"
-                                               style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1.2rem;font-weight: 400;line-height: 1.5;color: #3b444f">
-                                            Email
-                                        </label>
-                                        <input type="text" class="form-control" placeholder="Email"
-                                               style="padding: 0.9rem 1rem;height: calc(1.5em + 1.8rem + 4px);border: 3px solid #ebf0f7;color: #3b444f">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label"
-                                               style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1.2rem;font-weight: 400;line-height: 1.5;color: #3b444f">
-                                            Phone
-                                        </label>
-                                        <input type="tel" class="form-control" placeholder="Phone"
-                                               style="padding: 0.9rem 1rem;height: calc(1.5em + 1.8rem + 4px);border: 3px solid #ebf0f7;color: #3b444f">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="js-form-message mb-6">
-                                        <label class="form-label">
-                                            Special Requirements
-                                        </label>
-                                        <div class="input-group">
-                                            <textarea class="form-control" rows="4"
-                                                      style="border: 2px solid #ebf0f7"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
+
+
                                 <div class="w-100"></div>
                                 <div class="col-sm-6 mb-10 mt-4 mb-4">
-                                    <div class="js-form">
-                                        <h5 id="scroll-description" class="mb-2"
-                                            style="font-size: 1.313rem;font-weight: 500 !important;color: #3b444f !important">
-                                            Let Us know</h5>
-                                        <p style="color: #77838f;line-height: 1.7;font-size: 16px;margin-top: 0;margin-bottom: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                                            We'll let the property or host know when to expect you.
-                                        </p>
-                                    </div>
+
                                 </div>
                                 <div class="col-sm-6 " style="align-self: flex-end !important">
                                     <div class="text-right">
                                         <button type="submit" class="btn transition-3d-hover py-3"
                                                 style="background-color: #297cbb;border-color: #297cbb;min-width: 13.75rem;border-radius: 0.25rem !important;font-size: 1rem;font-weight: 500!important;color: white">
-                                            NEXT PAGE
+                                            Pay
                                         </button>
                                     </div>
                                 </div>
@@ -138,8 +50,49 @@
 
                         </div>
                     </div>
+                    <div class="row" style="width: 156%">
+                        <div class="col-lg-8 col-xl-8">
+                            <div class="mb-5 shadow-soft"
+                                 style="background-color: white;border-radius: 0.25rem!important;box-shadow: 0 3px 6px 0 rgba(140, 152, 164, 0.25) !important">
+                                <div class="seat-selection-container">
+                                    <div class="header">
+                                        <i class="fa-solid fa-chair"></i>
+                                        <h2>Seat selection</h2>
+                                    </div>
+                                    <p>Great, this itinerary lets you choose your seat! If you don't choose your seat now, the
+                                        airline may randomly assign you a seat or let you choose from available seats when you check
+                                        in.</p>
+                                    <th:block th:each="flights,index : ${flight}">
+                                        <div class="flight-info" th:id="'flight-'+${flights.id}"
+                                             style="background-color: #f5f5f5;padding: 10px;border-radius: 5px;margin-bottom: 10px;display: none">
+                                            <h3 th:text="${index.index==0?'Trip':'Return trip'}">Chuyến đi</h3>
+                                            <div class="route">
+                                                <img alt="Vietjet Logo"> <span
+                                                    th:text="${flights.departureAirport}+'  -  '+${flights.arrivalAirport}">HAN - NRT</span>
+                                            </div>
+                                            <div class="passengers" th:id="'passagers'+${flights.id}">
+
+                                            </div>
+                                        </div>
+                                    </th:block>
+
+
+                                    <p class="note" style="display: none">Seating arrangements may change for safety or operational reasons.</p>
+
+                                    <div class="price"
+                                         style="font-size: 1.2em;font-weight: bold;margin-bottom: 15px;color: red;display: none">
+                                        + 531.282 ₫
+                                    </div>
+                                    <div class="footer" style="display: block;text-align: right">
+                                        <button type="button" class="edit-button">Edit seat selection</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-4 col-xl-4">
+                <div class="col-lg-4 col-xl-4 mb-4">
                     <div class="shadow-soft rounded-sm" style="background-color: #ffffff">
                         <th:block th:each="flights,index :${flight}">
                             <div class="pt-5 pb-3 border-bottom" style="padding-left: 2rem;padding-right: 2rem">
@@ -147,19 +100,20 @@
                                     <img class="img-fluid " style="border-radius: 0.188rem;width: 100%"
                                          th:src="'http://localhost:8686/images/flight/'+${flights.imageUrl}">
                                 </a>
-                                <a class="mb-1"
-                                   style="color: #3b444f !important;font-weight: 500 !important;text-decoration: none;background-color: transparent"
-                                   th:text="${flights.nameAirline}">
-                                    Indianapolis to paris
-                                </a>
-                                <div class="mb-2"
-                                     style="display: flex;align-items: center;justify-content: space-between">
-                                    <div class="flex-horizontal-center" style="color: #67747c !important">Oneway
-                                        flight
+                                <div style="display: flex;flex-direction: column;align-items: center">
+                                    <a class="mb-1"
+                                       style="color: #3b444f !important;font-weight: 500 !important;text-decoration: none;background-color: transparent"
+                                       th:text="${flights.nameAirline}">
+                                        Indianapolis to paris
+                                    </a>
+                                    <div class="mb-2"
+                                         style="display: flex;align-items: center;justify-content: space-between">
+                                        <div class="flex-horizontal-center" style="color: #67747c !important">Oneway
+                                            flight
+                                        </div>
                                     </div>
-                                    <div style="color: #77838f !important">
-                                        <a style="text-decoration: underline">Edit</a>
-                                    </div>
+
+
                                 </div>
                                 <div class="mb-1"
                                      style="display: flex;align-items: center;justify-content: center;flex-direction: column">
@@ -183,7 +137,8 @@
                                             <h6 class="mb-0" th:text="${flights.timeDepart}"
                                                 style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important">
                                                 18:30</h6>
-                                            <span style="font-size: 0.875rem;color: #67747c !important;font-weight: 400 !important;;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi</span>
+                                            <span style="font-size: 0.875rem;color: #67747c !important;font-weight: 400 !important;;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                  th:text="${flights.departureAirport}">New Delhi</span>
                                         </div>
                                     </div>
                                     <div class="flex-horizontal-center">
@@ -196,7 +151,8 @@
                                                 style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important"
                                                 th:text="${flights.timeArrival}">
                                                 18:30</h6>
-                                            <span style="font-size: 0.875rem;color: #67747c !important;font-weight: 400 !important;;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi</span>
+                                            <span style="font-size: 0.875rem;color: #67747c !important;font-weight: 400 !important;;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                  th:text="${flights.arrivalAirport}">New Delhi</span>
                                         </div>
                                     </div>
                                 </div>
@@ -212,14 +168,15 @@
                                               id="SeatPrice">$0</span>
                                     </li>
                                     <li class="d-flex justify-content-between py-2">
-                                        <span style="font-weight: 500 !important;font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">Baggage Price</span>
-                                        <span style="color: #77838f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 400;line-height: 1.5"
+                                        <span style="font-weight: 500 !important;font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">Flight Price</span>
+                                        <span style="color: #77838f !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 400;line-height: 1.5" th:text="'$ '+${FlightPrice}"
                                               id="BaggagePrice">$0</span>
                                     </li>
 
                                     <li class="d-flex justify-content-between py-2">
                                         <span style="font-weight: 500 !important;font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif;line-height: 1.5;color: #3b444f">Pay Amount</span>
-                                        <span style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 500;line-height: 1.5" id="totalPriceBooking"
+                                        <span style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-weight: 500;line-height: 1.5"
+                                              id="totalPriceBooking"
                                               th:text="'$'+${total}">€580,00</span>
                                     </li>
                                 </ul>
@@ -233,80 +190,24 @@
             </div>
         </form>
         <div class="row">
-            <div class="col-lg-8 col-xl-8">
-                <div class="mb-5 shadow-soft"
-                     style="background-color: white;border-radius: 0.25rem!important;box-shadow: 0 3px 6px 0 rgba(140, 152, 164, 0.25) !important">
-                    <div class="seat-selection-container">
-                        <div class="header">
-                            <i class="fa-solid fa-chair"></i>
-                            <h2>Lựa chọn chỗ ngồi</h2>
-                        </div>
-                        <p>Tuyệt vời, hành trình này cho quý khách lựa chọn chỗ ngồi! Nếu quý khách không lựa chọn chỗ
-                            ngồi bây giờ thì hãng hàng không có thể ngẫu nhiên xếp cho quý khách một chỗ ngồi hoặc cho
-                            phép quý khách lựa chọn từ những chỗ ngồi còn lại khi quý khách làm thủ tục.</p>
-                        <th:block th:each="flights,index : ${flight}">
-                            <div class="flight-info"
-                                 style="background-color: #f5f5f5;padding: 10px;border-radius: 5px;margin-bottom: 10px;display: none">
-                                <h3>Chuyến đi</h3>
-                                <div class="route">
-                                    <img alt="Vietjet Logo"> <span
-                                        th:text="${flights.departureAirport}+'  -  '+${flights.arrivalAirport}">HAN - NRT</span>
-                                </div>
-                                <div class="passengers" th:id="'passagers'+${flights.id}">
 
-                                </div>
-                            </div>
-                        </th:block>
-
-
-                        <p class="note" style="display: none">Việc xếp chỗ ngồi có thể thay đổi vì lý do an toàn hoặc
-                            vận hành</p>
-
-                        <div class="price"
-                             style="font-size: 1.2em;font-weight: bold;margin-bottom: 15px;color: red;display: none">
-                            + 531.282 ₫
-                        </div>
-                        <div class="footer" style="display: block;text-align: right">
-                            <button class="edit-button">Sửa lựa chọn chỗ ngồi</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-lg-8 col-xl-8">
-                <div class="baggage-container mb-4">
-                    <div class="baggage-header">Hành lý</div>
 
-                    <!-- Hà Nội (HAN) -> Hồ Chí Minh (SGN) -->
-                    <th:block th:each="flights,index : ${flight}">
-                        <div class="route">
-                            <div class="route-info">
-                                <div class="route-header" th:text="${flights.departureAirport}+' ->  '+${flights.arrivalAirport}">Hà Nội (HAN) → Hồ Chí Minh (SGN)</div>
-                                <div class="baggage-info" >Mỗi hành khách đã bao gồm: <span
-                                        class="carry-on" >Xách tay 7 kg</span></div>
-                                <div class="baggage-info" th:id="'baggage-info-'+${flights.id}" style="display: none">Đã thêm: <span
-                                        class="added-baggage" th:id="'carry-on-'+${flights.id}">Hành khách 1: Ký gửi 15 kg</span></div>
-                            </div>
-                            <button type="button" class="action-button" th:data-flight-id="${flights.id}">Chỉnh sửa hành lý</button>
-                        </div>
-                    </th:block>
-
-                </div>
             </div>
         </div>
     </div>
     <div class="popup">
         <div class="popup-content" style="width: 49%;">
             <span class="close-button">&times;</span>
-            <h2>Lựa chọn chỗ ngồi</h2>
+            <h2>Seat selection</h2>
 
             <!-- Tab Navigation -->
             <div class="tab-navigation">
                 <th:block th:each="flighttabs, index : ${flightTab}">
                     <button
-                            class="tab-link"
+                            class="tab-link" style="margin-right: 1vh"
                             th:classappend="${index.index == 0} ? 'active' : ''"
                             th:onclick="'openTab(event, ' + ${index.index} + ')'"
                             th:text="${flighttabs.departureAirport.name} + ' -> ' + ${flighttabs.arrivalAirport.name}">
@@ -320,7 +221,7 @@
                 <div th:id="${index.index}" class="tab-content"
                      th:style="${index.index == 0} ? 'display: block;' : 'display: none;'">
                     <!-- Nội dung Chuyến đi -->
-                    <div class="flight-route">HAN - NRT</div>
+                    <div class="flight-route" th:text="${flighttabs.departureAirport.name}+'  -  '+${flighttabs.arrivalAirport.name}">HAN - NRT</div>
 
                     <div class="seat-legend">
                         <!-- Legend Items -->
@@ -334,18 +235,16 @@
                         </div>
                         <div class="legend-item">
                             <div class="seat-icon occupied"></div>
-                            0 ₫
+                            Economy Class
                         </div>
                         <div class="legend-item">
-                            <div class="seat-icon isSelected"><i class="fas fa-user"></i></div>
-                            Được chọn
+                            <div class="seat-icon isSelected"><i class="fas fa-user" style="color: white"></i></div>
+                            Selected
                         </div>
                         <div class="legend-item">
-                            <i class="fas fa-times"></i> Không chọn được
+                            <i class="fas fa-times"></i> Cannot select
                         </div>
-                        <div class="legend-item">
-                            <i class="fas fa-person-booth"></i> Thêm chỗ duỗi chân
-                        </div>
+
                     </div>
                     <div class="container">
                         <div class="row">
@@ -358,10 +257,10 @@
                                             <div class="passenger-type">
                                                 <div th:class="'selected-seat seat-tabs'+${flighttabs.id}"><span
                                                         th:text="${num}">1A</span></div>
-                                                Người lớn <span class="span-index" th:text="${index.index+1}">1</span>
+                                                Client &nbsp; <span class="span-index" th:text="${index.index+1}">1</span>
                                             </div>
                                             <div class="seat-info">
-                                                <span class="seat-price">442.523 ₫</span>
+                                                <span class="seat-price">0 USD</span>
                                             </div>
                                         </div>
                                     </div>
@@ -451,7 +350,7 @@
 
             <div class="footer-popup" style="display: flex; justify-content: space-between">
                 <div class="total-price">
-                    Tổng số phụ: <span id="totalPrice">0 ₫</span>
+                    SubTotal: <span id="totalPrice">0 USD</span>
                 </div>
 
                 <button class="confirm-button">Xong</button>
@@ -462,20 +361,22 @@
         <div class="popup-overlay" th:id="'popup-'+${flights.id}" style="display: none">
             <div class="popup-buggage">
                 <div class="popup-header" style="position: relative">
-                    <h3>Thêm hành lý</h3>
-                    <span class="close-button" style="top: 14px">&times;</span>
+                    <h3>Add luggage</h3>
+                    <span class="close-button" th:data-flight-id="${flights.id}" style="top: 14px">&times;</span>
                 </div>
                 <div class="popup-body" style="padding: 20px">
-                    <div class="route-info" style="font-size: 14px;color: #555;margin-bottom: 20px">Hồ Chí Minh (SGN) - Hà
+                    <div class="route-info" style="font-size: 14px;color: #555;margin-bottom: 20px" th:text="${flights.departureAirport}+' - '+${flights.arrivalAirport}">Hồ Chí Minh (SGN) -
+                        Hà
                         Nội (HAN)
                     </div>
                     <ul class="baggage-options">
                         <li>
                             <label>
-                                <input type="radio"  value="0" th:name="'baggage-'+${flights.id}">
+                                <input type="radio" value="0" th:name="'baggage-'+${flights.id}" checked>
                                 Không có hành lý ký gửi
                             </label>
                             <span class="price">0 đ</span>
+                            <input type="hidden" id="BaggagePrice-0" value="0" class="price-input">
                         </li>
                         <li>
                             <label>
@@ -483,7 +384,7 @@
                                 20 kg
                             </label>
                             <span class="price">381.134 đ</span>
-                            <input type="hidden" value="381134" class="price-input">
+                            <input type="hidden" value="381134" id="BaggagePrice-20" class="price-input">
                         </li>
                         <li>
                             <label>
@@ -491,7 +392,7 @@
                                 30 kg
                             </label>
                             <span class="price">566.234 đ</span>
-                            <input type="hidden" value="566234" class="price-input">
+                            <input type="hidden" value="566234" id="BaggagePrice-30" class="price-input">
                         </li>
                         <li>
                             <label>
@@ -499,7 +400,7 @@
                                 40 kg
                             </label>
                             <span class="price">756.929 đ</span>
-                            <input type="hidden" value="756929" class="price-input">
+                            <input type="hidden" value="756929" class="price-input" id="BaggagePrice-40">
                         </li>
                         <li>
                             <label>
@@ -507,11 +408,11 @@
                                 50 kg
                             </label>
                             <span class="price">941.775 đ</span>
-                            <input type="hidden" value="941775" class="price-input">
+                            <input type="hidden" value="941775" class="price-input" id="BaggagePrice-50">
                         </li>
                         <li>
                             <label>
-                                <input type="radio" th:name="'baggage-'+${flights.id}" value="60">
+                                <input type="radio" th:name="'baggage-'+${flights.id}" value="60" id="BaggagePrice-60">
                                 60 kg
                             </label>
                             <span class="price">1.132.469 đ</span>
@@ -523,14 +424,16 @@
                                 70 kg
                             </label>
                             <span class="price">1.323.163 đ</span>
-                            <input type="hidden" value="1323163" class="price-input">
+                            <input type="hidden" value="1323163" class="price-input" id="BaggagePrice-70">
                         </li>
                     </ul>
                     <div class="popup-footer">
                         <button class="cancel-button">
                             Cancel
                         </button>
-                        <button class="confirm-btn" th:data-flight-id="${flights.id}" th:data-flight-index="${index.index+1}">Confirm</button>
+                        <button class="confirm-btn" th:data-flight-id="${flights.id}"
+                                th:data-flight-index="${index.index+1}">Confirm
+                        </button>
                     </div>
                 </div>
             </div>

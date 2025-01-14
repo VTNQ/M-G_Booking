@@ -1,6 +1,8 @@
 package com.vtnq.web.DTOs.Rating;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -19,7 +21,7 @@ public class RatingDTO {
         this.description = description;
     }
 
-    private Instant createRating;
+    private LocalDateTime createRating;
     private String CreateDate;
     private String description;
 
@@ -27,7 +29,7 @@ public class RatingDTO {
         return CreateDate;
     }
 
-    public RatingDTO(int id, String avatar, String name,String description, Double rating, Instant createRating) {
+    public RatingDTO(int id, String avatar, String name,String description, Double rating, LocalDateTime createRating) {
         this.id = id;
         Avatar = avatar;
         Name = name;
@@ -45,7 +47,7 @@ public class RatingDTO {
             return null;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy 'at' hh:mm a", Locale.ENGLISH);
-        return formatter.format(createRating.atZone(ZoneId.of("UTC")));
+        return formatter.format(createRating);
     }
 
     public int getId() {
@@ -80,11 +82,11 @@ public class RatingDTO {
         Rating = rating;
     }
 
-    public Instant getCreateRating() {
+    public LocalDateTime getCreateRating() {
         return createRating;
     }
 
-    public void setCreateRating(Instant createRating) {
+    public void setCreateRating(LocalDateTime createRating) {
         this.createRating = createRating;
     }
 }

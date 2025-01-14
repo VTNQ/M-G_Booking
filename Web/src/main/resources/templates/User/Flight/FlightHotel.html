@@ -64,63 +64,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                     <div id="sidebar" class="collapse navbar-collapse">
                         <div class="mb-6 w-100">
                             <div class="sidenav border border-color-8 rounded-xs">
-                                <div id="shopCategoryAccordion" class="accordion rounded-0 shadow-none">
-                                    <div class="border-0">
-                                        <div class="card-collapse" id="shopCategoryHeadingOne">
-                                            <h3 class="mb-0">
-                                                <button class="btn btn-link btn-block card-btn py-2 px-5 collapsed"
-                                                        style="line-height: 3">
-                                                   <span class="row align-items-center">
-                                                       <span class="col-2">
-                                                           <span class="text-dark mb-3"
-                                                                 style="font-size: 1.063rem;font-weight: 500">Stops</span>
-                                                       </span>
-                                                       <span class="col-10 text-right">
-                                                           <span class="card-btn-arrow">
-                                                               <i class="fas fa-chevron-down small"></i>
-                                                           </span>
-                                                       </span>
-                                                   </span>
-                                                </button>
-                                            </h3>
-                                        </div>
-                                        <div id="shopCategoryOne" class="collapse show border-bottom">
 
-                                            <div class="card-body pt-0 mt-1 px-5 pb-4">
-                                                <div class="d-flex align-items-center justify-content-between mb-3">
-                                                    <label class="form-check-label" for="selectAllToggle">Chọn tất cả
-                                                        các hãng</label>
-                                                    <div class="form-check form-switch ms-3">
-                                                        <input class="form-check-input" type="checkbox"
-                                                               id="selectAllToggle" style="font-size: 24px">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group mb-3"
-                                                     style="font-size: 0.875rem;line-height: 1;color: #67747c !important">
-
-
-                                                    <th:block th:each="item: ${Airline}">
-                                                        <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox"
-                                                                   class="form-check-input airline-checkbox flight-select"
-
-                                                                   th:id="'checkbox-' + ${item.id}"
-                                                                   style="font-size: 25px">
-                                                            <label class="cus-control-label mt-2 ml-3"
-                                                                   th:for="'checkbox-'+${item.name}"
-                                                                   th:text="${item.name}">
-
-                                                            </label>
-                                                        </div>
-                                                    </th:block>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
                                 <div id="shopCartAccordion" class="accordion rounded shadow-none border-bottom">
                                     <div class="border-0">
                                         <div class="card-collapse" id="shopCardHeadingOne">
@@ -163,7 +107,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                 <span class="row align-items-center">
                                                     <span class="col-5">
                                                         <span class="d-block"
-                                                              style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Price Range ($)</span>
+                                                              style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Schedule</span>
                                                     </span>
                                                     <span class="col-7 text-right">
                                                         <span class="card-btn-arrow">
@@ -204,7 +148,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                 <span class="row align-items-center">
                                                     <span class="col-5">
                                                         <span class="d-block"
-                                                              style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Price Range ($)</span>
+                                                              style="font-size: 1.063rem;font-weight: 500 !important;color: #3b444f !important">Time</span>
                                                     </span>
                                                     <span class="col-7 text-right">
                                                         <span class="card-btn-arrow">
@@ -607,7 +551,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                 <i class="fa-solid fa-pen-fancy" style="font-size: 24px"></i>
                                 <span class="edit-text">Edit</span>
                             </div>
-                            <button class="close-btn" id="closeBtn">Close</button>
+                            <button type="button" class="close-btn" id="closeBtn">Close</button>
                         </div>
                         <div class="row d-block nav-select d-lg-flex mb-lg-3 px-2 px-lg-3 align-items-end">
                             <div class="col-sm-5 ">

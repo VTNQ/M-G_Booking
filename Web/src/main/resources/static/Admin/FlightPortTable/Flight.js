@@ -4,6 +4,23 @@ const closeModalBtn = document.getElementById('btnClose');
 const CloseBtn=document.getElementById('closeModalBtn');
 const cancelModalBtn = document.getElementById('cancelModalBtn');
 const DetailSeat=document.querySelectorAll('#DetailSeat');
+document.getElementById('seatForm').addEventListener('submit',function (event){
+    const firstClassSeat=document.getElementById('FirstSeat');
+    const BusinessSeat=document.getElementById('BusinessSeat');
+    const EconomySeat=document.getElementById('EconomySeat');
+    if (firstClassSeat.value.trim() === "") {
+        firstClassSeat.value = 0; // Gán giá trị mặc định là 0
+    }
+    if (BusinessSeat.value.trim() === "") {
+        BusinessSeat.value = 0; // Gán giá trị mặc định là 0
+    }
+    if (EconomySeat.value.trim() === "") {
+        EconomySeat.value = 0; // Gán giá trị mặc định là 0
+    }
+})
+
+
+
 openModalBtns.forEach((btn) => {
     btn.addEventListener('click', function(event) {
         event.preventDefault(); // Ngừng việc chuyển hướng trang
@@ -15,7 +32,8 @@ openModalBtns.forEach((btn) => {
             .then(data => {
                 // Render and display seat data
                 if(!data){
-                    modal.style.display = 'flex'; // Hiển thị modal
+                    modal.style.display = 'flex';
+                    modal.style.zIndex='10000';
                     document.getElementById('idFlight').value=flightId;
                 }else{
                     Swal.fire({
@@ -47,6 +65,9 @@ CloseBtn.addEventListener('click',function (event){
 DetailSeat.forEach((btn) => {
     btn.addEventListener('click', function (event) {
         const idFlight = this.getAttribute('data-idFlight');
+        const DepartAirPort=this.getAttribute('data-departAirport');
+        const ArrivalAirPort=this.getAttribute('data-arrivalAirport');
+        document.getElementById('location').textContent=`${DepartAirPort} -${ArrivalAirPort}`;
 
         fetch(`http://localhost:8686/api/seat/existBySeat/${idFlight}`)
             .then(response => response.json())

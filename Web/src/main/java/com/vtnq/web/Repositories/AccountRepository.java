@@ -31,4 +31,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
             "COALESCE(a.accountType, ''), COALESCE(a.countryId, 0),COALESCE(a.phone, ''),a.level.id,a.password) " +
             "from Account a where a.id = :id and a.accountType = 'ROLE_USER'")
     UserAccountDTO GetUser(@Param("id") int id);
+    @Query("select CASE  When count(a)>0 then true else false end from Account a where a.accountType='ROLE_ADMIN' AND a.countryId= :countryId")
+    boolean existsAccountByCountryId(int countryId);
 }

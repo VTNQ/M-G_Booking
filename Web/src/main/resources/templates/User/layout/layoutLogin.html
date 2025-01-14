@@ -13,8 +13,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
-    <link rel="stylesheet"    th:if="${title == 'SearchFlight' or title == 'Round Trip' or title=='Hotel' or title=='Hotel Flight'}"   href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css"/>
-    <script th:if="${title == 'SearchFlight' or title == 'Round Trip' or title=='Hotel' or title=='Hotel Flight'}"   src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
+    <link rel="stylesheet"    th:if="${title == 'SearchFlight' or title == 'Round Trip' or title=='Hotel' or title=='Hotel Flight' or title=='Round Trip Flight'}"   href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css"/>
+    <script th:if="${title == 'SearchFlight' or title == 'Round Trip' or title=='Hotel' or title=='Hotel Flight' or title=='Round Trip Flight'}"   src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
     <link rel="stylesheet" th:if="${cssPath != null}" th:href="${cssPath}">
     <link rel="stylesheet" th:if="${title == 'Payment Flight' or title == 'Payment Hotel'}" th:href="@{/user/Payment/Payment.css}">
     <link rel="stylesheet" th:if="${title=='ChangeOwner'}" th:href="@{/user/ChangeProfile/Change.css}">
@@ -92,7 +92,7 @@
             <div id="navBar" class="d-flex p-xl-0 pt-4 position-relative navbar-collapse order-xl-0 order-2" style="flex-basis: auto;justify-content: center">
                 <ul class="navbar-nav align-items-center pt-0 pb-0 flex-row">
                     <li class="nav-item hs-has-sub-menu">
-                        <a class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle" style="padding-top: 1.5rem;margin-right: 21px;padding-bottom: 1.5rem;padding-right: 1rem;color: #3b444f;font-weight: 500;font-size: 19px">
+                        <a th:href="@{/Home}" class="nav-link position-relative text-decoration-none d-flex bg-transparent u-header__nav-link-toggle" style="padding-top: 1.5rem;margin-right: 21px;padding-bottom: 1.5rem;padding-right: 1rem;color: #3b444f;font-weight: 500;font-size: 19px">
                             Home
                         </a>
                     </li>
@@ -327,7 +327,7 @@
 <div th:if="${title=='Payment'}" th:insert="~{'/User/InformationCustomer/InformationFly':: customScripts}"></div>
 <div th:if="${title=='Round Trip'}" th:insert="~{'/User/Flight/RoundTripFlight':: customScripts}"></div>
 <div th:if="${title=='Payment Hotel'}" th:insert="~{'/User/InformationCustomer/InformationCustomer':: customScripts}"></div>
-
+<div th:if="${title=='Round Trip Flight'}" th:insert="~{'/User/FlightLogin/RoundTripFlightLogin':: customScripts}"></div>
 
 
 </body>

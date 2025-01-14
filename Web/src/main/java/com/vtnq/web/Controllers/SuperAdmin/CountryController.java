@@ -26,7 +26,7 @@ public class CountryController {
     public String AddCountry(ModelMap model,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             model.put("Country", new Country());
@@ -43,7 +43,7 @@ public class CountryController {
     public String update(@ModelAttribute("Country") Country country, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if (account == null) {
+            if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             if (country.getName() == null || country.getName().isEmpty()) {
@@ -75,7 +75,7 @@ public class CountryController {
     public String EditCountry(@PathVariable int id, ModelMap model, HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if (account == null) {
+            if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             model.put("Country", countryService.findCountryById(id));
@@ -91,7 +91,7 @@ public class CountryController {
                           @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String name, HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if (account == null) {
+            if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             List<Country> countries = countryService.findAll();
@@ -114,7 +114,7 @@ public class CountryController {
     @PostMapping("Country/add")
     public String AddCountry(@ModelAttribute("Country") @Valid CountryDto country, BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         Account account = (Account) request.getSession().getAttribute("currentAccount");
-        if (account == null) {
+        if(account==null || !"ROLE_SUPERADMIN".equals(account.getAccountType())){
             return "redirect:/LoginAdmin";
         }
         if (bindingResult.hasErrors()) {

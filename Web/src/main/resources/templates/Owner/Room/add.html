@@ -37,7 +37,7 @@
                     <li class="flex items-center">
                         <a href="../pages/sign-in.html" class="block px-0 py-2 font-semibold text-white transition-all ease-in-out text-sm">
                             <i class="fa fa-user sm:mr-1" aria-hidden="true"></i>
-                            <span class="hidden sm:inline">Sign In</span>
+                            <span class="hidden sm:inline">Log out</span>
                         </a>
                     </li>
                     <li class="flex items-center pl-4 xl:hidden">
@@ -149,7 +149,7 @@
                         <div class="border-black/12.5 rounded-t-2xl border-b-0 border-solid p-6 pb-0">
                             <div class="flex items-center justify-content-between">
                                 <p class="mb-0 dark:text-white/80">Room</p>
-                                <button type="button"  class="btn btn-primary  text-wrap  " id="openModalBtn" >
+                                <button type="button"  class="btn btn-primary  text-wrap  " id="openModalBtn" style="background-color: #0b5ed7">
                                     <i class="fa-solid fa-plus"></i>
                                     Add Type</button>
                             </div>
@@ -226,7 +226,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5>Add Type</h5>
-                <button class="close-btn" id="closeModalBtn">&times;</button>
+                <button type="button" class="close-btn" id="closeModalBtn">&times;</button>
             </div>
             <div class="modal-body">
 
@@ -239,7 +239,7 @@
             </div>
             <div class="modal-footer">
                 <input type="hidden" th:field="${type.hotelId}"/>
-                <button class="btn-secondary" id="cancelModalBtn">Close</button>
+
                 <button class="btn-primary" id="saveModalBtn">Save Type</button>
             </div>
         </div>
@@ -288,7 +288,12 @@
                                     const img = document.createElement('img');
                                     img.src = e.target.result;
                                     img.alt = file.name;
-                                    img.classList.add('w-20', 'h-20', 'object-cover', 'rounded-lg', 'border', 'border-gray-300');
+                                    img.classList.add( 'h-auto', 'rounded-lg', 'border', 'border-gray-300', 'mr-2');
+                                    img.style.setProperty("height","30vh","important");
+                                    img.style.width='22vh';
+                                    img.style.objectFit='fill'
+                                    previewContainer.style.display = 'flex';
+                                    previewContainer.style.flexWrap = 'nowrap';
                                     previewContainer.appendChild(img);
                                 };
                                 reader.readAsDataURL(file);
@@ -302,6 +307,9 @@
         const openModalBtn=document.getElementById('openModalBtn');
         const closeModalBtn=document.getElementById('closeModalBtn');
         const cancelModalBtn=document.getElementById('cancelModalBtn');
+        closeModalBtn.addEventListener('click',()=>{
+            modal.style.display='none';
+        })
         openModalBtn.addEventListener('click', () => {
             modal.style.display = 'flex';
         });

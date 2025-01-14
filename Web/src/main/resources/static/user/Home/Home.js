@@ -3,14 +3,24 @@ document.addEventListener('DOMContentLoaded',function (){
     if(TripTypeValue==='true'){
         document.getElementById('ArrivalDate').style.display='block';
     }else{
-        document.getElementById('ArrivalDate').style.display='none'
+        const arrivalTimeInput = document.getElementById('arrivalTime');
+        if (arrivalTimeInput) {
+            arrivalTimeInput.value = ''; // Xóa giá trị đã chọn
+            if (arrivalTimeInput._flatpickr) {
+                arrivalTimeInput._flatpickr.clear(); // Xóa Flatpickr nếu đã được khởi tạo
+            }
+        }
+        document.getElementById('ArrivalDate').style.display='none';
+
     }
     const flexSwitchCheckDefault=document.getElementById('flexSwitchCheckDefault');
+    console.log(flexSwitchCheckDefault.value)
     if(flexSwitchCheckDefault.checked){
         document.getElementById('RoomNumber').style.display='block';
         document.getElementById('TimeHotel').style.display='block';
         document.getElementById('AtHotel').style.display='block'
     }else{
+        console.log('test')
         document.getElementById('RoomNumber').style.display='none';
         document.getElementById('TimeHotel').style.display='none';
         document.getElementById('AtHotel').style.display='none'
@@ -302,12 +312,6 @@ document.addEventListener("click", (event) => {
         toDropdown.style.display = "none";
     }
 });
-//Dropdown select
-
-
-
-
-// Close dropdown if clicked outside
 
 function initFlatpickr(selector, options) {
     // Khởi tạo flatpickr với selector và các tùy chọn
@@ -321,6 +325,25 @@ function initDepartTime() {
         defaultDate: [new Date()], // Set default dates to today
         minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
         onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
             if (selectedDates.length) {
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date
@@ -335,6 +358,25 @@ function initCheckInTime() {
         defaultDate: [new Date()], // Set default dates to today
         minDate: "today", // Chỉ cho phép chọn từ ngày hôm nay
         onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
             if (selectedDates.length) {
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date
@@ -366,6 +408,25 @@ function initCheckOutTime() {
         defaultDate: [new Date()], // Set default dates to today
         minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
         onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+
+            // Xóa các ngày đã chọn khi nhấn nút Clear
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
             if (selectedDates.length) {
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date
@@ -398,6 +459,23 @@ function initArrivalTime() {
         defaultDate: [new Date()], // Set default dates to today
         minDate: departDateValue, // Chỉ cho phép chọn từ ngày sau departtime
         onReady: function (selectedDates, dateStr, instance) {
+            const clearButton = document.createElement("button");
+            clearButton.type = "button";
+            clearButton.textContent = "Clear";
+            clearButton.className = "flatpickr-clear-btn";
+            clearButton.style.margin = "5px";
+            clearButton.style.padding = "5px 10px";
+            clearButton.style.backgroundColor = "#f44336";
+            clearButton.style.color = "#fff";
+            clearButton.style.border = "none";
+            clearButton.style.cursor = "pointer";
+            clearButton.addEventListener("click", function () {
+                instance.clear();
+                instance.close(); // Đóng Flatpickr sau khi xóa
+            });
+
+            // Gắn nút Clear vào Flatpickr footer
+            instance.calendarContainer.appendChild(clearButton);
             if (selectedDates.length) {
                 const firstDate = instance.formatDate(selectedDates[0], "Y-m-d");
                 instance.element.value = firstDate; // Set the input value to the first date
@@ -444,7 +522,13 @@ document.getElementById('OneWay').addEventListener('click',function (){
     RoundTrip.style.borderColor='rgba(94,107,130,.32)';
     document.getElementById('ArrivalDate').style.display='none';
     document.getElementById('TripTypeValue').value=false;
-
+    const arrivalTimeInput = document.getElementById('arrivalTime');
+    if (arrivalTimeInput) {
+        arrivalTimeInput.value = ''; // Xóa giá trị đã chọn
+        if (arrivalTimeInput._flatpickr) {
+            arrivalTimeInput._flatpickr.clear(); // Xóa Flatpickr nếu đã được khởi tạo
+        }
+    }
 })
 document.getElementById('RoundTrip').addEventListener('click',function (){
 
@@ -474,3 +558,16 @@ if(this.checked){
     RoomNumber.style.display='none'
 }
 })
+document.querySelector('.swap-button').addEventListener('click', function () {
+    const fromInput = document.getElementById('from-input');
+    const toInput = document.getElementById('to-input');
+    const fromInputId=document.getElementById('from-input-id');
+    const ToInputId=document.getElementById('to-input-id');
+
+    const tempValue = fromInput.value;
+    fromInput.value = toInput.value;
+    toInput.value = tempValue;
+    const TempValueId=fromInputId.value;
+    fromInputId.value=ToInputId.value;
+    ToInputId.value=TempValueId;
+});

@@ -36,12 +36,12 @@ public class FlightController {
 
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
 
-            if(currentAccount==null){
+            if(currentAccount==null || !"ROLE_ADMIN".equals(currentAccount.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             model.put("DepartureAirPort", airportService.findAll(currentAccount.getCountryId()));
             model.put("ArrivalAirPort", airportService.findAll());
-            model.put("Airline", airlineService.findAll());
+            model.put("Airline", airlineService.FindByCountryId(currentAccount.getCountryId()));
             model.put("flight", new FlightDto());
 
             return "Admin/Flight/add";
@@ -57,7 +57,7 @@ public class FlightController {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
 
-            if(currentAccount==null){
+            if(currentAccount==null || !"ROLE_ADMIN".equals(currentAccount.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             model.put("flight", flightService.findById(id));
@@ -77,7 +77,7 @@ public class FlightController {
                          @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "") String name) {
         try {
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
-            if(currentAccount==null){
+            if(currentAccount==null || !"ROLE_ADMIN".equals(currentAccount.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             List<FlightListDTO> flights = flightService.findAllByCountry(currentAccount.getCountryId());
@@ -101,7 +101,7 @@ public class FlightController {
     public String UpdateFlight(@ModelAttribute("flight") @Valid FlightDto flightDto,BindingResult bindingResult,HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             if (bindingResult.hasErrors()) {
@@ -133,13 +133,36 @@ public class FlightController {
         }
     }
     @PostMapping("Flight/addSeat")
-    public String addSeat(@ModelAttribute("Seat")SeatDTO seatDTO,RedirectAttributes redirectAttributes,HttpServletRequest request) {
+    public String addSeat(@ModelAttribute("Seat") SeatDTO seatDTO,RedirectAttributes redirectAttributes,HttpServletRequest request,BindingResult bindingResult) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
-
+            if (bindingResult.hasErrors()) {
+                StringBuilder errorMessages = new StringBuilder("Validation errors: ");
+                bindingResult.getFieldErrors().forEach(error ->
+                        errorMessages.append(String.format("Field : %s. ", error.getDefaultMessage()))
+                );
+                redirectAttributes.addFlashAttribute("message", errorMessages.toString());
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Admin/Flight";
+            }
+             if(seatDTO.hasErrors()){
+                redirectAttributes.addFlashAttribute("message",seatDTO.getValidationErrors());
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Admin/Flight";
+            }
+            if (!seatDTO.isValid()) {
+                redirectAttributes.addFlashAttribute("message", String.join("\n", seatDTO.getValidationErrors()));
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/Admin/Flight";
+            }
+            if(seatDTO.getFirstClassSeat()==0 &&seatDTO.getBusinessClassSeat()==0 && seatDTO.getEconomyClassSeat()==0){
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                redirectAttributes.addFlashAttribute("message","You have not entered any seats yet.");
+                return "redirect:/Admin/Flight";
+            }
             if(flightService.CreateSeat(seatDTO)) {
                 redirectAttributes.addFlashAttribute("messageType", "success");
                 redirectAttributes.addFlashAttribute("message", "Seat added successfully");
@@ -161,7 +184,7 @@ public class FlightController {
             ) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             if (bindingResult.hasErrors()) {

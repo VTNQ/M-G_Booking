@@ -13,8 +13,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
-    <link rel="stylesheet"    th:if="${title == 'SearchFlight' or title == 'Round Trip' or title=='Hotel' or title=='Hotel Flight'}"   href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css"/>
-    <script th:if="${title == 'SearchFlight' or title == 'Round Trip' or title=='Hotel' or title=='Hotel Flight'}"   src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
+    <link rel="stylesheet"    th:if="${title == 'SearchFlight' or title == 'Round Trip' or title=='Hotel' or title=='Hotel Flight' or title=='Round Trip Flight'}"   href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css"/>
+    <script th:if="${title == 'SearchFlight' or title == 'Round Trip' or title=='Hotel' or title=='Hotel Flight' or title=='Round Trip Flight'}"   src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
     <link rel="stylesheet" th:if="${cssPath != null}" th:href="${cssPath}">
     <link rel="stylesheet" th:if="${title == 'Payment Flight' or title == 'Payment Hotel'}" th:href="@{/user/Payment/Payment.css}">
     <link rel="stylesheet" th:if="${title=='ChangeOwner'}" th:href="@{/user/ChangeProfile/Change.css}">
@@ -334,6 +334,7 @@
 <div th:if="${title=='Hotel'}" th:insert="~{'/User/Hotel/Hotel':: customScripts}"></div>
 <div th:if="${title=='Payment'}" th:insert="~{'/User/InformationCustomer/InformationFly':: customScripts}"></div>
 <div th:if="${title=='Round Trip'}" th:insert="~{'/User/Flight/RoundTripFlight':: customScripts}"></div>
+
 <div th:if="${title=='Payment Hotel'}" th:insert="~{'/User/InformationCustomer/InformationCustomer':: customScripts}"></div>
 <div th:if="${title=='Detail Hotel'}" th:insert="~{'/User/DetailHotel/DetailHotel':: customScripts}"></div>
 

@@ -20,6 +20,10 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon"  th:href="@{SuperAdmin/assets/img/favicon/favicon.ico}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3.7.0/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3.7.0/notyf.min.js"></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -216,9 +220,34 @@
     >Upgrade to Pro</a
     >
 </div>
-
+<div th:if="${message}" th:attr="data-message=${message}, data-type=${messageType}"></div>
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
+<script>
+    var messageElement = document.querySelector('div[data-message]');
+    if (messageElement) {
+        var message = messageElement.getAttribute('data-message');
+        var messageType = messageElement.getAttribute('data-type');
+
+        // Initialize Notyf
+        const notyf = new Notyf({
+            duration: 3000,
+            position: {
+                x: 'right',
+                y: 'top'
+            }
+        });
+
+        if (message) {
+            if (messageType === 'success') {
+                notyf.success(message); // Show success notification
+            } else if (messageType === 'error') {
+                notyf.error(message); // Show error notification
+            }
+        }
+    }
+
+</script>
 <script th:src="@{/SuperAdmin/assets/vendor/libs/jquery/jquery.js}"></script>
 <script th:src="@{/SuperAdmin/assets/vendor/libs/popper/popper.js}"></script>
 <script th:src="@{/SuperAdmin/assets/vendor/js/bootstrap.js}"></script>

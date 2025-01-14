@@ -8,6 +8,7 @@ import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Entities.Airport;
 import com.vtnq.web.Entities.City;
 import com.vtnq.web.Repositories.AirportRepository;
+import com.vtnq.web.Repositories.CityRepository;
 import com.vtnq.web.Service.AirlineService;
 import com.vtnq.web.Service.FlightService;
 import com.vtnq.web.Service.HotelService;
@@ -37,6 +38,8 @@ public class HomeController {
     @Autowired
     private AirlineService airlineService;
     @Autowired
+    private CityRepository cityRepository;
+    @Autowired
     private AirportRepository airportRepository;
     @Autowired
     private HotelService hotelService;
@@ -44,25 +47,27 @@ public class HomeController {
     public String Home(HttpServletRequest request, ModelMap model) {
        try {
 
-           Account account = (Account) request.getSession().getAttribute("currentAccount");
+            Account account = (Account) request.getSession().getAttribute("currentAccount");
            SearchFlightDTO searchFlightDTO=(SearchFlightDTO)request.getSession().getAttribute("searchFlightDTO");
-           SearchFlightDTO HotelSearch=(SearchFlightDTO)request.getSession().getAttribute("HotelSearch");
 
-           SearchFlightDTO searchFlightDTO1;
-           if(HotelSearch != null) {
-               searchFlightDTO1=HotelSearch;
-           }else if(searchFlightDTO != null) {
-               searchFlightDTO1=searchFlightDTO;
-           }else{
-               searchFlightDTO1=new SearchFlightDTO();
-           }
+
 
            if(account == null) {
-               model.put("Search",searchFlightDTO1);
+               if(searchFlightDTO != null) {
+                   model.put("Search",searchFlightDTO);
+               }else{
+                   model.put("Search",new SearchFlightDTO());
+               }
+
 
                return "User/Home/Home";
            }else{
-               model.put("Search",searchFlightDTO1);
+               if(searchFlightDTO != null) {
+                   model.put("Search",searchFlightDTO);
+               }else{
+                   model.put("Search",new SearchFlightDTO());
+               }
+
                return "User/Home/HomeLogin";
            }
 
@@ -90,7 +95,7 @@ public class HomeController {
           }
           if(account == null) {
               session.setAttribute("idRoom",id);
-              SearchFlightDTO searchFlightDTO = (SearchFlightDTO) request.getSession().getAttribute("HotelSearch");
+              SearchFlightDTO searchFlightDTO = (SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
               String selectedDateStr = searchFlightDTO.getDepartureTime().trim();
               if (selectedDateStr.endsWith(",")) {
                   selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
@@ -141,7 +146,7 @@ public class HomeController {
               return "User/Flight/FlightHotel";
           }else{
               session.setAttribute("idRoom",id);
-              SearchFlightDTO searchFlightDTO = (SearchFlightDTO) request.getSession().getAttribute("HotelSearch");
+              SearchFlightDTO searchFlightDTO = (SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
               String selectedDateStr = searchFlightDTO.getDepartureTime().trim();
               if (selectedDateStr.endsWith(",")) {
                   selectedDateStr = selectedDateStr.substring(0, selectedDateStr.length() - 1);
@@ -177,16 +182,22 @@ public class HomeController {
               // Lấy thông tin hãng hàng không
               model.put("Airline", airlineService.searchAirline(searchFlightDTO.getDepartureAirport(), searchFlightDTO.getArrivalAirport(),
                       departureDate, searchFlightDTO.getTypeFlight()));
-              Instant ArrivalTime=parseToInstant(searchFlightDTO.getArrivalTime());
-              String dateArrival=formatDate(ArrivalTime);
+              if(!searchFlightDTO.getArrivalTime().isEmpty()){
+                  Instant ArrivalTime=parseToInstant(searchFlightDTO.getArrivalTime());
+                  String dateArrival=formatDate(ArrivalTime);
+                  model.put("ArrivalDate",dateArrival);
+              }
+
 
               Instant dateCheckInTime=parseToInstant(searchFlightDTO.getCheckInTime());
               String dateCheckIn=formatDate(dateCheckInTime);
 
               model.put("DepartureDate",dateDeparture);
-              model.put("ArrivalDate",dateArrival);
+
               model.put("CheckIn",dateCheckIn);
               model.put("CheckOut",dateCheckOut);
+              model.put("DepartAirport",airportRepository.findById(searchFlightDTO.getDepartureAirport()).orElseThrow(()->new RuntimeException("Aiport Not Found")));
+              model.put("ArrivalAirport",airportRepository.findById(searchFlightDTO.getArrivalAirport()).orElseThrow(()->new RuntimeException("Aiport Not Found")));
               model.put("Room",searchFlightDTO.getQuantityRoom());
               model.put("People",searchFlightDTO.getNumberPeopleRight());
               return "User/FlightLogin/FlightHotelLogin";
@@ -204,6 +215,10 @@ public class HomeController {
                                     HttpServletRequest request) {
 
         Account account=(Account)request.getSession().getAttribute("currentAccount");
+        Airport DepartAirport=airportRepository.findById(searchFlightDTO.getDepartureAirport())
+                .orElseThrow(()->new RuntimeException("Depart AiRpORT Not Found"));
+        Airport ArrivalAirPort=airportRepository.findById(searchFlightDTO.getArrivalAirport())
+                .orElseThrow(()->new RuntimeException("Arrival Airport Not Found"));
         if(account==null){
             minPrice=hotelService.FindMinPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom());
             maxPrice=hotelService.FindMaxPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom());
@@ -213,8 +228,12 @@ public class HomeController {
             Instant dateCheckOutTime=parseToInstant(searchFlightDTO.getCheckOutTime());
             String dateCheckOut=formatDate(dateCheckOutTime);
             String dateDeparture=formatDate(dateDepartureTime);
-            Instant ArrivalTime=parseToInstant(searchFlightDTO.getArrivalTime());
-            String dateArrival=formatDate(ArrivalTime);
+            if(!searchFlightDTO.getArrivalTime().isEmpty()){
+                Instant ArrivalTime=parseToInstant(searchFlightDTO.getArrivalTime());
+                String dateArrival=formatDate(ArrivalTime);
+                model.put("ArrivalDate",dateArrival);
+            }
+
             String selectedDateStr = searchFlightDTO.getDepartureTime().trim();
             // Kiểm tra nếu selectedDateStr rỗng hoặc null
             if (selectedDateStr == null || selectedDateStr.isEmpty()) {
@@ -232,6 +251,7 @@ public class HomeController {
 
             // Thêm dữ liệu vào model
             model.put("Search",searchFlightDTO);
+            model.put("City",cityRepository.findById(searchFlightDTO.getIdCity()).orElseThrow(()->new RuntimeException("City Not Found")));
             List<HotelSearchDTO>allHotel=hotelService.SearchHotels(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom(),minPrice,maxPrice);
             model.put("Hotel", allHotel);
             model.put("currentPage", page);
@@ -240,7 +260,8 @@ public class HomeController {
             model.put("pageSize", size);
             model.put("MinPrice",hotelService.FindMinPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
             model.put("MaxPrice",hotelService.FindMaxPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
-            session.setAttribute("HotelSearch", searchFlightDTO);
+            session.setAttribute("searchFlightDTO", searchFlightDTO);
+
             model.put("Flight", flightService.FindResultFlightAndHotel(
                     searchFlightDTO.getDepartureAirport(),
                     searchFlightDTO.getArrivalAirport(),
@@ -253,15 +274,17 @@ public class HomeController {
                     searchFlightDTO.getTypeFlight()
             ):new ResultFlightDTO());
             model.put("DepartureDate",dateDeparture);
-            model.put("ArrivalDate",dateArrival);
+
             model.put("CheckIn",dateCheckIn);
             model.put("CheckOut",dateCheckOut);
 
             model.put("People",searchFlightDTO.getNumberPeopleRight());
             model.put("Room",searchFlightDTO.getQuantityRoom());
-
+            model.put("DepartAirport",DepartAirport.getName());
+            model.put("ArrivalAirPort",ArrivalAirPort.getName());
             return "User/Hotel/Hotel";
         }else {
+            model.put("City",cityRepository.findById(searchFlightDTO.getIdCity()).orElseThrow(()->new RuntimeException("City Not Found")));
             minPrice=hotelService.FindMinPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom());
             maxPrice=hotelService.FindMaxPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom());
             Instant dateDepartureTime=parseToInstant(searchFlightDTO.getDepartureTime());
@@ -270,8 +293,13 @@ public class HomeController {
             Instant dateCheckOutTime=parseToInstant(searchFlightDTO.getCheckOutTime());
             String dateCheckOut=formatDate(dateCheckOutTime);
             String dateDeparture=formatDate(dateDepartureTime);
-            Instant ArrivalTime=parseToInstant(searchFlightDTO.getArrivalTime());
-            String dateArrival=formatDate(ArrivalTime);
+            if(!searchFlightDTO.getArrivalTime().isEmpty()){
+                Instant ArrivalTime=parseToInstant(searchFlightDTO.getArrivalTime());
+                String dateArrival=formatDate(ArrivalTime);
+                model.put("ArrivalDate",dateArrival);
+            }
+
+
             String selectedDateStr = searchFlightDTO.getDepartureTime().trim();
             // Kiểm tra nếu selectedDateStr rỗng hoặc null
             if (selectedDateStr == null || selectedDateStr.isEmpty()) {
@@ -297,7 +325,7 @@ public class HomeController {
             model.put("pageSize", size);
             model.put("MinPrice",hotelService.FindMinPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
             model.put("MaxPrice",hotelService.FindMaxPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
-            session.setAttribute("HotelSearch", searchFlightDTO);
+            session.setAttribute("searchFlightDTO", searchFlightDTO);
             model.put("Flight", flightService.FindResultFlightAndHotel(
                     searchFlightDTO.getDepartureAirport(),
                     searchFlightDTO.getArrivalAirport(),
@@ -310,13 +338,14 @@ public class HomeController {
                     searchFlightDTO.getTypeFlight()
             ):new ResultFlightDTO());
             model.put("DepartureDate",dateDeparture);
-            model.put("ArrivalDate",dateArrival);
+
             model.put("CheckIn",dateCheckIn);
             model.put("CheckOut",dateCheckOut);
 
             model.put("People",searchFlightDTO.getNumberPeopleRight());
             model.put("Room",searchFlightDTO.getQuantityRoom());
-
+            model.put("DepartAirport",DepartAirport.getName());
+           model.put("ArrivalAirPort",ArrivalAirPort.getName());
             return "User/Hotel/HotelLogin";
         }
 
@@ -350,8 +379,8 @@ public class HomeController {
             // Lấy danh sách chuyến bay
             List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
                     searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight());
-
-
+            int flightCount = resultFlightDTOS.size();
+            model.put("flightCount",flightCount);
             model.put("Flight", resultFlightDTOS);
             model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
             model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
@@ -394,7 +423,8 @@ public class HomeController {
             // Lấy thông tin hãng hàng không
             model.put("Airline", airlineService.searchAirline(searchFlightDTO.getDepartureAirport(), searchFlightDTO.getArrivalAirport(),
                     departureDate, searchFlightDTO.getTypeFlight()));
-
+            int flightCount = resultFlightDTOS.size();
+            model.put("flightCount",flightCount);
             return "User/FlightLogin/FlightLogin";
         }
     }
@@ -438,6 +468,7 @@ public class HomeController {
                 model.put("searchFlightDTO",searchFlightDTO);
                 model.put("NameArrivalAirport",airport.getCity().getName());
                 model.put("flight",flightService.FindByIdFlight(id));
+                model.put("Airline",airlineService.SearchAirlineArrival(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight()));
                 model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
                 model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
                 model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
@@ -460,6 +491,7 @@ public class HomeController {
                 model.put("flight",flightService.FindByIdFlight(id));
                 model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
                 model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+                model.put("Airline",airlineService.SearchAirlineArrival(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight()));
                 model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
                 return "User/FlightLogin/RoundTripFlightLogin";
             }
@@ -504,10 +536,13 @@ public class HomeController {
                 model.put("ArrivalDate",dateArrival);
                 model.put("CheckIn",dateCheckIn);
                 model.put("CheckOut",dateCheckOut);
-
+                model.put("DepartAirport",airportRepository.findById(searchFlightDTO.getDepartureAirport()).orElseThrow(()->new RuntimeException("Aiport not found")));
+                model.put("ArrivalAirport",airportRepository.findById(searchFlightDTO.getArrivalAirport()).orElseThrow(()->new RuntimeException("Aiport not found")));
                 model.put("People",searchFlightDTO.getNumberPeopleRight());
                 model.put("Room",searchFlightDTO.getQuantityRoom());
                 model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+                model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+                model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
                 return "User/Flight/RoundTripHotelFlight";
             }else{
                 List<Integer>idFlight=new ArrayList<>();
@@ -543,7 +578,13 @@ public class HomeController {
 
                 model.put("People",searchFlightDTO.getNumberPeopleRight());
                 model.put("Room",searchFlightDTO.getQuantityRoom());
+                model.put("Airline",airlineService.SearchAirlineArrival(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight()));
+                model.put("DepartAirport",airportRepository.findById(searchFlightDTO.getDepartureAirport()).orElseThrow(()->new RuntimeException("Aiport not found")));
+                model.put("ArrivalAirport",airportRepository.findById(searchFlightDTO.getArrivalAirport()).orElseThrow(()->new RuntimeException("Aiport not found")));
+                model.put("Flight",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
                 model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+                model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+                model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
                 return "User/FlightLogin/RoundTripHotelFlightLogin";
             }
 

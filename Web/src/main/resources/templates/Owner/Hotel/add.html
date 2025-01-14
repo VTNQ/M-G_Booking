@@ -37,7 +37,7 @@
                     <li class="flex items-center">
                         <a href="../pages/sign-in.html" class="block px-0 py-2 font-semibold text-white transition-all ease-in-out text-sm">
                             <i class="fa fa-user sm:mr-1" aria-hidden="true"></i>
-                            <span class="hidden sm:inline">Sign In</span>
+                            <span class="hidden sm:inline">Log out</span>
                         </a>
                     </li>
                     <li class="flex items-center pl-4 xl:hidden">
@@ -182,7 +182,7 @@
                                 </div>
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
-                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">City</label>
+                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">District</label>
                                         <select  id="city-select"  class="form-control js-select2" th:field="${hotel.districtId}">
                                             <option th:each="districts : ${District}" th:value="${districts.id}" th:text="${districts.name}"></option>
                                         </select>

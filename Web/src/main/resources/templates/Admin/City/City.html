@@ -15,7 +15,7 @@
         <div class="row">
             <div class="card">
                 <div class="card-header justify-content-between" style="border-bottom: 1px solid #e6e7e9"   >
-                    <h5 >Danh sách City</h5>
+                    <h5 >City List</h5>
                     <a th:href="@{/Admin/City/add}" class="text-decoration-none btn btn-primary">
                         <i class="ti ti-plus" style="color:white;"></i>
                         <span class="ms-1" style="color: white">Thêm</span>
@@ -46,9 +46,7 @@
                                     <td th:text="${Cities.name}"></td>
                                     <td>
                                         <a th:href="@{'/Admin/City/edit/'+${Cities.id}}" style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i style="color: white" class="ti ti-edit"></i></a>
-                                        <a th:href="@{'/Admin/City/delete/'+${Cities.id}}"  class="btn btn-danger">
-                                            <i style="color: white" class="ti ti-trash-x"></i>
-                                        </a>
+
                                     </td>
                                     <td>
                                         <a th:href="@{'/Admin/District/'+${Cities.id}}" style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i style="color: white" class="ti ti-edit"></i></a>

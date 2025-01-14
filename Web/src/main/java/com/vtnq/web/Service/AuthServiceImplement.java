@@ -376,4 +376,14 @@ public class AuthServiceImplement implements AuthService {
             return false;
         }
     }
+
+    @Override
+    public boolean existAccountCountry(int countryId) {
+        try {
+            return accountRepository.existsAccountByCountryId(countryId);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
 }

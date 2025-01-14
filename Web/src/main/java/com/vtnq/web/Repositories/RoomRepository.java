@@ -16,4 +16,6 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     List<RoomDetailHotel>findRoomDetailHotel(int id);
     @Query("select a from Room  a where a.type.id = :id and a.status=false")
     Room findByTypeId(int id);
+    @Query("select a from Room a where a.type.id = :id and a.status=false ")
+    List<Room>FindRoomType(int id);
 }

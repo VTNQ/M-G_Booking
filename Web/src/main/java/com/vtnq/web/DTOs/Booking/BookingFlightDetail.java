@@ -6,15 +6,8 @@ public class BookingFlightDetail {
     private int id;
     private int flightId;
 
-    public int getBaggage() {
-        return baggage;
-    }
 
-    public void setBaggage(int baggage) {
-        this.baggage = baggage;
-    }
 
-    private int baggage;
     public int getFlightId() {
         return flightId;
     }

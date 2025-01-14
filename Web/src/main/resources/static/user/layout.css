@@ -715,6 +715,7 @@ table th {
     animation: fadeIn 0.5s ease-in-out;
 }
 .popup.show{
+    z-index: 10000;
     display: flex;
     animation: fadeIn 0.5s ease forwards;
 }
@@ -2351,6 +2352,8 @@ table th {
     margin-top: 0.5rem;
     display: none;
     z-index: 10;
+    max-height: 300px   ;
+    overflow-y: auto;
     padding: 1rem;
 }
 .dropdown-header span {

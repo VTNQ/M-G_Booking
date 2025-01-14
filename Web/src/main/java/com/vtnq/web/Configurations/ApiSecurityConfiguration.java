@@ -40,7 +40,7 @@ public class ApiSecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Allow only trusted origins (replace with actual front-end URLs in production)
-        configuration.setAllowedOrigins(List.of("http://localhost:8686"));
+        configuration.setAllowedOrigins(List.of("http://localhost:8686", "https://your-production-frontend.com"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true); // Allow credentials (e.g., cookies, authorization headers)

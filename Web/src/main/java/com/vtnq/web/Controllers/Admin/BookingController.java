@@ -26,8 +26,9 @@ public class BookingController {
                           HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
+
             }
             List<Booking>bookings=bookingService.FindBookings(account.getCountryId());
             List<Booking>FilterBooking=bookings.stream().filter(booking->booking.getBookingCode().contains(code)).collect(Collectors.toList());
@@ -48,7 +49,7 @@ public class BookingController {
     public String detailBooking(ModelMap modelMap,@PathVariable int id,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
-            if(account==null){
+            if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
             modelMap.put("flight",bookingService.findBookingFlights(id));
