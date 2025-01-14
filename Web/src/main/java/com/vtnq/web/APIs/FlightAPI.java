@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,6 +38,29 @@ public class FlightAPI {
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<ResultFlightDTO>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("getFlight")
+    public ResponseEntity<List<ResultFlightDTO>> getFlight(
+            @RequestParam int departureAirport,
+            @RequestParam int arrivalAirport,
+            @RequestParam String departureTime,
+            @RequestParam String typeFlight,
+            @RequestParam int numberPeopleRight) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return new ResponseEntity<List<ResultFlightDTO>>(
+                    flightService.SearchFlight(
+                            departureAirport,
+                            arrivalAirport,
+                            LocalDate.parse(departureTime, formatter),
+                            typeFlight,
+                            numberPeopleRight
+                    ),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

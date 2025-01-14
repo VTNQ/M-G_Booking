@@ -2,22 +2,28 @@ import 'package:mobile/APIs/BaseUrl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mobile/Model/AirPort.dart';
+import 'package:mobile/Model/CountryAirPort.dart';
 
 class AirPortAPI{
-  static String AirPortUrl=BaseUrl.baseUrl+"/Airport";
+  static String AirPortUrl=BaseUrl.baseUrl+"/AirPort";
 
-  Future<List<Airport>> searchAirPort(String search) async {
-    var response = await http.get(Uri.parse(AirPortUrl + "/SearchAirPort?$search"));
-    if (response.statusCode == 200) {
-      var responseBody = jsonDecode(response.body);
-      if (responseBody['status'] == 200) {
-        List<dynamic> data = responseBody['data'];
-        return data.map((e) => Airport.fromMap(e)).toList();
+  Future<List<CountryAirPort>> searchAirPort(String search) async {
+    try{
+      var response = await http.get(Uri.parse(AirPortUrl + "/SearchAirPort?search=$search"));
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+        if(responseBody is List){
+          List<CountryAirPort> data = responseBody.map((e) => CountryAirPort.fromMap(e)).toList();
+          return data;
+        }else{
+          throw "error";
+        }
       } else {
-        throw Exception(responseBody['message'] ?? "Failed to fetch AirPort.");
+        throw "Can't get AirPort";
       }
-    } else {
-      throw "Can't get AirPort";
+    }catch(e){
+      throw e;
     }
   }
+
 }
