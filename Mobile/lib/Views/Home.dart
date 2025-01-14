@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile/Model/AirPort.dart';
 import 'package:mobile/Model/Flight.dart';
 import 'package:mobile/Model/HotelBooking.dart';
 import 'package:mobile/Views/Information.dart';
 import 'package:mobile/Views/ListFlight.dart';
+import 'package:mobile/APIs/AirPortAPI.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -24,6 +26,35 @@ class HomePage extends State<Home> {
   final TextEditingController checkOutController = TextEditingController();
   final TextEditingController roomCountController = TextEditingController();
   final TextEditingController ticketCountController = TextEditingController();
+
+  List<Airport> departureAirports = [];
+  List<Airport> destinationAirports = [];
+
+  void _fetchAirports(String query, bool isDeparture) async {
+    if (query.isEmpty) {
+      setState(() {
+        if (isDeparture) {
+          departureAirports = [];
+        } else {
+          destinationAirports = [];
+        }
+      });
+      return;
+    }
+
+    try {
+      List<Airport> airports = await AirPortAPI().searchAirPort(query);
+      setState(() {
+        if (isDeparture) {
+          departureAirports = airports;
+        } else {
+          destinationAirports = airports;
+        }
+      });
+    } catch (e) {
+      print('Error fetching airports: $e');
+    }
+  }
 
   DateTime? selectedDepartureDate;
   DateTime? selectedReturnDate;
@@ -242,7 +273,6 @@ class HomePage extends State<Home> {
 
       // Gọi API
       // await flightAPI.bookFlight(request);
-
       // Xử lý sau khi gọi API thành công
       // Ví dụ: chuyển trang, hiển thị thông báo, etc.
       ScaffoldMessenger.of(context).showSnackBar(
@@ -358,7 +388,27 @@ class HomePage extends State<Home> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
+                    onChanged: (value) {
+                      _fetchAirports(value, true);
+                    },
                   ),
+                  if (departureAirports.isNotEmpty)
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: departureAirports.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(departureAirports[index].name!),
+                          onTap: () {
+                            setState(() {
+                              departureController.text = departureAirports[index].name!;
+                              departureAirports = []; // Clear suggestions
+                            });
+                          },
+                        );
+                      },
+                    ),
                   const SizedBox(height: 16),
                   TextField(
                     controller: destinationController,
@@ -369,7 +419,27 @@ class HomePage extends State<Home> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
+                    onChanged: (value) {
+                      _fetchAirports(value, false);
+                    },
                   ),
+                  if (departureAirports.isNotEmpty)
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: destinationAirports.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(destinationAirports[index].name!),
+                          onTap: () {
+                            setState(() {
+                              destinationController.text = destinationAirports[index].name!;
+                              departureAirports = []; // Clear suggestions
+                            });
+                          },
+                        );
+                      },
+                    ),
                   const SizedBox(height: 16),
                   Row(
                     children: [

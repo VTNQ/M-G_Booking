@@ -16,7 +16,7 @@ public class AirPortController {
     @Autowired
     private AirportService airportService;
 
-    @GetMapping(value = "/SearchAirPort")
+    @GetMapping(value = "/SearchAirPort/")
     public ResponseEntity<List<CountryAiportDTO>> SearchAirPort(@RequestParam String search) {
         try {
             return new ResponseEntity<List<CountryAiportDTO>>(airportService.SearchAirport(search), HttpStatus.OK);
