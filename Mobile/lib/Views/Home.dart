@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile/Model/AirPort.dart';
+import 'package:mobile/Model/CountryAirPort.dart';
 import 'package:mobile/Model/Flight.dart';
 import 'package:mobile/Model/HotelBooking.dart';
 import 'package:mobile/Views/Information.dart';
 import 'package:mobile/Views/ListFlight.dart';
+import 'package:mobile/APIs/AirPortAPI.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -24,6 +27,41 @@ class HomePage extends State<Home> {
   final TextEditingController checkOutController = TextEditingController();
   final TextEditingController roomCountController = TextEditingController();
   final TextEditingController ticketCountController = TextEditingController();
+
+  List<CountryAirPort> departureAirports=[];
+  List<CountryAirPort> destinationAirports=[];
+  int? selectedDepartureAirportId;
+  int? selectedArrivalAirportId;
+  void _fetchAirports(String query, bool isDeparture) async {
+    if (query.isEmpty) {
+      setState(() {
+        if (isDeparture) {
+          departureAirports = [];
+        } else {
+          destinationAirports = [];
+        }
+      });
+      return;
+    }
+    try {
+      List<CountryAirPort> airports = await AirPortAPI().searchAirPort(query);
+      setState(() {
+        if (isDeparture) {
+          if(airports.isNotEmpty){
+            print(airports[0].airports![0].name);
+          }
+          departureAirports = airports;
+        } else {
+          if(airports.isNotEmpty){
+            print(airports[0].airports![0].name);
+          }
+          destinationAirports = airports;
+        }
+      });
+    } catch (e) {
+      print('Error fetching airports: $e');
+    }
+  }
 
   DateTime? selectedDepartureDate;
   DateTime? selectedReturnDate;
@@ -71,7 +109,7 @@ class HomePage extends State<Home> {
     if (picked != null) {
       setState(() {
         selectedDepartureDate = picked;
-        departureDateController.text = DateFormat('dd/MM/yyyy').format(picked);
+        departureDateController.text = DateFormat('yyyy-MM-dd').format(picked);
 
         // Reset return date if it's before the new departure date
         if (selectedReturnDate != null &&
@@ -206,7 +244,6 @@ class HomePage extends State<Home> {
     if (departureController.text.isEmpty ||
         destinationController.text.isEmpty ||
         departureDateController.text.isEmpty ||
-        returnDateController.text.isEmpty ||
         ticketCountController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill in all fields')),
@@ -232,8 +269,8 @@ class HomePage extends State<Home> {
 
       // Tạo booking request
       final request = Flight(
-        from: departureController.text,
-        to: destinationController.text,
+        from: selectedDepartureAirportId,
+        to: selectedArrivalAirportId,
         departureTime: departureDateController.text,
         arrivalTime: returnDateController.text,
         ticketCount: int.parse(ticketCountController.text),
@@ -251,7 +288,7 @@ class HomePage extends State<Home> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => FlightPage(searchCriteria: request)));
+              builder: (context) => FlightPage(searchCriteria: request,isReturn: isRoundTrip,)));
     } catch (e) {
       // Xử lý lỗi
       ScaffoldMessenger.of(context).showSnackBar(
@@ -358,7 +395,28 @@ class HomePage extends State<Home> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
+                    onChanged: (value) {
+                      _fetchAirports(value, true);
+                    },
                   ),
+                  if (departureAirports.isNotEmpty)
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: departureAirports.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(departureAirports[index].airports![0].name??"UnKnown"),
+                          onTap: () {
+                            setState(() {
+                              departureController.text = departureAirports[index].airports![0].name??"UnKnown";
+                              selectedDepartureAirportId = departureAirports[index].airports![0].id;
+                              departureAirports = []; // Clear suggestions
+                            });
+                          },
+                        );
+                      },
+                    ),
                   const SizedBox(height: 16),
                   TextField(
                     controller: destinationController,
@@ -369,7 +427,28 @@ class HomePage extends State<Home> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
+                    onChanged: (value) {
+                      _fetchAirports(value, false);
+                    },
                   ),
+                  if (destinationAirports.isNotEmpty)
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: destinationAirports.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(destinationAirports[index].airports![0].name??"UnKnown"),
+                          onTap: () {
+                            setState(() {
+                              destinationController.text = destinationAirports[index].airports![0].name??"UnKnown";
+                             selectedArrivalAirportId = destinationAirports[index].airports![0].id;
+                              destinationAirports = []; // Clear suggestions
+                            });
+                          },
+                        );
+                      },
+                    ),
                   const SizedBox(height: 16),
                   Row(
                     children: [

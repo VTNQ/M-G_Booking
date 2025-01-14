@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Views/PaypalCheckout.dart';
 
 // Enum để định nghĩa các loại ghế
 enum SeatClass {
@@ -209,7 +210,10 @@ class SeatFlight extends State<SeatSelectionPage> {
                 ElevatedButton(
                   onPressed: selectedSeats.isNotEmpty
                       ? () {
-                    // Handle seat confirmation
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CartPage()),
+                    );
                   }
                       : null,
                   child: Text('Confirm (${selectedSeats.length}/4)'),

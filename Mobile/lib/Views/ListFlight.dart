@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile/APIs/FlightAPI.dart';
 import 'package:mobile/Model/Flight.dart';
+import 'package:mobile/Model/ResultFlightDTO.dart';
 
 class FlightPage extends StatefulWidget {
   final Flight searchCriteria;
+  final bool isReturn;
 
-  const FlightPage({Key? key, required this.searchCriteria}) : super(key: key);
+  const FlightPage({super.key, required this.searchCriteria, required this.isReturn});
 
   @override
   State<FlightPage> createState() => _FlightListPageState();
 }
 
 class _FlightListPageState extends State<FlightPage> {
+  late List<ResultFlightDTO> flights=[];
+  bool isLoading = true;
 
+  @override
+  void initState() {
+    super.initState();
+    fetchFlight();
+  }
 
-  final List<FlightResult> flights = [
-    FlightResult(
-      airline: 'Vietnam Airlines',
-      flightNumber: 'VN123',
-      departureTime: '08:00',
-      arrivalTime: '10:00',
-      price: 1200000,
-      duration: '2h',
-      stops: 0,
-    ),
-    FlightResult(
-      airline: 'Bamboo Airways',
-      flightNumber: 'QH456',
-      departureTime: '10:30',
-      arrivalTime: '12:30',
-      price: 990000,
-      duration: '2h',
-      stops: 0,
-    ),
-    // Add more dummy data as needed
-  ];
+  Future<void> fetchFlight() async {
+    try {
+      flights = await FlightAPI().getFlightDepartment(widget.searchCriteria);
+      setState(() {});
+    } catch (e) {
+      print(e);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   String _selectedFilter = 'Lowest Price';
   final List<String> _filterOptions = [
@@ -56,7 +57,7 @@ class _FlightListPageState extends State<FlightPage> {
               style: const TextStyle(fontSize: 16),
             ),
             Text(
-              widget.searchCriteria.departureTime??'',
+              widget.searchCriteria.departureTime ?? '',
               style: const TextStyle(fontSize: 12),
             ),
           ],
@@ -68,7 +69,9 @@ class _FlightListPageState extends State<FlightPage> {
           ),
         ],
       ),
-      body: Column(
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
         children: [
           _buildFlightSummary(),
           Expanded(
@@ -98,7 +101,7 @@ class _FlightListPageState extends State<FlightPage> {
     );
   }
 
-  Widget _buildFlightCard(FlightResult flight) {
+  Widget _buildFlightCard(ResultFlightDTO flight) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
@@ -107,8 +110,8 @@ class _FlightListPageState extends State<FlightPage> {
           children: [
             Row(
               children: [
-                Image.asset(
-                  'assets/airline_logos/${flight.airline.toLowerCase().replaceAll(' ', '_')}.png',
+                Image.network(
+                  flight.imageUrl,
                   width: 40,
                   height: 40,
                   errorBuilder: (context, error, stackTrace) {
@@ -126,14 +129,15 @@ class _FlightListPageState extends State<FlightPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        flight.airline,
+                        flight.nameAirline,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       Text(
-                        'Flight ${flight.flightNumber}',
+                        'Flight ${flight.idFlight}',
+                        // Assuming idFlight is the flight number
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 14,
@@ -148,21 +152,24 @@ class _FlightListPageState extends State<FlightPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildTimeColumn(flight.departureTime, widget.searchCriteria.from??''),
+                _buildTimeColumn(flight.timeDepart, flight.nameAirport),
                 Expanded(
                   child: Column(
                     children: [
                       const Icon(Icons.arrow_forward, color: Colors.grey),
                       Text(
-                        flight.duration,
+                        flight.durationString,
+                        // Use the formatted duration string
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 12,
                         ),
                       ),
-                      if (flight.stops > 0)
+                      if (flight.duration.inMinutes >
+                          0) // Check for stops if applicable
                         Text(
-                          '${flight.stops} stop${flight.stops > 1 ? 's' : ''}',
+                          '${flight.duration.inMinutes ~/ 60}h ${flight.duration
+                              .inMinutes % 60}m',
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 12,
@@ -171,7 +178,7 @@ class _FlightListPageState extends State<FlightPage> {
                     ],
                   ),
                 ),
-                _buildTimeColumn(flight.arrivalTime, widget.searchCriteria.to??''),
+                _buildTimeColumn(flight.timeArrival, flight.nameArrivalAirport),
               ],
             ),
             const SizedBox(height: 16),
@@ -193,9 +200,11 @@ class _FlightListPageState extends State<FlightPage> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
                   ),
-                  child: const Text('Select',style: TextStyle(color: Colors.blue),),
+                  child: const Text(
+                      'Select', style: TextStyle(color: Colors.blue)),
                 ),
               ],
             ),
@@ -245,18 +254,19 @@ class _FlightListPageState extends State<FlightPage> {
               const SizedBox(height: 16),
               ...List.generate(
                 _filterOptions.length,
-                    (index) => ListTile(
-                  title: Text(_filterOptions[index]),
-                  trailing: _selectedFilter == _filterOptions[index]
-                      ? const Icon(Icons.check, color: Colors.deepPurple)
-                      : null,
-                  onTap: () {
-                    setState(() {
-                      _selectedFilter = _filterOptions[index];
-                    });
-                    Navigator.pop(context);
-                  },
-                ),
+                    (index) =>
+                    ListTile(
+                      title: Text(_filterOptions[index]),
+                      trailing: _selectedFilter == _filterOptions[index]
+                          ? const Icon(Icons.check, color: Colors.deepPurple)
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          _selectedFilter = _filterOptions[index];
+                        });
+                        Navigator.pop(context);
+                      },
+                    ),
               ),
             ],
           ),
@@ -264,24 +274,4 @@ class _FlightListPageState extends State<FlightPage> {
       },
     );
   }
-}
-
-class FlightResult {
-  final String airline;
-  final String flightNumber;
-  final String departureTime;
-  final String arrivalTime;
-  final double price;
-  final String duration;
-  final int stops;
-
-  FlightResult({
-    required this.airline,
-    required this.flightNumber,
-    required this.departureTime,
-    required this.arrivalTime,
-    required this.price,
-    required this.duration,
-    required this.stops,
-  });
 }

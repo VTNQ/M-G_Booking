@@ -1,9 +1,9 @@
 import 'package:mobile/Model/HotelBooking.dart';
 
 class Flight {
-  String? id;
-  String? from;
-  String? to;
+  int? id;
+  int? from;
+  int? to;
   String? departureTime;
   String? arrivalTime;
   double? price;
@@ -56,4 +56,6 @@ class Flight {
       "seatClass": seatClass,
     };
   }
+
+
 }
