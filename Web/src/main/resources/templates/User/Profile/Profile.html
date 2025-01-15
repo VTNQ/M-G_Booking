@@ -113,88 +113,90 @@
 
 
                         </div>
-                        <div class="pt-4 pb-5 px-5">
+<!--                        <div class="pt-4 pb-5 px-5">-->
 
-                            <h5 id="scroll-description" class="text-dark mb-4"
-                                style="font-size: 1.313rem;font-weight: 500 !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;text-align: left">
-                                Security Information
-                            </h5>
-                            <div class="row">
-                                <!-- Image Upload: Front Side -->
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label" style="font-family: 'Rubik', Helvetica, Arial, sans-serif; font-size: 1.2rem; font-weight: 400; line-height: 1.5; color: #3b444f;">
-                                            Front Number Card:
-                                        </label>
-                                        <div class="image-upload" id="frontUpload" style="cursor: pointer;">
-                                            <div class="image-preview" id="frontPreview">
-                                                <img id="frontImage" src="https://2702.mevivu.net/public/assets/images/default-image.png" alt="Front Side Preview"  />
+<!--                            <h5 id="scroll-description" class="text-dark mb-4"-->
+<!--                                style="font-size: 1.313rem;font-weight: 500 !important;font-family: 'Rubik', Helvetica, Arial, sans-serif;text-align: left">-->
+<!--                                Security Information-->
+<!--                            </h5>-->
+<!--                            <div class="row">-->
+<!--                                &lt;!&ndash; Image Upload: Front Side &ndash;&gt;-->
+<!--                                <div class="col-sm-6 mb-4">-->
+<!--                                    <div class="js-form-message">-->
+<!--                                        <label class="form-label" style="font-family: 'Rubik', Helvetica, Arial, sans-serif; font-size: 1.2rem; font-weight: 400; line-height: 1.5; color: #3b444f;">-->
+<!--                                            Front Number Card:-->
+<!--                                        </label>-->
+<!--                                        <div class="image-upload" id="frontUpload" style="cursor: pointer;">-->
+<!--                                            <div class="image-preview" id="frontPreview">-->
+<!--                                                <img id="frontImage" th:if="${Account.front_security_code!=null}"  th:src="'http://localhost:8686/images/SecurityCode/'+${Account.front_security_code}" alt="Front Side Preview"  />-->
+<!--                                                <img id="frontImage" th:if="${Account.front_security_code==null}" src="https://2702.mevivu.net/public/assets/images/default-image.png" alt="Front Side Preview"  />-->
 
-                                            </div>
-                                            <input type="file" th:field="${Account.front_security_file}" id="frontInput" accept="image/*" style="display: none;" />
-                                        </div>
-                                    </div>
-                                </div>
+<!--                                            </div>-->
+<!--                                            <input type="file" th:field="${Account.front_security_file}" id="frontInput" accept="image/*" style="display: none;" />-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
 
-                                <!-- Image Upload: Back Side -->
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label" style="font-family: 'Rubik', Helvetica, Arial, sans-serif; font-size: 1.2rem; font-weight: 400; line-height: 1.5; color: #3b444f;">
-                                            Back Number Card:
-                                        </label>
-                                        <div class="image-upload" id="backUpload" style="cursor: pointer;">
-                                            <div class="image-preview" id="backPreview">
-                                                <img id="backImage" src="https://2702.mevivu.net/public/assets/images/default-image.png" alt="Back Side Preview" />
+<!--                                &lt;!&ndash; Image Upload: Back Side &ndash;&gt;-->
+<!--                                <div class="col-sm-6 mb-4">-->
+<!--                                    <div class="js-form-message">-->
+<!--                                        <label class="form-label" style="font-family: 'Rubik', Helvetica, Arial, sans-serif; font-size: 1.2rem; font-weight: 400; line-height: 1.5; color: #3b444f;">-->
+<!--                                            Back Number Card:-->
+<!--                                        </label>-->
+<!--                                        <div class="image-upload" id="backUpload" style="cursor: pointer;">-->
+<!--                                            <div class="image-preview" id="backPreview">-->
+<!--                                                <img id="backImage" th:if="${Account.back_security_code!=null}" th:src="'http://localhost:8686/images/SecurityCode/'+${Account.back_security_code}" alt="Back Side Preview" />-->
+<!--                                                <img id="backImage" th:if="${Account.back_security_code==null}" src="https://2702.mevivu.net/public/assets/images/default-image.png" alt="Back Side Preview" />-->
 
-                                            </div>
-                                            <input type="file" id="backInput" th:field="${Account.back_security_file}" accept="image/*" style="display: none;" />
-                                        </div>
-                                    </div>
-                                </div>
+<!--                                            </div>-->
+<!--                                            <input type="file" id="backInput" th:field="${Account.back_security_file}" accept="image/*" style="display: none;" />-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
 
-                                <!-- Value Code -->
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label">Value Code</label>
-                                        <input type="text" class="form-control" placeholder="Value Code" th:field="${Account.valueCode}" style="border: 3px solid #ebf0f7; padding: 0.9rem 1rem;">
-                                    </div>
-                                </div>
+<!--                                &lt;!&ndash; Value Code &ndash;&gt;-->
+<!--                                <div class="col-sm-6 mb-4">-->
+<!--                                    <div class="js-form-message">-->
+<!--                                        <label class="form-label">Value Code</label>-->
+<!--                                        <input type="text" class="form-control" placeholder="Value Code" th:field="${Account.valueCode}" style="border: 3px solid #ebf0f7; padding: 0.9rem 1rem;">-->
+<!--                                    </div>-->
+<!--                                </div>-->
 
-                                <!-- Birthday -->
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label">Birthday</label>
-                                        <input type="date" id="datePickerInput" class="form-control" placeholder="Birthday" th:field="${Account.dob}" style="border: 3px solid #ebf0f7; padding: 0.9rem 1rem;">
-                                    </div>
-                                </div>
+<!--                                &lt;!&ndash; Birthday &ndash;&gt;-->
+<!--                                <div class="col-sm-6 mb-4">-->
+<!--                                    <div class="js-form-message">-->
+<!--                                        <label class="form-label">Birthday</label>-->
+<!--                                        <input type="date" class="form-control" placeholder="Birthday" th:value="${Account.dob}" style="border: 3px solid #ebf0f7; padding: 0.9rem 1rem;">-->
+<!--                                    </div>-->
+<!--                                </div>-->
 
-                                <!-- Start Date -->
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label">Start</label>
-                                        <input type="date" id="StartDateInput" class="form-control" placeholder="Start Date" th:field="${Account.startAt}" style="border: 3px solid #ebf0f7; padding: 0.9rem 1rem;">
-                                    </div>
-                                </div>
+<!--                                &lt;!&ndash; Start Date &ndash;&gt;-->
+<!--                                <div class="col-sm-6 mb-4">-->
+<!--                                    <div class="js-form-message">-->
+<!--                                        <label class="form-label">Start</label>-->
+<!--                                        <input type="date" id="StartDateInput" class="form-control" placeholder="Start Date" th:value="${Account.startAt}" style="border: 3px solid #ebf0f7; padding: 0.9rem 1rem;">-->
+<!--                                    </div>-->
+<!--                                </div>-->
 
-                                <!-- End Date -->
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label">End</label>
-                                        <input type="date" class="form-control" placeholder="End Date" th:field="${Account.endAt}" style="border: 3px solid #ebf0f7; padding: 0.9rem 1rem;">
-                                    </div>
-                                </div>
+<!--                                &lt;!&ndash; End Date &ndash;&gt;-->
+<!--                                <div class="col-sm-6 mb-4">-->
+<!--                                    <div class="js-form-message">-->
+<!--                                        <label class="form-label">End</label>-->
+<!--                                        <input type="date" class="form-control" placeholder="End Date" th:value="${Account.endAt}" style="border: 3px solid #ebf0f7; padding: 0.9rem 1rem;">-->
+<!--                                    </div>-->
+<!--                                </div>-->
 
-                                <!-- Location -->
-                                <div class="col-sm-12 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label">Location</label>
-                                        <textarea class="form-control" rows="4" th:field="${Account.location}" style="border: 2px solid #ebf0f7;"></textarea>
-                                    </div>
-                                </div>
-                            </div>
+<!--                                &lt;!&ndash; Location &ndash;&gt;-->
+<!--                                <div class="col-sm-12 mb-4">-->
+<!--                                    <div class="js-form-message">-->
+<!--                                        <label class="form-label">Location</label>-->
+<!--                                        <textarea class="form-control" rows="4" th:field="${Account.location}" style="border: 2px solid #ebf0f7;"></textarea>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
 
 
-                        </div>
+<!--                        </div>-->
 
                     </div>
 
@@ -205,7 +207,8 @@
                         <div class="card-body p-2">
                             <div class="avatar-upload" id="avatarUpload">
                                 <div class="avatar-preview">
-                                    <img id="avatarImage"
+                                    <img id="avatarImage" th:if="${Account.avatar!=null}"
+                                         th:src="${Account.avatar != null ? 'http://localhost:8686/images/users/'+Account.avatar : 'https://2702.mevivu.net/public/assets/images/default-image.png'}"> <img id="avatarImage" th:if="${Account.avatar==null}"
                                          src="https://2702.mevivu.net/public/assets/images/default-image.png">
                                     <div id="placeholder" class="avatar-placeholder">
                                         <i class="icon-image"></i>
@@ -225,6 +228,7 @@
                                 <input type="hidden" th:field="${Account.id}">
                                 <input type="hidden" th:field="${Account.level_id}">
                                 <input type="hidden" th:field="${Account.password}">
+
                             </div>
                         </div>
                     </div>

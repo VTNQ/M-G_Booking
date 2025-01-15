@@ -133,18 +133,20 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                     <p>Cheapest flights, best deals for you!</p>
                                 </div>
                             </div>
-                            <div class="navbar-expand-xl navbar-expand-xl-collapse-block">
-                                <div id="sidebar" class="collapse navbar-collapse">
-                                    <div class="mb-6 w-100">
-                                        <div class="sidenav border border-color-8 rounded-xs">
-                                            <div id="shopCartAccordion"
-                                                 class="accordion rounded shadow-none border-bottom">
-                                                <div class="border-0">
-                                                    <div class="card-collapse" id="shopCardHeadingOne">
-                                                        <h3 class="mb-0">
-                                                            <button type="button"
-                                                                    class="btn btn-link btn-block card-btn "
-                                                                    style="line-height: 3">
+                            <form th:action="@{/SearchFlight}" method="get">
+                                <div class="navbar-expand-xl navbar-expand-xl-collapse-block">
+                                    <div id="sidebar" class="collapse navbar-collapse">
+                                        <div class="mb-6 w-100">
+                                            <div class="sidenav border border-color-8 rounded-xs">
+
+                                                <div id="shopCartAccordion"
+                                                     class="accordion rounded shadow-none border-bottom">
+                                                    <div class="border-0">
+                                                        <div class="card-collapse" id="shopCardHeadingOne">
+                                                            <h3 class="mb-0">
+                                                                <button type="button"
+                                                                        class="btn btn-link btn-block card-btn "
+                                                                        style="line-height: 3">
                                                 <span class="row align-items-center">
                                                     <span class="col-5">
                                                         <span class="d-block"
@@ -156,35 +158,51 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                         </span>
                                                     </span>
                                                 </span>
-                                                            </button>
-                                                        </h3>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <!-- Range Slider -->
-                                                        <div class="price-range-slider">
-                                                            <div class="price-range-display">
-                                                                <span id="price-range-text">£200 - £3456</span>
+                                                                </button>
+                                                            </h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <!-- Range Slider -->
+                                                            <div class="price-range-slider">
+                                                                <div class="price-range-display">
+                                                                    <span id="price-range-text">£200 - £3456</span>
+                                                                </div>
+                                                                <div class="slider-container">
+                                                                    <div id="price-range" class="slider"></div>
+                                                                </div>
+                                                                <input type="hidden" id="minPriceInput" name="minPrice"
+                                                                       value="200" step="10" min="0"
+                                                                       style="width: 100%; margin-bottom: 10px;">
+                                                                <input type="hidden" id="maxPriceInput" name="minPrice"
+                                                                       value="200" step="10" min="0"
+                                                                       style="width: 100%; margin-bottom: 10px;">
+                                                                <button class="mt-4" style="min-width: 99px;max-width: 180px;position: relative;border: none;user-select: none;padding: 12px;border-radius: 4px;background-color: rgb(83, 146, 249);color: rgb(255, 255, 255);box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px 1px;transition: 0.15s ease-in-out"> Filter</button>
                                                             </div>
-                                                            <div class="slider-container">
-                                                                <div id="price-range" class="slider"></div>
-                                                            </div>
-                                                            <input type="hidden" id="minPriceInput" name="minPrice"
-                                                                   value="200" step="10" min="0"
-                                                                   style="width: 100%; margin-bottom: 10px;">
-                                                            <input type="hidden" id="maxPriceInput" name="minPrice"
-                                                                   value="200" step="10" min="0"
-                                                                   style="width: 100%; margin-bottom: 10px;">
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <input type="hidden" th:value="${MinPrice}" id="MinPrice">
-                            <input type="hidden" th:value="${MaxPrice}" id="MaxPrice">
+                                <input type="hidden" th:value="${MinPrice}" id="MinPrice">
+                                <input type="hidden" th:value="${MaxPrice}" id="MaxPrice">
+                                <input type="hidden" th:field="${Search.typeFlight}">
+                                <input type="hidden" th:field="${Search.idCity}">
+                                <input type="hidden" th:field="${Search.checkOutTime}">
+                                <input type="hidden" th:field="${Search.checkInTime}">
+                                <input type="hidden" th:field="${Search.arrivalAirport}">
+                                <input type="hidden" th:field="${Search.departureAirport}">
+                                <input type="hidden" th:field="${Search.arrivalTime}">
+                                <input type="hidden" th:field="${Search.selectedHotel}">
+                                <input type="hidden" th:field="${Search.roundTrip}">
+                                <input type="hidden" th:field="${Search.departureTime}">
+                                <input type="hidden" th:field="${Search.numberPeopleRight}">
+                                <input type="hidden" th:field="${Search.quantityRoom}">
+
+                            </form>
 
                         </div>
                     </div>
@@ -248,26 +266,11 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                 </div>
                                             </div>
                                             <div class="card-body pl-3 pr-4 pt-2 pb-3">
-                                                <div class="ml-1 mb-2">
-                                                    <div class="d-inline-flex align-items-center font-size-13 text-lh-1 letter-spacing-3"
-                                                         style="color: #297cbb !important; font-size: 0.813rem; line-height: 1; letter-spacing: 0.188rem;">
-                                                        <div class="green-lighter">
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                            <i class="fas fa-star"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                                 <span class="card-title"
                                                       style="font-size: 1.463rem; color: #3b444f !important; text-decoration: none; font-weight: 500 !important;"
                                                       th:text="${hotel.name}"></span>
-                                                <div class="mt-2 mb-3">
-                    <span class="badge badge-pill badge-primary py-1 px-2 font-size-14 border-radius-3 font-weight-normal"
-                          style="font-size: 0.875rem; border-radius: 3px !important; font-weight: 400 !important; background-color: #297cbb;">4.6/5</span>
-                                                    <span class="text-gray-1 ml-2" style="font-size: 0.875rem;">(166 reviews)</span>
-                                                </div>
+
                                                 <div class="mb-0">
                                                     <span class="mr-1 text-gray-1"
                                                           style="font-size: 0.875rem;">From</span>
@@ -615,8 +618,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                     <input class="form-check-input" th:field="${Search.selectedHotel}" type="checkbox"
                                            id="flexSwitchCheckDefault" style="font-size: 21px">
                                     <label class="form-check-label" for="flexSwitchCheckDefault"
-                                           style="position: absolute;top: 3px;width: 26vh">Default switch checkbox
-                                        input</label>
+                                           style="position: absolute;top: 3px;width: 26vh">Find Hotel</label>
                                 </div>
                             </div>
 

@@ -232,16 +232,7 @@ public class AuthServiceImplement implements AuthService {
     public UserAccountDTO GetAccountUser(int id) {
         try {
             UserAccountDTO userAccountDTO=accountRepository.GetUser(id);
-            UserAccountDTO securityCode=securityCodeRepository.findByIdAccount(userAccountDTO.getId());
-            if(securityCode!=null) {
-                userAccountDTO.setValueCode(securityCode.getValueCode());
-                userAccountDTO.setStartAt(securityCode.getStartAt());
-                userAccountDTO.setEndAt(securityCode.getEndAt());
-                userAccountDTO.setLocation(securityCode.getLocation());
-                userAccountDTO.setDob(securityCode.getDob());
-                userAccountDTO.setFront_security_code(securityCode.getFront_security_code());
-                userAccountDTO.setBack_security_code(securityCode.getBack_security_code());
-            }
+
             return userAccountDTO;
         }catch (Exception ex){
             ex.printStackTrace();
@@ -283,59 +274,12 @@ public class AuthServiceImplement implements AuthService {
     public boolean UpdateProfileUser(UserAccountDTO userAccountDTO) {
         try {
 
-            SecurityCode securityCode=new SecurityCode();
+
             Account account=modelMapper.map(userAccountDTO, Account.class);
-            if(userAccountDTO.getValueCode()!=null && userAccountDTO.getStartAt()!=null&&userAccountDTO.getEndAt()!=null&&
-            userAccountDTO.getLocation()!=null && userAccountDTO.getDob()!=null && !userAccountDTO.getBack_security_file().getOriginalFilename().isEmpty()
-            && !userAccountDTO.getBack_security_file().getOriginalFilename().isEmpty()) {
-                    if(userAccountDTO.getIdSecurityCode()!=0){
-                        securityCode.setId(userAccountDTO.getIdSecurityCode());
-                    }
-
-                    securityCode.setValueCode(userAccountDTO.getValueCode());
-                    securityCode.setStartAt(userAccountDTO.getStartAt());
-                    securityCode.setEndAt(userAccountDTO.getEndAt());
-                    securityCode.setLocation(userAccountDTO.getLocation());
-                    securityCode.setDob(userAccountDTO.getDob());
-
-                        String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "static", "images", "SecurityCode").toString();
-                        Path uploadPath = Paths.get(uploadDir);
-                        if (!Files.exists(uploadPath)) {
-                            Files.createDirectories(uploadPath);
-                        }
-                        String newFileFront= FileHelper.generateImageName(userAccountDTO.getFront_security_file().getOriginalFilename());
-                        if(saveFileWithStream(userAccountDTO.getFront_security_file(), uploadDir, newFileFront)) {
-                            securityCode.setFrontSecurityCode(newFileFront);
-                        }
-
-
-                        String uploadDirBack = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "static", "images", "SecurityCode").toString();
-                        Path uploadPathBack = Paths.get(uploadDirBack);
-                        if (!Files.exists(uploadPath)) {
-                            Files.createDirectories(uploadPathBack);
-                        }
-                        String BacknewFile= FileHelper.generateImageName(userAccountDTO.getBack_security_file().getOriginalFilename());
-                        if(saveFileWithStream(userAccountDTO.getFront_security_file(), uploadDir, BacknewFile)) {
-                            securityCode.setBackSecurityCode(BacknewFile);
-                        }
-                        securityCode.setBackSecurityCode(BacknewFile);
-                        securityCode.setFrontSecurityCode(newFileFront);
-                        securityCode.setDob(userAccountDTO.getDob());
-                        securityCode.setLocation(userAccountDTO.getLocation());
-                        securityCode.setValueCode(userAccountDTO.getValueCode());
-                        securityCode.setStartAt(userAccountDTO.getStartAt());
-                        securityCode.setEndAt(userAccountDTO.getEndAt());
 
 
 
-                SecurityCode insertedCode= securityCodeRepository.save(securityCode);
-                account.setSecurityCode(insertedCode);
-            }else{
-                account.setSecurityCode(null);
-            }
-
-
-            if(userAccountDTO.getAvatarFile()!=null) {
+            if(userAccountDTO.getAvatarFile()!=null && !userAccountDTO.getAvatarFile().getOriginalFilename().isEmpty()) {
                 String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "static", "images", "users").toString();
                 Path uploadPath = Paths.get(uploadDir);
                 if (!Files.exists(uploadPath)) {
@@ -405,6 +349,16 @@ public class AuthServiceImplement implements AuthService {
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public int CountAdmin() {
+        try {
+            return accountRepository.CountAdminAccount();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return 0;
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.vtnq.web.Controllers;
 
+import com.vtnq.web.DTOs.HistoryOrder.HistoryBooking;
 import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Repositories.BookingFlightRepository;
 import com.vtnq.web.Service.BookingService;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping({"","/"})
@@ -29,10 +32,22 @@ public class HistoryOrder {
             if(account==null){
                 return "redirect:/Login";
             }
-            int pageSize=5;
-            model.put("current",flightPage);
-            model.put("BookingCode",BookingCode);
-            model.put("Booking",bookingService.FindHistoryBookings(account.getId(),flightPage,pageSize,BookingCode));
+            List<HistoryBooking> allBookings = bookingService.FindHistoryBookings(account.getId(), 0, Integer.MAX_VALUE, BookingCode);
+            List<HistoryBooking> filteredBookings = allBookings.stream()
+                    .filter(booking -> BookingCode == null || booking.getBookingCode().toLowerCase().contains(BookingCode.toLowerCase()))
+                    .collect(Collectors.toList());
+            int pageSize = 5;
+            int totalBookings = filteredBookings.size();
+            int start = (flightPage) * pageSize;
+            int end = Math.min((flightPage + 1) * pageSize, totalBookings);
+            List<HistoryBooking> paginatedBookings = filteredBookings.subList(start, end);
+            int totalPages = (int) Math.ceil((double) totalBookings / pageSize);
+
+            // Truyền dữ liệu vào model
+            model.put("current", flightPage);
+            model.put("BookingCode", BookingCode);
+            model.put("Booking", paginatedBookings);
+            model.put("totalPages", totalPages);
             return "User/HistoryOrder/HistoryBooking";
         }catch (Exception e) {
             e.printStackTrace();

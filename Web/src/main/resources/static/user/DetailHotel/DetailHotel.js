@@ -1,3 +1,4 @@
+
 let CurrentIndextText = 0; // Dùng 'let' thay vì 'const'
 
 const prevnext = document.querySelector('#prevprev1');

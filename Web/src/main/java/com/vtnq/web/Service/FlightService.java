@@ -5,6 +5,7 @@ import com.vtnq.web.DTOs.Flight.FlightDto;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
 import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
 import com.vtnq.web.DTOs.Seat.SeatDTO;
+import com.vtnq.web.Entities.City;
 import com.vtnq.web.Entities.Flight;
 
 import java.math.BigDecimal;
@@ -17,7 +18,7 @@ public interface FlightService  {
     public List<FlightListDTO>findAllByCountry(int id);
     public FlightDto findById(int id);
     public boolean UpdateFlightDto(FlightDto flightDto);
-
+    public List<City>FindTopCity();
     public List<ResultFlightDTO>SearchFlight(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight, int totalPeople, LocalDateTime currentTime);
 
     public ResultFlightDTO FindResultFlightAndHotel(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight,LocalDateTime currentTime);

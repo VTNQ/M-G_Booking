@@ -46,7 +46,7 @@ public class DetailHotelController {
         modelMap.put("Hotel",hotelService.FindDetailHotel(id));
         modelMap.put("Image",hotelService.FindImageInDetailHotel(id));
         modelMap.put("Amenities",amenitiesService.FindAmenitiesByHotel(id));
-        modelMap.put("DetailRoom",roomService.ShowDetailHotel(id));
+        modelMap.put("DetailRoom",roomService.findRoomDetailHotelWeb(id,searchFlightDTO.getQuantityRoom()));
         modelMap.put("Hotels",hotelService.ShowHotelsAll(id));
         modelMap.put("avgRating",ratingService.getAverageRating(id));
         Rating rating=new Rating();
@@ -75,6 +75,11 @@ public class DetailHotelController {
         try {
 
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
+            SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
+
+            if(searchFlightDTO==null){
+                return "redirect:/Login";
+            }
             if(currentAccount == null || !"ROLE_USER".equals(currentAccount.getAccountType())) {
                 DetailSearch(request, modelMap, id,page,size);
                 return "User/DetailHotel/DetailHotel";

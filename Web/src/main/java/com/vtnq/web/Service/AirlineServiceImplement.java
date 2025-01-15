@@ -173,4 +173,14 @@ public class AirlineServiceImplement implements AirlineService {
             return null;
         }
     }
+
+    @Override
+    public int CountAirline() {
+        try {
+            return airlineRepository.CountAirline();
+        }catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

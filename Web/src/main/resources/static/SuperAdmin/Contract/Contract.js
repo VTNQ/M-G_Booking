@@ -1,4 +1,5 @@
 function handleContractClick(button) {
+    button.disabled=true;
     const contractOwnerId = button.getAttribute('data-contract-owner-id');
     const contractOwnerName = button.getAttribute('data-owner-name');
     const email = button.getAttribute('data-email');
@@ -28,10 +29,11 @@ function handleContractClick(button) {
         body: JSON.stringify(contractOwnerDTO)
     }).then(response => response.json())
         .then(data => {
-            alert(data.message);
+            window.location.reload();
         })
         .catch(error => {
             console.error('Error:', error);
+            button.disabled = false;
             alert('An error occurred. Please try again.');
         });
 }

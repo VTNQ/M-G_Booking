@@ -16,8 +16,12 @@ import com.vtnq.web.Entities.*;
 import com.vtnq.web.Repositories.*;
 import com.vtnq.web.WebSocket.RoomUpdateWebSocketHandler;
 import com.vtnq.web.WebSocket.SeatUpdateWebSocketHandler;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -64,6 +68,9 @@ public class BookingServiceImplement implements BookingService {
     private BookingHotelDetailRepository hotelDetailRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     private String generateRandomAlphanumericCode(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder code = new StringBuilder(length);
@@ -154,7 +161,30 @@ public class BookingServiceImplement implements BookingService {
         }
 
     }
-     @Override
+    private void sendConfirmationEmail(String recipientEmail, Booking booking, Account account) {
+        try {
+            // Create MimeMessage object
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            // Set up email information
+            helper.setTo(recipientEmail);
+            helper.setSubject("Payment Confirmation - Booking Successful");
+            helper.setText("Hello " + account.getFullName() + ",\n\n" +  // Add the name of the booker
+                    "Thank you for your payment and successful booking.\n\n" +
+                    "Booking Information:\n" +
+                    "Booking Code: " + booking.getBookingCode() + "\n" +
+                    "Amount: " + booking.getTotalPrice() + "\n\n" +
+                    "We wish you a pleasant trip!");
+
+            // Send email
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public int addBooking(BookingFlightDTO bookingFlightDTO, String bookings) {
         try {
 
@@ -166,6 +196,7 @@ public class BookingServiceImplement implements BookingService {
             saveBookingDetails(saveBookingFlight,bookingsDetail);
             Booking booking=CreateAndSaveBooking(saveBookingFlight,bookingFlightDTO,account);
             updateAccountLevel(account);
+            sendConfirmationEmail(account.getEmail(),booking,account);
           return booking.getId();
 
         } catch (Exception e) {
@@ -231,7 +262,7 @@ public class BookingServiceImplement implements BookingService {
     }
     private void saveBookingRoomDetails(BookingRoom bookingRoom, BookingHotelDTO bookingHotelDTO, int quantityRoom) {
         for (int i = 0; i < quantityRoom; i++) {
-            Room room = roomRepository.findByTypeId(bookingHotelDTO.getTypeId());
+            Room room = roomRepository.findByTypeId(bookingHotelDTO.getTypeId()).stream().findFirst().orElse(null);
             if (room == null) {
                 throw new RuntimeException("Room Not Found");
             }
@@ -281,6 +312,7 @@ public class BookingServiceImplement implements BookingService {
         Booking finalBooking = new Booking();
         finalBooking.setBookingRoom(bookingRoom);
         finalBooking.setBookingFlight(bookingFlight);
+        finalBooking.setUserId(bookingFlight.getUser().getId());
         finalBooking.setCreatedAt(Instant.now());
         finalBooking.setBookingCode(generateRandomAlphanumericCode(5));
         finalBooking.setTotalPrice(amount);
@@ -296,6 +328,7 @@ public class BookingServiceImplement implements BookingService {
             saveBookingRoomDetails(bookingRoom,bookingHotelDTO,QuantityRoom);
             BookingFlight bookingFlight = createBookingFlight(flightDTO, bookings);
             Booking finalBooking = createAndSaveFinalBooking(bookingRoom, bookingFlight, amount);
+            sendConfirmationEmail(account.getEmail(),finalBooking,account);
             return finalBooking.getId();
         } catch (Exception e) {
             e.printStackTrace();

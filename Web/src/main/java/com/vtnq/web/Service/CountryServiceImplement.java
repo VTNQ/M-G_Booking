@@ -65,4 +65,14 @@ public class CountryServiceImplement implements CountryService{
             return false;
         }
     }
+
+    @Override
+    public int CountCountry() {
+        try {
+            return countryRepository.CountCountry();
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return 0;
+        }
+    }
 }

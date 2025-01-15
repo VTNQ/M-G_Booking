@@ -3,6 +3,7 @@ package com.vtnq.web.Repositories;
 import com.vtnq.web.DTOs.Booking.BookingListFly;
 import com.vtnq.web.DTOs.Flight.FlightListDTO;
 import com.vtnq.web.DTOs.Flight.ResultFlightDTO;
+import com.vtnq.web.Entities.City;
 import com.vtnq.web.Entities.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -202,4 +203,9 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
                               @Param("arrivalAirport") int arrivalAirport,
                               @Param("arrivalTime") LocalDate arrivalTime,
                               @Param("TypeFlight") String TypeFlight,@Param("totalPeople") int totalPeople,@Param("CurrentDate") LocalDateTime CurrentDate);
+    @Query("select c from City c " +
+            "join Flight f on f.arrivalAirport.city.id = c.id " +
+            "group by c.id " +
+            "order by count(f) desc")
+    List<City> findTopCities();
 }

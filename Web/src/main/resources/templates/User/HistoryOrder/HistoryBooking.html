@@ -60,13 +60,16 @@
              </a>
 
              <!-- Hiển thị số trang hiện tại -->
-             <span>Page <strong th:text="${current + 1}"></strong></span>
+             <span>Page <strong th:text="${current + 1}"></strong> of <strong th:text="${totalPages}"></strong></span>
 
              <!-- Nút "Next" -->
              <a th:href="@{/HistoryBooking(flightPage=${current + 1}, BookingCode=${BookingCode})}"
-                class="btn btn-primary">
+                th:classappend="${current + 1 < totalPages ? '' : 'disabled'}"
+                class="btn btn-primary"
+                th:disabled="${current + 1 >= totalPages}">
                  Next
              </a>
+
          </div>
 
 

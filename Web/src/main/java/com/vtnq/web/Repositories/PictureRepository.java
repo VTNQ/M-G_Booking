@@ -11,7 +11,8 @@ import java.util.List;
 public interface PictureRepository extends JpaRepository<Picture, Integer> {
     @Query("SELECT  a from Picture a where a.airlineId = :id")
     public Picture findByImageId(@Param("id") Integer id);
-
+    @Query("select a from Picture a where a.roomId= :id")
+    public List<Picture> findByRoomId(@Param("id") Integer id);
     @Query("SELECT a from Picture a where a.hotelId = :id")
     public List<Picture> FindImageInDetailHotel(int id);
 

@@ -23,6 +23,6 @@ public ShowDetailHotel FindDetailHotel(int id);
 public List<Picture>FindImageInDetailHotel(int id);
 public BookingHotel FindBookingHotel(int id);
 public List<HotelList>ShowHotelsAll(int id);
-public BigDecimal FindMinPriceHotel(int id,int quantityRoom);
-public BigDecimal FindMaxPriceHotel(int id,int quantityRoom);
+public BigDecimal FindMinPriceHotel();
+public BigDecimal FindMaxPriceHotel();
 }

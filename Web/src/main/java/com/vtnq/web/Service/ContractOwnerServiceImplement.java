@@ -146,14 +146,6 @@ public class ContractOwnerServiceImplement implements ContractOwnerService {
                     "    <h1>HỢP ĐỒNG ĐĂNG KÝ KHÁCH SẠN</h1>\n" +
                     "\n" +
                     "    <!-- Contract Information -->\n" +
-                    "    <div class=\"contract-section\">\n" +
-                    "        <h2>CÔNG TY</h2>\n" +
-                    "        <p><strong>Tên Công Ty:</strong> [Tên Công Ty]</p>\n" +
-                    "        <p><strong>Địa chỉ:</strong> [Địa chỉ công ty]</p>\n" +
-                    "        <p><strong>Số điện thoại:</strong> [Số điện thoại]</p>\n" +
-                    "        <p><strong>Email:</strong> [Email công ty]</p>\n" +
-                    "        <p><strong>Website:</strong> [Website công ty]</p>\n" +
-                    "    </div>\n" +
                     "\n" +
                     "    <div class=\"contract-section\">\n" +
                     "        <h2>KHÁCH HÀNG</h2>\n" +
@@ -163,11 +155,6 @@ public class ContractOwnerServiceImplement implements ContractOwnerService {
                     "         <p><strong>Email:</strong> " +contractOwnerDto.getEmail()+"</p>\n"+
                     "    </div>\n" +
                     "\n" +
-                    "    <div class=\"contract-section\">\n" +
-                    "        <h2>THÔNG TIN HỢP ĐỒNG</h2>\n" +
-                    "        <p><strong>Ngày ký hợp đồng:</strong> [Ngày ký]</p>\n" +
-                    "        <p><strong>Số hợp đồng:</strong> [Số hợp đồng]</p>\n" +
-                    "    </div>\n" +
                     "\n" +
                     "    <div class=\"contract-section\">\n" +
                     "        <h3>Điều Khoản Hợp Đồng</h3>\n" +
@@ -181,12 +168,6 @@ public class ContractOwnerServiceImplement implements ContractOwnerService {
                     "    </div>\n" +
                     "\n" +
                     "    <!-- Button to sign -->\n" +
-                    "    <div class=\"signature-section\">\n" +
-                    "        <h3 class=\"signature-title\">Ký Tên Điện Tử</h3>\n" +
-                    "        <div class=\"button-container\">\n" +
-                    "            <a id=\"signButton\" href=\"http://localhost:8686/SuperAdmin/SignatureContract/" + contractOwnerDto.getId() + "\">Ký Tên</a>\n" +
-                    "        </div>\n" +
-                    "    </div>\n" +
                     "\n" +
                     "    <div class=\"footer\">\n" +
                     "        <p>© 2024 [Tên Công Ty] - Tất cả quyền lợi được bảo vệ.</p>\n" +

@@ -1,6 +1,7 @@
 package com.vtnq.web.DTOs.HistoryOrder;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -48,7 +49,7 @@ public class HistoryOrderFlight {
 
     private String DepartureTime;
 
-    private String formatInstant(Instant instant) {
+    private String formatInstant(LocalDateTime instant) {
         // Convert Instant to ZonedDateTime with your desired time zone
         ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault()); // Use system default or specify another zone
 
@@ -58,7 +59,7 @@ public class HistoryOrderFlight {
         // Format the ZonedDateTime and return the string
         return zonedDateTime.format(formatter);
     }
-    public HistoryOrderFlight(int id,String flightNo,Instant arrivalTime,Instant departureTime,String DepartAirport,String ArrivalAirport) {
+    public HistoryOrderFlight(int id,String flightNo,LocalDateTime arrivalTime,LocalDateTime departureTime,String DepartAirport,String ArrivalAirport) {
 
         this.id = id;
         this.flightNo = flightNo;
@@ -74,8 +75,8 @@ public class HistoryOrderFlight {
             HistoryOrderFlight historyOrderFlight=new HistoryOrderFlight(
                     (Integer)row[0],
                     (String) row[1],
-                    (Instant) row[2],
-                    (Instant) row[3],
+                    (LocalDateTime) row[2],
+                    (LocalDateTime) row[3],
                     (String) row[4],
                     (String) row[5]
             );

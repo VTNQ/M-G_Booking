@@ -18,6 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:src/main/resources/static/images/flight/");
         registry.addResourceHandler("/images/rooms/**")  // Path you want to access the images via URL
                 .addResourceLocations("file:src/main/resources/static/images/rooms/");
+        registry.addResourceHandler("/images/users/**")
+                .addResourceLocations("file:src/main/resources/static/images/users/");
     }
 }
 

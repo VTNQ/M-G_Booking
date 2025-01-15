@@ -43,4 +43,6 @@ public interface AirlineRepository extends JpaRepository<Airline, Integer> {
                                       @Param("TypeFlight")String TypeFlight);
     @Query("SELECT a from Airline a where a.countryId= :countryId")
     List<Airline>FindAirlineByCountryId(int countryId);
+    @Query("SELECT count(a) from Airline  a ")
+    int CountAirline();
 }

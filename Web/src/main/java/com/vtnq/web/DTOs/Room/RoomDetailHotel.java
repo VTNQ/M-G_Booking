@@ -11,7 +11,15 @@ public class RoomDetailHotel {
     private BigDecimal price;
     private String ImageUrl;
 
+    public RoomDetailHotel() {
+    }
 
+    public RoomDetailHotel(String type, int id, BigDecimal price, int occupancy) {
+        this.type = type;
+        this.id = id;
+        this.price = price;
+        this.occupancy = occupancy;
+    }
 
     public String getImageUrl() {
         return ImageUrl;

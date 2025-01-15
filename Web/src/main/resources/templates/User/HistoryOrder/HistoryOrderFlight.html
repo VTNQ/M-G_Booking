@@ -12,7 +12,10 @@
 
 
      <div class="tab-content active" id="flight">
-         <h3>Flight Booking Details</h3>
+      <div style="display: flex;justify-content: space-between">
+          <h3>Flight Booking Details</h3>
+         <a th:href="@{/HistoryBooking}" class="btn btn-primary">Back</a>
+      </div>
          <form th:action="@{'HistoryOrderFlight/'+${id}}" method="get">
              <div class="form-row">
                  <div class="col">
@@ -56,19 +59,7 @@
 
              </tbody>
          </table>
-         <div class="pagination">
-             <!-- Nút "Previous" -->
-             <a th:href="@{/HistoryOrder(flightPage=${currentFlightPage - 1}, hotelPage=${currentHotelPage})}"
-                th:classappend="${currentFlightPage > 0 ? '' : 'disabled'}" class="btn btn-primary"
-             >Previous</a>
 
-             <!-- Hiển thị số trang hiện tại -->
-             <span>Page <strong th:text="${currentFlightPage + 1}"></strong></span>
-
-             <!-- Nút "Next" -->
-             <a th:href="@{/HistoryOrder(flightPage=${currentFlightPage + 1}, hotelPage=${currentHotelPage})}"
-                class="btn btn-primary">Next</a>
-         </div>
      </div>
  </div>
     <script th:fragment="customScripts" th:src="@{/user/HistoryOrder/HistoryOrder.js}"></script>

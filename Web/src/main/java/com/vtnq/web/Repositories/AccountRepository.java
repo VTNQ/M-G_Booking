@@ -26,11 +26,13 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Query("select a from Account a where a.email = :email and a.otp = :otp")
     Account checkOTP(@Param("email") String email, @Param("otp") String otp);
     @Query("select new com.vtnq.web.DTOs.Account.UserAccountDTO(" +
-            "a.id, COALESCE(a.avatar, ''), COALESCE(a.cityId, 0), COALESCE(a.address, ''), " +
+            "a.id, COALESCE(a.avatar, null ), COALESCE(a.cityId, 0), COALESCE(a.address, ''), " +
             "COALESCE(a.email, ''), COALESCE(a.username, ''), COALESCE(a.fullName, ''), " +
-            "COALESCE(a.accountType, ''), COALESCE(a.countryId, 0),COALESCE(a.phone, ''),a.level.id,a.password) " +
+            "COALESCE(a.accountType, ''), COALESCE(a.countryId, 0) ,COALESCE(a.phone, ''),a.level.id,a.password) " +
             "from Account a where a.id = :id and a.accountType = 'ROLE_USER'")
     UserAccountDTO GetUser(@Param("id") int id);
     @Query("select CASE  When count(a)>0 then true else false end from Account a where a.accountType='ROLE_ADMIN' AND a.countryId= :countryId")
     boolean existsAccountByCountryId(int countryId);
+    @Query("select count(a) from Account a where a.accountType='ROLE_ADMIN'")
+    int CountAdminAccount();
 }

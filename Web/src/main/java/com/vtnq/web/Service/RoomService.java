@@ -17,6 +17,7 @@ public interface RoomService {
     public boolean update(RoomDTO roomDTO);
     public boolean delete(int id);
     public List<RoomDetailHotel>ShowDetailHotel(int id);
+    public List<RoomDetailHotel>findRoomDetailHotelWeb(int id,int QuantityRoom);
     public List<Picture>FindPictureByRoomId(int id);
     public boolean UpdateMultipleImages(int id,List<MultipartFile>files);
     public boolean deleteMultipleImagesRoom(int id);

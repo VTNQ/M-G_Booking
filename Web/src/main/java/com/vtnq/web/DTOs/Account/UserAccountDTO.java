@@ -65,6 +65,7 @@ public class UserAccountDTO {
             @JsonProperty("countryId") int countryId,
             @JsonProperty("phone") String phone,
             @JsonProperty("level_id") int level_id,
+
             @JsonProperty("password")String password) {
         this.id = id;
         this.Avatar = avatar;
@@ -76,25 +77,17 @@ public class UserAccountDTO {
         this.AccountType = accountType;
         this.CountryId = countryId;
         this.phone = phone;
+
         this.level_id = level_id;
         this.password = password;
     }
 
 
-    public UserAccountDTO(int idSecurityCode, String valueCode, LocalDate startAt, LocalDate endAt, String location, LocalDate dob, String front_security_code, String back_security_code) {
-        this.idSecurityCode = idSecurityCode;
-        ValueCode = valueCode;
-        StartAt = startAt;
-        EndAt = endAt;
-        this.location = location;
-        this.dob = dob;
-        this.front_security_code = front_security_code;
-        this.back_security_code = back_security_code;
-    }
+
 
     private String Address;
     private int CityId;
-    private int idSecurityCode;
+
     private String Avatar;
     private MultipartFile AvatarFile;
     private String AccountType;
@@ -109,21 +102,8 @@ public class UserAccountDTO {
         StartAt = startAt;
     }
 
-    public LocalDate getEndAt() {
-        return EndAt;
-    }
 
-    public void setEndAt(LocalDate endAt) {
-        EndAt = endAt;
-    }
 
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
 
     private LocalDate StartAt;
 
@@ -167,13 +147,6 @@ public class UserAccountDTO {
         CityId = cityId;
     }
 
-    public int getIdSecurityCode() {
-        return idSecurityCode;
-    }
-
-    public void setIdSecurityCode(int idSecurityCode) {
-        this.idSecurityCode = idSecurityCode;
-    }
 
     public String getAvatar() {
         return Avatar;
@@ -207,59 +180,8 @@ public class UserAccountDTO {
         CountryId = countryId;
     }
 
-    public String getValueCode() {
-        return ValueCode;
-    }
-
-    public void setValueCode(String valueCode) {
-        ValueCode = valueCode;
-    }
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 
 
-    public String getFront_security_code() {
-        return front_security_code;
-    }
 
-    public void setFront_security_code(String front_security_code) {
-        this.front_security_code = front_security_code;
-    }
 
-    public String getBack_security_code() {
-        return back_security_code;
-    }
-
-    public void setBack_security_code(String back_security_code) {
-        this.back_security_code = back_security_code;
-    }
-
-    public MultipartFile getFront_security_file() {
-        return front_security_file;
-    }
-
-    public void setFront_security_file(MultipartFile front_security_file) {
-        this.front_security_file = front_security_file;
-    }
-
-    public MultipartFile getBack_security_file() {
-        return back_security_file;
-    }
-
-    public void setBack_security_file(MultipartFile back_security_file) {
-        this.back_security_file = back_security_file;
-    }
-
-    private LocalDate EndAt;
-    private String location;
-    private LocalDate dob;
-    private String front_security_code;
-    private String back_security_code;
-    private MultipartFile front_security_file;
-    private MultipartFile back_security_file;
 }

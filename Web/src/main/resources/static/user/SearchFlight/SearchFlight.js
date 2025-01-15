@@ -9,14 +9,7 @@ function initFlatpickr(selector, options) {
 }
 // Thêm sự kiện click cho nút dropdown
 
-document.getElementById('basicDropdownClickInvoker').addEventListener('click',function (){
-    const dropdownMenu=document.getElementById('dropdownMenu');
-    if(dropdownMenu.style.display==='none'){
-        dropdownMenu.style.display='block';
-    }else{
-        dropdownMenu.style.display='none';
-    }
-});
+
 window.addEventListener('click',function (event){
     if (!event.target.matches('.dropdown-nav-link')) {
         const dropdownMenu = document.getElementById('dropdownMenu');

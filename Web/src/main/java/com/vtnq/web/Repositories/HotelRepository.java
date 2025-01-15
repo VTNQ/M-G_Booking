@@ -50,24 +50,11 @@ public interface HotelRepository extends JpaRepository<Hotel, Integer> {
     List<HotelSearchDTO>SearchHotelMoBile(@Param("id") int id,
                                           @Param("quantityRoom") int quantityRoom);
 
-    @Query("SELECT min(d.type.price) " +
-            "FROM Hotel a " +
-            "JOIN Picture b ON a.id = b.hotelId " +
-            "JOIN City c ON a.cityId = c.id " +
-            "JOIN Room d ON d.hotel.id = a.id " +
-            "WHERE a.cityId = :id AND d.status = false and b.isMain=true " +
-            "GROUP BY a.id " +
-            "HAVING count(d.id) >= :quantityRoom")
-    BigDecimal FindMinHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom);
-    @Query("SELECT max(d.type.price) " +
-            "FROM Hotel a " +
-            "JOIN Picture b ON a.id = b.hotelId " +
-            "JOIN City c ON a.cityId = c.id " +
-            "JOIN Room d ON d.hotel.id = a.id " +
-            "WHERE a.cityId = :id AND d.status = false " +
-            "GROUP BY a.id " +
-            "HAVING count(d.id) >= :quantityRoom")
-    BigDecimal FindMaxHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom);
+    @Query("SELECT min(a.price) " +
+            "FROM Type a " )
+    BigDecimal FindMinHotel();
+    @Query("SELECT max(a.price) FROM Type a")
+    BigDecimal FindMaxHotel();
     @Query("select new com.vtnq.web.DTOs.Hotel.ShowDetailHotel(a.id,a.name,a.address,b.name,a.decription,b.country.name,Min(c.type.price)) from Hotel a join City b on a.cityId=b.id join Room c on a.id=c.hotel.id  where a.id = :id order by Min(c.type.price) desc")
     ShowDetailHotel showDetailHotel(@Param("id") int id);
 
@@ -78,7 +65,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Integer> {
             "join Picture d on d.hotelId = a.id " +
             "where c.type.id = :id and d.isMain=true " +
             "group by c.id, a.name, b.name, c.type.name, d.imageUrl")
-    BookingHotel FindBookingHotel(@Param("id") int id);
+    List<BookingHotel> FindBookingHotel(@Param("id") int id);
 
 
 

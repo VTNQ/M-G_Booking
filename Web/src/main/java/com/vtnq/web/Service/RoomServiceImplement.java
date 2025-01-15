@@ -175,6 +175,25 @@ public class RoomServiceImplement implements RoomService{
     }
 
     @Override
+    public List<RoomDetailHotel> findRoomDetailHotelWeb(int id, int QuantityRoom) {
+        try {
+            List<RoomDetailHotel>roomDetailHotels=roomRepository.findRoomDetailHotelWeb(id,QuantityRoom);
+            for (RoomDetailHotel roomDetailHotel:roomDetailHotels) {
+                Room room=roomRepository.FindRoomType(roomDetailHotel.getId()).stream().findFirst().orElse(null);
+               Picture picture=pictureRepository.findByRoomId(room.getId()).stream().findFirst().orElse(null);
+               if(picture!=null && picture.getImageUrl()!=null){
+                   roomDetailHotel.setImageUrl(picture.getImageUrl());
+               }
+
+            }
+            return roomDetailHotels;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public List<Picture> FindPictureByRoomId(int id) {
         try {
             return pictureRepository.findByRoomId(id);

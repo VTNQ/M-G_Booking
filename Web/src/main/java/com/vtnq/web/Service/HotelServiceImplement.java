@@ -281,7 +281,7 @@ public class HotelServiceImplement implements HotelService{
     @Override
     public BookingHotel FindBookingHotel(int id) {
         try {
-            return hotelRepository.FindBookingHotel(id);
+            return hotelRepository.FindBookingHotel(id).stream().findFirst().orElse(null);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -299,9 +299,9 @@ public class HotelServiceImplement implements HotelService{
     }
 
     @Override
-    public BigDecimal FindMinPriceHotel(int id, int quantityRoom) {
+    public BigDecimal FindMinPriceHotel() {
         try {
-            return hotelRepository.FindMinHotel(id, quantityRoom);
+            return hotelRepository.FindMinHotel();
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -309,9 +309,9 @@ public class HotelServiceImplement implements HotelService{
     }
 
     @Override
-    public BigDecimal FindMaxPriceHotel(int id, int quantityRoom) {
+    public BigDecimal FindMaxPriceHotel() {
         try {
-            return hotelRepository.FindMaxHotel(id, quantityRoom);
+            return hotelRepository.FindMaxHotel();
         }catch (Exception ex){
             ex.printStackTrace();
             return null;

@@ -34,6 +34,8 @@ compareAddressEditor(htmlContent)
 let selectedFiles = [];
 document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('saveMultiple').addEventListener('click', function () {
+        const saveButton = document.getElementById('saveMultiple');
+        saveButton.disabled = true;
         if (selectedFiles.length === 0) {
             alert('No images to save');
             return;
@@ -57,10 +59,22 @@ document.addEventListener('DOMContentLoaded',()=>{
             .then(response => response.json())
             .then(data => {
                 if (data.status === 200) {
-                    alert('Images saved successfully!');
-                    selectedFiles = [];  // Reset the selected files array after successful upload
+                    Swal.fire(
+                        'Deleted!',
+                        'The image has been deleted.',
+                        'success'
+                    ).then(() => {
+                        // Reload the current page after successful deletion
+                        window.location.reload();
+                    });
+                    selectedFiles = [];
                 } else {
-                    alert('Failed to save images.');
+                    Swal.fire(
+                        'Error!',
+                        'There was an issue deleting the image.',
+                        'error'
+                    );
+                    saveButton.disabled=false;
                 }
             })
             .catch(error => {
@@ -71,6 +85,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener('click', function() {
+            this.disabled = true;
             const imageId = this.getAttribute('data-id');
             const hotelId = this.getAttribute('data-hotel-id');
 
@@ -79,7 +94,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
 
     function deleteImage(imageId, hotelId) {
-        console.log(imageId)
+
         // Make the API request to delete the image
         fetch(`http://localhost:8686/api/hotel/DeletePictureImage/${imageId}`, {
             method: 'DELETE',
@@ -96,7 +111,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                         'success'
                     ).then(() => {
                         // Redirect to the desired page after a successful deletion
-                        window.location.href = `http://localhost:8386/Owner/Hotel/${hotelId}`;
+                        window.location.reload();
                     });
                 } else {
                     // Show error message
@@ -104,7 +119,10 @@ document.addEventListener('DOMContentLoaded',()=>{
                         'Error!',
                         'There was an issue deleting the image.',
                         'error'
-                    );
+                    ).then(() => {
+                        // Re-enable the button in case of failure
+                        button.disabled = false;
+                    });
                 }
             })
             .catch(error => {

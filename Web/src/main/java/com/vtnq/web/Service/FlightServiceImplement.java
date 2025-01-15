@@ -111,6 +111,17 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
+    public List<City> FindTopCity() {
+        try {
+            List<City> cities = flightRepository.findTopCities();
+            return cities.size() > 5 ? cities.subList(0, 5) : cities;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public List<ResultFlightDTO> SearchFlight(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight, int totalPeople, LocalDateTime currentTime) {
         try {
             return flightRepository.findFlightsByAirportsAndDepartureTime(departureAirport,arrivalAirport,departureTime,TypeFlight,totalPeople,currentTime);

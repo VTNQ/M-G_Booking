@@ -57,6 +57,7 @@ function deleteImage(button) {
 }
 document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('saveMultiple').addEventListener('click', function () {
+        const saveButton = document.getElementById('saveMultiple');
         if (selectedFiles.length === 0) {
             alert('No images to save');
             return;
@@ -80,9 +81,24 @@ document.addEventListener('DOMContentLoaded',()=>{
             .then(response => response.json())
             .then(data => {
                 if (data.status === 200) {
-                    alert('Images saved successfully!');
+                    Swal.fire(
+                        'success!',
+                        'The image is saved.',
+                        'success'
+                    ).then(() => {
+                        // Reload the current page after successful deletion
+                        window.location.reload();
+                    });
                     selectedFiles = [];  // Reset the selected files array after successful upload
                 } else {
+                    Swal.fire(
+                        'Deleted!',
+                        'The Image is failed.',
+                        'success'
+                    ).then(() => {
+                        // Reload the current page after successful deletion
+                        saveButton.disabled = false;
+                    });
                     alert('Failed to save images.');
                 }
             })
@@ -116,6 +132,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 })
 const deleteButtons = document.querySelectorAll('#delete-btn'); // Lấy tất cả các nút có lớp .delete-btn
+this.disabled = true;
 for (let i = 1; i < deleteButtons.length; i++) { // Lặp qua danh sách nút
     deleteButtons[i].addEventListener('click', function () {
         const imageId = this.getAttribute('data-id'); // Lấy giá trị imageId từ thuộc tính data-id
@@ -127,6 +144,7 @@ for (let i = 1; i < deleteButtons.length; i++) { // Lặp qua danh sách nút
                 'Invalid image ID.',
                 'error'
             );
+            this.disabled = false;
             return;
         }
 
@@ -152,7 +170,7 @@ function deleteImage(imageId, hotelId) {
                     'success'
                 ).then(() => {
                     // Redirect to the desired page after a successful deletion
-                    window.location.href = `http://localhost:8686/Owner/Room/${hotelId}`;
+                    window.location.reload();
                 });
             } else {
                 // Show error message
@@ -161,14 +179,12 @@ function deleteImage(imageId, hotelId) {
                     'There was an issue deleting the image.',
                     'error'
                 );
+                window.location.reload();
             }
         })
         .catch(error => {
             console.error('Error deleting image:', error);
-            Swal.fire(
-                'Error!',
-                'An error occurred while deleting the image.',
-                'error'
-            );
+
+            window.location.reload();
         });
 }

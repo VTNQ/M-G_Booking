@@ -51,9 +51,28 @@ public class RegisterController {
                 redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/register";
             }
+            if(authService.emailExists(registerOwner.getEmail())) {
+                redirectAttributes.addFlashAttribute("message", "Email is Already Exists");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/register";
+            }
+            if(authService.existFullName(registerOwner.getFullName())) {
+                redirectAttributes.addFlashAttribute("message", "Full Name Already Exists");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/register";
+            }
+            if(authService.existPhone(registerOwner.getPhone())) {
+                redirectAttributes.addFlashAttribute("message", "Phone Number Already Exists");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/register";
+            }
             if(authService.RegisterAccount(registerOwner)){
+                redirectAttributes.addFlashAttribute("message", "register Success");
+                redirectAttributes.addFlashAttribute("messageType", "success");
                 return "redirect:/register";
             }else{
+                redirectAttributes.addFlashAttribute("message", "register Failed");
+                redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/register";
             }
         }catch (Exception e){
@@ -74,9 +93,28 @@ public class RegisterController {
                 redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/register";
             }
+            if(authService.emailExists(registerUser.getEmail())) {
+                redirectAttributes.addFlashAttribute("message", "Email is Already Exists");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/register";
+            }
+            if(authService.existFullName(registerUser.getFullName())) {
+                redirectAttributes.addFlashAttribute("message", "Full Name Already Exists");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/register";
+            }
+            if(authService.existPhone(registerUser.getPhone())) {
+                redirectAttributes.addFlashAttribute("message", "Phone Number Already Exists");
+                redirectAttributes.addFlashAttribute("messageType", "error");
+                return "redirect:/register";
+            }
             if(authService.RegisterAccount(registerUser)){
+                redirectAttributes.addFlashAttribute("message", "register Success");
+                redirectAttributes.addFlashAttribute("messageType", "success");
                 return "redirect:/register";
             }else{
+                redirectAttributes.addFlashAttribute("message", "register Failed");
+                redirectAttributes.addFlashAttribute("messageType", "error");
                 return "redirect:/register";
             }
         }catch (Exception e){

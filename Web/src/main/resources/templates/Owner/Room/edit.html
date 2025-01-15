@@ -164,12 +164,7 @@
 
                                     </div>
                                 </div>
-                                <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
-                                    <div class="mb-4">
-                                        <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Type Room</label>
-                                        <input  type="number" name="Name" placeholder="Name"  th:field="${room.price}" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
-                                    </div>
-                                </div>
+
                                 <div class="w-full max-w-full px-3 shrink-0 md:w-12/12 md:flex-0">
                                     <div class="mb-4">
                                         <label  class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Occupancy</label>
@@ -182,7 +177,7 @@
                             <button type="submit" class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">Save</button>
                             <input type="hidden" th:field="${room.id}">
                             <input type="hidden" th:field="${room.idHotel}">
-                            <a th:href="@{/Owner/Hotel}" class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85"   style="border: 1px solid #e6e7e9;background: white;color: black !important;">Back</a>
+                            <a th:href="@{'/Owner/Room/'+${room.idHotel}}" class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85"   style="border: 1px solid #e6e7e9;background: white;color: black !important;">Back</a>
 
 
                         </div>
@@ -191,57 +186,57 @@
                 </div>
 
                 <div class="w-full max-w-full px-3 mt-6 shrink-0 md:w-4/12 md:flex-0 md:mt-0">
-                    <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+<!--                    <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">-->
 
 
-                        <div class="border-black/12.5 rounded-t-2xl p-6 text-center pt-0 pb-6 lg:pt-2 lg:pb-4"  style="border-bottom: 1px solid #e6e7e9;padding: 16px">
-                            <div class="flex justify-center">
-                                Post
-                            </div>
-                        </div>
+<!--                        <div class="border-black/12.5 rounded-t-2xl p-6 text-center pt-0 pb-6 lg:pt-2 lg:pb-4"  style="border-bottom: 1px solid #e6e7e9;padding: 16px">-->
+<!--                            <div class="flex justify-center">-->
+<!--                                Post-->
+<!--                            </div>-->
+<!--                        </div>-->
 
-                        <div class="flex-auto p-6 pt-0 mt-5">
-                            <div class="w-100 d-flex align-items-center h-100">
-                                <!-- Flexbox container to align images in a single row -->
+<!--                        <div class="flex-auto p-6 pt-0 mt-5">-->
+<!--                            <div class="w-100 d-flex align-items-center h-100">-->
+<!--                                &lt;!&ndash; Flexbox container to align images in a single row &ndash;&gt;-->
 
-                                <div class="d-flex flex-grow gap-3 flex-wrap" id="image-container">
-                                    <th:block th:each="image : ${picture}">
-                                        <div class="image-item">
-                                            <img th:src="@{'http://localhost:8686/images/rooms/'+${image.imageUrl}}" alt="Product Image" class="product-image">
-                                            <button type="button" class="delete-btn" id="delete-btn" th:data-id="${image.id}" th:data-hotel-id="${image.roomId}">
-                                                <i class="fa fa-trash-alt" style="color: black"></i>
-                                            </button>
-                                        </div>
-                                        <div th:if="${imageStat.last}" class="add-image-container">
-                                            <div class="add-image-container">
-                                                <div class="add-image" onclick="addNewImage()">
-                                                    <i class="fa fa-image image-icon"></i>
-                                                    <i class="fa fa-plus add-icon"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </th:block>
+<!--                                <div class="d-flex flex-grow gap-3 flex-wrap" id="image-container">-->
+<!--                                    <th:block th:each="image : ${picture}">-->
+<!--                                        <div class="image-item">-->
+<!--                                            <img th:src="@{'http://localhost:8686/images/rooms/'+${image.imageUrl}}" alt="Product Image" class="product-image">-->
+<!--                                            <button type="button" class="delete-btn" id="delete-btn" th:data-id="${image.id}" th:data-hotel-id="${image.roomId}">-->
+<!--                                                <i class="fa fa-trash-alt" style="color: black"></i>-->
+<!--                                            </button>-->
+<!--                                        </div>-->
+<!--                                        <div th:if="${imageStat.last}" class="add-image-container">-->
+<!--                                            <div class="add-image-container">-->
+<!--                                                <div class="add-image" onclick="addNewImage()">-->
+<!--                                                    <i class="fa fa-image image-icon"></i>-->
+<!--                                                    <i class="fa fa-plus add-icon"></i>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </th:block>-->
 
-                                </div>
+<!--                                </div>-->
 
-                                <!-- Loop through ImageList to display images -->
+<!--                                &lt;!&ndash; Loop through ImageList to display images &ndash;&gt;-->
 
-                                <div th:if="${picture.size() == 0}" class="add-image-container">
-                                    <!-- Nút "Add Image" -->
-                                    <div class="add-image-container">
-                                        <div class="add-image" onclick="addNewImage()">
-                                            <i class="fa fa-image image-icon"></i>
-                                            <i class="fa fa-plus add-icon"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button th:dataHotel-id="${room.id}" id="saveMultiple" type="button" class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">
-                                save
-                            </button>
+<!--                                <div th:if="${picture.size() == 0}" class="add-image-container">-->
+<!--                                    &lt;!&ndash; Nút "Add Image" &ndash;&gt;-->
+<!--                                    <div class="add-image-container">-->
+<!--                                        <div class="add-image" onclick="addNewImage()">-->
+<!--                                            <i class="fa fa-image image-icon"></i>-->
+<!--                                            <i class="fa fa-plus add-icon"></i>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <button th:dataHotel-id="${room.id}" id="saveMultiple" type="button" class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">-->
+<!--                                save-->
+<!--                            </button>-->
 
-                        </div>
-                    </div>
+<!--                        </div>-->
+<!--                    </div>-->
 
 
                 </div>

@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
@@ -62,8 +63,8 @@ public class InformationCustomerController {
     private static final String SuccessHotel="payHotelFlight/success";
    @GetMapping("payHotelFlight")
    public RedirectView paymentHotelFlight(@RequestParam(required = true) double amount,
-                                          @RequestParam(defaultValue = "JPY") String currency, @ModelAttribute BookingHotelDTO bookingHotelDTO,@ModelAttribute BookingFlightDTO bookingFlightDTO,HttpServletRequest request,
-                                          HttpSession session,@RequestParam("bookings") String bookingsJson) {
+                                          @RequestParam(defaultValue = "JPY") String currency, @ModelAttribute BookingHotelDTO bookingHotelDTO, @ModelAttribute BookingFlightDTO bookingFlightDTO, HttpServletRequest request,
+                                          HttpSession session, @RequestParam("bookings") String bookingsJson, RedirectAttributes redirectAttributes) {
        try {
            Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
            bookingHotelDTO.setUserId(currentAccount.getId());
@@ -81,15 +82,22 @@ public class InformationCustomerController {
                    .anyMatch(booking -> booking.containsKey("id") && (Integer) booking.get("id") == 0);
 
            if (hasInvalidBooking) {
+               redirectAttributes.addFlashAttribute("message", "Please select the correct number of seats.");
+               redirectAttributes.addFlashAttribute("messageType", "error");
                return new RedirectView(request.getHeader("Referer"));
            }
-           if(resultFlightDTO.isRoundTrip()==true){
+           if(resultFlightDTO.getArrivalTime()!=null||!resultFlightDTO.getArrivalTime().isEmpty()){
                if(bookings.size()!=resultFlightDTO.getNumberPeopleRight()*2){
+                   redirectAttributes.addFlashAttribute("message", "Please select the correct number of seats.");
+                   redirectAttributes.addFlashAttribute("messageType", "error");
                    return new RedirectView(request.getHeader("Referer"));
                }
            }else{
                if(bookings.size()!=resultFlightDTO.getNumberPeopleRight()){
+                   redirectAttributes.addFlashAttribute("message", "Please select the correct number of seats.");
+                    redirectAttributes.addFlashAttribute("messageType", "error");
                    return new RedirectView(request.getHeader("Referer"));
+
                }
            }
            bookingHotelDTO.setCheckInDate(CheckInDate);
@@ -110,7 +118,19 @@ public class InformationCustomerController {
        }catch (Exception e){
            e.printStackTrace();
        }
-       return new RedirectView("/");
+       if (session.getAttribute("idFlight") != null) {
+           session.removeAttribute("idFlight");  // Remove the idFlight from session
+       }
+       if (session.getAttribute("idRoom") != null) {
+           session.removeAttribute("idRoom");  // Remove the idFlight from session
+       }
+       if(session.getAttribute("NumberPeople")!=null){
+           session.removeAttribute("NumberPeople");
+       }
+       if(session.getAttribute("searchFlightDTO")!=null){
+           session.removeAttribute("searchFlightDTO");
+       }
+       return new RedirectView("/Home");
    }
    @GetMapping("InformationFlightHotel/{id}")
    public String InformationFlightHotel(ModelMap modelMap,@PathVariable int id,HttpServletRequest request) {
@@ -126,7 +146,7 @@ public class InformationCustomerController {
            BookingHotel bookingHotel=hotelService.FindBookingHotel(idRoom);
            BigDecimal totalFlight=BigDecimal.ZERO;
            BigDecimal total = bookingHotel.getPrice()
-                   .multiply(BigDecimal.valueOf(resultFlightDTO.getNumberPeopleRight()));
+                   .multiply(BigDecimal.valueOf(resultFlightDTO.getQuantityRoom()));
            BigDecimal totalAmount=bookingHotel.getPrice().multiply(BigDecimal.valueOf(resultFlightDTO.getNumberPeopleRight()));
            if(idFlight!=null){
                boolean existFlightBooking=idFlight.stream().anyMatch(flight->flight==id);
@@ -200,6 +220,18 @@ public class InformationCustomerController {
            modelMap.put("flightTab",flights);
            modelMap.put("timeout",paymentTimeOut);
            modelMap.put("flight",FlightBooking);
+           if(account.getLevel().getId()==2){
+               modelMap.put("Voucher","5%");
+               BigDecimal discount = new BigDecimal("0.05");
+               BigDecimal discountedTotal = total.subtract(total.multiply(discount));
+               total=discountedTotal;
+               totalAmount=discountedTotal;
+           }else if(account.getLevel().getId()==1){
+               BigDecimal discount = new BigDecimal("0.10");
+               BigDecimal discountedTotal = total.subtract(total.multiply(discount));
+               modelMap.put("Voucher","5%");
+               total=discountedTotal;
+           }
            modelMap.put("total",total);
            modelMap.put("totalAmount",totalAmount);
            BookingHotelDTO hotelDTO=new BookingHotelDTO();
@@ -209,7 +241,8 @@ public class InformationCustomerController {
            hotelDTO.setQuantity(resultFlightDTO.getQuantityRoom());
            modelMap.put("hotelDTO",hotelDTO);
            Integer NumberPeople = (Integer) request.getSession().getAttribute("NumberPeople");
-           modelMap.put("number",NumberPeople);
+           SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
+           modelMap.put("number",searchFlightDTO.getNumberPeopleRight());
 
 
            modelMap.put("payment",bookingDto);
@@ -223,7 +256,7 @@ public class InformationCustomerController {
    }
     @GetMapping("payFlight")
     public RedirectView payment(@RequestParam(required = true) double amount,
-                                @RequestParam(defaultValue = "JPY") String currency, @ModelAttribute BookingFlightDTO bookingFlightDTO, @RequestParam("bookings") String bookingsJson, HttpSession session, HttpServletRequest request) throws JsonProcessingException {
+                                @RequestParam(defaultValue = "JPY") String currency, @ModelAttribute BookingFlightDTO bookingFlightDTO, @RequestParam("bookings") String bookingsJson, HttpSession session, HttpServletRequest request,RedirectAttributes redirectAttributes) throws JsonProcessingException {
         try {
 
             SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
@@ -243,14 +276,22 @@ public class InformationCustomerController {
                     .anyMatch(booking -> booking.containsKey("id") && (Integer) booking.get("id") == 0);
 
             if (hasInvalidBooking) {
+                redirectAttributes.addFlashAttribute("message", "Please select the correct number of seats.");
+                redirectAttributes.addFlashAttribute("messageType", "error");
                 return new RedirectView(request.getHeader("Referer"));
+
             }
-            if(searchFlightDTO.isRoundTrip()==true){
+            if( searchFlightDTO.getArrivalTime()!=null||!searchFlightDTO.getArrivalTime().isEmpty()){
                 if(bookings.size()!=NumberPeople*2){
+                    redirectAttributes.addFlashAttribute("message", "Please select the correct number of seats.");
+                    redirectAttributes.addFlashAttribute("messageType", "error");
                     return new RedirectView(request.getHeader("Referer"));
                 }
             }else{
+
                 if(bookings.size()!=NumberPeople){
+                    redirectAttributes.addFlashAttribute("message", "Please select the correct number of seats.");
+                    redirectAttributes.addFlashAttribute("messageType", "error");
                     return new RedirectView(request.getHeader("Referer"));
                 }
             }
@@ -266,11 +307,23 @@ public class InformationCustomerController {
         } catch (PayPalRESTException e) {
             e.printStackTrace();
         }
-        return new RedirectView("/");
+        if (session.getAttribute("idFlight") != null) {
+            session.removeAttribute("idFlight");  // Remove the idFlight from session
+        }
+        if (session.getAttribute("idRoom") != null) {
+            session.removeAttribute("idRoom");  // Remove the idFlight from session
+        }
+        if(session.getAttribute("NumberPeople")!=null){
+            session.removeAttribute("NumberPeople");
+        }
+        if(session.getAttribute("searchFlightDTO")!=null){
+            session.removeAttribute("searchFlightDTO");
+        }
+        return new RedirectView("/Home");
     }
     @GetMapping(SuccessHotel)
     public String SuccessHotel(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, HttpServletRequest request,
-                               HttpSession session){
+                               HttpSession session,RedirectAttributes redirectAttributes) {
        try {
            Payment payment = payPalService.executePayment(paymentId, payerId);
            BookingHotelDTO bookingHotelDTO=(BookingHotelDTO)request.getSession().getAttribute("Hotel");
@@ -280,6 +333,18 @@ public class InformationCustomerController {
             int Bookings=bookingService.addBookingHotel(bookingHotelDTO,bookingHotelDTO.getQuantity(),bookingFlightDto,bookings,amount);
            if(payment.getState().equals("approved") && Bookings!=0){
                session.setAttribute("idBooking",Bookings);
+               if (session.getAttribute("idFlight") != null) {
+                   session.removeAttribute("idFlight");  // Remove the idFlight from session
+               }
+               if (session.getAttribute("idRoom") != null) {
+                   session.removeAttribute("idRoom");  // Remove the idFlight from session
+               }
+               if(session.getAttribute("NumberPeople")!=null){
+                   session.removeAttribute("NumberPeople");
+               }
+               if(session.getAttribute("searchFlightDTO")!=null){
+                   session.removeAttribute("searchFlightDTO");
+               }
                 return "redirect:/Success";
             }
            try {
@@ -293,10 +358,24 @@ public class InformationCustomerController {
            e.printStackTrace();
 
        }
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("messageType", "error");
+       redirectAttributes.addFlashAttribute("message","Payment Failed");
+        if (session.getAttribute("idFlight") != null) {
+            session.removeAttribute("idFlight");  // Remove the idFlight from session
+        }
+        if (session.getAttribute("idRoom") != null) {
+            session.removeAttribute("idRoom");  // Remove the idFlight from session
+        }
+        if(session.getAttribute("NumberPeople")!=null){
+            session.removeAttribute("NumberPeople");
+        }
+        if(session.getAttribute("searchFlightDTO")!=null){
+            session.removeAttribute("searchFlightDTO");
+        }
+        return "redirect:/Home";
     }
     @GetMapping(SUCCESS_URL)
-    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, HttpServletRequest request,HttpSession session) {
+    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, HttpServletRequest request,HttpSession session,RedirectAttributes redirectAttributes) {
         try {
             Payment payment = payPalService.executePayment(paymentId, payerId);
             BookingFlightDTO bookingFlightDto = (BookingFlightDTO) request.getSession().getAttribute("booking");
@@ -304,7 +383,20 @@ public class InformationCustomerController {
             int Booking= bookingService.addBooking(bookingFlightDto, bookings);
             if (payment.getState().equals("approved") && Booking>0) {
                 session.setAttribute("idBooking",Booking);
+                if (session.getAttribute("idFlight") != null) {
+                    session.removeAttribute("idFlight");  // Remove the idFlight from session
+                }
+                if (session.getAttribute("idRoom") != null) {
+                    session.removeAttribute("idRoom");  // Remove the idFlight from session
+                }
+                if(session.getAttribute("NumberPeople")!=null){
+                    session.removeAttribute("NumberPeople");
+                }
+                if(session.getAttribute("searchFlightDTO")!=null){
+                    session.removeAttribute("searchFlightDTO");
+                }
                 return "redirect:/Success";
+
             }
 
 
@@ -317,7 +409,21 @@ public class InformationCustomerController {
         } catch (PayPalRESTException e) {
             e.printStackTrace();
         }
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("messageType", "error");
+        redirectAttributes.addFlashAttribute("message","Payment Failed");
+        if (session.getAttribute("idFlight") != null) {
+            session.removeAttribute("idFlight");  // Remove the idFlight from session
+        }
+        if (session.getAttribute("idRoom") != null) {
+            session.removeAttribute("idRoom");  // Remove the idFlight from session
+        }
+        if(session.getAttribute("NumberPeople")!=null){
+            session.removeAttribute("NumberPeople");
+        }
+        if(session.getAttribute("searchFlightDTO")!=null){
+            session.removeAttribute("searchFlightDTO");
+        }
+        return "redirect:/Home";
     }
 //
 //    @GetMapping("InformationCustomer/{id}")
@@ -422,15 +528,26 @@ public class InformationCustomerController {
             }
             modelMap.put("idFlight",idFlight);
 
+            if(account.getLevel().getId()==2){
+                modelMap.put("Voucher","5%");
+                BigDecimal discount = new BigDecimal("0.05");
+                BigDecimal discountedTotal = total.subtract(total.multiply(discount));
+                total=discountedTotal;
 
-
+            }else if(account.getLevel().getId()==1){
+                BigDecimal discount = new BigDecimal("0.10");
+                BigDecimal discountedTotal = total.subtract(total.multiply(discount));
+                modelMap.put("Voucher","5%");
+                total=discountedTotal;
+            }
+            SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
             Integer NumberPeople = (Integer) request.getSession().getAttribute("NumberPeople");
             modelMap.put("flight",FlightBooking);
             modelMap.put("flightTab",flights);
             BookingFlightDTO bookingDto=new BookingFlightDTO();
             modelMap.put("payment",bookingDto);
             modelMap.put("FlightPrice",totalFlight);
-            modelMap.put("number",NumberPeople);
+            modelMap.put("number",searchFlightDTO.getNumberPeopleRight());
             int paymentTimeOut=20*60;
             modelMap.put("timeout",paymentTimeOut);
             modelMap.put("total",total);

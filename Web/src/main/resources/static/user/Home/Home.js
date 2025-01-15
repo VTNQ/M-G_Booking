@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded',function (){
     const flexSwitchCheckDefault=document.getElementById('flexSwitchCheckDefault');
     console.log(flexSwitchCheckDefault.value)
     if(flexSwitchCheckDefault.checked){
+
         document.getElementById('RoomNumber').style.display='block';
         document.getElementById('TimeHotel').style.display='block';
         document.getElementById('AtHotel').style.display='block'

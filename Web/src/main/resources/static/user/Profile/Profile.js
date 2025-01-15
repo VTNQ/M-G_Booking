@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 const CountryId=document.getElementById('country-select').value
     const CitySelect=document.getElementById('city-select');
-    CitySelect.innerHTML='<option value="">Select a city</option>';
+
     if(CountryId){
         fetch(`http://localhost:8686/api/city/FindCityByCountry/${CountryId}`)
             .then(response=>{

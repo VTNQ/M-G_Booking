@@ -12,4 +12,5 @@ public interface CountryService {
     public boolean UpdateCountry(Country country);
 
     public boolean existCountry(String name);
+    public int CountCountry();
 }
