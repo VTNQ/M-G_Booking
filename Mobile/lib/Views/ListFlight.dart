@@ -3,12 +3,18 @@ import 'package:intl/intl.dart';
 import 'package:mobile/APIs/FlightAPI.dart';
 import 'package:mobile/Model/Flight.dart';
 import 'package:mobile/Model/ResultFlightDTO.dart';
+import 'package:mobile/Views/User/SeatFlight.dart';
+
+import '../Model/HotelBooking.dart';
+import 'PaymentPage.dart';
 
 class FlightPage extends StatefulWidget {
   final Flight searchCriteria;
   final bool isReturn;
+  final PaymentPage paymentPage;
+  final HotelBooking hotelBooking;
 
-  const FlightPage({super.key, required this.searchCriteria, required this.isReturn});
+  const FlightPage({super.key, required this.searchCriteria, required this.isReturn,required this.paymentPage,required this.hotelBooking});
 
   @override
   State<FlightPage> createState() => _FlightListPageState();
@@ -196,7 +202,11 @@ class _FlightListPageState extends State<FlightPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle selection
+                    widget.paymentPage.airlineName!=flight.nameAirline;
+                    widget.paymentPage.departureTime!=flight.timeDepart;
+                    widget.paymentPage.arrivalTime!=flight.timeArrival;
+                    widget.paymentPage.flightPrice!=flight.price;
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SeatSelectionPage(idFlight: flight.idFlight,paymentPage: widget.paymentPage,hotelBooking: widget.hotelBooking,)));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,

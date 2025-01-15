@@ -10,6 +10,7 @@ import 'package:mobile/Views/Information.dart';
 import 'package:mobile/Views/ListFlight.dart';
 import 'package:mobile/APIs/AirPortAPI.dart';
 import 'package:mobile/Views/ListHotel.dart';
+import 'package:mobile/Views/PaymentPage.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -190,13 +191,13 @@ class HomePage extends State<Home> {
     if (picked != null) {
       setState(() {
         selectedReturnDate = picked;
-        returnDateController.text = DateFormat('dd/MM/yyyy').format(picked);
+        returnDateController.text = DateFormat('yyyy-MM-dd').format(picked);
       });
     }
   }
 
   Future<void> _selectCheckInDate(BuildContext context) async {
-    if (selectedReturnDate == null) {
+    if (selectedDepartureDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select flight dates first')),
       );
@@ -207,9 +208,7 @@ class HomePage extends State<Home> {
       context: context,
       initialDate: selectedCheckInDate ?? selectedDepartureDate!,
       firstDate: selectedDepartureDate!,
-      // Start from departure date
       lastDate: selectedReturnDate!,
-      // End at return date
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -227,11 +226,9 @@ class HomePage extends State<Home> {
     if (picked != null) {
       setState(() {
         selectedCheckInDate = picked;
-        checkInController.text = DateFormat('dd/MM/yyyy').format(picked);
-
+        checkInController.text = DateFormat('yyyy-MM-dd').format(picked);
         // Reset check-out date if it's before the new check-in date
-        if (selectedCheckOutDate != null &&
-            selectedCheckOutDate!.isBefore(picked)) {
+        if (selectedCheckOutDate != null && selectedCheckOutDate!.isBefore(picked)) {
           selectedCheckOutDate = null;
           checkOutController.clear();
         }
@@ -249,12 +246,9 @@ class HomePage extends State<Home> {
 
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedCheckOutDate ??
-          selectedCheckInDate!.add(const Duration(days: 1)),
+      initialDate: selectedCheckOutDate ?? selectedCheckInDate!.add(const Duration(days: 1)),
       firstDate: selectedCheckInDate!,
-      // Start from check-in date
       lastDate: selectedReturnDate!,
-      // End at return flight date
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -272,7 +266,7 @@ class HomePage extends State<Home> {
     if (picked != null) {
       setState(() {
         selectedCheckOutDate = picked;
-        checkOutController.text = DateFormat('dd/MM/yyyy').format(picked);
+        checkOutController.text = DateFormat('yyyy-MM-dd').format(picked);
       });
     }
   }
@@ -305,10 +299,6 @@ class HomePage extends State<Home> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Search Success!')),
         );
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ListHotelPage(hotelsearchDTO: hotelBooking!)));
       }else{
         final request = Flight(
           from: selectedDepartureAirportId,
@@ -330,7 +320,7 @@ class HomePage extends State<Home> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => FlightPage(searchCriteria: request,isReturn: isRoundTrip,)));
+                builder: (context) => FlightPage(searchCriteria: request,isReturn: isRoundTrip,paymentPage: PaymentPage(hotelName: "", checkInDate: selectedCheckInDate.toString(), checkOutDate: selectedCheckOutDate.toString(), numberOfGuests: ticketCountController.hashCode, roomType: selectedSeatClass, hotelPrice: 0, airlineName: "", departureDate: selectedDepartureDate.toString(), returnDate: selectedReturnDate.toString(), departureTime: "", arrivalTime: "", flightPrice: 0),hotelBooking: hotelBooking!,)));
       }
 
       // Tạo booking request
@@ -446,22 +436,21 @@ class HomePage extends State<Home> {
                     },
                   ),
                   if (departureAirports.isNotEmpty)
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: departureAirports.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(departureAirports[index].airports![0].name??"UnKnown"),
-                          onTap: () {
-                            setState(() {
-                              departureController.text = departureAirports[index].airports![0].name??"UnKnown";
-                              selectedDepartureAirportId = departureAirports[index].airports![0].id;
-                              departureAirports = []; // Clear suggestions
-                            });
-                          },
-                        );
-                      },
+                    SingleChildScrollView(
+                      child: Column(
+                        children: departureAirports.map((airport) {
+                          return ListTile(
+                            title: Text(airport.airports![0].name ?? "Unknown"),
+                            onTap: () {
+                              setState(() {
+                                departureController.text = airport.airports![0].name ?? "Unknown";
+                                selectedDepartureAirportId = airport.airports![0].id;
+                                departureAirports = []; // Clear suggestions
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ),
                     ),
                   const SizedBox(height: 16),
                   TextField(
@@ -478,22 +467,21 @@ class HomePage extends State<Home> {
                     },
                   ),
                   if (destinationAirports.isNotEmpty)
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: destinationAirports.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(destinationAirports[index].airports![0].name??"UnKnown"),
-                          onTap: () {
-                            setState(() {
-                              destinationController.text = destinationAirports[index].airports![0].name??"UnKnown";
-                             selectedArrivalAirportId = destinationAirports[index].airports![0].id;
-                              destinationAirports = []; // Clear suggestions
-                            });
-                          },
-                        );
-                      },
+                    SingleChildScrollView(
+                      child: Column(
+                        children: destinationAirports.map((airport) {
+                          return ListTile(
+                            title: Text(airport.airports![0].name ?? "Unknown"),
+                            onTap: () {
+                              setState(() {
+                                destinationController.text = airport.airports![0].name ?? "Unknown";
+                                selectedArrivalAirportId = airport.airports![0].id;
+                                destinationAirports = []; // Clear suggestions
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ),
                     ),
                   const SizedBox(height: 16),
                   Row(

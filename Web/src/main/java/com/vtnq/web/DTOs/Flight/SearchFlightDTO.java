@@ -1,5 +1,7 @@
 package com.vtnq.web.DTOs.Flight;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -51,6 +53,7 @@ public class SearchFlightDTO {
         LocalDate checkOutDate= LocalDate.parse(checkOutTime, formatter);
         return ChronoUnit.DAYS.between(checkInDate, checkOutDate);
     }
+    @JsonProperty("TypeFlight")
     private String TypeFlight;
     private boolean selectedHotel;
     private String checkInTime;

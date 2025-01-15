@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/Model/HotelBooking.dart';
 import 'package:mobile/Views/Auth/Login.dart';
 import 'package:mobile/Views/Home.dart';
 import 'package:mobile/Views/ListHotel.dart';
-import 'package:mobile/Views/PaypalCheckout.dart';
+import 'package:mobile/Views/PaymentPage.dart';
 
 
 
