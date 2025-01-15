@@ -40,7 +40,7 @@ document.getElementById("from-input").addEventListener('input',async (event)=>{
 
                     // Add click event listener specifically to the 'airport-item' div
                     airportItem.addEventListener("click", () => {
-                        document.getElementById("from-input").value = `${airportdto.name} (${airportdto.code})`;
+                        document.getElementById("from-input").value = `${airportdto.name} (${airportdto.city.name})`;
 
                         // Store the actual airport.id in the hidden input
                         document.getElementById("from-input-id").value = airportdto.id;
@@ -417,7 +417,7 @@ document.getElementById("from-input").addEventListener('input',async (event)=>{
 
                     // Add click event listener specifically to the 'airport-item' div
                     airportItem.addEventListener("click", () => {
-                        document.getElementById("from-input").value = `${airportdto.name} (${airportdto.code})`;
+                        document.getElementById("from-input").value = `${airportdto.name} (${airportdto.city.name})`;
 
                         // Store the actual airport.id in the hidden input
                         document.getElementById("from-input-id").value = airportdto.id;
@@ -531,13 +531,13 @@ document.getElementById("to-input").addEventListener('input', async (event) => {
                     airportItem.innerHTML = `
                         <div class="airport-info">
                             <span class="airport-name"><i class="fa fa-plane icon" style="margin-right: 8px; color: #2a2a2a;"></i>Sân bay ${airportdto.name}</span>
-                            <span class="airport-code">${airportdto.code}</span>
+                            <span class="airport-code">${airportdto.city.name}</span>
                         </div>
                     `;
 
                     // Add click event listener specifically to the 'airport-item' div
                     airportItem.addEventListener("click", () => {
-                        document.getElementById("to-input").value = `${airportdto.name} (${airportdto.code})`;
+                        document.getElementById("to-input").value = `${airportdto.name} (${airportdto.city.name})`;
                         document.getElementById("to-input-id").value = airportdto.id;
                         dropdown.style.display = "none"; // Hide dropdown after selection
                     });
@@ -798,7 +798,7 @@ document.addEventListener("DOMContentLoaded",function (){
     ScheduleRange.noUiSlider.on('update', function (values, handle) {
         const start = parseFloat(values[0]);
         const end = parseFloat(values[1]);
-        ScheduleStart.textContent="Đi "+values[0]+" - "+values[1];
+        ScheduleStart.textContent="Go "+values[0]+" - "+values[1];
         document.querySelectorAll('#flight-item').forEach(function (flightItem) {
             const flightTime = flightItem.getAttribute('data-TimeDepart');
             const flightHour = convertTimeToDecimal(flightTime);
@@ -811,7 +811,7 @@ document.addEventListener("DOMContentLoaded",function (){
         });
     });
     Timerange.noUiSlider.on('update', function (values, handle) {
-        TimerangeText.textContent='Dưới '+values[0]+' Tiếng';
+        TimerangeText.textContent='Below '+values[0]+' Hours';
         document.querySelectorAll('#flight-item').forEach(function (flightItem) {
             const flightTime =parseInt(flightItem.getAttribute('data-duration'));
             if(flightTime<=values[0]){
@@ -826,7 +826,7 @@ document.addEventListener("DOMContentLoaded",function (){
     ScheduleEnd.noUiSlider.on('update', function (values, handle) {
         const start = parseFloat(values[0]);
         const end = parseFloat(values[1]);
-        ScheduleEndText.textContent="Đến "+values[0]+" - "+values[1];
+        ScheduleEndText.textContent="To "+values[0]+" - "+values[1];
         document.querySelectorAll('#flight-item').forEach(function (flightItem) {
             const flightTime = flightItem.getAttribute('data-timeArrival');
 
@@ -947,13 +947,13 @@ document.getElementById('from-airport').addEventListener('input',async (event)=>
                     airportItem.innerHTML = `
                         <div class="airport-info">
                             <span class="airport-name"><i class="fa fa-plane icon" style="margin-right: 8px; color: #2a2a2a;"></i>Sân bay ${airportdto.name}</span>
-                            <span class="airport-code">${airportdto.code}</span>
+                            <span class="airport-code">${airportdto.city.name}</span>
                         </div>
                     `;
 
                     // Add click event listener specifically to the 'airport-item' div
                     airportItem.addEventListener("click", () => {
-                        document.getElementById("from-airport").value = `${airportdto.name} (${airportdto.code})`;
+                        document.getElementById("from-airport").value = `${airportdto.name} (${airportdto.city.name})`;
                         document.getElementById("to-input-id").value = airportdto.id;
                         dropdown.style.display = "none"; // Hide dropdown after selection
                     });
@@ -1001,13 +1001,13 @@ document.getElementById('To-Airport').addEventListener('input',async (event)=>{
                     airportItem.innerHTML = `
                         <div class="airport-info">
                             <span class="airport-name"><i class="fa fa-plane icon" style="margin-right: 8px; color: #2a2a2a;"></i>Sân bay ${airportdto.name}</span>
-                            <span class="airport-code">${airportdto.code}</span>
+                            <span class="airport-code">${airportdto.city.name}</span>
                         </div>
                     `;
 
                     // Add click event listener specifically to the 'airport-item' div
                     airportItem.addEventListener("click", () => {
-                        document.getElementById("To-Airport").value = `${airportdto.name} (${airportdto.code})`;
+                        document.getElementById("To-Airport").value = `${airportdto.name} (${airportdto.city.name})`;
                         document.getElementById("to-input-id").value = airportdto.id;
                         dropdown.style.display = "none"; // Hide dropdown after selection
                     });

@@ -55,7 +55,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Integer> {
             "JOIN Picture b ON a.id = b.hotelId " +
             "JOIN City c ON a.cityId = c.id " +
             "JOIN Room d ON d.hotel.id = a.id " +
-            "WHERE a.cityId = :id AND d.status = false " +
+            "WHERE a.cityId = :id AND d.status = false and b.isMain=true " +
             "GROUP BY a.id " +
             "HAVING count(d.id) >= :quantityRoom")
     BigDecimal FindMinHotel(@Param("id") int id, @Param("quantityRoom") int quantityRoom);

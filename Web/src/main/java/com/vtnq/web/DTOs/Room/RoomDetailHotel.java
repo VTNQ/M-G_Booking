@@ -11,6 +11,8 @@ public class RoomDetailHotel {
     private BigDecimal price;
     private String ImageUrl;
 
+
+
     public String getImageUrl() {
         return ImageUrl;
     }
@@ -25,6 +27,7 @@ public class RoomDetailHotel {
         this.price = price;
         this.occupancy = occupancy;
         this.ImageUrl = ImageUrl;
+
     }
 
     public int getId() {

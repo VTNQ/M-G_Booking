@@ -562,13 +562,13 @@ document.getElementById('from-airport').addEventListener('input',async (event)=>
                 airportItem.innerHTML = `
                         <div class="airport-info">
                             <span class="airport-name"><i class="fa fa-plane icon" style="margin-right: 8px; color: #2a2a2a;"></i>Sân bay ${airportdto.name}</span>
-                            <span class="airport-code">${airportdto.code}</span>
+                            <span class="airport-code">${airportdto.city.name}</span>
                         </div>
                     `;
 
                 // Add click event listener specifically to the 'airport-item' div
                 airportItem.addEventListener("click", () => {
-                    document.getElementById("from-airport").value = `${airportdto.name} (${airportdto.code})`;
+                    document.getElementById("from-airport").value = `${airportdto.name} (${airportdto.city.name})`;
                     document.getElementById("to-input-id").value = airportdto.id;
                     dropdown.style.display = "none"; // Hide dropdown after selection
                 });
@@ -616,13 +616,13 @@ document.getElementById('To-Airport').addEventListener('input',async (event)=>{
                     airportItem.innerHTML = `
                         <div class="airport-info">
                             <span class="airport-name"><i class="fa fa-plane icon" style="margin-right: 8px; color: #2a2a2a;"></i>Sân bay ${airportdto.name}</span>
-                            <span class="airport-code">${airportdto.code}</span>
+                            <span class="airport-code">${airportdto.city.name}</span>
                         </div>
                     `;
 
                     // Add click event listener specifically to the 'airport-item' div
                     airportItem.addEventListener("click", () => {
-                        document.getElementById("To-Airport").value = `${airportdto.name} (${airportdto.code})`;
+                        document.getElementById("To-Airport").value = `${airportdto.name} (${airportdto.city.name})`;
                         document.getElementById("to-input-id").value = airportdto.id;
                         dropdown.style.display = "none"; // Hide dropdown after selection
                     });

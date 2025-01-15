@@ -119,7 +119,7 @@ public class HomeController {
 
               DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
               LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-              LocalDateTime currentTime=LocalDateTime.now();
+              LocalDateTime currentTime=LocalDateTime.now().plusHours(1);
               // Lấy danh sách chuyến bay
               List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
                       searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight(),currentTime);
@@ -127,8 +127,8 @@ public class HomeController {
 
               model.put("Flight", resultFlightDTOS);
 
-              model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-              model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+              model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+              model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
               // Lấy thông tin hãng hàng không
               model.put("Airline", airlineService.searchAirline(searchFlightDTO.getDepartureAirport(), searchFlightDTO.getArrivalAirport(),
                       departureDate, searchFlightDTO.getTypeFlight()));
@@ -170,7 +170,7 @@ public class HomeController {
 
               DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
               LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-              LocalDateTime dateTime=LocalDateTime.now();
+              LocalDateTime dateTime=LocalDateTime.now().plusHours(1);
               // Lấy danh sách chuyến bay
               List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
                       searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight(),dateTime);
@@ -178,8 +178,8 @@ public class HomeController {
 
               model.put("Flight", resultFlightDTOS);
 
-              model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-              model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+              model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+              model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
               // Lấy thông tin hãng hàng không
               model.put("Airline", airlineService.searchAirline(searchFlightDTO.getDepartureAirport(), searchFlightDTO.getArrivalAirport(),
                       departureDate, searchFlightDTO.getTypeFlight()));
@@ -262,17 +262,19 @@ public class HomeController {
             model.put("MinPrice",hotelService.FindMinPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
             model.put("MaxPrice",hotelService.FindMaxPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
             session.setAttribute("searchFlightDTO", searchFlightDTO);
-
+            LocalDateTime current=LocalDateTime.now().plusHours(1);
             model.put("Flight", flightService.FindResultFlightAndHotel(
                     searchFlightDTO.getDepartureAirport(),
                     searchFlightDTO.getArrivalAirport(),
                     departureDate,
-                    searchFlightDTO.getTypeFlight()
+                    searchFlightDTO.getTypeFlight(),
+                    current
             )!=null?flightService.FindResultFlightAndHotel(
                     searchFlightDTO.getDepartureAirport(),
                     searchFlightDTO.getArrivalAirport(),
                     departureDate,
-                    searchFlightDTO.getTypeFlight()
+                    searchFlightDTO.getTypeFlight(),
+                    current
             ):new ResultFlightDTO());
             model.put("DepartureDate",dateDeparture);
 
@@ -327,16 +329,19 @@ public class HomeController {
             model.put("MinPrice",hotelService.FindMinPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
             model.put("MaxPrice",hotelService.FindMaxPriceHotel(searchFlightDTO.getIdCity(), searchFlightDTO.getQuantityRoom()));
             session.setAttribute("searchFlightDTO", searchFlightDTO);
+
             model.put("Flight", flightService.FindResultFlightAndHotel(
                     searchFlightDTO.getDepartureAirport(),
                     searchFlightDTO.getArrivalAirport(),
                     departureDate,
-                    searchFlightDTO.getTypeFlight()
+                    searchFlightDTO.getTypeFlight(),
+                    LocalDateTime.now().plusHours(1)
             )!=null?flightService.FindResultFlightAndHotel(
                     searchFlightDTO.getDepartureAirport(),
                     searchFlightDTO.getArrivalAirport(),
                     departureDate,
-                    searchFlightDTO.getTypeFlight()
+                    searchFlightDTO.getTypeFlight(),
+                    LocalDateTime.now().plusHours(1)
             ):new ResultFlightDTO());
             model.put("DepartureDate",dateDeparture);
 
@@ -376,15 +381,15 @@ public class HomeController {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-            LocalDateTime localDateTime=LocalDateTime.now();
+            LocalDateTime localDateTime=LocalDateTime.now().plusHours(1);
             // Lấy danh sách chuyến bay
             List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
                     searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight(),localDateTime);
             int flightCount = resultFlightDTOS.size();
             model.put("flightCount",flightCount);
             model.put("Flight", resultFlightDTOS);
-            model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-            model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+            model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+            model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),localDateTime.now().plusHours(1)));
             // Lấy thông tin hãng hàng không
             model.put("Airline", airlineService.searchAirline(searchFlightDTO.getDepartureAirport(), searchFlightDTO.getArrivalAirport(),
                     departureDate, searchFlightDTO.getTypeFlight()));
@@ -412,15 +417,15 @@ public class HomeController {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-            LocalDateTime localDateTime=LocalDateTime.now();
+            LocalDateTime localDateTime=LocalDateTime.now().plusHours(1);
             // Lấy danh sách chuyến bay
             List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
                     searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight(),localDateTime);
 
 
             model.put("Flight", resultFlightDTOS);
-            model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-            model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+            model.put("MinPrice",flightService.FindMinPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+            model.put("MaxPrice",flightService.FindMaxPriceDeparture(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),departureDate, searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
             // Lấy thông tin hãng hàng không
             model.put("Airline", airlineService.searchAirline(searchFlightDTO.getDepartureAirport(), searchFlightDTO.getArrivalAirport(),
                     departureDate, searchFlightDTO.getTypeFlight()));
@@ -470,9 +475,9 @@ public class HomeController {
                 model.put("NameArrivalAirport",airport.getCity().getName());
                 model.put("flight",flightService.FindByIdFlight(id));
                 model.put("Airline",airlineService.SearchAirlineArrival(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight()));
-                model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-                model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-                model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+                model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+                model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+                model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
                 return "User/Flight/RoundTripFlight";
             }else{
                 List<Integer>idFlight=new ArrayList<>();
@@ -490,10 +495,10 @@ public class HomeController {
                 model.put("searchFlightDTO",searchFlightDTO);
                 model.put("NameArrivalAirport",airport.getCity().getName());
                 model.put("flight",flightService.FindByIdFlight(id));
-                model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-                model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+                model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+                model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
                 model.put("Airline",airlineService.SearchAirlineArrival(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight()));
-                model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+                model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
                 return "User/FlightLogin/RoundTripFlightLogin";
             }
 
@@ -541,9 +546,9 @@ public class HomeController {
                 model.put("ArrivalAirport",airportRepository.findById(searchFlightDTO.getArrivalAirport()).orElseThrow(()->new RuntimeException("Aiport not found")));
                 model.put("People",searchFlightDTO.getNumberPeopleRight());
                 model.put("Room",searchFlightDTO.getQuantityRoom());
-                model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-                model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-                model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+                model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+                model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+                model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
                 return "User/Flight/RoundTripHotelFlight";
             }else{
                 List<Integer>idFlight=new ArrayList<>();
@@ -582,10 +587,10 @@ public class HomeController {
                 model.put("Airline",airlineService.SearchAirlineArrival(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight()));
                 model.put("DepartAirport",airportRepository.findById(searchFlightDTO.getDepartureAirport()).orElseThrow(()->new RuntimeException("Aiport not found")));
                 model.put("ArrivalAirport",airportRepository.findById(searchFlightDTO.getArrivalAirport()).orElseThrow(()->new RuntimeException("Aiport not found")));
-                model.put("Flight",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-                model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-                model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
-                model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight()));
+                model.put("Flight",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+                model.put("flightArrival",flightService.FindArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+                model.put("MinPrice",flightService.FindMinPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
+                model.put("MaxPrice",flightService.FindMaxPriceArrivalTime(searchFlightDTO.getDepartureAirport(),searchFlightDTO.getArrivalAirport(),ArrivalDate,searchFlightDTO.getTypeFlight(),searchFlightDTO.getNumberPeopleRight(),LocalDateTime.now().plusHours(1)));
                 return "User/FlightLogin/RoundTripHotelFlightLogin";
             }
 

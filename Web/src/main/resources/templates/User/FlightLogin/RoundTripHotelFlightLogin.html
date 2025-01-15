@@ -15,7 +15,8 @@
 background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 100%;min-width: 980px;box-sizing: border-box;display: flex;align-items: center;flex-wrap: nowrap">
                     <div style="margin: auto;width: 1100px;box-sizing: border-box;display: flex;align-items: center;flex-wrap: nowrap">
                         <div style="max-width: calc(100% - 180px);box-sizing: border-box;margin: 0px;display: block;flex-basis: 100%;flex-grow: 0">
-                            <span style="font-size: 20px;font-weight: 500;color: #fff;line-height: 20px" th:text="'Trip from '+${DepartAirport.getName()}+' to '+${ArrivalAirport.getName()}">Chuyến đi từ Hồ Chí Minh (SGN) tới Hà Nội (HAN)</span>
+                            <span style="font-size: 20px;font-weight: 500;color: #fff;line-height: 20px"
+                                  th:text="'Trip from '+${DepartAirport.getName()}+' to '+${ArrivalAirport.getName()}">Chuyến đi từ Hồ Chí Minh (SGN) tới Hà Nội (HAN)</span>
                             <div style="box-sizing: border-box;display: flex;width: 100%;align-items: flex-start;flex-wrap: nowrap">
                                 <div style="box-sizing: border-box;margin: 0px">
                                     <span style="background-color: rgb(37, 181, 124);border-radius: 2px;display: block;padding: 0px 8px;margin-top: 4px;font-size: 14px;line-height: 32px;font-weight: 400">
@@ -28,13 +29,17 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                     </span>
                                 </div>
                                 <div style="padding: 0px 8px">
-                                    <span style="display: block;padding: 2px 0px;margin-top: 4px" th:text="${DepartureDate}+'   -   '+${ArrivalDate}">t2, 23 tháng 12 2024</span>
-                                    <span style="display: block;padding: 2px 0px;margin-top: 4px" th:text="${CheckIn}+'   -   '+${CheckOut}">t2, 23 tháng 12 2024</span>
+                                    <span style="display: block;padding: 2px 0px;margin-top: 4px"
+                                          th:text="${DepartureDate}+'   -   '+${ArrivalDate}">t2, 23 tháng 12 2024</span>
+                                    <span style="display: block;padding: 2px 0px;margin-top: 4px"
+                                          th:text="${CheckIn}+'   -   '+${CheckOut}">t2, 23 tháng 12 2024</span>
                                 </div>
                                 <div style="padding-left: 8px;position: relative;box-sizing: border-box;margin: 0px"
                                      class="kMETju">
-                                    <span style="display: block;padding: 2px 0px;margin-top: 7px;font-size: 17px;line-height: 16px;font-weight: 400;margin-bottom: 1vh" th:text="${People}+' People'">2 People</span>
-                                    <span style="display: block;padding: 2px 0px;margin-top: 4px;font-size: 17px;line-height: 16px;font-weight: 400;position: relative;top: 1px" th:text="${Room}+' Room'">2 Room</span>
+                                    <span style="display: block;padding: 2px 0px;margin-top: 7px;font-size: 17px;line-height: 16px;font-weight: 400;margin-bottom: 1vh"
+                                          th:text="${People}+' People'">2 People</span>
+                                    <span style="display: block;padding: 2px 0px;margin-top: 4px;font-size: 17px;line-height: 16px;font-weight: 400;position: relative;top: 1px"
+                                          th:text="${Room}+' Room'">2 Room</span>
 
                                 </div>
                             </div>
@@ -88,7 +93,8 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
 
                                             <div class="card-body pt-0 mt-1 px-5 pb-4">
                                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                                    <label class="form-check-label" for="selectAllToggle">Select all brands</label>
+                                                    <label class="form-check-label" for="selectAllToggle">Select all
+                                                        brands</label>
                                                     <div class="form-check form-switch ms-3">
                                                         <input class="form-check-input" type="checkbox"
                                                                id="selectAllToggle" style="font-size: 24px">
@@ -111,7 +117,6 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                             </label>
                                                         </div>
                                                     </th:block>
-
 
 
                                                 </div>
@@ -237,13 +242,14 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
             </div>
 
             <div class="col-xl-9 mt-xl-1">
-                <div  >
+                <div>
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 pb-1">
                         <h3 class="mb-4 mb-md-0 text-center"
-                            style="font-size: 1.313rem;font-weight: 500;line-height: 1;text-align: left" th:text="${flightArrival.size()}+' results found.'">1984 results
+                            style="font-size: 1.313rem;font-weight: 500;line-height: 1;text-align: left"
+                            th:text="${flightArrival.size()}+' results found.'">1984 results
                             found.</h3>
                         <div class="d-flex align-items-center justify-content-between justify-content-md-start">
-                        <a href="#" onclick="goBack()">Change</a>
+                            <a href="#" onclick="goBack()">Change</a>
                         </div>
                     </div>
                     <div class="tab-content" style="display: block;border: none">
@@ -265,23 +271,36 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                     <div class="col-md mb-4 mb-md-0">
                                         <div class="" style="display: flex;align-items: center;justify-content: center">
                                             <div class="mr-lg-3 mb-1 mb-lg-0">
-                                                <i class="fa-solid fa-plane-departure" style="color: #297cbb !important;font-size: 1.875rem"></i>
+                                                <i class="fa-solid fa-plane-departure"
+                                                   style="color: #297cbb !important;font-size: 1.875rem"></i>
                                             </div>
                                             <div class="text-left">
-                                                <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.timeDepart}">
+                                                <h6 class="mb-0"
+                                                    style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                    th:text="${flight.timeDepart}">
                                                     18:30
                                                 </h6>
-                                                <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.nameAirport}">New Delhi</span>
+                                                <span class=""
+                                                      style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                      th:text="${flight.dateDepart}">New Delhi</span>
+                                                <br>
+                                                <span
+                                                    class=""
+                                                    style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                    th:text="${flight.nameAirport}">New Delhi</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md mb-4 mb-md-0">
-                                        <div class="mb-0" style="display: flex;align-items: center;justify-content: center;flex-direction: column">
-                                            <h6 th:text="${flight.durationString}" style="font-weight: 500 !important;font-size: 1.2rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                        <div class="mb-0"
+                                             style="display: flex;align-items: center;justify-content: center;flex-direction: column">
+                                            <h6 th:text="${flight.durationString}"
+                                                style="font-weight: 500 !important;font-size: 1.2rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
                                                 02 hrs 45 mins
                                             </h6>
 
-                                            <div class="border-top my-1" style="width: 3.75rem;border-width: 2px !important;border-color: #297cbb !important;margin-top: -2vh"></div>
+                                            <div class="border-top my-1"
+                                                 style="width: 3.75rem;border-width: 2px !important;border-color: #297cbb !important;margin-top: -2vh"></div>
                                             <h6 style="font-weight: 500 !important;font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
                                                 Non Stop
                                             </h6>
@@ -290,14 +309,24 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                     <div class="col-md mb-4 mb-md-0">
                                         <div class="" style="display: flex;align-items: center;justify-content: center">
                                             <div class="mr-lg-3 mb-1 mb-lg-0">
-                                                <i class="fa-solid fa-plane-arrival"  style="color: #297cbb !important;font-size: 1.875rem"></i>
+                                                <i class="fa-solid fa-plane-arrival"
+                                                   style="color: #297cbb !important;font-size: 1.875rem"></i>
 
                                             </div>
                                             <div class="text-left">
-                                                <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.timeArrival}">
+                                                <h6 class="mb-0"
+                                                    style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                    th:text="${flight.timeArrival}">
                                                     18:30
                                                 </h6>
-                                                <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.nameArrivalAirport}">New Delhi</span>
+                                                <span class=""
+                                                      style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                      th:text="${flight.dateArrival}">New Delhi</span>
+                                                <br>
+                                                <span
+                                                    class=""
+                                                    style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                    th:text="${flight.nameArrivalAirport}">New Delhi</span>
                                             </div>
                                         </div>
                                     </div>
@@ -306,7 +335,9 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                             <div class="ml-xl-5">
                                                 <div class="mb-2">
                                                     <div class="mb-2 text-lh-1dot4">
-                                                                    <span th:text="'$'+${flight.price}" class="font-weight-bold font-size-22" style="font-weight: 500 !important;font-size: 1.375rem;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                                                    <span th:text="'$'+${flight.price}"
+                                                                          class="font-weight-bold font-size-22"
+                                                                          style="font-weight: 500 !important;font-size: 1.375rem;font-family: 'Rubik', Helvetica, Arial, sans-serif">
                                                                         £4,177
                                                                     </span>
                                                     </div>
@@ -321,15 +352,16 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                         </div>
 
 
-
                     </div>
-                </div>   <div  >
+                </div>
+                <div>
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 pb-1">
                         <h3 class="mb-4 mb-md-0 text-center"
-                            style="font-size: 1.313rem;font-weight: 500;line-height: 1;text-align: left" th:text="'Select return flight '+${NameArrivalAirport}">Chọn chuyến bay trở về Hà Nội</h3>
+                            style="font-size: 1.313rem;font-weight: 500;line-height: 1;text-align: left"
+                            th:text="'Select return flight '+${NameArrivalAirport}">Chọn chuyến bay trở về Hà Nội</h3>
 
                     </div>
-                <p>Additional price per passenger. Price includes taxes and fees.</p>
+                    <p>Additional price per passenger. Price includes taxes and fees.</p>
                     <div class="tab-content" style="display: block;border: none;background-color: transparent">
 
                         <th:block th:each="flightarrivals,index : ${flightArrival}">
@@ -338,7 +370,8 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                 <div id="flight-itemArrival"
                                      class="hover-bg-gray-1 border rounded-xs py-4 px-4 px-xl-5 mb-4"
                                      style="border-radius: 0.188rem" th:data-airline-id="${flightarrivals.idFlight}"
-                                     th:data-price="${flightarrivals.price}" th:data-TimeDepart="${flightarrivals.timeDepart}"
+                                     th:data-price="${flightarrivals.price}"
+                                     th:data-TimeDepart="${flightarrivals.timeDepart}"
                                      th:data-timeArrival="${flightarrivals.timeArrival}"
                                      th:data-duration="${flightarrivals.durationString}">
                                     <div class="row align-items-center text-center">
@@ -347,45 +380,62 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                  th:src="${'http://localhost:8686/images/flight/'+flightarrivals.imageUrl}"/>
                                         </div>
                                         <div class="col-md mb-4 mb-md-0">
-                                            <div class="" style="display: flex;align-items: center;justify-content: center">
+                                            <div class=""
+                                                 style="display: flex;align-items: center;justify-content: center">
                                                 <div class="mr-lg-3 mb-1 mb-lg-0">
-                                                    <i class="fa-solid fa-plane-departure" style="color: #297cbb !important;font-size: 1.875rem"></i>
+                                                    <i class="fa-solid fa-plane-departure"
+                                                       style="color: #297cbb !important;font-size: 1.875rem"></i>
                                                 </div>
                                                 <div class="text-left">
-                                                    <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.timeDepart}">
+                                                    <h6 class="mb-0"
+                                                        style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                        th:text="${flightarrivals.timeDepart}">
                                                         18:30
                                                     </h6>
-                                                    <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.dateDepart}">New Delhi</span>
+                                                    <span class=""
+                                                          style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                          th:text="${flightarrivals.dateDepart}">New Delhi</span>
                                                     <br>
-                                                    <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.nameAirport}">New Delhi</span>
+                                                    <span class=""
+                                                          style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                          th:text="${flightarrivals.nameAirport}">New Delhi</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md mb-4 mb-md-0">
-                                            <div class="mb-0" style="display: flex;align-items: center;justify-content: center;flex-direction: column">
-                                                <h6 th:text="${flightarrivals.durationString}" style="font-weight: 500 !important;font-size: 1.2rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                            <div class="mb-0"
+                                                 style="display: flex;align-items: center;justify-content: center;flex-direction: column">
+                                                <h6 th:text="${flightarrivals.durationString}"
+                                                    style="font-weight: 500 !important;font-size: 1.2rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
                                                     02 hrs 45 mins
                                                 </h6>
 
-                                                <div class="border-top my-1" style="width: 3.75rem;border-width: 2px !important;border-color: #297cbb !important;margin-top: -2vh"></div>
-                                                <h6 style="font-weight: 500 !important;font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                                                    Non Stop
-                                                </h6>
+                                                <div class="border-top my-1"
+                                                     style="width: 3.75rem;border-width: 2px !important;border-color: #297cbb !important;margin-top: -2vh"></div>
+
                                             </div>
                                         </div>
                                         <div class="col-md mb-4 mb-md-0">
-                                            <div class="" style="display: flex;align-items: center;justify-content: center">
+                                            <div class=""
+                                                 style="display: flex;align-items: center;justify-content: center">
                                                 <div class="mr-lg-3 mb-1 mb-lg-0">
-                                                    <i class="fa-solid fa-plane-arrival"  style="color: #297cbb !important;font-size: 1.875rem"></i>
+                                                    <i class="fa-solid fa-plane-arrival"
+                                                       style="color: #297cbb !important;font-size: 1.875rem"></i>
 
                                                 </div>
                                                 <div class="text-left">
-                                                    <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.timeArrival}">
+                                                    <h6 class="mb-0"
+                                                        style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                        th:text="${flightarrivals.timeArrival}">
                                                         18:30
                                                     </h6>
-                                                    <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.dateArrival}">New Delhi</span>
+                                                    <span class=""
+                                                          style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                          th:text="${flightarrivals.dateArrival}">New Delhi</span>
                                                     <br>
-                                                    <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.nameArrivalAirport}">New Delhi</span>
+                                                    <span class=""
+                                                          style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif"
+                                                          th:text="${flightarrivals.nameArrivalAirport}">New Delhi</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -394,13 +444,19 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                 <div class="ml-xl-5">
                                                     <div class="mb-2">
                                                         <div class="mb-2 text-lh-1dot4">
-                                                                    <span th:text="'$'+${flightarrivals.price}" class="font-weight-bold font-size-22" style="font-weight: 500 !important;font-size: 1.375rem;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                                                    <span th:text="'$'+${flightarrivals.price}"
+                                                                          class="font-weight-bold font-size-22"
+                                                                          style="font-weight: 500 !important;font-size: 1.375rem;font-family: 'Rubik', Helvetica, Arial, sans-serif">
                                                                         £4,177
                                                                     </span>
                                                         </div>
-                                                        <a th:if="${searchFlightDTO.selectedHotel==false}" th:href="'/InformationFly/'+${flightarrivals.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
+                                                        <a th:if="${searchFlightDTO.selectedHotel==false}"
+                                                           th:href="'/InformationFly/'+${flightarrivals.id}"
+                                                           class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
                                                            style="min-height: 3.125rem">Book Now</a>
-                                                        <a th:if="${searchFlightDTO.selectedHotel==true}" th:href="'/InformationFlightHotel/'+${flightarrivals.id}" class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
+                                                        <a th:if="${searchFlightDTO.selectedHotel==true}"
+                                                           th:href="'/InformationFlightHotel/'+${flightarrivals.id}"
+                                                           class="btn btn-outline-primary border-radius-3 d-flex align-items-center justify-content-center min-height-50 font-weight-bold border-width-2 py-2 w-100"
                                                            style="min-height: 3.125rem">Book Now</a>
 
                                                     </div>
@@ -421,64 +477,92 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                 </div>
 
 
-                </div>
-
-
-
-
-                </div>
-
             </div>
+
 
         </div>
 
     </div>
-    <div id="flight-details-popup" class="custombox-overlay custombox-fadein custombox-open" style="background-color: rgb(0, 0, 0);display: none;">
 
     </div>
-    <div id="flight-details-content" class="custombox-content custombox-x-center custombox-y-center custombox-fadein custombox-open" style="animation-duration: 300ms; animation-delay: 150ms;display: none">
+
+    </div>
+    <div id="flight-details-popup" class="custombox-overlay custombox-fadein custombox-open"
+         style="background-color: rgb(0, 0, 0);display: none;">
+
+    </div>
+    <div id="flight-details-content"
+         class="custombox-content custombox-x-center custombox-y-center custombox-fadein custombox-open"
+         style="animation-duration: 300ms; animation-delay: 150ms;display: none">
         <div class="js-modal-window u-modal-window " style="display: block;width: 153vh">
             <div class="card mx-4 mx-xl-0 mb-4 mb-md-0" style="width: 103%">
-                <button id="close-popup" type="button" class="border-0 mr-n4 mt-n4" style="width: 3.125rem;height: 3.125rem;cursor: pointer;display: flex;align-items: center;justify-content: center;position:absolute;border-radius: 50%;background-color: #297cbb !important;top: 0;right: 0">
+                <button id="close-popup" type="button" class="border-0 mr-n4 mt-n4"
+                        style="width: 3.125rem;height: 3.125rem;cursor: pointer;display: flex;align-items: center;justify-content: center;position:absolute;border-radius: 50%;background-color: #297cbb !important;top: 0;right: 0">
                     <i class="fa-solid fa-xmark" style="color: #fff !important;font-size: 0.875rem"></i>
                 </button>
                 <header class="card-header py-4 px-4" style="background-color: #f8f9fa !important">
                     <div class="row align-items-center text-center">
                         <div class="col-md-auto mb-4 ">
                             <div class="d-block d-lg-flex flex-horizontal-center">
-                                <img style="max-width: 8%" id="img-popup" class="img-fluid mr-3 mb-3 mb-lg-0" src="https://transvelo.github.io/mytravel-html/assets/img/90x90/img1.png">
-                                <div id="nameAirline" class="" style="font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif">Spicejet SG 143 | Boeing 737-700</div>
+                                <img style="max-width: 8%" id="img-popup" class="img-fluid mr-3 mb-3 mb-lg-0"
+                                     src="https://transvelo.github.io/mytravel-html/assets/img/90x90/img1.png">
+                                <div id="nameAirline" class=""
+                                     style="font-size: 1rem;font-family: 'Rubik', Helvetica, Arial, sans-serif">Spicejet
+                                    SG 143 | Boeing 737-700
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-auto mb-4 mb-md-0">
-                            <div class="mx-2 mx-xl-3 " style="display: flex;align-items: flex-start;justify-content: center">
+                            <div class="mx-2 mx-xl-3 "
+                                 style="display: flex;align-items: flex-start;justify-content: center">
                                 <div class="mr-lg-3 mb-1 mb-lg-0">
-                                    <i class="fa-solid fa-plane-departure" style="font-size: 1.875rem;color: #297cbb !important"></i>
+                                    <i class="fa-solid fa-plane-departure"
+                                       style="font-size: 1.875rem;color: #297cbb !important"></i>
                                 </div>
                                 <div style="text-align: left">
-                                    <h6 class="mb-0" style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">18:30</h6>
-                                    <div id="dateDepart" class="" style="font-size: 0.875rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Sat, 21 Sep 19</div>
-                                    <span class="" style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi, India</span>
+                                    <h6 class="mb-0"
+                                        style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                        18:30</h6>
+                                    <div id="dateDepart" class=""
+                                         style="font-size: 0.875rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                        Sat, 21 Sep 19
+                                    </div>
+                                    <span class=""
+                                          style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi, India</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-auto mb-4 mb-md-0">
-                            <div class="mx-2 mx-xl-3" style="display: flex;align-items: center;justify-content: center;flex-direction: column">
-                                <h6 id="durationString" style="font-weight: 500!important;font-size: 0.975rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">02 hrs 45 mins</h6>
-                                <div class="border-top my-1" style="width: 3.75rem;border-color: #297cbb !important;border-width: 2px !important"></div>
-                                <div style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Non Stop</div>
+                            <div class="mx-2 mx-xl-3"
+                                 style="display: flex;align-items: center;justify-content: center;flex-direction: column">
+                                <h6 id="durationString"
+                                    style="font-weight: 500!important;font-size: 0.975rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                    02 hrs 45 mins</h6>
+                                <div class="border-top my-1"
+                                     style="width: 3.75rem;border-color: #297cbb !important;border-width: 2px !important"></div>
+                                <div style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-auto mb-4 mb-md-0">
-                            <div class="mx-2 mx-xl-3 " style="display: flex;align-items: flex-start;justify-content: center">
+                            <div class="mx-2 mx-xl-3 "
+                                 style="display: flex;align-items: flex-start;justify-content: center">
                                 <div class="mr-lg-3 mb-1 mb-lg-0">
-                                    <i class="fa-solid fa-plane-arrival"  style="font-size: 1.875rem;color: #297cbb !important"></i>
+                                    <i class="fa-solid fa-plane-arrival"
+                                       style="font-size: 1.875rem;color: #297cbb !important"></i>
 
                                 </div>
                                 <div style="text-align: left">
-                                    <h6 id="TimeArrival" class="mb-0" style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">18:30</h6>
-                                    <div id="dateArrival" class="" style="font-size: 0.875rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">Sat, 21 Sep 19</div>
-                                    <span class="" style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi, India</span>
+                                    <h6 id="TimeArrival" class="mb-0"
+                                        style="font-weight: 500 !important;font-size: 1.313rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                        18:30</h6>
+                                    <div id="dateArrival" class=""
+                                         style="font-size: 0.875rem;color: #18181b !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
+                                        Sat, 21 Sep 19
+                                    </div>
+                                    <span class=""
+                                          style="font-size: 0.875rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">New Delhi, India</span>
                                 </div>
                             </div>
                         </div>
@@ -564,9 +648,10 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                 id="from-input"
                                                 autocomplete="off"
                                         />
-                                        <input type="hidden" id="from-input-id" th:field="${searchFlightDTO.departureAirport}"/>
+                                        <input type="hidden" id="from-input-id"
+                                               th:field="${searchFlightDTO.departureAirport}"/>
                                     </div>
-                                    <div class="search-dropdown" id="from-dropdown" style="width: 69%">
+                                    <div class="search-dropdown" id="from-dropdown" style="width: 99%">
                                         <ul id="airport-list-from"></ul>
                                     </div>
                                     <button type="button" class="swap-button">
@@ -580,7 +665,8 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                 id="to-input"
                                                 autocomplete="off"
                                         />
-                                        <input type="hidden" id="to-input-id" th:field="${searchFlightDTO.arrivalAirport}"/>
+                                        <input type="hidden" id="to-input-id"
+                                               th:field="${searchFlightDTO.arrivalAirport}"/>
                                     </div>
                                     <div class="search-dropdown" id="to-dropdown">
 
@@ -650,7 +736,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                 <div class="search-container">
                                     <div class="date-picker-container">
                                         <div>
-                                            <label  class="label">Check In</label>
+                                            <label class="label">Check In</label>
                                             <div class="date-picker">
                                                 <i class="fa-solid fa-calendar"></i>
                                                 <input type="date" id="CheckInDate"
@@ -658,7 +744,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                             </div>
                                         </div>
                                         <div>
-                                            <label  class="label">Check Out</label>
+                                            <label class="label">Check Out</label>
                                             <div class="date-picker">
                                                 <i class="fa-solid fa-calendar"></i>
                                                 <input type="date" id="CheckOut"
@@ -674,7 +760,8 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                 <div class="dropdown-container">
 
                                     <div class="dropdown">
-                                        <select id="classSelect" th:field="${searchFlightDTO.quantityRoom}" class="form-select "
+                                        <select id="classSelect" th:field="${searchFlightDTO.quantityRoom}"
+                                                class="form-select "
                                                 style="margin-top: 2vh">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
@@ -714,12 +801,13 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                 <div class="dropdown-container">
 
                                     <div class="dropdown">
-                                        <select id="classSelect" th:field="${searchFlightDTO.typeFlight}" class="form-select "
+                                        <select id="classSelect" th:field="${searchFlightDTO.typeFlight}"
+                                                class="form-select "
                                                 style="margin-top: 2vh">
-                                            <option value="Popular">Popular</option>
-                                            <option value="Premium Economy">Premium Economy</option>
-                                            <option value="Merchant">Merchant</option>
+
                                             <option value="First Class">First Class</option>
+                                            <option value="Business Class">Business Class</option>
+                                            <option value="Economy Class">Economy Class</option>
                                         </select>
                                     </div>
                                 </div>
@@ -805,7 +893,8 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                             <div class="col-sm-5 d-flex align-items-center justify-content-center"
                                  style="position: relative;left: -20vh;top: -1vh;margin-top: 2vh">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" th:field="${searchFlightDTO.selectedHotel}" type="checkbox"
+                                    <input class="form-check-input" th:field="${searchFlightDTO.selectedHotel}"
+                                           type="checkbox"
                                            id="flexSwitchCheckDefault" style="font-size: 21px">
                                     <label class="form-check-label" for="flexSwitchCheckDefault"
                                            style="position: absolute;top: 3px;width: 26vh">Default switch checkbox

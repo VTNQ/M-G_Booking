@@ -109,6 +109,8 @@
                             <th>Airline</th>
                             <th>Departure Airport</th>
                             <th>Arrival Airport</th>
+                            <th>Time Depart</th>
+                            <th>Time Arrival</th>
                             <th>Action</th>
                             <th>Creat Seat</th>
                             <th>Detail Seat</th>
@@ -121,6 +123,8 @@
                                 <td th:text="${flight.nameAirline}"></td>
                                 <td th:text="${flight.departure_airport}"></td>
                                 <td th:text="${flight.arrival_airport}"></td>
+                                <td th:text="${flight.departure_time}"></td>
+                                <td th:text="${flight.arrival_time}"></td>
                                 <td>
                                     <a th:href="@{'/Admin/Flight/edit/'+${flight.id}}"
                                        style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i

@@ -27,30 +27,42 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "and f.departureAirport.id = :departureAirport " +
             "and f.arrivalAirport.id = :arrivalAirport " +
             "and G.type = :TypeFlight" +
-            " and (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople")
+            " and (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople and f.departureTime > :CurrentDate")
     public BigDecimal FindPrice(@Param("departureAirport") int departureAirport,
                                 @Param("arrivalAirport") int arrivalAirport,
                                 @Param("departureTime") LocalDate departureTime,
                                 @Param("TypeFlight") String TypeFlight,
-                                @Param("totalPeople") int totalPeople);
+                                @Param("totalPeople") int totalPeople,
+                                @Param("CurrentDate")LocalDateTime CurrentDate);
 
-    @Query("SELECT distinct new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id,d.imageUrl,f.arrivalAirport.city.name,f.arrivalTime,f.departureTime," +
-            "G.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id,f.arrivalAirport.name) FROM Flight f " +
-            "JOIN Airport a on a.id=f.departureAirport.id " +
-            "JOIN Airport b on b.id=f.arrivalAirport.id " +
-            "JOIN Airline c on c.id=f.airline.id " +
-            "JOIN Picture d on c.id=d.airlineId " +
-            "Join Seat G on f.id=G.idFlight.id " +
-            "join City e on e.id=b.city.id " +
-            "WHERE f.departureAirport.id= :departureAirport " +
+    @Query("SELECT new com.vtnq.web.DTOs.Flight.ResultFlightDTO(" +
+            "f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, " +
+            "min(f.price), c.name, f.departureTime, f.arrivalTime, f.departureTime, f.arrivalTime, " +
+            "f.departureAirport.name, f.airline.id, f.arrivalAirport.name) " +
+            "FROM Flight f " +
+            "JOIN Airport a ON a.id = f.departureAirport.id " +
+            "JOIN Airport b ON b.id = f.arrivalAirport.id " +
+            "JOIN Airline c ON c.id = f.airline.id " +
+            "JOIN Picture d ON c.id = d.airlineId " +
+            "LEFT JOIN Seat G ON f.id = G.idFlight.id " +
+            "JOIN City e ON e.id = b.city.id " +
+            "WHERE f.departureAirport.id = :departureAirport " +
             "AND f.arrivalAirport.id = :arrivalAirport " +
             "AND DATE(f.departureTime) = :departureTime " +
-            "And G.type = :TypeFlight and G.status=0 " +
-            "order by G.price ASC")
-    ResultFlightDTO findResulFlightAndHotel(@Param("departureAirport") int departureAirport,
-                                            @Param("arrivalAirport") int arrivalAirport,
-                                            @Param("departureTime") LocalDate departureTime,
-                                            @Param("TypeFlight") String TypeFlight);
+            "AND G.type = :TypeFlight " +
+            "AND G.status = 0 " +
+            "AND d.isMain = true  and f.departureTime > :CurrentDate " +
+            "GROUP BY f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, " +
+            "c.name, f.departureAirport.name, f.airline.id, f.arrivalAirport.name " +
+            "ORDER BY min(f.price) ASC")
+
+    List<ResultFlightDTO> findResulFlightAndHotel(
+            @Param("departureAirport") int departureAirport,
+            @Param("arrivalAirport") int arrivalAirport,
+            @Param("departureTime") LocalDate departureTime,
+            @Param("TypeFlight") String TypeFlight,
+            @Param("CurrentDate") LocalDateTime CurrentDate);
+
 
     @Query("select distinct new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime,f.price, c.name, f.departureTime, f.arrivalTime, f.departureTime, f.arrivalTime, f.departureAirport.name, f.airline.id, f.arrivalAirport.name) " +
             "from Flight f " +
@@ -59,7 +71,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "join Airline c on c.id = f.airline.id " +
             "join Picture d on c.id = d.airlineId " +
             "join Seat G on f.id = G.idFlight.id " +
-            "where f.id = :id and d.isMain=true and G.status=0 " +
+            "where f.id = :id and d.isMain=true and G.status=0  " +
             "group by f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, c.name, f.departureAirport.name, f.airline.id, f.arrivalAirport.name ")
     ResultFlightDTO FindByFlightId(int id);
 
@@ -76,7 +88,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "AND f.arrivalAirport.id = :arrivalAirport " +
             "AND DATE(f.departureTime) = :departureTime " +
             "AND G.type = :TypeFlight And G.status=0  " +
-            "AND (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople AND f.departureTime > :currentTime")
+            "AND (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople AND f.departureTime > :currentTime ")
     List<ResultFlightDTO> findFlightsByAirportsAndDepartureTime(
             @Param("departureAirport") int departureAirport,
             @Param("arrivalAirport") int arrivalAirport,
@@ -94,11 +106,11 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "AND f.arrivalAirport.id = :arrivalAirport " +
             "AND DATE(f.departureTime)= :departureTime " +
             "AND G.type = :TypeFlight And G.status=0 " +
-            "AND (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople")
+            "AND (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople and f.departureTime > :CurrentDate")
     BigDecimal FindMinPriceDeparture(@Param("departureAirport") int departureAirport,
                                      @Param("arrivalAirport") int arrivalAirport,
                                      @Param("departureTime") LocalDate departureTime,
-                                     @Param("TypeFlight") String TypeFlight, @Param("totalPeople") int totalPeople);
+                                     @Param("TypeFlight") String TypeFlight, @Param("totalPeople") int totalPeople,@Param("CurrentDate")LocalDateTime CurrentDate);
 
     @Query("select max (f.price) from Flight f " +
             "join Airport a on a.id = f.departureAirport.id " +
@@ -110,12 +122,12 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "where f.departureAirport.id = :departureAirport " +
             "AND f.arrivalAirport.id = :arrivalAirport " +
             "AND DATE(f.departureTime)= :departureTime " +
-            "AND G.type = :TypeFlight And G.status=0 " +
+            "AND G.type = :TypeFlight And G.status=0 and f.departureTime > :CurrentDate " +
             "AND (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople")
     BigDecimal FindMaxPriceDeparture(@Param("departureAirport") int departureAirport,
                                      @Param("arrivalAirport") int arrivalAirport,
                                      @Param("departureTime") LocalDate departureTime,
-                                     @Param("TypeFlight") String TypeFlight, @Param("totalPeople") int totalPeople);
+                                     @Param("TypeFlight") String TypeFlight, @Param("totalPeople") int totalPeople,@Param("CurrentDate")LocalDateTime CurrentDate);
 
     @Query("SELECT distinct  new com.vtnq.web.DTOs.Flight.ResultFlightDTO(f.id,d.imageUrl,f.arrivalAirport.city.name,f.arrivalTime,f.departureTime," +
             "f.price,c.name,f.departureTime,f.arrivalTime,f.departureTime,f.arrivalTime,f.departureAirport.name,f.airline.id,f.arrivalAirport.name) FROM Flight f " +
@@ -129,12 +141,12 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "AND f.arrivalAirport.id = :arrivalAirport " +
             "AND DATE(f.departureTime) = :departureTime " +
             "And G.type = :TypeFlight and G.status=0 " +
-            "And Date(f.arrivalTime) = :arrivalTime")
+            "And Date(f.arrivalTime) = :arrivalTime and f.departureTime > :CurrentDate")
     List<ResultFlightDTO> SearchFindFlightAll(@Param("departureAirport") int departureAirport,
                                               @Param("arrivalAirport") int arrivalAirport,
                                               @Param("departureTime") LocalDate departureTime,
                                               @Param("arrivalTime") LocalDate arrivalTime,
-                                              @Param("TypeFlight") String TypeFlight);
+                                              @Param("TypeFlight") String TypeFlight,@Param("CurrentDate")LocalDateTime CurrentDate);
 
     @Query("SELECT  new com.vtnq.web.DTOs.Booking.BookingListFly(f.id,d.imageUrl,a.name,c.name,f.departureTime,f.arrivalTime,f.airline.name,f.arrivalTime,f.departureTime,f.departureAirport.city.name,f.arrivalAirport.city.name) FROM Flight f " +
             "JOIN Airport a on a.id=f.departureAirport.id " +
@@ -154,12 +166,12 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "and f.arrivalAirport.id = :departureAirport " +
             "and DATE(f.departureTime) = :arrivalTime and e.status=0 " +
             "AND (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople " +
-            "and e.type = :TypeFlight " +
+            "and e.type = :TypeFlight and f.departureTime > :CurrentDate " +
             "group by f.id, d.imageUrl, f.arrivalAirport.city.name, f.arrivalTime, f.departureTime, e.price, c.name, f.departureAirport.name, f.airline.id, f.arrivalAirport.name")
     List<ResultFlightDTO> FindArrivalTimeFlights(@Param("departureAirport") int departureAirport,
                                                  @Param("arrivalAirport") int arrivalAirport,
                                                  @Param("arrivalTime") LocalDate arrivalTime,
-                                                 @Param("TypeFlight") String TypeFlight,@Param("totalPeople") int totalPeople);
+                                                 @Param("TypeFlight") String TypeFlight,@Param("totalPeople") int totalPeople,@Param("CurrentDate")LocalDateTime CurrentDate);
     @Query("SELECT  min(f.price) from Flight f " +
             "join Airport a on a.id=f.departureAirport.id " +
             "join Airport b on b.id=f.arrivalAirport.id " +
@@ -170,11 +182,11 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "and f.arrivalAirport.id = :departureAirport " +
             "and DATE(f.departureTime) = :arrivalTime and e.status=0 " +
             "AND (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople " +
-            "and e.type = :TypeFlight and d.isMain=true ")
+            "and e.type = :TypeFlight and d.isMain=true and f.departureTime > :CurrentDate")
     BigDecimal MinArrivalTime(@Param("departureAirport") int departureAirport,
                               @Param("arrivalAirport") int arrivalAirport,
                               @Param("arrivalTime") LocalDate arrivalTime,
-                              @Param("TypeFlight") String TypeFlight,@Param("totalPeople") int totalPeople);
+                              @Param("TypeFlight") String TypeFlight,@Param("totalPeople") int totalPeople,@Param("CurrentDate") LocalDateTime CurrentDate);
     @Query("SELECT  max(f.price) from Flight f " +
             "join Airport a on a.id=f.departureAirport.id " +
             "join Airport b on b.id=f.arrivalAirport.id " +
@@ -185,9 +197,9 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
             "and f.arrivalAirport.id = :departureAirport " +
             "and DATE(f.departureTime) = :arrivalTime and e.status=0 " +
             "AND (SELECT COUNT(seat) FROM Seat seat WHERE seat.idFlight.id = f.id AND seat.type = :TypeFlight) >= :totalPeople " +
-            "and e.type = :TypeFlight and d.isMain=true ")
+            "and e.type = :TypeFlight and d.isMain=true and f.departureTime > :CurrentDate")
     BigDecimal MaxArrivalTime(@Param("departureAirport") int departureAirport,
                               @Param("arrivalAirport") int arrivalAirport,
                               @Param("arrivalTime") LocalDate arrivalTime,
-                              @Param("TypeFlight") String TypeFlight,@Param("totalPeople") int totalPeople);
+                              @Param("TypeFlight") String TypeFlight,@Param("totalPeople") int totalPeople,@Param("CurrentDate") LocalDateTime CurrentDate);
 }

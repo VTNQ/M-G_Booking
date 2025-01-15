@@ -3,6 +3,48 @@ function convertTimeToDecimal(time) {
     const [hours, minutes] = time.split(':').map(Number);
     return hours + (minutes / 60);
 }
+document.getElementById('At-input').addEventListener('input',async (event)=>{
+    const search = event.target.value;
+
+    const dropdown=document.getElementById('At-dropdown');
+    const AtList=document.getElementById('At-List');
+    if (search.trim() === "") {
+        dropdown.style.display = "none";
+        return;
+    }
+    try {
+        const response=await fetch(`http://localhost:8686/api/city/SearchHotelByCityOrHotel?name=${encodeURIComponent(search)}`);
+        if(response.ok){
+            const airports = await response.json();
+            AtList.innerHTML = "";
+            airports.forEach(airport=>{
+
+                const li = document.createElement("li");
+
+
+                li.style.display='flex';
+                li.style.justifyContent='space-between';
+                li.style.alignItems='center'
+
+                li.innerHTML = `
+                    <i class="fa-solid fa-star"></i>
+                    ${airport.name}, ${airport.country.name}
+                  
+                   <span class="popular">Phổ biến</span>
+                `;
+                li.addEventListener("click",()=>{
+                    document.getElementById("At-input").value=`${airport.name}`;
+                    document.getElementById('idCity').value=airport.id;
+                    dropdown.style.display = "none";
+                })
+                AtList.appendChild(li);
+            })
+            dropdown.style.display = "block";
+        }
+    }catch (error){
+        console.log(error)
+    }
+})
 
 const ModalHeader=document.querySelector('#ModalHeader');
 document.addEventListener('DOMContentLoaded',async function (){
@@ -338,35 +380,7 @@ function goBack() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Get all the tab buttons
-    const tabButtons = document.querySelectorAll('.nav-tabs .nav-link');
-    const tabPanes = document.querySelector(`#TabPanel0`);
-    const indexToActivate = 0;
-    tabButtons[0].classList.add('active');
 
-    tabPanes.classList.add('show','active')
-    function activateTab(index) {
-        // Remove 'active' class from all tabs and tab panes
-        const tabPanes = document.querySelector(`#TabPanel${index}`);
-        tabButtons.forEach(button => button.classList.remove('active'));
-        tabPanes.classList.remove('show', 'active');
-
-        // Add 'active' class to the clicked tab and corresponding tab pane
-        tabButtons[index].classList.add('active');
-        tabPanes.classList.add('show', 'active');
-    }
-    tabButtons.forEach((button, index) => {
-        button.addEventListener('click', function() {
-            const allTabPanes = document.querySelectorAll('.TabShow');
-            allTabPanes.forEach(pane => pane.classList.remove('show', 'active'));
-            const tabPane = document.querySelector(`#TabPanel${index}`);
-
-            activateTab(index);
-            tabPane.classList.add('show','active');
-        });
-    });
-});
 function initFlatPickrOutPut(){
     flatpickr("#datePickerOutput", {
         mode: "range", // Enable date range selection
@@ -613,52 +627,12 @@ async function SearchById( id){
         console.log(error)
     }
 }
-document.addEventListener('DOMContentLoaded', async function () {
-    const fromSearchDropdown = document.querySelector("#from-airport");
-    const fromAirport = document.querySelector("#FromAirport");
-    const ToSearch = document.querySelector("#To-Airport");
-    const ToAirPort = document.querySelector("#ToAirPort");
-    const loadingOverlay = document.createElement("div");
-    loadingOverlay.className = "loading-overlay";
-
-    // Spinner element
-    const spinner = document.createElement("div");
-    spinner.className = "spinner";
-    loadingOverlay.appendChild(spinner);
-
-    // Optional loading text
-    const loadingText = document.createElement("div");
-    loadingText.className = "loading-text";
-    loadingText.textContent = "Loading, please wait...";
-    loadingOverlay.appendChild(loadingText);
-
-    // Add overlay to the body
-    document.body.appendChild(loadingOverlay);
-
-    // Create skeleton elements
 
 
-    try {
-        let fromAirports = await SearchById(fromAirport.value);
-        let ToAirports = await SearchById(ToAirPort.value);
-        if (fromAirports != null) {
-            // Replace skeleton with the real content
-
-
-            fromSearchDropdown.value = fromAirports.name;
-            ToSearch.value = ToAirports.name;
-        }
-    } catch (error) {
-        console.log(error);
-    } finally {
-        // Remove the loading overlay after the async operation
-        document.body.removeChild(loadingOverlay);
-    }
-});
-
-document.getElementById('from-airport').addEventListener('input',async (event)=>{
+document.getElementById('to-input').addEventListener('input',async (event)=>{
     const search=event.target.value;
-    const dropdown=document.getElementById('from-dropdown');
+    console.log(search)
+    const dropdown=document.getElementById('to-dropdown');
     const airportList=document.getElementById('airport-list');
     if(search.trim()===''){
         dropdown.style.display='none';
@@ -668,6 +642,7 @@ document.getElementById('from-airport').addEventListener('input',async (event)=>
         const response=await fetch(`http://localhost:8686/api/AirPort/SearchAirPort?search=${encodeURIComponent(search)}`);
         if(response.ok){
             const airports=await response.json();
+            console.log(airports)
             airportList.innerHTML = "";
             airports.forEach(airport => {
                 const li = document.createElement("li");
@@ -687,13 +662,13 @@ document.getElementById('from-airport').addEventListener('input',async (event)=>
                     airportItem.innerHTML = `
                         <div class="airport-info">
                             <span class="airport-name"><i class="fa fa-plane icon" style="margin-right: 8px; color: #2a2a2a;"></i>Sân bay ${airportdto.name}</span>
-                            <span class="airport-code">${airportdto.code}</span>
+                            <span class="airport-code">${airportdto.city.name}</span>
                         </div>
                     `;
 
                     // Add click event listener specifically to the 'airport-item' div
                     airportItem.addEventListener("click", () => {
-                        document.getElementById("from-airport").value = `${airportdto.name} (${airportdto.code})`;
+                        document.getElementById("from-airport").value = `${airportdto.name} (${airportdto.city.name})`;
                         document.getElementById("to-input-id").value = airportdto.id;
                         dropdown.style.display = "none"; // Hide dropdown after selection
                     });
@@ -803,6 +778,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
 document.addEventListener('DOMContentLoaded',()=>{
     const flightDetailsLinks = document.querySelectorAll('.flight-details-link');
     const popup = document.getElementById('flight-details-popup');
