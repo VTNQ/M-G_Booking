@@ -4,39 +4,39 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class PaymentPage extends StatelessWidget {
-  final String hotelName;
-  final String checkInDate;
-  final String checkOutDate;
+  final String? hotelName;
+  final String? checkInDate;
+  final String? checkOutDate;
   final int numberOfGuests;
-  final String roomType;
-  final double hotelPrice;
+  final String? roomType;
+  final double? hotelPrice;
 
   final String airlineName;
   final String departureDate;
-  final String returnDate;
+  final String? returnDate;
   final String departureTime;
-  final String arrivalTime;
+  final String? arrivalTime;
   final double flightPrice;
 
   const PaymentPage({
     Key? key,
-    required this.hotelName,
-    required this.checkInDate,
-    required this.checkOutDate,
+    this.hotelName,
+    this.checkInDate,
+    this.checkOutDate,
     required this.numberOfGuests,
-    required this.roomType,
-    required this.hotelPrice,
+    this.roomType,
+    this.hotelPrice,
     required this.airlineName,
     required this.departureDate,
-    required this.returnDate,
+    this.returnDate,
     required this.departureTime,
-    required this.arrivalTime,
+    this.arrivalTime,
     required this.flightPrice,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double totalAmount = hotelPrice + flightPrice;
+    double totalAmount = hotelPrice! + flightPrice;
 
     return Scaffold(
       appBar: AppBar(
@@ -66,7 +66,7 @@ class PaymentPage extends StatelessWidget {
                     Text('Check-out Date: $checkOutDate'),
                     Text('Number of Guests: $numberOfGuests'),
                     Text('Room Type: $roomType'),
-                    Text('Price: \$${hotelPrice.toStringAsFixed(2)}'),
+                    Text('Price: \$${hotelPrice?.toStringAsFixed(2)}'),
                   ],
                 ),
               ),
@@ -111,7 +111,7 @@ class PaymentPage extends StatelessWidget {
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
-                    Text('Total Hotel Cost: \$${hotelPrice.toStringAsFixed(2)}'),
+                    Text('Total Hotel Cost: \$${hotelPrice?.toStringAsFixed(2)}'),
                     Text('Total Flight Cost: \$${flightPrice.toStringAsFixed(2)}'),
                     const Divider(),
                     Text('Grand Total: \$${totalAmount.toStringAsFixed(2)}',
