@@ -1,6 +1,8 @@
 package com.vtnq.web.APIs;
 
 import com.vtnq.web.DTOs.Hotel.HotelSearchDTO;
+import com.vtnq.web.DTOs.Hotel.ShowDetailHotel;
+import com.vtnq.web.Entities.Hotel;
 import com.vtnq.web.Service.HotelService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,16 @@ public class HotelController {
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<List<HotelSearchDTO>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("GetDetailHotel")
+    public ResponseEntity<ShowDetailHotel>GetNameById(@RequestParam int id){
+        try {
+            return new ResponseEntity<ShowDetailHotel>(hotelService.FindDetailHotel(id),HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<ShowDetailHotel>(HttpStatus.BAD_REQUEST);
         }
     }
 }

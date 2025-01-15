@@ -1,5 +1,7 @@
 package com.vtnq.web.APIs;
 
+import com.vtnq.web.DTOs.Hotel.ShowDetailHotel;
+import com.vtnq.web.DTOs.Room.RoomDetailHotel;
 import com.vtnq.web.Entities.Picture;
 import com.vtnq.web.Service.AmenitiesService;
 import com.vtnq.web.Service.RoomService;
@@ -67,6 +69,16 @@ public class RoomController {
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("GetRoomByHotel")
+    public ResponseEntity<List<RoomDetailHotel>> getRoomByHotel(@RequestParam int hotelId){
+        try {
+            return new ResponseEntity<List<RoomDetailHotel>>(roomService.ShowDetailHotel(hotelId),HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }
