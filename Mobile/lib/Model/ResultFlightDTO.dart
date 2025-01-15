@@ -51,22 +51,22 @@ class ResultFlightDTO {
     );
 
     return ResultFlightDTO(
-      imageUrl: map['imageUrl'],
-      id: map['id'],
-      idFlight: map['idFlight'],
-      nameCity: map['nameCity'],
-      nameArrivalAirport: map['nameArrivalAirport'],
-      timeArrival: map['timeArrival'],
-      dateDepart: map['dateDepart'],
-      dateArrival: map['dateArrival'],
+      imageUrl: map['imageUrl']??'',
+      id: map['id']??0,
+      idFlight: map['idFlight']??0,
+      nameCity: map['nameCity']??'',
+      nameArrivalAirport: map['nameArrivalAirport']??'',
+      timeArrival: map['timeArrival']??'',
+      dateDepart: map['dateDepart']??'',
+      dateArrival: map['dateArrival']??'',
       duration: duration,
       durationString: formatDuration(duration),
-      nameAirport: map['nameAirport'],
-      timeDepart: map['timeDepart'],
-      nameAirline: map['nameAirline'],
-      arrivalTime: DateTime.parse(map['arrivalTime']),
-      departureTime: DateTime.parse(map['departureTime']),
-      price: (map['price'] as num).toDouble(), // Ensure price is a double
+      nameAirport: map['nameAirport']??'',
+      timeDepart: map['timeDepart']??'',
+      nameAirline: map['nameAirline']??'',
+      arrivalTime: map['arrivalTime'] != null ? DateTime.parse(map['arrivalTime']) : DateTime.now(), // Parse or default to current time
+      departureTime: map['departureTime'] != null ? DateTime.parse(map['departureTime']) : DateTime.now(),
+      price: (map['price'] as num).toDouble()??0.0, // Ensure price is a double
     );
   }
 

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile/APIs/CityAPI.dart';
 import 'package:mobile/Model/AirPort.dart';
+import 'package:mobile/Model/City.dart';
 import 'package:mobile/Model/CountryAirPort.dart';
 import 'package:mobile/Model/Flight.dart';
 import 'package:mobile/Model/HotelBooking.dart';
 import 'package:mobile/Views/Information.dart';
 import 'package:mobile/Views/ListFlight.dart';
 import 'package:mobile/APIs/AirPortAPI.dart';
+import 'package:mobile/Views/ListHotel.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -29,9 +32,43 @@ class HomePage extends State<Home> {
   final TextEditingController ticketCountController = TextEditingController();
 
   List<CountryAirPort> departureAirports=[];
+  List<City>CitySearch=[];
   List<CountryAirPort> destinationAirports=[];
   int? selectedDepartureAirportId;
+  int? selectCityId;
   int? selectedArrivalAirportId;
+  void _fetchCity(String query,bool isChecked) async{
+    if(query.isEmpty){
+      setState(() {
+        if (isChecked) {
+          departureAirports = [];
+        } else {
+          destinationAirports = [];
+        }
+
+      });
+      return;
+
+    }
+    try{
+      List<City>citySearch=await CityAPI().SearchCity(query);
+      setState(() {
+        if (isChecked) {
+          if(citySearch.isNotEmpty){
+            CitySearch = citySearch;
+          }else{
+           CitySearch=[];
+          }
+
+        } else {
+
+         CitySearch= [];
+        }
+      });
+    }catch(e) {
+      print('Error fetching airports: $e');
+    }
+  }
   void _fetchAirports(String query, bool isDeparture) async {
     if (query.isEmpty) {
       setState(() {
@@ -260,35 +297,44 @@ class HomePage extends State<Home> {
           return;
         }
         hotelBooking = HotelBooking(
-          location: locationController.text,
+          location: selectCityId??0,
           checkInDate: checkInController.text,
           checkOutDate: checkOutController.text,
           roomsCount: int.parse(roomCountController.text),
         );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Search Success!')),
+        );
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ListHotelPage(hotelsearchDTO: hotelBooking!)));
+      }else{
+        final request = Flight(
+          from: selectedDepartureAirportId,
+          to: selectedArrivalAirportId,
+          departureTime: departureDateController.text,
+          arrivalTime: returnDateController.text,
+          ticketCount: int.parse(ticketCountController.text),
+          seatClass: selectedSeatClass,
+        );
+
+        // Gọi API
+        // await flightAPI.bookFlight(request);
+
+        // Xử lý sau khi gọi API thành công
+        // Ví dụ: chuyển trang, hiển thị thông báo, etc.
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Search Success!')),
+        );
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => FlightPage(searchCriteria: request,isReturn: isRoundTrip,)));
       }
 
       // Tạo booking request
-      final request = Flight(
-        from: selectedDepartureAirportId,
-        to: selectedArrivalAirportId,
-        departureTime: departureDateController.text,
-        arrivalTime: returnDateController.text,
-        ticketCount: int.parse(ticketCountController.text),
-        seatClass: selectedSeatClass,
-      );
 
-      // Gọi API
-      // await flightAPI.bookFlight(request);
-
-      // Xử lý sau khi gọi API thành công
-      // Ví dụ: chuyển trang, hiển thị thông báo, etc.
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Search Success!')),
-      );
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => FlightPage(searchCriteria: request,isReturn: isRoundTrip,)));
     } catch (e) {
       // Xử lý lỗi
       ScaffoldMessenger.of(context).showSnackBar(
@@ -558,7 +604,29 @@ class HomePage extends State<Home> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
+                      onChanged: (value) {
+                        _fetchCity(value, isChecked);
+                      },
                     ),
+                    if (CitySearch.isNotEmpty)
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: CitySearch.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(CitySearch[index].name??"UnKnown"),
+                            onTap: () {
+                              setState(() {
+                           locationController.text = CitySearch[index].name??"UnKnown";
+                                selectCityId = CitySearch[index].id;
+                                CitySearch = []; // Clear suggestions
+                              });
+                            },
+                          );
+                        },
+                      ),
+
                     const SizedBox(height: 16),
                     TextField(
                       controller: roomCountController,

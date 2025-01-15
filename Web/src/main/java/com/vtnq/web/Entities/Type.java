@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "type")
 public class Type {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -20,6 +22,9 @@ public class Type {
     @NotNull
     @Column(name = "hotel_id", nullable = false)
     private Integer hotelId;
+
+    @Column(name = "price", precision = 10)
+    private BigDecimal price;
 
     public Integer getId() {
         return id;
@@ -43,6 +48,14 @@ public class Type {
 
     public void setHotelId(Integer hotelId) {
         this.hotelId = hotelId;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
 }

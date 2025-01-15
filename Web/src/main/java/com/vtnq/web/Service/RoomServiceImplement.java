@@ -37,7 +37,7 @@ public class RoomServiceImplement implements RoomService{
     @Autowired
     private PictureRepository pictureRepository;
     @Override
-    public boolean addRoom(List<Integer> roomTypes, List<BigDecimal> roomPrices, List<Integer> roomCapacities, int idHotel,List<List<MultipartFile>>roomImages)
+    public boolean addRoom(List<Integer> roomTypes, List<Integer> roomCapacities, int idHotel,List<List<MultipartFile>>roomImages)
     {
         try {
             Hotel hotel=hotelRepository.findById(idHotel)
@@ -46,7 +46,7 @@ public class RoomServiceImplement implements RoomService{
                 Room room=new Room();
                 Type type=typeRepository.findById(roomTypes.get(i)).orElseThrow(() -> new Exception("Type Not Found"));
                 room.setType(type);
-                room.setPrice(roomPrices.get(i));
+
                 room.setOccupancy(roomCapacities.get(i));
                 room.setHotel(hotel);
                 room.setStatus(false);

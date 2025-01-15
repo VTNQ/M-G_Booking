@@ -41,7 +41,8 @@ class FlightAPI {
 
     if (response.statusCode == 200) {
       List<dynamic> dyn = jsonDecode(response.body);
-      return dyn.map((e) => ResultFlightDTO.(e)).toList();
+
+      return dyn.map((e) => ResultFlightDTO.fromMap(e)).toList();
     } else {
       throw Exception("Failed with status code: ${response.statusCode}");
     }

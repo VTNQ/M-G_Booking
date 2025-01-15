@@ -1,9 +1,7 @@
 package com.vtnq.web.DTOs.Flight;
 
 import java.math.BigDecimal;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class ResultFlightDTO {
@@ -34,14 +32,14 @@ public class ResultFlightDTO {
     private long durationHours;
     private long durationMinutes;
     private String durationString; // Thêm thuộc tính lưu khoảng cách dưới dạng chuỗi
-    private String nameAiport;
+    private String nameAirport;
 
-    public String getNameAiport() {
-        return nameAiport;
+    public String getNameAirport() {
+        return nameAirport;
     }
 
-    public void setNameAiport(String nameAiport) {
-        this.nameAiport = nameAiport;
+    public void setNameAirport(String nameAiport) {
+        this.nameAirport = nameAiport;
     }
 
     public String getDurationString() {
@@ -99,7 +97,7 @@ public class ResultFlightDTO {
         return nameAirline;
     }
 
-    private String formatDate(Instant time) {
+    private String formatDate(LocalDateTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yy")
                 .withZone(ZoneId.of("UTC"));
         return formatter.format(time);
@@ -109,7 +107,7 @@ public class ResultFlightDTO {
         this.nameAirline = nameAirline;
     }
 
-    private String formatTime(Instant time) {
+    private String formatTime(LocalDateTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm")
                 .withZone(ZoneId.of("UTC"));
         return formatter.format(time);
@@ -125,7 +123,7 @@ public class ResultFlightDTO {
         this.id = id;
     }
 
-    private Instant arrivalTime;
+    private LocalDateTime arrivalTime;
     private BigDecimal price;
 
     public BigDecimal getPrice() {
@@ -136,30 +134,31 @@ public class ResultFlightDTO {
         this.price = price;
     }
 
-    public Instant getArrivalTime() {
+
+    public LocalDateTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(Instant arrivalTime) {
+    public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
-    public Instant getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(Instant departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 
     public ResultFlightDTO() {
     }
 
-    private Instant departureTime;
+    private LocalDateTime departureTime;
 
-    public ResultFlightDTO(int id, String imageUrl, String nameCity, Instant arrivalTime, Instant departureTime, BigDecimal price,
-                           String nameAirline, Instant TimeDepart, Instant TimeArrival, Instant DateDepart, Instant DateArrival, String nameAiport,
-                           int idFlight,String nameArrivalAirport) {
+    public ResultFlightDTO(int id, String imageUrl, String nameCity, LocalDateTime arrivalTime, LocalDateTime departureTime, BigDecimal price,
+                           String nameAirline, LocalDateTime TimeDepart, LocalDateTime TimeArrival, LocalDateTime DateDepart, LocalDateTime DateArrival, String nameAirport,
+                           int idFlight, String nameArrivalAirport) {
         this.imageUrl = imageUrl;
         this.nameCity = nameCity;
         this.arrivalTime = arrivalTime;
@@ -172,7 +171,7 @@ public class ResultFlightDTO {
         this.DateDepart = formatDate(departureTime);
         this.DateArrival = formatDate(arrivalTime);
         calculateAndStoreDuration();
-        this.nameAiport=nameAiport;
+        this.nameAirport=nameAirport;
         this.idFlight=idFlight;
         this.nameArrivalAirport=nameArrivalAirport;
     }

@@ -45,11 +45,11 @@ public class FlightDto  {
     public void setAirline_id(@Min(value = 1,message = "AirLine is required") int airline_id) {
         this.airline_id = airline_id;
     }
-    public Instant getDepartureInstant() {
+    public LocalDateTime getDepartureInstant() {
         return convertToInstant(departureTime);
     }
 
-    public Instant getArrivalInstant() {
+    public LocalDateTime getArrivalInstant() {
         return convertToInstant(arrivalTime);
     }
 
@@ -85,7 +85,7 @@ public class FlightDto  {
     public void setArrivalTime(@NotNull(message = "Arrival Time is required") String arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
-    private Instant convertToInstant(String timeString) {
+    private LocalDateTime convertToInstant(String timeString) {
         if (timeString == null || timeString.isEmpty()) {
             throw new IllegalArgumentException("Time string cannot be null or empty");
         }
@@ -95,7 +95,7 @@ public class FlightDto  {
         LocalDateTime localDateTime = LocalDateTime.parse(timeString, formatter);
 
         // Convert LocalDateTime to Instant (UTC)
-        return localDateTime.toInstant(ZoneOffset.UTC);
+        return localDateTime;
     }
     @NotBlank(message = "Arrival Time is required")
     private String arrivalTime;

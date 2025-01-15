@@ -249,6 +249,16 @@ public class HotelServiceImplement implements HotelService{
     }
 
     @Override
+    public List<HotelSearchDTO> SearchHotelsMobile(int id, int quantityRoom) {
+        try {
+            return hotelRepository.SearchHotelMoBile(id,quantityRoom);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public ShowDetailHotel FindDetailHotel(int id) {
         try {
             return hotelRepository.showDetailHotel(id);

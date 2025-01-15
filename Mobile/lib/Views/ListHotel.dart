@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mobile/APIs/HotelAPI.dart';
 import 'package:mobile/Model/Hotel.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/Model/HotelBooking.dart';
 import 'dart:convert';
 
 class ListHotelPage extends StatefulWidget {
+  final HotelBooking hotelsearchDTO;
+
+  const ListHotelPage({super.key, required this.hotelsearchDTO});
+
   @override
   State<StatefulWidget> createState() => ListHotel();
 }
@@ -17,7 +22,16 @@ class ListHotel extends State<ListHotelPage> {
   @override
   void initState() {
     super.initState();
-    hotelAPI.getHotelByCountryId();
+    fetchHotel();
+  }
+
+  Future<void> fetchHotel() async {
+    try{
+    hotels=await HotelAPI().getHotelByCountryId(this.widget.hotelsearchDTO.location, this.widget.hotelsearchDTO.roomsCount);
+    setState(() {});
+    }catch(e){
+      print(e);
+    }
   }
 
   @override
@@ -63,7 +77,9 @@ class ListHotel extends State<ListHotelPage> {
           ),
           // Hotel List
           Expanded(
-            child: ListView.builder(
+            child: hotels.isEmpty
+                ? Center(child: Text('No hotels found.'))
+                : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               itemCount: hotels.length,
               itemBuilder: (context, index) {
@@ -85,7 +101,7 @@ class ListHotel extends State<ListHotelPage> {
                           ),
                           child: Image.asset(
                             'assets/images/hotel.jpg',
-                            width: 120,
+                            width: 30,
                             height: double.infinity,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
@@ -130,7 +146,7 @@ class ListHotel extends State<ListHotelPage> {
                                     const SizedBox(width: 4),
                                     Expanded(
                                       child: Text(
-                                        hotel.address ??
+                                        hotel.country ??
                                             'Address not available',
                                         style: const TextStyle(
                                           color: Colors.grey,
@@ -145,8 +161,7 @@ class ListHotel extends State<ListHotelPage> {
                                 const SizedBox(height: 8),
                                 // Description
                                 Text(
-                                  hotel.description ??
-                                      'No description available',
+                                  hotel.city ?? 'No description available',
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,

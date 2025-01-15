@@ -59,7 +59,7 @@ public class RoomController {
         }
     }
     @PostMapping("Room/add")
-    public String add(@RequestParam List<Integer>roomTypes, @RequestParam List<BigDecimal>roomPrices, @RequestParam List<Integer>roomCapacities, @RequestParam int IdHotel,
+    public String add(@RequestParam List<Integer>roomTypes, @RequestParam List<Integer>roomCapacities, @RequestParam int IdHotel,
                       @RequestParam(value = "roomImages", required = false) List<MultipartFile> roomImages , RedirectAttributes redirectAttributes,HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
@@ -74,7 +74,7 @@ public class RoomController {
                 }
 
                 // Call service to add room
-                if (roomService.addRoom(roomTypes, roomPrices, roomCapacities, IdHotel, imagePaths)) {
+                if (roomService.addRoom(roomTypes, roomCapacities, IdHotel, imagePaths)) {
                     redirectAttributes.addFlashAttribute("message", "Room added successfully");
                     redirectAttributes.addFlashAttribute("messageType", "success");
                     return "redirect:/Owner/Room/add";
@@ -163,7 +163,7 @@ public class RoomController {
         }
     }
     @PostMapping("Room/addType")
-    public String addType(@ModelAttribute("type") Type type, RedirectAttributes redirectAttributes,HttpServletRequest request) {
+    public String addType(@ModelAttribute("type") Type type, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         try {
             Account account = (Account) request.getSession().getAttribute("currentAccount");
             if(account==null){

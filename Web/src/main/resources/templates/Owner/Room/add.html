@@ -186,7 +186,7 @@
                             <!-- Submit Button -->
                             <div class="w-100 d-flex align-items-center h-100 gap-2">
                                 <button type="submit" class="btn btn-primary flex-column-gap-1 text-wrap p-2 flex-grow-1" style="background-color: #0b5ed7">Save</button>
-                                <a th:href="@{/SuperAdmin/Airline}" class="btn p-2 text-wrap w-50" style="border: 1px solid #e6e7e9">Back</a>
+                                <a th:href="@{'/Owner/Room/'+${id}}" class="btn p-2 text-wrap w-50" style="border: 1px solid #e6e7e9">Back</a>
                                 <input type="hidden" name="IdHotel" th:value="${id}">
                             </div>
                         </div>
@@ -234,6 +234,10 @@
                         <label for="typeName" class="form-label">Type Name</label>
                         <input type="text" id="typeName" th:field="${type.name}" placeholder="Enter type name" class="form-control">
                     </div>
+                <div class="mb-3">
+                        <label for="typeName" class="form-label">Price</label>
+                        <input type="text" id="Price" th:field="${type.price}" placeholder="Enter type name" class="form-control">
+                    </div>
 
 
             </div>
@@ -267,8 +271,7 @@
                     <option value="Family Room">Family Room</option>
 </select>
 
-                    <label for="roomPrice${i}" class="font-bold text-xs text-slate-700 dark:text-white/80">Price</label>
-                    <input type="number" id="roomPrice${i}" name="roomPrices[]" class="w-full px-3 py-2 text-sm leading-5.6 ease block appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding font-normal text-gray-700 focus:border-blue-500 focus:outline-none" placeholder="Enter Room Price">
+
                       <label for="roomoccupancy${i}" class="font-bold text-xs text-slate-700 dark:text-white/80">occupancy</label>
                     <input type="number" id="roomoccupancy${i}" name="roomCapacities[]" class="w-full px-3 py-2 text-sm leading-5.6 ease block appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding font-normal text-gray-700 focus:border-blue-500 focus:outline-none" placeholder="Enter Room Price">
                        <label for="roomImages${i}" class="font-bold text-xs text-slate-700 dark:text-white/80">Room Images</label>

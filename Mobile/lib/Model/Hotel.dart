@@ -1,32 +1,42 @@
-class Hotel{
+class Hotel {
   int? id;
   String? name;
-  String? address;
-  String? description;
-  int? city_id;
+  String? city;
+  String? country;
+  String? imageUrl; // Changed to String for URL compatibility
+  double price; // Non-nullable with a default value
 
+  // Constructor
   Hotel({
-    required this.id,
-    required this.name,
-    required this.address,
-    required this.description,
-    required this.city_id,
+    this.id,
+    this.name,
+    this.city,
+    this.country,
+    this.imageUrl, // Optional and nullable
+    required this.price, // Required field
   });
 
-  Hotel.fromMap(Map<String,dynamic> map){
-    id = map['id'];
-    name = map['name'];
-    address = map['address'];
-    description = map['description'];
-    city_id = map['city_id'];
+  // Named constructor to create an instance from a Map
+ factory Hotel.fromMap(Map<String, dynamic> map){
+    return Hotel(
+      id: map['id']??0,
+      name: map['name']??'',
+      city: map['city']??'',
+      country: map['country']??'',
+      imageUrl: map['image_url']??'',
+      price: (map['price'] as num).toDouble()??0.0,
+    );
   }
-  Map<String,dynamic> toMap(){
-    return <String,dynamic>{
-      "id": id,
-      "name": name,
-      "address": address,
-      "description": description,
-      "city_id": city_id,
+
+  // Method to convert an instance to a Map
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'city': city,
+      'country': country,
+      'image_url': imageUrl, // Use the correct key for image URL
+      'price': price,
     };
   }
 }
