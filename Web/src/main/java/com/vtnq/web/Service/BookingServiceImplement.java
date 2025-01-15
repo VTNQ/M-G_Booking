@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -84,6 +85,11 @@ public class BookingServiceImplement implements BookingService {
     private void validateSeats(List<BookingFlightDetail> bookingDetails) {
         try {
             for (BookingFlightDetail detail : bookingDetails) {
+                Flight flight=flightRepository.findById(detail.getFlightId()).orElseThrow(()->new RuntimeException("Flight not found"));
+                if(flight.getDepartureTime().isBefore(LocalDateTime.now().plusHours(1))){
+
+                    throw new RuntimeException("Bookings must be made at least 1 hour before departure.");
+                }
                 Seat seat = seatRepository.findById(detail.getId())
                         .orElseThrow(() -> new RuntimeException("Seat Not Found"));
                 if (seat.getStatus() != null && seat.getStatus() == 1) {
@@ -201,9 +207,16 @@ public class BookingServiceImplement implements BookingService {
         List<BookingFlightDetail> bookingDetails = objectMapper.readValue(bookings, objectMapper.getTypeFactory()
                 .constructCollectionType(List.class, BookingFlightDetail.class));
 
+
         for (BookingFlightDetail detail : bookingDetails) {
             Seat seat = seatRepository.findById(detail.getId())
                     .orElseThrow(() -> new RuntimeException("Seat Not Found"));
+            Flight flight=flightRepository.findById(detail.getFlightId()).orElseThrow(() -> new RuntimeException("Flight Not Found"));
+            if(flight.getDepartureTime().isBefore(LocalDateTime.now().plusHours(1))){
+
+                throw new RuntimeException("Bookings must be made at least 1 hour before departure.");
+            }
+
             if (seat.getStatus() != null && seat.getStatus() == 1) {
                 seatUpdateWebSocketHandler.notifySeatStatus(seat, false);
                 throw new RuntimeException("Seat is already booked");

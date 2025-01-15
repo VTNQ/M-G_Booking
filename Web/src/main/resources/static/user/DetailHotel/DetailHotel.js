@@ -168,6 +168,17 @@ document.querySelectorAll('#openModal').forEach((element) => {
 
     });
 });
+document.getElementById('closeBtn').addEventListener('click',function (){
+    modalMap.style.setProperty('display', 'none', 'important');
+    modalMap.style.overflow='hidden'
+    modalMap.style.zIndex='0';
+    modalMap.style.opacity='0'
+    modalBackground.style.setProperty('display', 'none', 'important');
+    modalBackground.style.zIndex='0'
+    modal.style.setProperty('display', 'none', 'important');
+    modal.classList.remove("fade-in");
+    modal.classList.add("fade-out");
+})
 async  function openModal(id) {
     const response=await fetch(`http://localhost:8686/api/Amenity/${id}`);
     if(!response.ok)throw new Error("Failed to fetch amenities");
@@ -176,8 +187,11 @@ async  function openModal(id) {
     await loadSlides(id)
     console.log(amenities)
     modalMap.style.setProperty('display', 'flex', 'important');
+    modalMap.style.overflow='hidden'
+    modalMap.style.zIndex='1000';
     modalMap.style.opacity='1'
     modalBackground.style.setProperty('display', 'block', 'important');
+    modalBackground.style.zIndex='1000'
     modal.style.setProperty('display', 'block', 'important');
     modal.classList.remove("fade-out");
     modal.classList.add("fade-in");

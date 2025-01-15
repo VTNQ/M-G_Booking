@@ -11,22 +11,23 @@ public class FlightListDTO { private int id;
     private String nameAirline;
     private String departure_airport;
     private String arrival_airport;
-    private LocalDateTime departure_time;
-    private LocalDateTime arrival_time;
+    private String departure_time; // Changed to String to hold formatted date
+    private String arrival_time;
 
-    public LocalDateTime getDeparture_time() {
+
+    public String getDeparture_time() {
         return departure_time;
     }
 
-    public void setDeparture_time(LocalDateTime departure_time) {
+    public void setDeparture_time(String departure_time) {
         this.departure_time = departure_time;
     }
 
-    public LocalDateTime getArrival_time() {
+    public String getArrival_time() {
         return arrival_time;
     }
 
-    public void setArrival_time(LocalDateTime arrival_time) {
+    public void setArrival_time(String arrival_time) {
         this.arrival_time = arrival_time;
     }
 
@@ -35,8 +36,9 @@ public class FlightListDTO { private int id;
         this.nameAirline = nameAirline;
         this.departure_airport = departure_airport;
         this.arrival_airport = arrival_airport;
-        this.departure_time=departure_time;
-        this.arrival_time=arrival_time;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        this.departure_time=departure_time.format(formatter);
+        this.arrival_time=arrival_time.format(formatter);
     }
 
     public String getDeparture_airport() {

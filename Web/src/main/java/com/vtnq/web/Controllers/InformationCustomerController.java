@@ -74,6 +74,7 @@ public class InformationCustomerController {
            if(bookingsJson.isEmpty()){
                return new RedirectView(request.getHeader("Referer"));
            }
+
            ObjectMapper objectMapper = new ObjectMapper();
            List<Map<String, Object>> bookings = objectMapper.readValue(bookingsJson, new TypeReference<List<Map<String, Object>>>() {});
            boolean hasInvalidBooking = bookings.stream()

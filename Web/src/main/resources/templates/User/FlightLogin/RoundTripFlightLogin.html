@@ -359,6 +359,8 @@
                                                 <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.timeDepart}">
                                                     18:30
                                                 </h6>
+                                                <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.dateDepart}">New Delhi</span>
+                                                <br>
                                                 <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.nameAirport}">New Delhi</span>
                                             </div>
                                         </div>
@@ -370,9 +372,7 @@
                                             </h6>
 
                                             <div class="border-top my-1" style="width: 3.75rem;border-width: 2px !important;border-color: #297cbb !important;margin-top: -2vh"></div>
-                                            <h6 style="font-weight: 500 !important;font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                                                Non Stop
-                                            </h6>
+
                                         </div>
                                     </div>
                                     <div class="col-md mb-4 mb-md-0">
@@ -385,6 +385,8 @@
                                                 <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.timeArrival}">
                                                     18:30
                                                 </h6>
+                                                <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.dateArrival}">New Delhi</span>
+                                                <br>
                                                 <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.nameArrivalAirport}">New Delhi</span>
                                             </div>
                                         </div>
@@ -443,6 +445,8 @@
                                                     <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.timeDepart}">
                                                         18:30
                                                     </h6>
+                                                    <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.dateDepart}">New Delhi</span>
+                                                    <br>
                                                     <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.nameAirport}">New Delhi</span>
                                                 </div>
                                             </div>
@@ -454,9 +458,7 @@
                                                 </h6>
 
                                                 <div class="border-top my-1" style="width: 3.75rem;border-width: 2px !important;border-color: #297cbb !important;margin-top: -2vh"></div>
-                                                <h6 style="font-weight: 500 !important;font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif">
-                                                    Non Stop
-                                                </h6>
+
                                             </div>
                                         </div>
                                         <div class="col-md mb-4 mb-md-0">
@@ -469,6 +471,8 @@
                                                     <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.timeArrival}">
                                                         18:30
                                                     </h6>
+                                                    <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.dateArrival}">New Delhi</span>
+                                                    <br>
                                                     <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.nameArrivalAirport}">New Delhi</span>
                                                 </div>
                                             </div>
@@ -801,10 +805,9 @@
                                     <div class="dropdown">
                                         <select id="classSelect" th:field="${searchFlightDTO.typeFlight}" class="form-select "
                                                 style="margin-top: 2vh">
-                                            <option value="Popular">Popular</option>
-                                            <option value="Premium Economy">Premium Economy</option>
-                                            <option value="Merchant">Merchant</option>
                                             <option value="First Class">First Class</option>
+                                            <option value="Business Class">Business Class</option>
+                                            <option value="Economy Class">Economy Class</option>
                                         </select>
                                     </div>
                                 </div>

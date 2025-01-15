@@ -111,18 +111,6 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
-    public BigDecimal FindPrice(int departureAirport,int arrivalAirport
-            ,LocalDate departureTime,String TypeFlight,int totalPeople) {
-        try {
-            return modelMapper.map(flightRepository.FindPrice(departureAirport,
-                    arrivalAirport,departureTime,TypeFlight,totalPeople), new TypeToken<BigDecimal>(){}.getType());
-        }catch (Exception e) {
-            e.printStackTrace();
-            return BigDecimal.ZERO;
-        }
-    }
-
-    @Override
     public List<ResultFlightDTO> SearchFlight(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight, int totalPeople, LocalDateTime currentTime) {
         try {
             return flightRepository.findFlightsByAirportsAndDepartureTime(departureAirport,arrivalAirport,departureTime,TypeFlight,totalPeople,currentTime);
@@ -135,22 +123,12 @@ public class FlightServiceImplement implements FlightService{
 
 
 
-    @Override
-    public List<ResultFlightDTO> SearchFlightAllDto(int departureAirport, int arrivalAirport, LocalDate departureTime, LocalDate ArrivalTime, String TypeFlight) {
-        try {
-            List<ResultFlightDTO> flight=flightRepository.SearchFindFlightAll(departureAirport,arrivalAirport,departureTime,ArrivalTime,TypeFlight);
 
-            return modelMapper.map(flight,new TypeToken<List<ResultFlightDTO>>(){}.getType());
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return null;
-        }
-    }
 
     @Override
-    public ResultFlightDTO FindResultFlightAndHotel(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight) {
+    public ResultFlightDTO FindResultFlightAndHotel(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight,LocalDateTime currentTime) {
         try {
-            return flightRepository.findResulFlightAndHotel(departureAirport,arrivalAirport,departureTime,TypeFlight);
+            return flightRepository.findResulFlightAndHotel(departureAirport,arrivalAirport,departureTime,TypeFlight,currentTime).stream().findFirst().orElse(null);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -202,9 +180,9 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
-    public BigDecimal FindMinPriceDeparture(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight, int totalPeople) {
+    public BigDecimal FindMinPriceDeparture(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight, int totalPeople,LocalDateTime currentTime) {
         try {
-            return flightRepository.FindMinPriceDeparture(departureAirport,arrivalAirport,departureTime,TypeFlight,totalPeople);
+            return flightRepository.FindMinPriceDeparture(departureAirport,arrivalAirport,departureTime,TypeFlight,totalPeople,currentTime);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -212,9 +190,9 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
-    public BigDecimal FindMaxPriceDeparture(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight, int totalPeople) {
+    public BigDecimal FindMaxPriceDeparture(int departureAirport, int arrivalAirport, LocalDate departureTime, String TypeFlight, int totalPeople,LocalDateTime currentTime) {
         try {
-            return flightRepository.FindMaxPriceDeparture(departureAirport,arrivalAirport,departureTime,TypeFlight,totalPeople);
+            return flightRepository.FindMaxPriceDeparture(departureAirport,arrivalAirport,departureTime,TypeFlight,totalPeople,currentTime);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -263,9 +241,9 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
-    public List<ResultFlightDTO> FindArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight,int totalPeople) {
+    public List<ResultFlightDTO> FindArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight,int totalPeople,LocalDateTime currentTime) {
         try {
-        return flightRepository.FindArrivalTimeFlights(departureAirport, arrivalAirport, arrivalTime, TypeFlight,totalPeople);
+        return flightRepository.FindArrivalTimeFlights(departureAirport, arrivalAirport, arrivalTime, TypeFlight,totalPeople,currentTime);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -273,9 +251,9 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
-    public BigDecimal FindMinPriceArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight, int totalPeople) {
+    public BigDecimal FindMinPriceArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight, int totalPeople,LocalDateTime currentTime) {
         try {
-            return flightRepository.MinArrivalTime(departureAirport,arrivalAirport,arrivalTime,TypeFlight,totalPeople);
+            return flightRepository.MinArrivalTime(departureAirport,arrivalAirport,arrivalTime,TypeFlight,totalPeople,currentTime);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -293,9 +271,9 @@ public class FlightServiceImplement implements FlightService{
     }
 
     @Override
-    public BigDecimal FindMaxPriceArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight, int totalPeople) {
+    public BigDecimal FindMaxPriceArrivalTime(int departureAirport, int arrivalAirport, LocalDate arrivalTime, String TypeFlight, int totalPeople,LocalDateTime currentTime) {
         try {
-            return flightRepository.MaxArrivalTime(departureAirport,arrivalAirport,arrivalTime,TypeFlight,totalPeople);
+            return flightRepository.MaxArrivalTime(departureAirport,arrivalAirport,arrivalTime,TypeFlight,totalPeople,currentTime);
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
