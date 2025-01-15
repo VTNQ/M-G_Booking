@@ -4,6 +4,7 @@ import com.vtnq.web.DTOs.Room.RoomDetailHotel;
 import com.vtnq.web.Entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,8 +13,13 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     List<Room>findAll(int id);
     @Query("select a from Room a where a.id = :id")
     Room findById(int id);
-    @Query("select new com.vtnq.web.DTOs.Room.RoomDetailHotel(a.type.id,a.type.name,a.price,a.occupancy,b.imageUrl) from Room a join Picture b on b.roomId=a.id where a.hotel.id= :id")
-    List<RoomDetailHotel>findRoomDetailHotel(int id);
+    @Query("select distinct new com.vtnq.web.DTOs.Room.RoomDetailHotel" +
+            "(a.type.id, a.type.name, a.type.price, a.occupancy, MAX(b.imageUrl)) " +
+            "from Room a " +
+            "join Picture b on b.roomId = a.id " +
+            "where a.hotel.id = :id " +
+            "group by a.type.id, a.type.name, a.type.price, a.occupancy")
+    List<RoomDetailHotel> findRoomDetailHotel(@Param("id") int id);
     @Query("select a from Room  a where a.type.id = :id and a.status=false")
     Room findByTypeId(int id);
     @Query("select a from Room a where a.type.id = :id and a.status=false ")

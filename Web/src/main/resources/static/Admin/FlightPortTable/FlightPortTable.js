@@ -2,8 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
     var departureTimeInput = document.getElementById("datetimepicker");
     var arrivalTimeInput = document.getElementById("Departure_Time");
 
-    var arrivalDateValue = arrivalTimeInput.value.replace('Z', '') || new Date().toISOString(); // Nếu không có giá trị, sử dụng ngày hiện tại
-    console.log(arrivalDateValue);
+    var arrivalDateValue = arrivalTimeInput.value || new Date().toISOString();// Nếu không có giá trị, sử dụng ngày hiện tại
+    var arrivalDate = new Date(arrivalDateValue);
+    arrivalDate.setHours(arrivalDate.getHours() + 2); // Thêm 2 giờ
+    arrivalDateValue = arrivalDate.toISOString();
+
 
     // Khởi tạo flatpickr cho "datetimepicker"
     var datetimepicker = flatpickr("#datetimepicker", {

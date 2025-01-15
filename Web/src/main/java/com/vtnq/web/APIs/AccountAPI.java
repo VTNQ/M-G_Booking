@@ -1,13 +1,12 @@
 package com.vtnq.web.APIs;
 
+import com.vtnq.web.DTOs.Account.LoginRequest;
+import com.vtnq.web.Entities.Account;
 import com.vtnq.web.Service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,6 +30,15 @@ public class AccountAPI {
                 response.put("message","Error");
                 return ResponseEntity.badRequest().body(response);
             }
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("Login")
+    public ResponseEntity<Account> Login(@RequestBody LoginRequest loginRequest) {
+
+        try {
+            return new ResponseEntity<Account>(authService.LoginMobile(loginRequest.getEmail(), loginRequest.getPassword()), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

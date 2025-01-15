@@ -271,7 +271,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                 <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.timeDepart}">
                                                     18:30
                                                 </h6>
-                                                <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.nameAiport}">New Delhi</span>
+                                                <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flight.nameAirport}">New Delhi</span>
                                             </div>
                                         </div>
                                     </div>
@@ -336,7 +336,7 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                             <div class="row">
 
                                 <div id="flight-itemArrival"
-                                     class="hover-bg-gray-1 border rounded-xs py-4 px-4 px-xl-5"
+                                     class="hover-bg-gray-1 border rounded-xs py-4 px-4 px-xl-5 mb-4"
                                      style="border-radius: 0.188rem" th:data-airline-id="${flightarrivals.idFlight}"
                                      th:data-price="${flightarrivals.price}" th:data-TimeDepart="${flightarrivals.timeDepart}"
                                      th:data-timeArrival="${flightarrivals.timeArrival}"
@@ -355,7 +355,9 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                     <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.timeDepart}">
                                                         18:30
                                                     </h6>
-                                                    <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.nameAiport}">New Delhi</span>
+                                                    <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.dateDepart}">New Delhi</span>
+                                                    <br>
+                                                    <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.nameAirport}">New Delhi</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -381,6 +383,8 @@ background-size: cover;color: rgb(249, 249, 250);height: 115px;margin: 0;width: 
                                                     <h6 class="mb-0" style="font-weight: 500;font-size: 1.9rem;color: #18181b !important;line-height: 1.5;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.timeArrival}">
                                                         18:30
                                                     </h6>
+                                                    <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.dateArrival}">New Delhi</span>
+                                                    <br>
                                                     <span class="" style="font-size: 1rem;color: #67747c !important;font-family: 'Rubik', Helvetica, Arial, sans-serif" th:text="${flightarrivals.nameArrivalAirport}">New Delhi</span>
                                                 </div>
                                             </div>

@@ -18,6 +18,7 @@ public boolean UpdateHotel(HotelUpdateDTO hotel, MultipartFile file);
 public boolean deleteImageHotel(int id);
 public boolean updateMultipleImages(int id,List<MultipartFile> files);
 public List<HotelSearchDTO>SearchHotels(int id,int quantityRoom,BigDecimal minPrice,BigDecimal maxPrice);
+public List<HotelSearchDTO>SearchHotelsMobile(int id,int quantityRoom);
 public ShowDetailHotel FindDetailHotel(int id);
 public List<Picture>FindImageInDetailHotel(int id);
 public BookingHotel FindBookingHotel(int id);

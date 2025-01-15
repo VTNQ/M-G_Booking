@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.math.BigDecimal;
-
 @Entity
 @Table(name = "rooms")
 public class Room {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -23,10 +21,6 @@ public class Room {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "type_id", nullable = false)
     private Type type;
-
-    @NotNull
-    @Column(name = "price", nullable = false, precision = 10)
-    private BigDecimal price;
 
     @NotNull
     @Column(name = "occupancy", nullable = false)
@@ -59,14 +53,6 @@ public class Room {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 
     public Integer getOccupancy() {

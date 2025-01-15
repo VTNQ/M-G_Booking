@@ -1,5 +1,6 @@
 package com.vtnq.web.APIs;
 
+import com.vtnq.web.DTOs.Hotel.HotelSearchDTO;
 import com.vtnq.web.Service.HotelService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +56,15 @@ public class HotelController {
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("SearchHotel")
+    public ResponseEntity<List<HotelSearchDTO>>SearchHotel(@RequestParam int idCity ,@RequestParam int QuantityRoom){
+        try {
+            return new ResponseEntity<List<HotelSearchDTO>>(hotelService.SearchHotelsMobile(idCity,QuantityRoom),HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<List<HotelSearchDTO>>(HttpStatus.BAD_REQUEST);
         }
     }
 }

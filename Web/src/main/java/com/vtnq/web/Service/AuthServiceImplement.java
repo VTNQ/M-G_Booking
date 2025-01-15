@@ -386,4 +386,25 @@ public class AuthServiceImplement implements AuthService {
             return false;
         }
     }
+
+    @Override
+    public Account LoginMobile(String Email, String Password) {
+        try {
+            Optional<Account> accountPresent=accountRepository.findByEmail(Email);
+            if(accountPresent.isPresent()){
+                Account account = accountPresent.get();
+                if (BCrypt.checkpw(Password, account.getPassword())) {
+                    // Password matches, return the account
+                    return account;
+                } else {
+
+                    return null;
+                }
+            }
+            return null;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }

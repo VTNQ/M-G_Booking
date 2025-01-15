@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "flights")
@@ -32,11 +33,11 @@ public class Flight {
 
     @NotNull
     @Column(name = "departure_time", nullable = false)
-    private Instant departureTime;
+    private LocalDateTime departureTime;
 
     @NotNull
     @Column(name = "arrival_time", nullable = false)
-    private Instant arrivalTime;
+    private LocalDateTime arrivalTime;
 
     @Column(name = "price", precision = 10)
     private BigDecimal price;
@@ -77,19 +78,19 @@ public class Flight {
         this.arrivalAirport = arrivalAirport;
     }
 
-    public Instant getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(Instant departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 
-    public Instant getArrivalTime() {
+    public LocalDateTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(Instant arrivalTime) {
+    public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 

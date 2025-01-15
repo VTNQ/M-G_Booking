@@ -2,6 +2,7 @@ package com.vtnq.web.DTOs.Booking;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
@@ -11,6 +12,16 @@ public class BookingListFly {
     private String departureAirport;
     private String arrivalAirport;
     private long durationHours;
+
+    public Long getDurationDays() {
+        return durationDays;
+    }
+
+    public void setDurationDays(Long durationDays) {
+        this.durationDays = durationDays;
+    }
+
+    private long durationDays;
 
     public String getCityDeparture() {
         return CityDeparture;
@@ -41,21 +52,7 @@ public class BookingListFly {
     }
 
     private String nameAirline;
-    public Instant getArrivalTime() {
-        return arrivalTime;
-    }
 
-    public void setArrivalTime(Instant arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
-
-    public Instant getDepartureTime() {
-        return departureTime;
-    }
-
-    public void setDepartureTime(Instant departureTime) {
-        this.departureTime = departureTime;
-    }
 
     public String getDurationString() {
         return durationString;
@@ -81,20 +78,42 @@ public class BookingListFly {
         this.durationHours = durationHours;
     }
 
-    private Instant departureTime;
-    private Instant arrivalTime;
+    private LocalDateTime departureTime;
+    private LocalDateTime arrivalTime;
     private void calculateAndStoreDuration() {
         if (arrivalTime != null && departureTime != null) {
             Duration duration = Duration.between(departureTime, arrivalTime);
-            this.durationHours = duration.toHours();
-            this.durationMinutes = duration.toMinutes() % 60;
-            this.durationString = String.format("%02d:%02d", durationHours, durationMinutes); // Định dạng HH:mm
+            Long days=duration.toDays();
+            Long hours=duration.toHours()%24;
+            Long minutes=duration.toMinutes()%60;
+            this.durationDays=days;
+            this.durationHours = hours;
+            this.durationMinutes = minutes;
+            this.durationString = String.format("%02d:%02d:%02d", days, hours, minutes); // Định dạng HH:mm
         } else {
+            this.durationDays = 0;
             this.durationHours = 0;
             this.durationMinutes = 0;
-            this.durationString = "00:00"; // Khoảng cách mặc định
+            this.durationString = "00:00:00";
         }
     }
+
+    public LocalDateTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(LocalDateTime departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public LocalDateTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalDateTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
     private String timeArrival;
     private String timeDepart;
 
@@ -116,14 +135,14 @@ public class BookingListFly {
 
     public int getId() {
         return id;
-    } private String formatTime(Instant time) {
+    } private String formatTime(LocalDateTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm")
                 .withZone(ZoneId.of("UTC"));
         return formatter.format(time);
     }
 
-    public BookingListFly(int id, String imageUrl, String departureAirport, String arrivalAirport,Instant departureTime,Instant arrivalTime,String nameAirline,
-                          Instant TimeArrival,Instant TimeDepart,String cityDeparture,String cityArrival) {
+    public BookingListFly(int id, String imageUrl, String departureAirport, String arrivalAirport,LocalDateTime departureTime,LocalDateTime arrivalTime,String nameAirline,
+                          LocalDateTime TimeArrival,LocalDateTime TimeDepart,String cityDeparture,String cityArrival) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.departureAirport = departureAirport;

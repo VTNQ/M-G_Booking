@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -49,13 +50,15 @@ public class FlightAPI {
             @RequestParam int numberPeopleRight) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
             return new ResponseEntity<List<ResultFlightDTO>>(
                     flightService.SearchFlight(
                             departureAirport,
                             arrivalAirport,
                             LocalDate.parse(departureTime, formatter),
                             typeFlight,
-                            numberPeopleRight
+                            numberPeopleRight,
+                            LocalDateTime.now()
                     ),
                     HttpStatus.OK
             );

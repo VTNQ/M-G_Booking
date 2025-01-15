@@ -42,7 +42,7 @@ public class Account {
     @Column(name = "city_id")
     private Integer cityId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "security_code_id")
     private SecurityCode securityCode;
 
@@ -59,7 +59,7 @@ public class Account {
     private String password;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @ColumnDefault("1")
     @JoinColumn(name = "level_id", nullable = false)
     private Level level;

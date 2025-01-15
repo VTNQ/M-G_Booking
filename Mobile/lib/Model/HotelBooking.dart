@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class HotelBooking {
-  final String location;
+  final int location;
   final String checkInDate;
   final String checkOutDate;
   final int roomsCount;

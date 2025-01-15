@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -118,10 +119,10 @@ public class HomeController {
 
               DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
               LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-
+              LocalDateTime currentTime=LocalDateTime.now();
               // Lấy danh sách chuyến bay
               List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
-                      searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight());
+                      searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight(),currentTime);
 
 
               model.put("Flight", resultFlightDTOS);
@@ -169,10 +170,10 @@ public class HomeController {
 
               DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
               LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-
+              LocalDateTime dateTime=LocalDateTime.now();
               // Lấy danh sách chuyến bay
               List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
-                      searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight());
+                      searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight(),dateTime);
 
 
               model.put("Flight", resultFlightDTOS);
@@ -375,10 +376,10 @@ public class HomeController {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-
+            LocalDateTime localDateTime=LocalDateTime.now();
             // Lấy danh sách chuyến bay
             List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
-                    searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight());
+                    searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight(),localDateTime);
             int flightCount = resultFlightDTOS.size();
             model.put("flightCount",flightCount);
             model.put("Flight", resultFlightDTOS);
@@ -411,10 +412,10 @@ public class HomeController {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-
+            LocalDateTime localDateTime=LocalDateTime.now();
             // Lấy danh sách chuyến bay
             List<ResultFlightDTO> resultFlightDTOS = flightService.SearchFlight(searchFlightDTO.getDepartureAirport(),
-                    searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight());
+                    searchFlightDTO.getArrivalAirport(), departureDate, searchFlightDTO.getTypeFlight(), searchFlightDTO.getNumberPeopleRight(),localDateTime);
 
 
             model.put("Flight", resultFlightDTOS);

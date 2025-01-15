@@ -11,32 +11,32 @@ public class FlightListDTO { private int id;
     private String nameAirline;
     private String departure_airport;
     private String arrival_airport;
-    private Instant departure_time;
-    private Instant arrival_time;
+    private LocalDateTime departure_time;
+    private LocalDateTime arrival_time;
 
-    public Instant getDeparture_time() {
+    public LocalDateTime getDeparture_time() {
         return departure_time;
     }
 
-    public void setDeparture_time(Instant departure_time) {
+    public void setDeparture_time(LocalDateTime departure_time) {
         this.departure_time = departure_time;
     }
 
-    public Instant getArrival_time() {
+    public LocalDateTime getArrival_time() {
         return arrival_time;
     }
 
-    public void setArrival_time(Instant arrival_time) {
+    public void setArrival_time(LocalDateTime arrival_time) {
         this.arrival_time = arrival_time;
     }
 
-    public FlightListDTO(int id, String nameAirline, String departure_airport, String arrival_airport,Instant departure_time, Instant arrival_time) {
+    public FlightListDTO(int id, String nameAirline, String departure_airport, String arrival_airport, LocalDateTime departure_time, LocalDateTime arrival_time) {
         this.id = id;
         this.nameAirline = nameAirline;
         this.departure_airport = departure_airport;
         this.arrival_airport = arrival_airport;
-        this.departure_time = departure_time;
-        this.arrival_time = arrival_time;
+        this.departure_time=departure_time;
+        this.arrival_time=arrival_time;
     }
 
     public String getDeparture_airport() {

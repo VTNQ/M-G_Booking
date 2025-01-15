@@ -41,7 +41,7 @@ public class DetailHotelController {
     public void DetailSearch(HttpServletRequest request,ModelMap modelMap,int id,@RequestParam(defaultValue = "1") int page,
                              @RequestParam(defaultValue = "10") int size) {
         Account currentAccount=(Account) request.getSession().getAttribute("currentAccount");
-        SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("HotelSearch");
+        SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
 
         modelMap.put("Hotel",hotelService.FindDetailHotel(id));
         modelMap.put("Image",hotelService.FindImageInDetailHotel(id));

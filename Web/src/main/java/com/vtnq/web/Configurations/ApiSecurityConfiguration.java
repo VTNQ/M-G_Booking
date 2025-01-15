@@ -42,7 +42,9 @@ public class ApiSecurityConfiguration {
                                 "/api/city/FindById/{id}",
                                 "/api/Amenity/{id}",
                                 "/api/room/picture/{id}",
-                                "/api/Flight/getFlight"
+                                "/api/Flight/getFlight",
+                                "/api/hotel/SearchHotel",
+                                "/api/account/Login"
                                 ).permitAll()
                         .anyRequest().authenticated()
                 )
