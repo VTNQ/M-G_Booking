@@ -44,7 +44,8 @@ public class ApiSecurityConfiguration {
                                 "/api/room/picture/{id}",
                                 "/api/Flight/getFlight",
                                 "/api/hotel/SearchHotel",
-                                "/api/account/Login"
+                                "/api/account/Login",
+                                "api/room/GetRoomByHotel"
                                 ).permitAll()
                         .anyRequest().authenticated()
                 )

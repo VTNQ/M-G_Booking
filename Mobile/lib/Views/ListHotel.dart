@@ -5,10 +5,15 @@ import 'package:http/http.dart' as http;
 import 'package:mobile/Model/HotelBooking.dart';
 import 'dart:convert';
 
+import 'package:mobile/Views/ChooseRoom.dart';
+
+import 'PaymentPage.dart';
+
 class ListHotelPage extends StatefulWidget {
   final HotelBooking hotelsearchDTO;
+  final PaymentPage paymentPage;
 
-  const ListHotelPage({super.key, required this.hotelsearchDTO});
+  const ListHotelPage({super.key, required this.hotelsearchDTO, required this.paymentPage});
 
   @override
   State<StatefulWidget> createState() => ListHotel();
@@ -101,8 +106,7 @@ class ListHotel extends State<ListHotelPage> {
                           ),
                           child: Image.asset(
                             'assets/images/hotel.jpg',
-                            width: 30,
-                            height: double.infinity,
+                            width: 123,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return Container(
@@ -175,9 +179,8 @@ class ListHotel extends State<ListHotelPage> {
                                   width: double.infinity,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      // Handle booking
-                                      print(
-                                          'Booking hotel with ID: ${hotel.id}');
+                                      widget.paymentPage.hotelName!= hotel.name;
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RoomSelectionPage(hotelId: hotel.id!,paymentPage: widget.paymentPage,)));
                                     },
                                     style: ElevatedButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(
