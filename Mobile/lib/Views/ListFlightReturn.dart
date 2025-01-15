@@ -8,23 +8,21 @@ import 'package:mobile/Views/User/SeatFlight.dart';
 import '../Model/HotelBooking.dart';
 import 'PaymentPage.dart';
 
-class FlightPage extends StatefulWidget {
+class FlightPageReturn extends StatefulWidget {
   final Flight searchCriteria;
-  final bool isReturn;
   final PaymentPage paymentPage;
-  final HotelBooking? hotelBooking;
+  final HotelBooking hotelBooking;
 
-
-
-  const FlightPage({super.key, required this.searchCriteria, required this.isReturn,required this.paymentPage,this.hotelBooking});
+  const FlightPageReturn({super.key, required this.searchCriteria,required this.paymentPage,required this.hotelBooking});
 
   @override
-  State<FlightPage> createState() => _FlightListPageState();
+  State<FlightPageReturn> createState() => _FlightListPageState();
 }
 
-class _FlightListPageState extends State<FlightPage> {
+class _FlightListPageState extends State<FlightPageReturn> {
   late List<ResultFlightDTO> flights=[];
   bool isLoading = true;
+
 
   @override
   void initState() {
@@ -33,6 +31,9 @@ class _FlightListPageState extends State<FlightPage> {
   }
 
   Future<void> fetchFlight() async {
+    var x=widget.searchCriteria.from;
+    widget.searchCriteria.from=widget.searchCriteria.to;
+    widget.searchCriteria.to=widget.searchCriteria.from;
     try {
       flights = await FlightAPI().getFlightDepartment(widget.searchCriteria);
       setState(() {});
@@ -208,7 +209,7 @@ class _FlightListPageState extends State<FlightPage> {
                     widget.paymentPage.departureTime!=flight.timeDepart;
                     widget.paymentPage.arrivalTime!=flight.timeArrival;
                     widget.paymentPage.flightPrice!=flight.price;
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SeatSelectionPage(idFlight: flight.idFlight,paymentPage: widget.paymentPage,hotelBooking: widget.hotelBooking)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SeatSelectionPage(idFlight: flight.idFlight,paymentPage: widget.paymentPage,hotelBooking: widget.hotelBooking,)));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,

@@ -38,6 +38,11 @@ class HomePage extends State<Home> {
   int? selectedDepartureAirportId;
   int? selectCityId;
   int? selectedArrivalAirportId;
+  DateTime? selectedDepartureDate;
+  DateTime? selectedReturnDate;
+  DateTime? selectedCheckInDate;
+  DateTime? selectedCheckOutDate;
+  bool isRoundTrip = false;
   void _fetchCity(String query,bool isChecked) async{
     if(query.isEmpty){
       setState(() {
@@ -101,15 +106,10 @@ class HomePage extends State<Home> {
     }
   }
 
-  DateTime? selectedDepartureDate;
-  DateTime? selectedReturnDate;
-  DateTime? selectedCheckInDate;
-  DateTime? selectedCheckOutDate;
 
-  bool isRoundTrip = false;
 
-  String selectedSeatClass = 'Economy'; // Default seat class
-  final List<String> seatClasses = ['Economy', 'Business', 'First Class'];
+  String selectedSeatClass = 'Economy Class'; // Default seat class
+  final List<String> seatClasses = ['Economy Class', 'Business Class', 'First Class'];
 
   int _selectedIndex = 0;
 
@@ -152,7 +152,7 @@ class HomePage extends State<Home> {
         // Reset return date if it's before the new departure date
         if (selectedReturnDate != null &&
             selectedReturnDate!.isBefore(picked)) {
-          selectedReturnDate = null;
+          selectedReturnDate =null;
           returnDateController.clear();
         }
       });
@@ -208,7 +208,8 @@ class HomePage extends State<Home> {
       context: context,
       initialDate: selectedCheckInDate ?? selectedDepartureDate!,
       firstDate: selectedDepartureDate!,
-      lastDate: selectedReturnDate!,
+      // If return date is not set (one-way flight), use departure date + 30 days as max
+      lastDate: selectedReturnDate ?? selectedDepartureDate!.add(const Duration(days: 30)),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -248,7 +249,8 @@ class HomePage extends State<Home> {
       context: context,
       initialDate: selectedCheckOutDate ?? selectedCheckInDate!.add(const Duration(days: 1)),
       firstDate: selectedCheckInDate!,
-      lastDate: selectedReturnDate!,
+      // If return date is not set (one-way flight), use check-in date + 30 days as max
+      lastDate: selectedReturnDate ?? selectedCheckInDate!.add(const Duration(days: 30)),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -291,7 +293,7 @@ class HomePage extends State<Home> {
           return;
         }
         hotelBooking = HotelBooking(
-          location: selectCityId??0,
+          location: selectCityId ?? 0,
           checkInDate: checkInController.text,
           checkOutDate: checkOutController.text,
           roomsCount: int.parse(roomCountController.text),
@@ -299,34 +301,47 @@ class HomePage extends State<Home> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Search Success!')),
         );
-      }else{
-        final request = Flight(
-          from: selectedDepartureAirportId,
-          to: selectedArrivalAirportId,
-          departureTime: departureDateController.text,
-          arrivalTime: returnDateController.text,
-          ticketCount: int.parse(ticketCountController.text),
-          seatClass: selectedSeatClass,
-        );
-
-        // Gọi API
-        // await flightAPI.bookFlight(request);
-
-        // Xử lý sau khi gọi API thành công
-        // Ví dụ: chuyển trang, hiển thị thông báo, etc.
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Search Success!')),
-        );
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => FlightPage(searchCriteria: request,isReturn: isRoundTrip,paymentPage: PaymentPage(hotelName: "", checkInDate: selectedCheckInDate.toString(), checkOutDate: selectedCheckOutDate.toString(), numberOfGuests: ticketCountController.hashCode, roomType: selectedSeatClass, hotelPrice: 0, airlineName: "", departureDate: selectedDepartureDate.toString(), returnDate: selectedReturnDate.toString(), departureTime: "", arrivalTime: "", flightPrice: 0),hotelBooking: hotelBooking!,)));
       }
 
-      // Tạo booking request
+      final request = Flight(
+        from: selectedDepartureAirportId,
+        to: selectedArrivalAirportId,
+        departureTime: departureDateController.text,
+        arrivalTime: returnDateController.text,
+        ticketCount: int.parse(ticketCountController.text),
+        seatClass: selectedSeatClass,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Search Success!')),
+      );
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => FlightPage(
+                searchCriteria: request,
+                isReturn: isRoundTrip,
+                paymentPage: PaymentPage(
+                    hotelName: "",
+                    checkInDate: selectedCheckInDate.toString(),  // Thêm dấu ?
+                    checkOutDate: selectedCheckOutDate.toString(), // Thêm dấu ?
+                    numberOfGuests: ticketCountController.hashCode,
+                    roomType: selectedSeatClass,
+                    hotelPrice: 0,
+                    airlineName: "",
+                    departureDate: selectedDepartureDate.toString(), // Thêm dấu ?
+                    returnDate: selectedReturnDate.toString(),      // Thêm dấu ?
+                    departureTime: "",
+                    arrivalTime: "",
+                    flightPrice: 0
+                ),
+                hotelBooking: hotelBooking,  // Đã là nullable
+              )
+          )
+      );
 
     } catch (e) {
-      // Xử lý lỗi
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
@@ -541,8 +556,7 @@ class HomePage extends State<Home> {
                           value: selectedSeatClass,
                           decoration: InputDecoration(
                             labelText: 'Seat Class',
-                            prefixIcon:
-                                const Icon(Icons.airline_seat_recline_extra),
+                            prefixIcon: const Icon(Icons.airline_seat_recline_extra),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -550,7 +564,7 @@ class HomePage extends State<Home> {
                           items: seatClasses.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child: Text(value,style: TextStyle(fontSize: 10),),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
