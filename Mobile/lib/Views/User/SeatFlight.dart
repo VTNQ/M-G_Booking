@@ -9,49 +9,51 @@ import 'package:mobile/Views/PaymentPage.dart';
 enum SeatClass {
   business,
   firstClass,
-  economy
+  economy,
 }
 
 class SeatSelectionPage extends StatefulWidget {
   final int idFlight;
   final PaymentPage paymentPage;
-  final HotelBooking hotelBooking;
+  final HotelBooking? hotelBooking;
 
-  const SeatSelectionPage({required this.idFlight,required this.paymentPage,required this.hotelBooking});
+  const SeatSelectionPage({
+    Key? key,
+    required this.idFlight,
+    required this.paymentPage,
+    this.hotelBooking,
+  }) : super(key: key);
 
   @override
-  State<SeatSelectionPage> createState() => SeatFlight();
+  State<SeatSelectionPage> createState() => _SeatSelectionPageState();
 }
 
-class SeatFlight extends State<SeatSelectionPage> {
+class _SeatSelectionPageState extends State<SeatSelectionPage> {
   List<String> selectedSeats = [];
-  int seatSize = 0;
+  Future<List<Seat>> seatClassDB=Future.value(null);
   final List<String> rows = ['A', 'B', 'C', 'D', 'E', 'F'];
   int totalRows = 0;
-
-  late SeatAPI seatAPI;
-  Future<List<Seat>> seatClassDB=Future.value([]);
 
   @override
   void initState() {
     super.initState();
-    seatAPI = SeatAPI();
-    fetchSeat();
+    seatClassDB = fetchSeats(); // Fetch seats when the widget is initialized
   }
-  Future<void> fetchSeat() async {
+
+  Future<List<Seat>> fetchSeats() async {
     try {
-      seatClassDB =seatAPI.detailSeat(widget.idFlight);
-      totalRows = (seatSize/6) as int;
-      setState(() {});
+      List<Seat> seats = await SeatAPI().detailSeat(widget.idFlight);
+      totalRows = (seats.length/6).ceil(); // Calculate total rows based on seat count
+      return seats;
     } catch (e) {
-      print(e);
+      print('Error fetching seats: $e');
+      return []; // Return an empty list on error
     }
   }
 
   // Get seat class based on seat number
   SeatClass getSeatClass(String seatNumber) {
-    // Assuming seatClassDB is a List<Seat> and you have a way to map seatNumber to Seat
-    // You may need to adjust this logic based on your Seat model
+    // Implement your logic to determine the seat class based on seat number
     return SeatClass.economy; // Default to economy for now
   }
 
@@ -120,7 +122,6 @@ class SeatFlight extends State<SeatSelectionPage> {
 
           // Assuming the API returns a list of Seat objects
           List<Seat> seats = snapshot.data!;
-          seatSize = seats.length;
 
           return Column(
             children: [
@@ -137,7 +138,7 @@ class SeatFlight extends State<SeatSelectionPage> {
                             Container(width: 50, child: Text('Window', style: TextStyle(fontSize: 12))),
                             Expanded(
                               child: Center(
-                                child: Text('Aisle', style: TextStyle(fontSize: 12)),
+                                child: Text('A isle', style: TextStyle(fontSize: 12)),
                               ),
                             ),
                             Container(width: 50, child: Text('Window', style: TextStyle(fontSize: 12))),
@@ -185,15 +186,33 @@ class SeatFlight extends State<SeatSelectionPage> {
                       onPressed: selectedSeats.isNotEmpty
                           ? () {
                         // Navigate to PaymentPage with selected seats
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ListHotelPage(hotelsearchDTO: widget.hotelBooking, paymentPage: widget.paymentPage),
-                          ),
-                        );
+                        if (widget.hotelBooking != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListHotelPage(
+                                hotelsearchDTO: widget.hotelBooking!,
+                                paymentPage: widget.paymentPage,
+                              ),
+                            ),
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PaymentPage(
+                                airlineName: widget.paymentPage.airlineName,
+                                departureDate: widget.paymentPage.departureDate,
+                                departureTime: widget.paymentPage.departureTime,
+                                flightPrice: widget.paymentPage.flightPrice,
+                                numberOfGuests: widget.paymentPage.numberOfGuests,
+                              ),
+                            ),
+                          );
+                        }
                       }
                           : null,
-                      child: Text('Confirm (${selectedSeats.length}/)'+widget.hotelBooking.roomsCount.toString()),
+                      child: Text('Confirm (${selectedSeats.length}/4)'),
                     ),
                   ],
                 ),
