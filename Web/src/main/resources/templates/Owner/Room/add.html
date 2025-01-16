@@ -256,7 +256,7 @@
             const container = document.getElementById('rooms-container');
             container.innerHTML = '';  // Clear previous fields
 
-            if (numRooms > 0) {
+            if (numRooms > 0 && numRooms<20) {
                 for (let i = 1; i <= numRooms; i++) {
                     const roomDiv = document.createElement('div');
                     roomDiv.classList.add('room-group');
