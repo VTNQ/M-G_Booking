@@ -38,7 +38,7 @@ public class SercurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/LoginAdmin","/registerUser","/registerOwner","/register","/Login","/css/**","/js/**","/user/**","/SuperAdmin/assets/**",
-                                    "/ForgotPassword","/images/flight/**","/images/hotels/**","/images/**","/Home","/SearchFlight","/Admin/SignatureContract/{id}",
+                                    "/ForgotPassword","/images/flight/**","/images/hotels/**","/images/**","/","/SearchFlight","/Admin/SignatureContract/{id}",
                                     "/DetailHotel/{id}","/InformationCustomer/{id}","/rating","/Payment","/Success","/payFlight/**","/RoundTrip/{id}","/SearchHotelFlight/{id}","/RoundTripHotel/{id}","/HistoryOrderFlight/**","/HistoryOrderHotel/**","/Error","/InformationFlightHotel/**","/InformationFly/**",
                                     "/Contact",
                                     "/About","/ForgotAdminPassword","/HistoryBooking").permitAll()
