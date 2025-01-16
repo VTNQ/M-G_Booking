@@ -204,8 +204,8 @@
                                          <a th:href="@{'/Owner/service/'+${hotels.id}}" style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i style="color: white" class="fa-brands fa-usps"></i></a>
                                      </td>
                                      <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  style="text-align: center">
-                                         <button th:if="${hotels.status==false}" style="background-color: #4299e1;border-color: #4299e1;color: white" th:text="${'Pending'}" type="button" class="btn btn-danger" ></button>
-                                         <button th:if="${hotels.status==true}" style="background-color: #dc3545;border-color: #4299e1;color: white" th:text="${'Approved'}" type="button" class="btn btn-info" ></button>
+                                         <button th:if="${hotels.status==false}" style="background-color: #dc3545;border-color: #4299e1;color: white" th:text="${'Pending'}" type="button" class="btn btn-danger" ></button>
+                                         <button th:if="${hotels.status==true}" style="background-color: #4299e1;border-color: #4299e1;color: white" th:text="${'Approved'}" type="button" class="btn btn-info" ></button>
                                      </td>
                                  </tr>
                              </th:block>
