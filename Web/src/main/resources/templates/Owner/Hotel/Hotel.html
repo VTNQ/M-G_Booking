@@ -168,6 +168,7 @@
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Action</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Room</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Service</th>
+                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
                                     <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-collapse border-solid shadow-none dark:border-white/40 dark:text-white tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
                                 </tr>
                                 </thead>
@@ -201,6 +202,10 @@
                                      <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  style="text-align: center">
 
                                          <a th:href="@{'/Owner/service/'+${hotels.id}}" style="background-color: #4299e1;border-color: #4299e1" class="btn btn-info"><i style="color: white" class="fa-brands fa-usps"></i></a>
+                                     </td>
+                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent"  style="text-align: center">
+                                         <button th:if="${hotels.status==false}" style="background-color: #4299e1;border-color: #4299e1;color: white" th:text="${'Pending'}" type="button" class="btn btn-danger" ></button>
+                                         <button th:if="${hotels.status==true}" style="background-color: #dc3545;border-color: #4299e1;color: white" th:text="${'Approved'}" type="button" class="btn btn-info" ></button>
                                      </td>
                                  </tr>
                              </th:block>

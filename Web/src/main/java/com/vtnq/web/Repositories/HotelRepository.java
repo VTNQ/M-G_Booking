@@ -13,8 +13,9 @@ import java.util.List;
 public interface HotelRepository extends JpaRepository<Hotel, Integer> {
     @Query("SELECT case when count(a)>0 THEN TRUE ELSE FALSE END from BookingRoomDetail a where a.room.hotel.id= :id and a.bookingRoom.user.id = :idAccount")
     boolean existBooking(@Param("id") int id,@Param("idAccount")int idAccount);
-    @Query("select new com.vtnq.web.DTOs.Hotel.HotelListDto(a.id,a.name,a.district.name,c.imageUrl) from Hotel a join HotelsOwner b on a.id=b.hotel.id " +
+    @Query("select new com.vtnq.web.DTOs.Hotel.HotelListDto(a.id,a.name,a.district.name,c.imageUrl,d.status) from Hotel a join HotelsOwner b on a.id=b.hotel.id " +
             "JOIN Picture c on c.hotelId=a.id " +
+            "join ContractOwner d on d.hotelId=a.id "+
             "where b.owner.id = :id and c.isMain=true")
     List<HotelListDto> FindHotelByHotelId(@Param("id") int id);
 

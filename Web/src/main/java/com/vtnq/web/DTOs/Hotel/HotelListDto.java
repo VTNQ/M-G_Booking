@@ -5,6 +5,15 @@ public class HotelListDto {
     private String name;
     private String nameDistrict;
     private String imageUrl;
+    private  boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -14,11 +23,12 @@ public class HotelListDto {
         this.imageUrl = imageUrl;
     }
 
-    public HotelListDto(int id, String name, String nameDistrict, String imageUrl) {
+    public HotelListDto(int id, String name, String nameDistrict, String imageUrl,boolean status) {
         this.id = id;
         this.name = name;
         this.nameDistrict = nameDistrict;
         this.imageUrl = imageUrl;
+        this.status = status;
     }
 
     public int getId() {
