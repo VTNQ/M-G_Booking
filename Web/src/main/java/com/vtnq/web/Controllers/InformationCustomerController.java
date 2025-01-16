@@ -130,16 +130,17 @@ public class InformationCustomerController {
        if(session.getAttribute("searchFlightDTO")!=null){
            session.removeAttribute("searchFlightDTO");
        }
-       return new RedirectView("/Home");
+       return new RedirectView("/");
    }
    @GetMapping("InformationFlightHotel/{id}")
-   public String InformationFlightHotel(ModelMap modelMap,@PathVariable int id,HttpServletRequest request) {
+   public String InformationFlightHotel(ModelMap modelMap,@PathVariable int id,HttpServletRequest request,HttpSession session) {
        try {
            BookingFlightDTO bookingDto=new BookingFlightDTO();
            Account account=(Account)request.getSession().getAttribute("currentAccount");
            if(account==null){
                return "redirect:/Login";
            }
+           session.setAttribute("idFlightPrevent",id);
            SearchFlightDTO resultFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
            List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
            Integer idRoom=(Integer) request.getSession().getAttribute("idRoom");
@@ -319,7 +320,7 @@ public class InformationCustomerController {
         if(session.getAttribute("searchFlightDTO")!=null){
             session.removeAttribute("searchFlightDTO");
         }
-        return new RedirectView("/Home");
+        return new RedirectView("/");
     }
     @GetMapping(SuccessHotel)
     public String SuccessHotel(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, HttpServletRequest request,
@@ -372,7 +373,7 @@ public class InformationCustomerController {
         if(session.getAttribute("searchFlightDTO")!=null){
             session.removeAttribute("searchFlightDTO");
         }
-        return "redirect:/Home";
+        return "redirect:/";
     }
     @GetMapping(SUCCESS_URL)
     public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, HttpServletRequest request,HttpSession session,RedirectAttributes redirectAttributes) {
@@ -423,7 +424,7 @@ public class InformationCustomerController {
         if(session.getAttribute("searchFlightDTO")!=null){
             session.removeAttribute("searchFlightDTO");
         }
-        return "redirect:/Home";
+        return "redirect:/";
     }
 //
 //    @GetMapping("InformationCustomer/{id}")
@@ -480,13 +481,15 @@ public class InformationCustomerController {
 //        }
 //    }
     @GetMapping("InformationFly/{id}")
-    public String InformationFly(@PathVariable int id, ModelMap modelMap,HttpServletRequest request) {
+    public String InformationFly(@PathVariable int id, ModelMap modelMap,HttpServletRequest request,HttpSession session) {
         try {
             Account account=(Account)request.getSession().getAttribute("currentAccount");
             BigDecimal totalFlight=BigDecimal.ZERO;
             if(account==null){
                 return "redirect:/Login";
             }
+            session.setAttribute("idFlightPrevent",id);
+
             List<Integer>idFlight=(List<Integer>) request.getSession().getAttribute("idFlight");
 
             List<BookingListFly>FlightBooking=new ArrayList<>();

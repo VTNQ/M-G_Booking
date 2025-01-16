@@ -45,7 +45,7 @@ public class HomeController {
     private AirportRepository airportRepository;
     @Autowired
     private HotelService hotelService;
-    @GetMapping("Home")
+    @GetMapping("")
     public String Home(HttpServletRequest request, ModelMap model) {
        try {
 
@@ -151,6 +151,17 @@ public class HomeController {
               model.put("People",searchFlightDTO.getNumberPeopleRight());
               return "User/Flight/FlightHotel";
           }else{
+              Integer idFlightPrevent=(Integer)session.getAttribute("idFlightPrevent");
+              Integer Roundtrip=(Integer)session.getAttribute("idFlightRoundTrip");
+              List<Integer> idFlightAll=(List<Integer>)session.getAttribute("idFlight");
+              if (idFlightAll != null && idFlightAll.contains(idFlightPrevent)) {
+                  idFlightAll.removeIf(flight -> flight.equals(idFlightPrevent));
+                  session.removeAttribute("idFlightPrevent");
+              }
+              if(idFlightAll != null && idFlightAll.contains(Roundtrip)){
+                  isABoolean(idFlightAll, Roundtrip);
+                  session.removeAttribute("idFlightRoundTrip");
+              }
               session.setAttribute("idRoom",id);
               SearchFlightDTO searchFlightDTO = (SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
               String selectedDateStr = searchFlightDTO.getDepartureTime().trim();
@@ -205,6 +216,8 @@ public class HomeController {
               model.put("DepartAirport",airportRepository.findById(searchFlightDTO.getDepartureAirport()).orElseThrow(()->new RuntimeException("Aiport Not Found")));
               model.put("ArrivalAirport",airportRepository.findById(searchFlightDTO.getArrivalAirport()).orElseThrow(()->new RuntimeException("Aiport Not Found")));
               model.put("Room",searchFlightDTO.getQuantityRoom());
+              session.removeAttribute("idFlightPrevent");
+              session.removeAttribute("idFlightRoundTrip");
               model.put("People",searchFlightDTO.getNumberPeopleRight());
               return "User/FlightLogin/FlightHotelLogin";
           }
@@ -444,21 +457,53 @@ public class HomeController {
                                @RequestParam(value = "page", defaultValue = "0") int page,
                                @RequestParam(value = "size", defaultValue = "10") int size,
                                @RequestParam(value="minPrice",defaultValue = "0")BigDecimal minPrice, @RequestParam(value = "maxPrice",defaultValue = "10000")BigDecimal maxPrice, RedirectAttributes redirectAttributes) {
+
         if(searchFlightDTO.hasErrors()){
             redirectAttributes.addFlashAttribute("message",searchFlightDTO.getValidationErrors());
             redirectAttributes.addFlashAttribute("messageType","error");
             String referer = request.getHeader("Referer");
-            return "redirect:" + (referer != null ? referer : "/Home");
+            return "redirect:" + (referer != null ? referer : "/");
         }
+
+        Integer idRoom=(Integer)request.getSession().getAttribute("idRoom");
+        if(idRoom!=null){
+            session.removeAttribute("idRoom");
+        }
+        Integer idFlightPrevent=(Integer)session.getAttribute("idFlightPrevent");
+        Integer Roundtrip=(Integer)session.getAttribute("idFlightRoundTrip");
+        List<Integer> idFlightAll=(List<Integer>)session.getAttribute("idFlight");
+        if (idFlightAll != null && idFlightAll.contains(idFlightPrevent)) {
+            idFlightAll.removeIf(flight -> flight.equals(idFlightPrevent));
+            session.removeAttribute("idFlightPrevent");
+        }
+        if(idFlightAll != null && idFlightAll.contains(Roundtrip)){
+            isABoolean(idFlightAll, Roundtrip);
+            session.removeAttribute("idFlightRoundTrip");
+        }
+        session.removeAttribute("idFlightRoundTrip");
+        session.removeAttribute("idFlightPrevent");
       if(searchFlightDTO.isSelectedHotel()==false){
           return SearchFlight(model,searchFlightDTO,session,request);
       }else{
           return SearchHotelFlight(model,searchFlightDTO,session,page,size,minPrice,maxPrice,request);
       }
     }
+
+    private static boolean isABoolean(List<Integer> idFlightAll, Integer Roundtrip) {
+        return idFlightAll.removeIf(flight -> flight.equals(Roundtrip));
+    }
+
     @GetMapping("RoundTrip/{id}")
     public String RoundTrip(@PathVariable("id") int id, ModelMap model, HttpServletRequest request,HttpSession session) {
         try {
+            session.setAttribute("idFlightRoundTrip", id);
+            Integer idFlightPrevent=(Integer)session.getAttribute("idFlightPrevent");
+            List<Integer> idFlightAll=(List<Integer>)session.getAttribute("idFlight");
+            if (idFlightAll != null && idFlightAll.contains(idFlightPrevent)) {
+                idFlightAll.removeIf(flight -> flight.equals(idFlightPrevent));
+                session.removeAttribute("idFlightPrevent");
+            }
+            session.removeAttribute("idFlightPrevent");
             Account account=(Account) request.getSession().getAttribute("currentAccount");
             if(account==null){
                 return "redirect:/Login";
@@ -515,7 +560,16 @@ public class HomeController {
     @GetMapping("RoundTripHotel/{id}")
     public String RoundTripHotel(@PathVariable("id") int id, ModelMap model, HttpServletRequest request,HttpSession session) {
         try {
+            session.setAttribute("idFlightRoundTrip", id);
             Account account=(Account)request.getSession().getAttribute("currentAccount");
+            Integer idFlightPrevent=(Integer)session.getAttribute("idFlightPrevent");
+            List<Integer> idFlightAll=(List<Integer>)session.getAttribute("idFlight");
+            if (idFlightAll != null && idFlightAll.contains(idFlightPrevent)) {
+                idFlightAll.removeIf(flight -> flight.equals(idFlightPrevent));
+                session.removeAttribute("idFlightPrevent");
+            }
+            session.removeAttribute("idFlightPrevent");
+
             if(account==null){
                 return "redirect:/Login";
             }

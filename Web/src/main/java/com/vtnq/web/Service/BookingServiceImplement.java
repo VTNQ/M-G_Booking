@@ -174,7 +174,7 @@ public class BookingServiceImplement implements BookingService {
                     "Thank you for your payment and successful booking.\n\n" +
                     "Booking Information:\n" +
                     "Booking Code: " + booking.getBookingCode() + "\n" +
-                    "Amount: " + booking.getTotalPrice() + "\n\n" +
+                    "Amount: " + booking.getTotalPrice().toString() + "\n\n" +
                     "We wish you a pleasant trip!");
 
             // Send email

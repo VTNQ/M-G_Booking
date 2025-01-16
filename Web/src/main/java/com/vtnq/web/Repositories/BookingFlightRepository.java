@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingFlightRepository extends JpaRepository<BookingFlight, Integer> {
-    @Query("select distinct a.id,a.flight.flightCode,a.flight.arrivalTime,a.flight.departureTime,a.flight.departureAirport.name,a.flight.arrivalAirport.name from BookingFlightDetail a " +
+    @Query("select distinct a.id,a.seat.index,a.flight.flightCode,a.flight.arrivalTime,a.flight.departureTime,a.flight.departureAirport.name,a.flight.arrivalAirport.name from BookingFlightDetail a " +
             "where a.bookingFlight.id = :id and (:flightCode IS null or a.flight.flightCode like %:flightCode%) " +
             "and (:departureTime IS NULL or Date(a.flight.departureTime) =:departureTime) " +
             "and (:ArrivalTime IS NULL or Date(a.flight.arrivalTime) =:ArrivalTime)" +

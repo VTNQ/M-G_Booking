@@ -89,7 +89,7 @@ public class SercurityConfiguration {
                                 Map<String, String> urls = new HashMap<>();
                                 urls.put("ROLE_ADMIN", "/Admin/Home");
                                 urls.put("ROLE_SUPERADMIN", "/SuperAdmin/Home");
-                                urls.put("ROLE_USER", "/Home");
+                                urls.put("ROLE_USER", "/");
                                 urls.put("ROLE_OWNER", "/Owner");
 
                                   // Default redirect to error page
@@ -168,7 +168,7 @@ public class SercurityConfiguration {
                                         session.invalidate();
                                         return;
                                     }else if("ROLE_USER".equals(currentAccount.getAccountType()) ) {
-                                        response.sendRedirect("/Home");
+                                        response.sendRedirect("/");
                                         session.invalidate();
                                         return;
                                     }else{

@@ -11,6 +11,7 @@ import com.vtnq.web.Repositories.AirportRepository;
 import com.vtnq.web.Repositories.HotelRepository;
 import com.vtnq.web.Service.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -70,13 +71,16 @@ public class DetailHotelController {
 
     }
     @GetMapping({"DetailHotel/{id}"})
-    public String DetailController(ModelMap modelMap, @PathVariable int id, HttpServletRequest request,@RequestParam(defaultValue = "1") int page,
-                                   @RequestParam(defaultValue = "10") int size) {
+    public String DetailController(ModelMap modelMap, @PathVariable int id, HttpServletRequest request, @RequestParam(defaultValue = "1") int page,
+                                   @RequestParam(defaultValue = "10") int size, HttpSession session) {
         try {
 
             Account currentAccount = (Account) request.getSession().getAttribute("currentAccount");
             SearchFlightDTO searchFlightDTO=(SearchFlightDTO) request.getSession().getAttribute("searchFlightDTO");
-
+            Integer idRoom=(Integer)request.getSession().getAttribute("idRoom");
+            if(idRoom!=null){
+                session.removeAttribute("idRoom");
+            }
             if(searchFlightDTO==null){
                 return "redirect:/Login";
             }

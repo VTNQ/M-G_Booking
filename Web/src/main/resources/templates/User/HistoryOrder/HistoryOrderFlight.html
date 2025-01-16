@@ -39,6 +39,7 @@
              <thead>
              <tr>
                  <th>Flight Number</th>
+                 <th>Seat</th>
                  <th>Departure Airport</th>
                  <th>Arrival Airport</th>
                  <th>Departure Date</th>
@@ -50,6 +51,7 @@
              <th:block th:each="flight,index:${Flight}">
                  <tr>
                      <td th:text="${flight.flightNo}"></td>
+                     <td th:text="${flight.index}"></td>
                      <td th:text="${flight.departAirport}"></td>
                      <td th:text="${flight.arrivalAirport}"></td>
                      <td th:text="${flight.departureTime}"></td>

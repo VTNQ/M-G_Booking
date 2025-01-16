@@ -107,7 +107,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-lg-2 col-xl-2dot3 mb-4">
-                                        <span class="d-block text-gray-1 text-left mb-0" style="font-weight: 400">Travelers</span>
+                                        <span class="d-block text-gray-1 text-left mb-0" style="font-weight: 400">Type Seat</span>
                                         <div class="js-focus-state">
                                             <div class="input-group border-bottom-1">
                                                 <i class="fa-solid fa-location-dot mr-2 align-items-center d-flex"
@@ -121,8 +121,36 @@
                                                             <select id="classSelect" th:field="${searchFlightDTO.typeFlight}" class="form-select " style="margin-top: 2vh;background-color: transparent;outline: none;border: none">
                                                                 <option value="First Class" >First Class</option>
                                                                 <option value="Business Class">Business Class</option>
-                                                                <option value="Merchant" >Merchant</option>
+
                                                                 <option value="Economy Class">Economy Class</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-2 col-xl-2dot3 mb-4">
+                                        <span class="d-block text-gray-1 text-left mb-0" style="font-weight: 400">People Flight</span>
+                                        <div class="js-focus-state">
+                                            <div class="input-group border-bottom-1">
+                                                <i class="fa-solid fa-location-dot mr-2 align-items-center d-flex"
+                                                   style="color: #297cbb !important;margin-top: 1vh"></i>
+                                                <div class="dropdown bootstrap-select js-select dropdown-select"
+                                                     style="width: 89%">
+
+                                                    <div class="dropdown-container">
+
+                                                        <div class="dropdown">
+                                                            <select th:field="${searchFlightDTO.numberPeopleRight}" class="form-select " style="margin-top: 2vh;background-color: transparent;outline: none;border: none">
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="5">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -799,7 +827,7 @@
                             </div>
                             <div class="col-sm-5 ">
                                             <span class="text-left d-block"
-                                                  style="color: #67747c !important;font-weight: 400;font-size: 1.2rem;text-align: left">Rooms and Guests</span>
+                                                  style="color: #67747c !important;font-weight: 400;font-size: 1.2rem;text-align: left">Type Seat</span>
                                 <div class="dropdown-container">
 
                                     <div class="dropdown">

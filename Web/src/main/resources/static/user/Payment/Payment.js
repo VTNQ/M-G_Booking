@@ -223,7 +223,8 @@ function createSeatDiv(seat) {
                 }else{
                     const selectedSeatsCount = document.querySelectorAll(`.seat-grid${seat.idFlight} .isSelected`).length;
                     if (selectedSeatsCount >= maxSeats) {
-                        alert("Bạn chỉ có thể chọn tối đa " + maxSeats + " ghế.");
+                        alert("You can only select up to " + maxSeats + " seat.");
+
                         return;  // Nếu số ghế đã chọn đủ, không cho phép chọn thêm ghế mới
                     }
                     addSeat(seat.idFlight,seat.index,seat.price);

@@ -59,9 +59,20 @@ public class HistoryOrderFlight {
         // Format the ZonedDateTime and return the string
         return zonedDateTime.format(formatter);
     }
-    public HistoryOrderFlight(int id,String flightNo,LocalDateTime arrivalTime,LocalDateTime departureTime,String DepartAirport,String ArrivalAirport) {
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+    private String index;
+    public HistoryOrderFlight(int id,String index,String flightNo,LocalDateTime arrivalTime,LocalDateTime departureTime,String DepartAirport,String ArrivalAirport) {
 
         this.id = id;
+        this.index = index;
         this.flightNo = flightNo;
         this.DepartureTime=formatInstant(departureTime);
         this.ArrivalTime=formatInstant(arrivalTime);
@@ -74,11 +85,12 @@ public class HistoryOrderFlight {
         for (Object[]row : results) {
             HistoryOrderFlight historyOrderFlight=new HistoryOrderFlight(
                     (Integer)row[0],
-                    (String) row[1],
-                    (LocalDateTime) row[2],
+                    (String)row[1],
+                    (String) row[2],
                     (LocalDateTime) row[3],
-                    (String) row[4],
-                    (String) row[5]
+                    (LocalDateTime) row[4],
+                    (String) row[5],
+                    (String) row[6]
             );
             historyOrderFlightList.add(historyOrderFlight);
         }

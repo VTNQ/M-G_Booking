@@ -69,31 +69,8 @@
                                                style="padding: 0.9rem 1rem;height: calc(1.5em + 1.8rem + 4px);border: 3px solid #ebf0f7;color: #3b444f">
                                     </div>
                                 </div>
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label"
-                                               style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1.2rem;font-weight: 400;line-height: 1.5;color: #3b444f">
-                                           Country
-                                        </label>
-                                        <select id="country-select" class="form-control" th:field="${Account.countryId}"
-                                                style="padding: 0.9rem 1rem;height: calc(1.5em + 1.8rem + 4px);border: 3px solid #ebf0f7;color: #3b444f">
-                                            <option th:each="Countries : ${Country}" th:value="${Countries.id}"
-                                                    th:text="${Countries.name}"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 mb-4">
-                                    <div class="js-form-message">
-                                        <label class="form-label"
-                                               style="font-family: 'Rubik', Helvetica, Arial, sans-serif;font-size: 1.2rem;font-weight: 400;line-height: 1.5;color: #3b444f">
-                                           City
-                                        </label>
-                                        <select id="city-select" class="form-control"
-                                                style="padding: 0.9rem 1rem;height: calc(1.5em + 1.8rem + 4px);border: 3px solid #ebf0f7;color: #3b444f" th:field="${Account.cityId}">
-
-                                        </select>
-                                    </div>
-                                </div>
+                               <input type="hidden" th:field="${Account.cityId}">
+                               <input type="hidden" th:field="${Account.countryId}">
                                 <div class="col-12">
                                     <div class="js-form-message mb-6">
                                         <label class="form-label">
