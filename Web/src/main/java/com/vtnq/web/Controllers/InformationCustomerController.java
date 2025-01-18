@@ -86,7 +86,7 @@ public class InformationCustomerController {
                redirectAttributes.addFlashAttribute("messageType", "error");
                return new RedirectView(request.getHeader("Referer"));
            }
-           if(resultFlightDTO.getArrivalTime()!=null||!resultFlightDTO.getArrivalTime().isEmpty()){
+           if(!resultFlightDTO.getArrivalTime().isEmpty()){
                if(bookings.size()!=resultFlightDTO.getNumberPeopleRight()*2){
                    redirectAttributes.addFlashAttribute("message", "Please select the correct number of seats.");
                    redirectAttributes.addFlashAttribute("messageType", "error");
