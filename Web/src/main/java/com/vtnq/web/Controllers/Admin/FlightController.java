@@ -192,11 +192,7 @@ public class FlightController {
             if(account==null || !"ROLE_ADMIN".equals(account.getAccountType())){
                 return "redirect:/LoginAdmin";
             }
-            if(flightDto.getDepartureInstant().isBefore(flightDto.getArrivalInstant().plusHours(2))){
-                redirectAttributes.addFlashAttribute("messageType", "error");
-                redirectAttributes.addFlashAttribute("message", "Departure time must be at least 2 hours after arrival time.");
-                return "redirect:/Admin/Flight/add";
-            }
+
             if (bindingResult.hasErrors()) {
                 StringBuilder errorMessages = new StringBuilder("Validation errors: ");
                 bindingResult.getFieldErrors().forEach(error ->

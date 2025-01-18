@@ -282,7 +282,7 @@ public class InformationCustomerController {
                 return new RedirectView(request.getHeader("Referer"));
 
             }
-            if( searchFlightDTO.getArrivalTime()!=null||!searchFlightDTO.getArrivalTime().isEmpty()){
+            if(!searchFlightDTO.getArrivalTime().isEmpty()){
                 if(bookings.size()!=NumberPeople*2){
                     redirectAttributes.addFlashAttribute("message", "Please select the correct number of seats.");
                     redirectAttributes.addFlashAttribute("messageType", "error");
