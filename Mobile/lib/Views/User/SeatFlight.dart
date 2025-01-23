@@ -5,7 +5,6 @@ import 'package:mobile/Model/Seat.dart';
 import 'package:mobile/Views/ListHotel.dart';
 import 'package:mobile/Views/PaymentPage.dart';
 
-// Enum to define seat classes
 enum SeatClass {
   business,
   firstClass,
@@ -18,11 +17,11 @@ class SeatSelectionPage extends StatefulWidget {
   final HotelBooking? hotelBooking;
 
   const SeatSelectionPage({
-    Key? key,
+    super.key,
     required this.idFlight,
     required this.paymentPage,
     this.hotelBooking,
-  }) : super(key: key);
+  });
 
   @override
   State<SeatSelectionPage> createState() => _SeatSelectionPageState();
@@ -30,75 +29,140 @@ class SeatSelectionPage extends StatefulWidget {
 
 class _SeatSelectionPageState extends State<SeatSelectionPage> {
   List<String> selectedSeats = [];
-  Future<List<Seat>> seatClassDB=Future.value(null);
+  late Future<List<Seat>> seatClassDB;
   final List<String> rows = ['A', 'B', 'C', 'D', 'E', 'F'];
   int totalRows = 0;
+
+  // Map seat types to colors
+  Color getSeatColor(String type, bool isSelected) {
+    if (isSelected) return Colors.blue;
+
+    switch (type.toLowerCase()) {
+      case 'business':
+        return Colors.green.shade100;
+      case 'first':
+        return Colors.red.shade100;
+      case 'economy':
+        return Colors.grey.shade200;
+      default:
+        return Colors.grey.shade200;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    seatClassDB = fetchSeats(); // Fetch seats when the widget is initialized
+    seatClassDB = fetchSeats();
   }
 
   Future<List<Seat>> fetchSeats() async {
     try {
       List<Seat> seats = await SeatAPI().detailSeat(widget.idFlight);
-      totalRows = (seats.length/6).ceil(); // Calculate total rows based on seat count
+      totalRows = (seats.length/6).ceil();
       return seats;
     } catch (e) {
       print('Error fetching seats: $e');
-      return []; // Return an empty list on error
+      return [];
     }
   }
 
-  // Get seat class based on seat number
-  SeatClass getSeatClass(String seatNumber) {
-    // Implement your logic to determine the seat class based on seat number
-    return SeatClass.economy; // Default to economy for now
-  }
-
-  // Build the seat widget
-  Widget buildSeat(String seatNumber) {
-    bool isSelected = selectedSeats.contains(seatNumber);
-    SeatClass seatClass = getSeatClass(seatNumber);
-    Color baseColor = classColors[seatClass]!;
+  Widget buildSeat(Seat seat) {
+    bool isSelected = selectedSeats.contains(seat.index);
 
     return GestureDetector(
       onTap: () {
-        setState(() {
-          if (isSelected) {
-            selectedSeats.remove(seatNumber);
-          } else if (selectedSeats.length < 4) {
-            selectedSeats.add(seatNumber);
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('You can only select up to 4 seats')),
-            );
-          }
-        });
+        if (seat.status == 1) {  // Assuming 1 means available
+          setState(() {
+            if (isSelected) {
+              selectedSeats.remove(seat.index);
+            } else if (selectedSeats.length < 4) {
+              selectedSeats.add(seat.index);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('You can only select up to 4 seats')),
+              );
+            }
+          });
+        }
       },
       child: Container(
         margin: EdgeInsets.all(2),
         width: 30,
         height: 30,
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue[400] : baseColor,
+          color: seat.status == 1
+              ? getSeatColor(seat.type, isSelected)
+              : Colors.grey.shade400,  // Unavailable seat
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
-            color: isSelected ? Colors.blue : Colors.grey[400]!,
+            color: isSelected ? Colors.blue : Colors.grey.shade400,
             width: 1,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 2,
+              offset: Offset(0, 1),
+            ),
+          ],
         ),
         child: Center(
           child: Text(
-            seatNumber,
+            seat.index,
             style: TextStyle(
               fontSize: 10,
-              color: isSelected ? Colors.white : Colors.black87,
+              color: isSelected || seat.status != 1
+                  ? Colors.white
+                  : Colors.black87,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildSeatLegend() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildLegendItem('Business', 'business'),
+          SizedBox(width: 16),
+          _buildLegendItem('First Class', 'first'),
+          SizedBox(width: 16),
+          _buildLegendItem('Economy', 'economy'),
+          SizedBox(width: 16),
+          _buildLegendItem('Unavailable', 'unavailable'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLegendItem(String label, String type) {
+    return Row(
+      children: [
+        Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            color: type == 'unavailable'
+                ? Colors.grey.shade400
+                : getSeatColor(type, false),
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(
+              color: Colors.grey.shade400,
+              width: 1,
+            ),
+          ),
+        ),
+        SizedBox(width: 4),
+        Text(
+          label,
+          style: TextStyle(fontSize: 12),
+        ),
+      ],
     );
   }
 
@@ -120,7 +184,6 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
             return Center(child: Text('No seats available'));
           }
 
-          // Assuming the API returns a list of Seat objects
           List<Seat> seats = snapshot.data!;
 
           return Column(
@@ -138,26 +201,29 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
                             Container(width: 50, child: Text('Window', style: TextStyle(fontSize: 12))),
                             Expanded(
                               child: Center(
-                                child: Text('A isle', style: TextStyle(fontSize: 12)),
+                                child: Text('Aisle', style: TextStyle(fontSize: 12)),
                               ),
                             ),
                             Container(width: 50, child: Text('Window', style: TextStyle(fontSize: 12))),
                           ],
                         ),
                       ),
-                      for (int i = 1; i <= totalRows; i++)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            buildSeat('${rows[0]}$i'),
-                            buildSeat('${rows[1]}$i'),
-                            buildSeat('${rows[2]}$i'),
-                            SizedBox(width: 20),
-                            buildSeat('${rows[3]}$i'),
-                            buildSeat('${rows[4]}$i'),
-                            buildSeat('${rows[5]}$i'),
-                          ],
-                        ),
+                      ...List.generate(
+                        (seats.length / 6).ceil(),
+                            (rowIndex) {
+                          int startIndex = rowIndex * 6;
+                          List<Seat> rowSeats = seats.skip(startIndex).take(6).toList();
+
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ...rowSeats.take(3).map((seat) => buildSeat(seat)),
+                              SizedBox(width: 20),
+                              ...rowSeats.skip(3).map((seat) => buildSeat(seat)),
+                            ],
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -185,7 +251,6 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
                     ElevatedButton(
                       onPressed: selectedSeats.isNotEmpty
                           ? () {
-                        // Navigate to PaymentPage with selected seats
                         if (widget.hotelBooking != null) {
                           Navigator.push(
                             context,
@@ -205,7 +270,7 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
                                 departureDate: widget.paymentPage.departureDate,
                                 departureTime: widget.paymentPage.departureTime,
                                 flightPrice: widget.paymentPage.flightPrice,
-                                numberOfGuests: widget.paymentPage.numberOfGuests,
+                                numberOfSeats: widget.paymentPage.numberOfSeats,
                               ),
                             ),
                           );
@@ -221,29 +286,6 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
           );
         },
       ),
-    );
-  }
-
-  // Example seat class colors
-  final Map<SeatClass, Color> classColors = {
-    SeatClass.business: Colors.green,
-    SeatClass.firstClass: Colors.red,
-    SeatClass.economy: Colors.grey,
-  };
-
-  Widget buildSeatLegend() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(width: 20, height: 20, color: classColors[SeatClass.business], margin: EdgeInsets.all(4)),
-        Text('Business'),
-        SizedBox(width: 10),
-        Container(width: 20, height: 20, color: classColors[SeatClass.firstClass], margin: EdgeInsets.all(4)),
-        Text('First Class'),
-        SizedBox(width: 10),
-        Container(width: 20, height: 20, color: classColors[SeatClass.economy], margin: EdgeInsets.all(4)),
-        Text('Economy'),
-      ],
     );
   }
 }

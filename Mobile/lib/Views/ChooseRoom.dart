@@ -147,7 +147,7 @@ class _RoomSelectionPageState extends State<RoomSelectionPage> {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>PaymentPage(hotelName: widget.paymentPage.hotelName,airlineName: widget.paymentPage.airlineName,arrivalTime: widget.paymentPage.arrivalTime,checkInDate: widget.paymentPage.checkInDate, checkOutDate: widget.paymentPage.checkOutDate, departureDate: widget.paymentPage.departureDate, departureTime: widget.paymentPage.departureTime, flightPrice: widget.paymentPage.flightPrice,hotelPrice: room.price.toDouble()*quantityRoom, numberOfGuests: widget.paymentPage.numberOfGuests, returnDate: widget.paymentPage.returnDate, roomType: room.type,)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>PaymentPage(hotelName: widget.paymentPage.hotelName,airlineName: widget.paymentPage.airlineName,arrivalTime: widget.paymentPage.arrivalTime,checkInDate: widget.paymentPage.checkInDate, checkOutDate: widget.paymentPage.checkOutDate, departureDate: widget.paymentPage.departureDate, departureTime: widget.paymentPage.departureTime, flightPrice: widget.paymentPage.flightPrice,hotelPrice: room.price.toDouble()*quantityRoom, numberOfGuests: widget.paymentPage.numberOfGuests, returnDate: widget.paymentPage.returnDate, roomType: room.type, numberOfSeats: widget.paymentPage.numberOfSeats,)));
                                 },
                                 child: const Text('Choose'),
                               ),

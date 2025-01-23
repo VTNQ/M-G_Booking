@@ -326,7 +326,7 @@ class HomePage extends State<Home> {
                     hotelName: "",
                     checkInDate: selectedCheckInDate.toString(),  // Thêm dấu ?
                     checkOutDate: selectedCheckOutDate.toString(), // Thêm dấu ?
-                    numberOfGuests: ticketCountController.hashCode,
+                    numberOfGuests: roomCountController.hashCode,
                     roomType: selectedSeatClass,
                     hotelPrice: 0,
                     airlineName: "",
@@ -334,7 +334,8 @@ class HomePage extends State<Home> {
                     returnDate: selectedReturnDate.toString(),      // Thêm dấu ?
                     departureTime: "",
                     arrivalTime: "",
-                    flightPrice: 0
+                    flightPrice: 0,
+                  numberOfSeats: ticketCountController.hashCode,
                 ),
                 hotelBooking: hotelBooking,  // Đã là nullable
               )

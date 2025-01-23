@@ -7,7 +7,7 @@ class PaymentPage extends StatelessWidget {
   final String? hotelName;
   final String? checkInDate;
   final String? checkOutDate;
-  final int numberOfGuests;
+  final int? numberOfGuests;
   final String? roomType;
   final double? hotelPrice;
 
@@ -17,13 +17,14 @@ class PaymentPage extends StatelessWidget {
   final String departureTime;
   final String? arrivalTime;
   final double flightPrice;
+  final int numberOfSeats;
 
   const PaymentPage({
     Key? key,
     this.hotelName,
     this.checkInDate,
     this.checkOutDate,
-    required this.numberOfGuests,
+    this.numberOfGuests,
     this.roomType,
     this.hotelPrice,
     required this.airlineName,
@@ -32,6 +33,7 @@ class PaymentPage extends StatelessWidget {
     required this.departureTime,
     this.arrivalTime,
     required this.flightPrice,
+    required this.numberOfSeats,
   }) : super(key: key);
 
   @override
