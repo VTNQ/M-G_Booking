@@ -118,19 +118,7 @@ class _FlightListPageState extends State<FlightPage> {
           children: [
             Row(
               children: [
-                Image.network(
-                  flight.imageUrl,
-                  width: 40,
-                  height: 40,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 40,
-                      height: 40,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.flight, color: Colors.grey),
-                    );
-                  },
-                ),
+                Image.asset("assets/images/hotel.jpg", width: 60, height: 60,),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -208,7 +196,7 @@ class _FlightListPageState extends State<FlightPage> {
                     widget.paymentPage.departureTime!=flight.timeDepart;
                     widget.paymentPage.arrivalTime!=flight.timeArrival;
                     widget.paymentPage.flightPrice!=flight.price;
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SeatSelectionPage(idFlight: flight.idFlight,paymentPage: widget.paymentPage,hotelBooking: widget.hotelBooking)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SeatSelectionPage(idFlight: flight.id,paymentPage: widget.paymentPage,hotelBooking: widget.hotelBooking)));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
